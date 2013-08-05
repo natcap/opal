@@ -25,15 +25,13 @@ def build_data():
     return data
 
 def write_build_info(source_file_uri):
+    """Write the build information to the file specified as `source_file_uri`.
+    """
     temp_file_uri = raster_utils.temporary_filename()
-    print temp_file_uri
-
     temp_file = open(temp_file_uri, 'w+')
 
-    print os.path.abspath(source_file_uri)
     source_file = open(os.path.abspath(source_file_uri))
     for line in source_file:
-        print line
         if line == "__version__ = 'dev'\n":
             temp_file.write("__version__ = '%s'\n" % version())
         elif line == "build_data = None\n":
