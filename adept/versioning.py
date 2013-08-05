@@ -13,15 +13,14 @@ LOGGER = logging.getLogger('versioning')
 LOGGER.setLevel(logging.ERROR)
 
 
-BuildInfo = collections.namedtuple(
-    'BuildInfo', ['release', 'build_id', 'py_arch', 'version_str'])
-
 def build_data():
-    data = BuildInfo(
-        release=get_latest_tag(),
-        build_id=get_build_id(),
-        py_arch=get_py_arch(),
-        version_str=version())
+    """Returns a dictionary of relevant build data."""
+    data = {
+        'release': get_latest_tag(),
+        'build_id': get_build_id(),
+        'py_arch': get_py_arch(),
+        'version_str': version()
+    }
     return data
 
 def write_build_info(source_file_uri):
@@ -34,8 +33,11 @@ def write_build_info(source_file_uri):
     for line in source_file:
         if line == "__version__ = 'dev'\n":
             temp_file.write("__version__ = '%s'\n" % version())
-        elif line == "build_data = None\n":
-            temp_file.write("build_data = versioning.%s\n" % str(build_data()))
+        elif line == "build_attrs = None\n":
+            build_information = build_data()
+            temp_file.write("build_attrs = %s\n" % str(build_information.keys()))
+            for key, value in sorted(build_information.iteritems()):
+                temp_file.write("%s = '%s'\n" % (key, value))
         else:
             temp_file.write(line)
     temp_file.flush()
