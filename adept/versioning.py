@@ -2,6 +2,10 @@ import subprocess
 import logging
 import platform
 import collections
+import shutil
+import os
+
+from invest_natcap import raster_utils
 
 HG_CALL = 'hg log -r . --config ui.report_untrusted=False'
 
@@ -9,16 +13,39 @@ LOGGER = logging.getLogger('versioning')
 LOGGER.setLevel(logging.ERROR)
 
 
-def build_data():
-    BuildInfo = collections.namedtuple(
-        'BuildInfo', ['release', ' build_id', 'py_arch', 'version_str'])
+BuildInfo = collections.namedtuple(
+    'BuildInfo', ['release', 'build_id', 'py_arch', 'version_str'])
 
+def build_data():
     data = BuildInfo(
         release=get_latest_tag(),
         build_id=get_build_id(),
         py_arch=get_py_arch(),
         version_str=version())
     return data
+
+def write_build_info(source_file_uri):
+    temp_file_uri = raster_utils.temporary_filename()
+    print temp_file_uri
+
+    temp_file = open(temp_file_uri, 'w+')
+
+    print os.path.abspath(source_file_uri)
+    source_file = open(os.path.abspath(source_file_uri))
+    for line in source_file:
+        print line
+        if line == "__version__ = 'dev'\n":
+            temp_file.write("__version__ = '%s'\n" % version())
+        elif line == "build_data = None\n":
+            temp_file.write("build_data = versioning.%s\n" % str(build_data()))
+        else:
+            temp_file.write(line)
+    temp_file.flush()
+    temp_file.close()
+
+    source_file.close()
+    os.remove(source_file_uri)
+    shutil.copyfile(temp_file_uri, source_file_uri)
 
 def get_py_arch():
     """This function gets the python architecture string.  Returns a string."""
