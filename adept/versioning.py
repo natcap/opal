@@ -33,9 +33,9 @@ def write_build_info(source_file_uri):
     for line in source_file:
         if line == "__version__ = 'dev'\n":
             temp_file.write("__version__ = '%s'\n" % version())
-        elif line == "build_attrs = None\n":
+        elif line == "build_data = None\n":
             build_information = build_data()
-            temp_file.write("build_attrs = %s\n" % str(build_information.keys()))
+            temp_file.write("build_data = %s\n" % str(build_information.keys()))
             for key, value in sorted(build_information.iteritems()):
                 temp_file.write("%s = '%s'\n" % (key, value))
         else:
