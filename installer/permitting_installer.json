@@ -1,0 +1,28 @@
+{
+    "general": {
+        "name": "Adept",
+        "version": "0.0",
+        "build_folder": "../py2exe_dir",
+        "publisher": "The Natural Capital Project",
+        "website": "http://www.naturalcapitalproject.org"
+    },
+    "installer": {
+        "filename": "{name}_{version}_Setup.exe",
+        "install_dir": "C:\Program Files\{name} {version}",
+        "save_log": true,
+        "assert_not_running": true,
+        "assert_arch_is_compatible": true,
+        "install_log": "install_log.txt",
+        "start_menu": [
+            {
+                "name": "{name}",
+                "target": "launch_adept.exe",
+                "icon": "{icon}"
+            },
+            {
+                "name": "{name} Documentation",
+                "target": "adept_documentation.docx"
+            }
+        ]
+    },
+}
