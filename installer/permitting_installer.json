@@ -2,17 +2,21 @@
     "general": {
         "name": "Adept",
         "version": "0.0",
+        "parameters":          
         "build_folder": "../py2exe_dir",
         "publisher": "The Natural Capital Project",
-        "website": "http://www.naturalcapitalproject.org"
+        "website": "http://www.naturalcapitalproject.org",
+        "languages": ["English", "Spanish"],
     },
     "installer": {
+        "title": "{name} {version}",
         "filename": "{name}_{version}_Setup.exe",
-        "install_dir": "C:\Program Files\{name} {version}",
+        "install_dir": "C:\\Program Files\\{name} {version}",
         "save_log": true,
         "assert_not_running": true,
         "assert_arch_is_compatible": true,
         "install_log": "install_log.txt",
+        "license": "../LICENSE.txt",
         "start_menu": [
             {
                 "name": "{name}",
@@ -25,4 +29,9 @@
             }
         ]
     },
+    "uninstaller": {
+        "icon": "{NSISDIR}\\Contrib\\Graphics\\Icons\\orange-uninstall.ico",
+        "title": "Uninstall {name} {version}",
+        "filename": "Uninstall {name} {version}"
+    }
 }
