@@ -7,7 +7,7 @@ def start_menu_links(options):
     formatted_string = ''
     # print them verbatim for now.
     for link_data in options:
-        link_path = "${SMPATH}\\%s" % link_data['name']
+        link_path = "${SMPATH}\\%s.lnk" % link_data['name']
         link_target = "$INSTDIR\\%s" % link_data['target']
 
         try:
