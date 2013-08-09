@@ -39,4 +39,11 @@ def uninstaller_registry_keys(uninstall_options):
 
     return formatted_string
 
+def save_log_file():
+    return """
+    ; Write the install log to a text file on disk.
+    StrCpy $0 "$INSTDIR\install_log.txt"
+    Push $0
+    Call DumpLog
+    """
 
