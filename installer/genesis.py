@@ -20,5 +20,23 @@ def start_menu_links(options):
 
     return formatted_string
 
+def uninstaller_registry_keys(uninstall_options):
+    formatted_string = """
+    !define REG_KEY_FOLDER "${PUBLISHER} ${NAME} ${VERSION}"
+    !define REGISTRY_PATH "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${REG_KEY_FOLDER}"
+    !define UNINSTALL_PATH "%s"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayName"          "${PRODUCT_NAME} ${PRODUCT_VERSION}"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "UninstallString"      "$INSTDIR\${UNINSTALL_PATH}.exe"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "QuietUninstallString" "$INSTDIR\${UNINSTALL_PATH}.exe /S"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "InstallLocation"      "$INSTDIR"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayIcon"          "$INSTDIR\\${ICON}"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "Publisher"            "${PUBLISHER}"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "URLInfoAbout"         "${WEBSITE}"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayVersion"       "${VERSION}"
+    WriteRegDWORD HKLM "${REGISTRY_PATH}" "NoModify" 1
+    WriteRegDWORD HKLM "${REGISTRY_PATH}" "NoRepair" 1
+    """ % (uninstall_options['filename'])
+
+    return formatted_string
 
 
