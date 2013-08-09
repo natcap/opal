@@ -102,10 +102,10 @@ Section \"Install\" SEC01\n
   File /r "..\${BUILD_FOLDER}\*"
     """
 
-    formatted_string += start_menu_links()
-    formatted_string += uninstaller_registry_keys()
+    formatted_string += start_menu_links(installer_options['start_menu'])
+    formatted_string += uninstaller_registry_keys(uninstaller_options)
     formatted_string += save_log_file()
-    formatted_string +="""
+    formatted_string += """
 SectionEnd
 """
 
