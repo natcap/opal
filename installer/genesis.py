@@ -90,3 +90,23 @@ Fuinction DumpLog
         Exch $5
 FunctionEnd
     """
+
+def installer(installer_options, uninstaller_options):
+    formatted_string = """
+Section \"Install\" SEC01\n
+  SetShellVarContext all
+  SetOutPath "$INSTDIR"
+  writeUninstaller "$INSTDIR\${UNINSTALL_PATH}.exe"
+
+  ; Desired files are up one directory and in the given build folder.
+  File /r "..\${BUILD_FOLDER}\*"
+    """
+
+    formatted_string += start_menu_links()
+    formatted_string += uninstaller_registry_keys()
+    formatted_string += save_log_file()
+    formatted_string +="""
+SectionEnd
+"""
+
+    return formatted_string
