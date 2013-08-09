@@ -20,11 +20,11 @@ def start_menu_links(options):
 
     return formatted_string
 
-def uninstaller_registry_keys(uninstall_options):
+def uninstaller_registry_keys():
     formatted_string = """
     !define REG_KEY_FOLDER "${PUBLISHER} ${NAME} ${VERSION}"
     !define REGISTRY_PATH "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${REG_KEY_FOLDER}"
-    !define UNINSTALL_PATH "%s"
+    !define UNINSTALL_PATH "${UNINSTALLER_PATH}"
     WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayName"          "${PRODUCT_NAME} ${PRODUCT_VERSION}"
     WriteRegStr HKLM "${REGISTRY_PATH}" "UninstallString"      "$INSTDIR\${UNINSTALL_PATH}.exe"
     WriteRegStr HKLM "${REGISTRY_PATH}" "QuietUninstallString" "$INSTDIR\${UNINSTALL_PATH}.exe /S"
@@ -35,7 +35,7 @@ def uninstaller_registry_keys(uninstall_options):
     WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayVersion"       "${VERSION}"
     WriteRegDWORD HKLM "${REGISTRY_PATH}" "NoModify" 1
     WriteRegDWORD HKLM "${REGISTRY_PATH}" "NoRepair" 1
-    """ % (uninstall_options['filename'])
+    """
 
     return formatted_string
 
@@ -103,7 +103,7 @@ Section \"Install\" SEC01\n
     """
 
     formatted_string += start_menu_links(installer_options['start_menu'])
-    formatted_string += uninstaller_registry_keys(uninstaller_options)
+    formatted_string += uninstaller_registry_keys()
     formatted_string += save_log_file()
     formatted_string += """
 SectionEnd
