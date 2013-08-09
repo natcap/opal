@@ -110,3 +110,21 @@ SectionEnd
 """
 
     return formatted_string
+
+def uninstaller():
+    formatted_string = """
+Section "uninstall"
+    ; Need to enforce execution level as admin.  See
+    ; nsis.sourceforge.net/Shortcuts_removal_fails_on_Windows_Vista
+    SetShellVarContext all
+    rmdir /r "$SMPROGRAMS\${PRODUCT_NAME} ${PRODUCT_VERSION}"
+
+    ; Delete the installation directory on disk
+    rmdir /r "$INSTDIR"
+
+    ; Delete the entire registry key for this version of RIOS.
+    DeleteRegKey HKLM "${REGISTRY_PATH}"
+SectionEnd
+"""
+    return formatted_string
+
