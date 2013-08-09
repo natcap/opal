@@ -91,7 +91,7 @@ Fuinction DumpLog
 FunctionEnd
     """
 
-def installer(installer_options, uninstaller_options):
+def installer(installer_options):
     formatted_string = """
 Section \"Install\" SEC01\n
   SetShellVarContext all
@@ -104,7 +104,10 @@ Section \"Install\" SEC01\n
 
     formatted_string += start_menu_links(installer_options['start_menu'])
     formatted_string += uninstaller_registry_keys()
-    formatted_string += save_log_file()
+
+    if installer_options['save_log']:
+        formatted_string += save_log_file()
+
     formatted_string += """
 SectionEnd
 """
