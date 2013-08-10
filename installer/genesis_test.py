@@ -18,3 +18,7 @@ class GenesisTest(unittest.TestCase):
         start_menu_links = genesis.start_menu_links(start_menu_options)
 
         print start_menu_links
+
+    def test_build_installer(self):
+        genesis.build_installer_script('permitting_installer.json',
+            'new_file.nsi')
