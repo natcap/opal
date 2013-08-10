@@ -18,22 +18,26 @@ def check_defaults(config_dictionary):
     return config_dictionary
 
 def local_variables(options):
-    # version
-    # architecture
-    # build folder
-    # uninstaller file name
-    # publisher
-    # project website
-    # license file
-    # Application name ('InVEST'/'RIOS')
-    # Installer title
-    # Installer file name and output location
-    # Installer log file save location
-    # Installer icon location
-    # Default installation location
-    # Registry path
-    # Start menu shortcut folder
-    pass
+    formatted_string = (
+        '!define APP_VERSION "%s"\n' % options['general']['version']
+        '!define APP_ARCHITECTURE "${ARCHITECTURE}"\n'
+        '!define BUILD_FOLDER "%s"\n' % options['general']['build_folder']
+        '!define UNINSTALLER_FILENAME "%s"\n' % options['uninstaller']['filename']
+        '!define PUBLISHER "%s"\n' % options['general']['publisher']
+        '!define WEBSITE "%s"\n' % options['general']['website']
+        '!define LICENSE_FILE "%s"\n' % options['installer']['license']
+        '!define APP_NAME "%s"\n' % options['general']['name']
+        '!define INSTALLER_TITLE "${APP_NAME} ${APP_VERSION}"\n'
+        '!define INSTALLER_FILENAME "${APP_NAME}_${APP_VERSION}_Setup.exe"\n'
+        '!define INSTALLER_LOGFILE "%s"\n' % options['installer']['install_log']
+        '!define INSTALLER_ICON "%s"\n' % options['installer']['icon']
+        '!define DEFAULT_INSTALL_DIR "%s"\n' % options['installer']['install_dir']
+        '!define REGISTRY_PATH "%s"\n' % (
+            'Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\'
+            '${PUBLISHER} ${APP_NAME} ${APP_VERSION}')
+        '!define START_MENU_FOLDER "${APP_NAME} ${APP_VERSION}"\n')
+
+    return formatted_string
 
 def start_menu_links(options):
     formatted_string = ''
