@@ -164,10 +164,10 @@ Fuinction DumpLog
         System::Alloc ${NSIS_MAX_STRLEN}
         Pop $3
         StrCpy $2 0
-        System::Call "*(i, i, i, i, i, i, i, i, i) i \
+        System::Call "*(i, i, i, i, i, i, i, i, i) i \\
             (0, 0, 0, 0, 0, r3, ${NSIS_MAX_STRLEN}) .r1"
         loop: StrCmp $2 $6 done
-            System::Call "User32::SendMessageA(i, i, i, i) i \
+            System::Call "User32::SendMessageA(i, i, i, i) i \\
             ($0, ${LVM_GETITEMTEXT}, $2, r1)"
             System::Call "*$3(&t${NSIS_MAX_STRLEN} .r4)"
             FileWrite $5 "$4$\r$\n"
