@@ -5,10 +5,10 @@ import sys
 
 def build_installer_script(config_file_uri, out_file_uri):
     new_file = open(out_file_uri, 'w')
-    config_dict = demjson.decode(open(config_file_uri))
+    config_dict = demjson.decode(open(config_file_uri).read())
 
     # check for default values before writing the script.
-    sanitized_config = check_defaults(config_dictionary)
+    sanitized_config = check_defaults(config_dict)
 
 
 def check_defaults(config_dictionary):
