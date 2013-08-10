@@ -17,6 +17,24 @@ def check_defaults(config_dictionary):
     # or else assume certain defaults.
     return config_dictionary
 
+def local_variables(options):
+    # version
+    # architecture
+    # build folder
+    # uninstaller file name
+    # publisher
+    # project website
+    # license file
+    # Application name ('InVEST'/'RIOS')
+    # Installer title
+    # Installer file name and output location
+    # Installer log file save location
+    # Installer icon location
+    # Default installation location
+    # Registry path
+    # Start menu shortcut folder
+    pass
+
 def start_menu_links(options):
     formatted_string = ''
     # print them verbatim for now.
