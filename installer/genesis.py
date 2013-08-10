@@ -100,7 +100,7 @@ def local_variables(options):
         '',
         '']
 
-    formatted_string = strings.join('\n')
+    formatted_string = '\n'.join(strings)
     return formatted_string
 
 def start_menu_links(options):
