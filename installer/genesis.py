@@ -12,7 +12,10 @@ def build_installer_script(config_file_uri, out_file_uri):
 
 
 def check_defaults(config_dictionary):
-    pass
+    # Assume that everything needed is there for now.
+    # TODO: actually sanitize the config dictionary.  Raise needed exceptions,
+    # or else assume certain defaults.
+    return config_dictionary
 
 def start_menu_links(options):
     formatted_string = ''
