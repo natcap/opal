@@ -18,33 +18,35 @@ def check_defaults(config_dictionary):
     return config_dictionary
 
 def local_variables(options):
-    formatted_string = (
-        '; GENERAL APPLICATION INFORMATION VARIABLES\n'
-        '!define APP_NAME "%s"\n' % options['general']['name']
-        '!define APP_VERSION "%s"\n' % options['general']['version']
-        '!define APP_ARCHITECTURE "${ARCHITECTURE}"\n'
-        '!define PUBLISHER "%s"\n' % options['general']['publisher']
-        '!define WEBSITE "%s"\n' % options['general']['website']
-        '\n'
-        '\n'
-        '; INSTALLER INFORMATION\n'
-        '!define INSTALLER_TITLE "${APP_NAME} ${APP_VERSION}"\n'
-        '!define BUILD_FOLDER "%s"\n' % options['general']['build_folder']
-        '!define INSTALLER_FILENAME "${APP_NAME}_${APP_VERSION}_Setup.exe"\n'
-        '!define INSTALLER_LOGFILE "%s"\n' % options['installer']['install_log']
-        '!define INSTALLER_ICON "%s"\n' % options['installer']['icon']
-        '!define DEFAULT_INSTALL_DIR "%s"\n' % options['installer']['install_dir']
-        '!define LICENSE_FILE "%s"\n' % options['installer']['license']
-        '!define START_MENU_FOLDER "${APP_NAME} ${APP_VERSION}"\n')
-        '\n'
-        '\n'
-        '; UNINSTALLER INFORMATION\n'
-        '!define UNINSTALLER_FILENAME "%s"\n' % options['uninstaller']['filename']
-        '!define REGISTRY_PATH "%s"\n' % (
+    strings = [
+        '; GENERAL APPLICATION INFORMATION VARIABLES',
+        '!define APP_NAME "%s"' % options['general']['name'],
+        '!define APP_VERSION "%s"' % options['general']['version'],
+        '!define APP_ARCHITECTURE "${ARCHITECTURE}"',
+        '!define PUBLISHER "%s"' % options['general']['publisher'],
+        '!define WEBSITE "%s"' % options['general']['website'],
+        '',
+        '',
+        '; INSTALLER INFORMATION',
+        '!define INSTALLER_TITLE "${APP_NAME} ${APP_VERSION}"',
+        '!define BUILD_FOLDER "%s"' % options['general']['build_folder'],
+        '!define INSTALLER_FILENAME "${APP_NAME}_${APP_VERSION}_Setup.exe"',
+        '!define INSTALLER_LOGFILE "%s"' % options['installer']['install_log'],
+        '!define INSTALLER_ICON "%s"' % options['installer']['icon'],
+        '!define DEFAULT_INSTALL_DIR "%s"' % options['installer']['install_dir'],
+        '!define LICENSE_FILE "%s"' % options['installer']['license'],
+        '!define START_MENU_FOLDER "${APP_NAME} ${APP_VERSION}"',
+        '',
+        '',
+        '; UNINSTALLER INFORMATION',
+        '!define UNINSTALLER_FILENAME "%s"' % options['uninstaller']['filename'],
+        '!define REGISTRY_PATH "%s"' % (
             'Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\'
-            '${PUBLISHER} ${APP_NAME} ${APP_VERSION}'
-        '\n'
-        '\n')
+            '${PUBLISHER} ${APP_NAME} ${APP_VERSION}'),
+        '',
+        '']
+
+    formatted_string = strings.join('\n')
     return formatted_string
 
 def start_menu_links(options):
