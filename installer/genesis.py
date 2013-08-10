@@ -10,12 +10,66 @@ def build_installer_script(config_file_uri, out_file_uri):
     # check for default values before writing the script.
     sanitized_config = check_defaults(config_dict)
 
+    new_file.write(local_variables(sanitized_config))
+    new_file.write(general_settings())
+
+    if sanitized_config['installer']['save_log']:
+        new_file.write(save_log_file_function())
+
+    #TODO: write the .onInit function
+
+    new_file.write(installer(sanitized_config['installer']))
+    new_file.write(uninstaller())
+
+    new_file.close()
 
 def check_defaults(config_dictionary):
     # Assume that everything needed is there for now.
     # TODO: actually sanitize the config dictionary.  Raise needed exceptions,
     # or else assume certain defaults.
     return config_dictionary
+
+def general_settings():
+    general_settings = """
+; Set the compression size and type.
+SetCompressor /FINAL /SOLID lzma
+SetCompressorDictSize 64
+
+; MUI 1.67 compatible macro settings------
+; Installer settings.
+!include "MUI.nsh"
+!include "LogicLib.nsh"
+!include "x64.nsh"
+
+Name "${APP_NAME} ${APP_VERSION}"
+OutFile "${INSTALLER_FILENAME}"
+InstallDir "${DEFAULT_INSTALL_DIR}"
+ShowInstDetails show
+"""
+    return general_settings
+
+
+def installer_pages():
+    pages_string = """
+        ; MUI installer pages
+        !insertmacro MUI_PAGE_WELCOME
+        !insertmacro MUI_PAGE_LICENSE ${LICENSE_FILE}
+        !insertmacro MUI_PAGE_DIRECTORY
+        !insertmacro MUI_PAGE_INSTFILES
+        !insertmacro MUI_PAGE_FINISH
+        """
+    return pages_string
+
+def uninstaller_pages():
+    pages_string = """
+        ; MUI uninstaller pages
+        !insertmacro MUI_UNPAGE_WELCOME
+        !insertmacro MUI_UNPAGE_CONFIRM
+        !insertmacro MUI_UNPAGE_INSTFILES
+        !insertmacro MUI_UNPAGE_FINISH
+        """
+    return pages_string
+
 
 def local_variables(options):
     strings = [
