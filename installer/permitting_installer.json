@@ -2,7 +2,7 @@
     "general": {
         "name": "Adept",
         "version": "0.0",
-        "parameters":          
+        "parameters": ["VERSION", "ARCHITECTURE"],
         "build_folder": "../py2exe_dir",
         "publisher": "The Natural Capital Project",
         "website": "http://www.naturalcapitalproject.org",
