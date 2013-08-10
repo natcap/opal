@@ -17,6 +17,7 @@
         "assert_arch_is_compatible": true,
         "install_log": "install_log.txt",
         "license": "../LICENSE.txt",
+        "icon": "installer_icon.png",
         "start_menu": [
             {
                 "name": "{name}",
