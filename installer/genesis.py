@@ -3,6 +3,17 @@
 import demjson  # using for js compaibility -- comments in JSON files.
 import sys
 
+def build_installer_script(config_file_uri, out_file_uri):
+    new_file = open(out_file_uri, 'w')
+    config_dict = demjson.decode(open(config_file_uri))
+
+    # check for default values before writing the script.
+    sanitized_config = check_defaults(config_dictionary)
+
+
+def check_defaults(config_dictionary):
+    pass
+
 def start_menu_links(options):
     formatted_string = ''
     # print them verbatim for now.
