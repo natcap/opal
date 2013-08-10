@@ -170,7 +170,7 @@ Fuinction DumpLog
             System::Call "User32::SendMessageA(i, i, i, i) i \\
             ($0, ${LVM_GETITEMTEXT}, $2, r1)"
             System::Call "*$3(&t${NSIS_MAX_STRLEN} .r4)"
-            FileWrite $5 "$4$\r$\n"
+            FileWrite $5 "$4$\\r$\\n"
             IntOp $2 $2 + 1
             Goto loop
         done:
