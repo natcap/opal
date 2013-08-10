@@ -51,7 +51,7 @@ def start_menu_links(options):
     formatted_string = ''
     # print them verbatim for now.
     for link_data in options:
-        link_path = "${SMPATH}\\%s.lnk" % link_data['name']
+        link_path = "${START_MENU_FOLDER}\\%s.lnk" % link_data['name']
         link_target = "$INSTDIR\\%s" % link_data['target']
 
         try:
@@ -66,17 +66,14 @@ def start_menu_links(options):
 
 def uninstaller_registry_keys():
     formatted_string = """
-    !define REG_KEY_FOLDER "${PUBLISHER} ${NAME} ${VERSION}"
-    !define REGISTRY_PATH "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${REG_KEY_FOLDER}"
-    !define UNINSTALL_PATH "${UNINSTALLER_PATH}"
-    WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayName"          "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-    WriteRegStr HKLM "${REGISTRY_PATH}" "UninstallString"      "$INSTDIR\${UNINSTALL_PATH}.exe"
-    WriteRegStr HKLM "${REGISTRY_PATH}" "QuietUninstallString" "$INSTDIR\${UNINSTALL_PATH}.exe /S"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayName"          "${APP_NAME} ${APP_VERSION}"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "UninstallString"      "$INSTDIR\\${UNINSTALLER_FILENAME}.exe"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "QuietUninstallString" "$INSTDIR\\${UNINSTALLER_FILENAME}.exe /S"
     WriteRegStr HKLM "${REGISTRY_PATH}" "InstallLocation"      "$INSTDIR"
     WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayIcon"          "$INSTDIR\\${ICON}"
     WriteRegStr HKLM "${REGISTRY_PATH}" "Publisher"            "${PUBLISHER}"
     WriteRegStr HKLM "${REGISTRY_PATH}" "URLInfoAbout"         "${WEBSITE}"
-    WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayVersion"       "${VERSION}"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayVersion"       "${APP_VERSION}"
     WriteRegDWORD HKLM "${REGISTRY_PATH}" "NoModify" 1
     WriteRegDWORD HKLM "${REGISTRY_PATH}" "NoRepair" 1
     """
@@ -86,7 +83,7 @@ def uninstaller_registry_keys():
 def save_log_file():
     return """
     ; Write the install log to a text file on disk.
-    StrCpy $0 "$INSTDIR\install_log.txt"
+    StrCpy $0 "$INSTDIR\\${INSTALLER_LOGFILE}"
     Push $0
     Call DumpLog
     """
@@ -140,7 +137,7 @@ def installer(installer_options):
 Section \"Install\" SEC01\n
   SetShellVarContext all
   SetOutPath "$INSTDIR"
-  writeUninstaller "$INSTDIR\${UNINSTALL_PATH}.exe"
+  writeUninstaller "$INSTDIR\${UNINSTALLER_FILENAME}.exe"
 
   ; Desired files are up one directory and in the given build folder.
   File /r "..\${BUILD_FOLDER}\*"
@@ -164,7 +161,7 @@ Section "uninstall"
     ; Need to enforce execution level as admin.  See
     ; nsis.sourceforge.net/Shortcuts_removal_fails_on_Windows_Vista
     SetShellVarContext all
-    rmdir /r "$SMPROGRAMS\${PRODUCT_NAME} ${PRODUCT_VERSION}"
+    rmdir /r "$SMPROGRAMS\${START_MENU_FOLDER}"
 
     ; Delete the installation directory on disk
     rmdir /r "$INSTDIR"
