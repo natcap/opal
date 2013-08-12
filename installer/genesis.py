@@ -4,7 +4,7 @@ import demjson  # using for js compaibility -- comments in JSON files.
 import sys
 
 LOG_FILE_SCRIPT = """
-Fuinction DumpLog
+Function DumpLog
     Exch $5
     Push $0
     Push $1
