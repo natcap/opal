@@ -6,8 +6,8 @@
         "TITLE": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}"
     },
     "general": {
-        "name": "Adept",
-        "version": "${VERSION}",
+        "name": "${APP_NAME}",
+        "version": "${APP_VERSION}",
         "build_folder": "..\\adept",
         "publisher": "The Natural Capital Project",
         "website": "http://www.naturalcapitalproject.org",

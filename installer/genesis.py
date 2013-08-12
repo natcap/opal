@@ -198,7 +198,10 @@ def local_variables(options):
         custom_vars.append('!define %s "%s"' % (var_name, var_value))
 
     strings = [
+        '',
+        '',
         '; GENERAL APPLICATION INFORMATION VARIABLES',
+        # TODO: add NAME, VERSION, architecture based on the json config
         '!define PUBLISHER "%s"' % options['general']['publisher'],
         '!define WEBSITE "%s"' % options['general']['website'],
         '',
