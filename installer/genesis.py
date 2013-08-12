@@ -205,7 +205,7 @@ def local_variables(options):
         '; INSTALLER INFORMATION',
         '!define INSTALLER_TITLE "${APP_NAME} ${APP_VERSION}"',
         '!define BUILD_FOLDER "%s"' % options['general']['build_folder'],
-        '!define INSTALLER_FILENAME "${APP_NAME}_${APP_VERSION}_Setup.exe"',
+        '!define INSTALLER_FILENAME "%s"' % options['installer']['filename'],
         '!define INSTALLER_LOGFILE "%s"' % options['installer']['install_log'],
         '!define INSTALLER_ICON "%s"' % options['installer']['icon'],
         '!define DEFAULT_INSTALL_DIR "%s"' % options['installer']['install_dir'],

@@ -15,7 +15,7 @@
     },
     "installer": {
         "title": "${TITLE}",
-        "filename": "${NAME}_${VERSION}_Setup.exe",
+        "filename": "${APP_NAME}_${VERSION}_${APP_ARCHITECTURE}_Setup.exe",
         "install_dir": "C:\\Program Files\\${TITLE}",
         "save_log": true,
         "assert_not_running": true,
