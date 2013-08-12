@@ -203,7 +203,7 @@ Section \"Install\" SEC01\n
   writeUninstaller "$INSTDIR\${UNINSTALLER_FILENAME}.exe"
 
   ; Desired files are up one directory and in the given build folder.
-  File /r "..\${BUILD_FOLDER}\*"
+  File /r "${BUILD_FOLDER}\*"
     """
 
     formatted_string += start_menu_links(installer_options['start_menu'])
