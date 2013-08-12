@@ -2,6 +2,7 @@
 
 import demjson  # using for js compaibility -- comments in JSON files.
 import sys
+import argparse
 
 LOG_FILE_SCRIPT = """
 ; This function (and these couple variables) allow us to dump the NSIS
@@ -265,3 +266,14 @@ SectionEnd
 
     return formatted_string
 
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c', '--config', dest='config_uri',
+        help='JSON file with input arguments', type=unicode, metavar='')
+    parser.add_argument('-o', '--output', dest='output_uri',
+        help='URI of output filepath', type=unicode, metavar='')
+
+    args = parser.parse_args()
+    config_uri = args.config_uri
+    output_uri = args.output_uri
+    build_installer_script(config_uri, output_uri)
