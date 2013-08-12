@@ -192,11 +192,12 @@ ShowInstDetails show
 
 
 def local_variables(options):
+    custom_vars = []
+    for var_name, var_value in options['variables'].iteritems():
+        custom_vars.append('!define %s "%s"' % (var_name, var_value))
+
     strings = [
         '; GENERAL APPLICATION INFORMATION VARIABLES',
-        '!define APP_NAME "%s"' % options['general']['name'],
-        '!define APP_VERSION "%s"' % options['general']['version'],
-        '!define APP_ARCHITECTURE "${ARCHITECTURE}"',
         '!define PUBLISHER "%s"' % options['general']['publisher'],
         '!define WEBSITE "%s"' % options['general']['website'],
         '',
@@ -220,7 +221,8 @@ def local_variables(options):
         '',
         '']
 
-    formatted_string = '\n'.join(strings)
+    formatted_string = '\n'.join(custom_vars)
+    formatted_string += '\n'.join(strings)
     return formatted_string
 
 def start_menu_links(options):

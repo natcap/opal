@@ -3,7 +3,7 @@
         "APP_ARCHITECTURE": "${ARCHITECTURE}",
         "APP_VERSION": "${VERSION}",
         "APP_NAME": "Adept",
-        "INSTALLER_TITLE": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}"
+        "TITLE": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}"
     },
     "general": {
         "name": "Adept",
@@ -14,9 +14,9 @@
         "languages": ["English", "Spanish"],
     },
     "installer": {
-        "title": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}",
+        "title": "${TITLE}",
         "filename": "${NAME}_${VERSION}_Setup.exe",
-        "install_dir": "C:\\Program Files\\${APP_NAME} ${APP_VERSION} ${APP_ARCHITECTURE}",
+        "install_dir": "C:\\Program Files\\${TITLE}",
         "save_log": true,
         "assert_not_running": true,
         "assert_arch_is_compatible": true,
