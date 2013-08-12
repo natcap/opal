@@ -16,7 +16,7 @@
         "assert_not_running": true,
         "assert_arch_is_compatible": true,
         "install_log": "install_log.txt",
-        "license": "../LICENSE.txt",
+        "license": "..\\LICENSE.TXT",
         "icon": "installer_icon.png",
         "start_menu": [
             {
