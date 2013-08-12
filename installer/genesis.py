@@ -4,6 +4,17 @@ import demjson  # using for js compaibility -- comments in JSON files.
 import sys
 
 LOG_FILE_SCRIPT = """
+; This function (and these couple variables) allow us to dump the NSIS
+; Installer log to a log file of our choice, which is very handy for debugging.
+; To use, call it like this in the installation section.:
+;
+;   StrCpy $0 "$INSTDIR\install_log.txt"
+;   Push $0
+;   Call DumpLog
+;
+!define LVM_GETITEMCOUNT 0x1004
+!define LVM_GETITEMTEXT 0x102D
+
 Function DumpLog
     Exch $5
     Push $0
@@ -45,23 +56,6 @@ Function DumpLog
         Exch $5
 FunctionEnd
     """
-
-GENERAL_SETTINGS = """
-; Set the compression size and type.
-SetCompressor /FINAL /SOLID lzma
-SetCompressorDictSize 64
-
-; MUI 1.67 compatible macro settings------
-; Installer settings.
-!include "MUI.nsh"
-!include "LogicLib.nsh"
-!include "x64.nsh"
-
-Name "${APP_NAME} ${APP_VERSION}"
-OutFile "${INSTALLER_FILENAME}"
-InstallDir "${DEFAULT_INSTALL_DIR}"
-ShowInstDetails show
-"""
 
 SAVE_LOG_FILE = """
     ; Write the install log to a text file on disk.
@@ -106,9 +100,9 @@ def build_installer_script(config_file_uri, out_file_uri):
     sanitized_config = check_defaults(config_dict)
 
     new_file.write(local_variables(sanitized_config))
-    new_file.write(GENERAL_SETTINGS)
-    new_file.write(installer_pages())
-    new_file.write(uninstaller_pages())
+    new_file.write(general_settings())
+    new_file.write(languages(sanitized_config['general']['languages']))
+    new_file.write(installer_init(sanitized_config['general']['languages']))
 
     if sanitized_config['installer']['save_log']:
         new_file.write(LOG_FILE_SCRIPT)
@@ -125,6 +119,32 @@ def check_defaults(config_dictionary):
     # TODO: actually sanitize the config dictionary.  Raise needed exceptions,
     # or else assume certain defaults.
     return config_dictionary
+
+def languages(lang_list):
+    language_string = "; At least one language is required\n"
+
+    # if no languages specified, assume english
+    if len(lang_list) == 0:
+        lang_list.append("English")
+
+    for language in lang_list:
+        language_string += "!insertmacro MUI_LANGUAGE \"%s\"\n" % language
+
+    language_string += "\n\n"
+    return language_string
+
+def installer_init(lang_list):
+    init_string = "Function .onInit\n"
+    if len(lang_list) > 1:
+        init_string += "!insertmacro MUI_LANGDLL_DISPLAY\n"
+    init_string += "FunctionEnd\n"
+    return init_string
+
+def uninstaller_init():
+    return """
+Function un.onInit
+FunctionEnd
+"""
 
 def installer_pages():
     pages_string = """
@@ -146,6 +166,29 @@ def uninstaller_pages():
 !insertmacro MUI_UNPAGE_FINISH
 """
     return pages_string
+
+def general_settings():
+    general_settings = """
+; Set the compression size and type.
+SetCompressor /FINAL /SOLID lzma
+SetCompressorDictSize 64
+
+; MUI 1.67 compatible macro settings------
+; Installer settings.
+!include "MUI.nsh"
+!include "LogicLib.nsh"
+!include "x64.nsh"
+"""
+
+    general_settings += installer_pages()
+    general_settings += uninstaller_pages()
+    general_settings += """
+Name "${APP_NAME} ${APP_VERSION}"
+OutFile "${INSTALLER_FILENAME}"
+InstallDir "${DEFAULT_INSTALL_DIR}"
+ShowInstDetails show
+"""
+    return general_settings
 
 
 def local_variables(options):
