@@ -269,9 +269,10 @@ SectionEnd
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', dest='config_uri',
-        help='JSON file with input arguments', type=unicode, metavar='')
+        help='JSON file with input arguments', type=unicode, metavar='',
+        required=True)
     parser.add_argument('-o', '--output', dest='output_uri',
-        help='URI of output filepath', type=unicode, metavar='')
+        help='URI of output filepath', type=unicode, metavar='', required=True)
 
     args = parser.parse_args()
     config_uri = args.config_uri
