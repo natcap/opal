@@ -184,7 +184,7 @@ SetCompressorDictSize 64
     general_settings += installer_pages()
     general_settings += uninstaller_pages()
     general_settings += """
-Name "${APP_NAME} ${APP_VERSION}"
+Name "${NAME} ${VERSION}"
 OutFile "${INSTALLER_FILENAME}"
 InstallDir "${DEFAULT_INSTALL_DIR}"
 ShowInstDetails show
@@ -202,26 +202,30 @@ def local_variables(options):
         '',
         '; GENERAL APPLICATION INFORMATION VARIABLES',
         # TODO: add NAME, VERSION, architecture based on the json config
+        '!define NAME "%s"' % options['general']['name'],
+        '!define VERSION "%s"' % options['general']['version'],
+        '!define ARCHITECTURE "%s"' % options['general']['architecture'],
+
         '!define PUBLISHER "%s"' % options['general']['publisher'],
         '!define WEBSITE "%s"' % options['general']['website'],
         '',
         '',
         '; INSTALLER INFORMATION',
-        '!define INSTALLER_TITLE "${APP_NAME} ${APP_VERSION}"',
+        '!define INSTALLER_TITLE "${NAME} ${VERSION}"',
         '!define BUILD_FOLDER "%s"' % options['general']['build_folder'],
         '!define INSTALLER_FILENAME "%s"' % options['installer']['filename'],
         '!define INSTALLER_LOGFILE "%s"' % options['installer']['install_log'],
         '!define INSTALLER_ICON "%s"' % options['installer']['icon'],
         '!define DEFAULT_INSTALL_DIR "%s"' % options['installer']['install_dir'],
         '!define LICENSE_FILE "%s"' % options['installer']['license'],
-        '!define START_MENU_FOLDER "${APP_NAME} ${APP_VERSION}"',
+        '!define START_MENU_FOLDER "${NAME} ${VERSION}"',
         '',
         '',
         '; UNINSTALLER INFORMATION',
         '!define UNINSTALLER_FILENAME "%s"' % options['uninstaller']['filename'],
         '!define REGISTRY_PATH "%s"' % (
             'Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\'
-            '${PUBLISHER} ${APP_NAME} ${APP_VERSION}'),
+            '${PUBLISHER} ${NAME} ${VERSION}'),
         '',
         '']
 

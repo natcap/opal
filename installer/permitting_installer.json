@@ -8,6 +8,7 @@
     "general": {
         "name": "${APP_NAME}",
         "version": "${APP_VERSION}",
+        "architecture": "${APP_ARCHITECTURE}",
         "build_folder": "..\\adept",
         "publisher": "The Natural Capital Project",
         "website": "http://www.naturalcapitalproject.org",
