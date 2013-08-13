@@ -12,4 +12,4 @@ cd invest-natcap.invest-3
 ..\%ENVDIR%\Scripts\python setup.py install
 cd ..
 
-%ENVDIR%\Scripts\python setup.py py2exe win_installer
+%ENVDIR%\Scripts\python setup.py py2exe win_installer bdist_wininst
