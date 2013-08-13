@@ -7,6 +7,20 @@ import subprocess
 
 import adept
 
+
+if platform.system() == 'Windows':
+    import py2exe
+    dist_dir = 'adept_build_%s' % adept.__version__
+    py2exe_options = {
+        'py2exe': {
+            'dist_dir': dist_dir,
+            'packages': ['adept'],
+            'skip_archive': True,
+        },
+        'build_installer': {'nsis_dir': dist_dir},
+    }
+
+
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
     installation directory containing the py2exe executeables to be packaged
