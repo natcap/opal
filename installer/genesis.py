@@ -202,9 +202,9 @@ def local_variables(options):
         '',
         '; GENERAL APPLICATION INFORMATION VARIABLES',
         # TODO: add NAME, VERSION, architecture based on the json config
-        '!define NAME "%s"' % options['general']['name'],
-        '!define VERSION "%s"' % options['general']['version'],
-        '!define ARCHITECTURE "%s"' % options['general']['architecture'],
+        '!define INTERNAL_NAME "%s"' % options['general']['name'],
+        '!define INTERNAL_VERSION "%s"' % options['general']['version'],
+        '!define INTERNAL_ARCHITECTURE "%s"' % options['general']['architecture'],
 
         '!define PUBLISHER "%s"' % options['general']['publisher'],
         '!define WEBSITE "%s"' % options['general']['website'],
@@ -218,14 +218,14 @@ def local_variables(options):
         '!define INSTALLER_ICON "%s"' % options['installer']['icon'],
         '!define DEFAULT_INSTALL_DIR "%s"' % options['installer']['install_dir'],
         '!define LICENSE_FILE "%s"' % options['installer']['license'],
-        '!define START_MENU_FOLDER "${NAME} ${VERSION}"',
+        '!define START_MENU_FOLDER "${INTERNAL_NAME} ${INTERNAL_VERSION}"',
         '',
         '',
         '; UNINSTALLER INFORMATION',
         '!define UNINSTALLER_FILENAME "%s"' % options['uninstaller']['filename'],
         '!define REGISTRY_PATH "%s"' % (
             'Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\'
-            '${PUBLISHER} ${NAME} ${VERSION}'),
+            '${PUBLISHER} ${INTERNAL_NAME} ${INTERNAL_VERSION}'),
         '',
         '']
 
