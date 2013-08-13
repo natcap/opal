@@ -81,7 +81,8 @@ class NSISCommand(Command):
         else:
             architecture = 'x86'
 
-        command = ['/DVERSION=%s' % adept.__version__,
+        version_string = adept.__version__.replace(':', '_').replace(' ', '_')
+        command = ['/DVERSION=%s' % version_string,
                    '/DPY2EXE_FOLDER=%s' % self.nsis_dir,
                    '/DARCHITECTURE=%s' % architecture,
                    'adept_installer.nsi']
