@@ -27,8 +27,11 @@ class NSISCommand(Command):
         pass
 
     def run(self):
-        genesis = imp.load_source('genesis', 'installer/genesis.py')
-        genesis.build_installer_script('installer/permitting_installer.json',
+        cwd = os.getcwd()
+        os.chdir('installer')  # CD into the installer folder to build it.
+
+        genesis = imp.load_source('genesis', 'genesis.py')
+        genesis.build_installer_script('permitting_installer.json',
             'adept_installer.nsi')
 
         program_path = []
@@ -70,6 +73,7 @@ class NSISCommand(Command):
                    'adept_installer.nsi']
 
         subprocess.call(program_path + [makensis_path] + command)
+        os.chdir(cwd)
 
 
 setup(
