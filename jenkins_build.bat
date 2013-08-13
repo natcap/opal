@@ -2,7 +2,8 @@ SET ENVDIR=adept_environment
 DEL /S /Q build
 DEL /S /Q %ENVDIR%
 
-SET PYTHON=C:\py27_build\python.exe
+IF "%1" == "" SET PYTHON=C:\py27_build\python.exe
+IF NOT "%1" == "" SET PYTHON="%1"
 
 %PYTHON% bootstrap_adept_environment.py > setup_environment.py
 %PYTHON% setup_environment.py --clear --system-site-packages %ENVDIR%
