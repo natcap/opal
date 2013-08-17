@@ -1,1 +1,3 @@
 invest-natcap.invest-3 = https://code.google.com/p/invest-natcap.invest-3/
+data = [svn]http://ncp-yamato.stanford.edu/svn/permitting-data
+
