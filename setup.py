@@ -12,17 +12,18 @@ py2exe_options = {}
 if platform.system() == 'Windows':
     import py2exe
     dist_dir = 'adept_py2exe'
-    py2exe_options = {
+    py2exe_options['options'] ={
         'py2exe': {
             'dist_dir': dist_dir,
             'packages': ['adept'],
-            'console': ['run_adept.py'],
-            'data_files': [('.', 'adept.json')],
             'skip_archive': True,
+            'excludes': ['Tkconstants', 'Tkinter', 'tcl'],
         },
         'build_installer': {'nsis_dir': dist_dir},
     }
+    py2exe_options['console'] = ['run_adept.py']
 
+DATA_FILES = [('.', 'adept.json')]
 
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
@@ -100,5 +101,6 @@ setup(
         'win_installer': NSISCommand
     },
     version = adept.__version__,
+    data_files = DATA_FILES,
     packages=['adept'],
     **py2exe_options)
