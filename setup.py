@@ -10,7 +10,7 @@ import adept
 
 if platform.system() == 'Windows':
     import py2exe
-    dist_dir = 'adept_build_%s' % adept.__version__
+    dist_dir = 'adept_py2exe'
     py2exe_options = {
         'py2exe': {
             'dist_dir': dist_dir,
