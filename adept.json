@@ -1,0 +1,113 @@
+{
+    "id": "adept_window",
+    "label": "Permitting",
+    "targetScript": "adept",
+    "modelName": "permitting",
+    "condenseElements": true,
+    "height": 700,
+    "width": 700,
+    "elements": [
+    {
+        "id": "data_list",
+        "type": "list",
+        "elements": [
+        {
+            "id": "workspace"
+            "type": "folder",
+            "label": "Workspace",
+            "required": true,
+            "validateAs": {"type": "folder", "permissions": "rwx"},
+            "helpText": "Select a folder to be used as your workspace.  If the folder you select does not exist, it will be created for you.<br/><br/>This folder will contain the rasters produced by this model.  <b>If datasets already exist in this folder, they will be overwritten</b>."
+        },
+        {
+            "id": "impact_type",
+            "type": "dropdown",
+            "label": "Impact type",
+            "options": ["Road/Mine", "Bare ground/Paved"],
+            "returns": "ordinals",
+            "defaultValue": 0
+        },
+        {
+            "id": "area_of_influence",
+            "type": "file",
+            "label": "Area of Influence",
+            "validateAs": {
+                "type": "file",
+                "mustExist": true
+            },
+            "required": true
+        },
+        {
+            "id": "ecosystems_map",
+            "type": "hideableFileEntry",
+            "label": "Use custom ecosystems map",
+            "validateAs": {"type": "GDAL"}
+        },
+        {
+            "id": "threat_map",
+            "type": "file",
+            "label": "Threat map",
+            "validateAs": {"type": "GDAL"}
+        },
+        {
+            "id": "species_richness_map",
+            "type": "file",
+            "label": "Species richness map",
+            "validateAs": {"type": "GDAL"}
+        },
+        {
+            "id": "avoidance_areas",
+            "type": "file",
+            "label": "Avoidance areas",
+            "validateAs": {
+                "type": "OGR",
+                "layers": [
+                    {
+                        "name": {"inheritFrom": "file"},
+                        "type": "polygons"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "conservation_portfolio",
+            "type": "file",
+            "label": "Conservation portfolio",
+            "validateas": {
+                "type": "OGR",
+                "layers": [
+                    {
+                        "name": {"inheritfrom": "file"},
+                        "type": "polygons"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "previously_granted_impacts",
+            "type": "file",
+            "label": "Previously granted impacts",
+            "validateas": {
+                "type": "GDAL"
+            }
+        },
+        {
+            "id": "previously_selected_offsets",
+            "type": "file",
+            "label": "Previously selected offsets",
+            "validateas": {
+                "type": "GDAL"
+            }
+        },
+        {
+            "id": "custom_static_maps",
+            "type": "file",
+            "label": "Custom static map",
+            "validateas": {
+                "type": "GDAL"
+            }
+        }
+    ]
+}
+
+
