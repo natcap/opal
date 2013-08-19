@@ -16,7 +16,7 @@ if platform.system() == 'Windows':
             'dist_dir': dist_dir,
             'packages': ['adept'],
             'console': ['run_adept.py'],
-            'data_files' [('.', 'adept.json')],
+            'data_files': [('.', 'adept.json')],
             'skip_archive': True,
         },
         'build_installer': {'nsis_dir': dist_dir},
