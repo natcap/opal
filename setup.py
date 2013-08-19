@@ -8,6 +8,7 @@ import subprocess
 import adept
 
 
+py2exe_options = {}
 if platform.system() == 'Windows':
     import py2exe
     dist_dir = 'adept_py2exe'
@@ -99,4 +100,5 @@ setup(
         'win_installer': NSISCommand
     },
     version = adept.__version__,
-    packages=['adept'])
+    packages=['adept'],
+    **py2exe_args)
