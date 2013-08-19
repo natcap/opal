@@ -23,7 +23,8 @@ if platform.system() == 'Windows':
     }
     py2exe_options['console'] = ['run_adept.py']
 
-DATA_FILES = [('.', 'adept.json')]
+DATA_FILES = [('.', ['adept.json',
+                        'msvcp90.dll'])]
 
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
