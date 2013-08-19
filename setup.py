@@ -101,4 +101,4 @@ setup(
     },
     version = adept.__version__,
     packages=['adept'],
-    **py2exe_args)
+    **py2exe_options)
