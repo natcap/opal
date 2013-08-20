@@ -218,7 +218,7 @@ def local_variables(options):
         '!define INSTALLER_ICON "%s"' % options['installer']['icon'],
         '!define DEFAULT_INSTALL_DIR "%s"' % options['installer']['install_dir'],
         '!define LICENSE_FILE "%s"' % options['installer']['license'],
-        '!define START_MENU_FOLDER "$SMPATH\\${INTERNAL_NAME} ${INTERNAL_VERSION}"',
+        '!define START_MENU_FOLDER "$SMPROGRAMS\\${INTERNAL_NAME} ${INTERNAL_VERSION}"',
         '',
         '',
         '; UNINSTALLER INFORMATION',
@@ -235,6 +235,7 @@ def local_variables(options):
 
 def start_menu_links(options):
     formatted_string = ''
+    formatted_string += "CreateDirectory \"${START_MENU_FOLDER}\""
     # print them verbatim for now.
     for link_data in options:
         link_path = "${START_MENU_FOLDER}\\%s.lnk" % link_data['name']
