@@ -17,6 +17,7 @@ if platform.system() == 'Windows':
             'dist_dir': dist_dir,
             'packages': ['adept'],
             'skip_archive': True,
+            'includes': ['distutils.dist'],
             'excludes': ['Tkconstants', 'Tkinter', 'tcl'],
         },
         'build_installer': {'nsis_dir': dist_dir},
