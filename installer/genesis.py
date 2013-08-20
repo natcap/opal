@@ -184,7 +184,7 @@ SetCompressorDictSize 64
     general_settings += installer_pages()
     general_settings += uninstaller_pages()
     general_settings += """
-Name "${NAME} ${VERSION}"
+Name "${INTERNAL_NAME} ${VERSION}"
 OutFile "${INSTALLER_FILENAME}"
 InstallDir "${DEFAULT_INSTALL_DIR}"
 ShowInstDetails show

@@ -27,7 +27,7 @@
         "start_menu": [
             {
                 "name": "${APP_NAME}",
-                "target": "launch_adept.exe",
+                "target": "run_adept.exe",
                 "icon": "${icon}"
             },
             {
