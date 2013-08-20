@@ -235,7 +235,7 @@ def local_variables(options):
 
 def start_menu_links(options):
     formatted_string = ''
-    formatted_string += "CreateDirectory \"${START_MENU_FOLDER}\""
+    formatted_string += "CreateDirectory \"${START_MENU_FOLDER}\"\n"
     # print them verbatim for now.
     for link_data in options:
         link_path = "${START_MENU_FOLDER}\\%s.lnk" % link_data['name']
