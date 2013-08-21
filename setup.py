@@ -17,7 +17,10 @@ if platform.system() == 'Windows':
             'dist_dir': dist_dir,
             'packages': ['adept'],
             'skip_archive': True,
-            'includes': ['sip'],
+            'includes': [
+                'sip',
+                'scipy.sparse.csgraph._validation',
+            ],
             'excludes': ['Tkconstants', 'Tkinter', 'tcl'],
         },
         'build_installer': {'nsis_dir': dist_dir},
@@ -26,6 +29,14 @@ if platform.system() == 'Windows':
 
 DATA_FILES = [('.', ['adept.json',
                         'msvcp90.dll'])]
+
+# Use the determined virtualenv site-packages path to add all files in the
+# IUI resources directory to our setup.py data files.
+directory = 'invest-natcap.invest-3/invest_natcap/iui/iui_resources'
+for root_dir, sub_folders, file_list in os.walk(directory):
+    destination = root_dir.replace('invest-natcap.invest-3/', '')
+    DATA_FILES.append((destination, map(lambda x:
+        os.path.join(root_dir, x), file_list)))
 
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
