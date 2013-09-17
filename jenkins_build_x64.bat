@@ -16,5 +16,6 @@ cd ..
 echo "--- CD to Adept folder ---"
 
 echo "--- Building Adept ---"
+SET PATH=%PATH%;%ENVDIR%\Lib\site-packages
 %ENVDIR%\Scripts\python setup.py py2exe win_installer bdist_wininst
 echo "--- Finished building Adept ---"
