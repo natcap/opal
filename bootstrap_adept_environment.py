@@ -15,6 +15,5 @@ def after_install(options, home_dir):
     subprocess.call([easy_install, 'scipy'], shell=False)
     subprocess.call([easy_install, 'nose'], shell=False)
     subprocess.call([easy_install, 'setuptools'], shell=False)
-    subprocess.call([easy_install, 'distutils'], shell=False)
 """))
 print output

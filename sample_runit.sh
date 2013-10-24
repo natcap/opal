@@ -18,3 +18,4 @@ python setup.py install
 popd  # return to adept dir to build adept.
 python setup.py install
 
+python run_adept.py
