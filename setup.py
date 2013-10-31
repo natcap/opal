@@ -4,11 +4,36 @@ import platform
 import imp
 import os
 import subprocess
+import sys
 
 import adept
 
 
 py2exe_options = {}
+
+
+DATA_FILES = [('.', ['adept.json',
+                        'msvcp90.dll'])]
+
+# Use the determined virtualenv site-packages path to add all files in the
+# IUI resources directory to our setup.py data files.
+directory = 'invest-natcap.invest-3/invest_natcap/iui/iui_resources'
+for root_dir, sub_folders, file_list in os.walk(directory):
+    destination = root_dir.replace('invest-natcap.invest-3/', '')
+    DATA_FILES.append((destination, map(lambda x:
+        os.path.join(root_dir, x), file_list)))
+
+iui_dir = os.path.join('invest-natcap.invest-3', 'invest_natcap', 'iui')
+icon_names = ['dialog-close', 'dialog-ok', 'document-open', 'edit-undo',
+              'info', 'natcap_logo', 'validate-pass', 'validate-fail',
+              'dialog-warning', 'dialog-warning-big', 'dialog-information-2',
+              'dialog-error', 'list-remove']
+iui_icons = []
+for name in icon_names:
+    iui_icons.append(os.path.join(iui_dir, '%s.png' % name))
+
+DATA_FILES.append(('invest_natcap/iui', iui_icons))
+
 if platform.system() == 'Windows':
     import py2exe
     dist_dir = 'adept_py2exe'
@@ -26,17 +51,16 @@ if platform.system() == 'Windows':
         'build_installer': {'nsis_dir': dist_dir},
     }
     py2exe_options['console'] = ['run_adept.py']
+else:
+    python_version = 'python%s' % '.'.join([str(r) for r in
+        sys.version_info[:2]])
+    lib_path = os.path.join('lib', python_version, 'site-packages')
+    iui_icon_path = os.path.join(lib_path, 'invest_natcap', 'iui')
+    DATA_FILES.append((iui_icon_path, iui_icons))
+    DATA_FILES.append((lib_path, ['report_style.css']))
 
-DATA_FILES = [('.', ['adept.json',
-                        'msvcp90.dll'])]
 
-# Use the determined virtualenv site-packages path to add all files in the
-# IUI resources directory to our setup.py data files.
-directory = 'invest-natcap.invest-3/invest_natcap/iui/iui_resources'
-for root_dir, sub_folders, file_list in os.walk(directory):
-    destination = root_dir.replace('invest-natcap.invest-3/', '')
-    DATA_FILES.append((destination, map(lambda x:
-        os.path.join(root_dir, x), file_list)))
+
 
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
