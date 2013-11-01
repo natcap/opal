@@ -39,10 +39,9 @@
                 {
                     "id": "area_of_influence",
                     "type": "file",
-                    "label": "Area of Influence",
+                    "label": "Area of Influence (optional),
                     "validateAs": {
-                        "type": "file",
-                        "mustExist": true
+                        "type": "file"
                     }
                 },
                 {
@@ -54,19 +53,19 @@
                 {
                     "id": "threat_map",
                     "type": "file",
-                    "label": "Threat map",
+                    "label": "Threat map (optional)",
                     "validateAs": {"type": "GDAL"}
                 },
                 {
                     "id": "species_richness_map",
                     "type": "file",
-                    "label": "Species richness map",
+                    "label": "Species richness map (optional)",
                     "validateAs": {"type": "GDAL"}
                 },
                 {
                     "id": "avoidance_areas",
                     "type": "file",
-                    "label": "Avoidance areas",
+                    "label": "Avoidance areas (optional)",
                     "validateAs": {
                         "type": "OGR",
                         "layers": [
@@ -80,7 +79,7 @@
                 {
                     "id": "conservation_portfolio",
                     "type": "file",
-                    "label": "Conservation portfolio",
+                    "label": "Conservation portfolio (optional)",
                     "validateas": {
                         "type": "OGR",
                         "layers": [
@@ -94,7 +93,7 @@
                 {
                     "id": "previously_granted_impacts",
                     "type": "file",
-                    "label": "Previously granted impacts",
+                    "label": "Previously granted impacts (optional)",
                     "validateas": {
                         "type": "GDAL"
                     }
@@ -102,7 +101,7 @@
                 {
                     "id": "previously_selected_offsets",
                     "type": "file",
-                    "label": "Previously selected offsets",
+                    "label": "Previously selected offsets (optional)",
                     "validateas": {
                         "type": "GDAL"
                     }
@@ -110,7 +109,7 @@
                 {
                     "id": "custom_static_maps",
                     "type": "file",
-                    "label": "Custom static map",
+                    "label": "Custom static map (optional)",
                     "validateas": {
                         "type": "GDAL"
                     }
