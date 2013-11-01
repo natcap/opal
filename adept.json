@@ -26,7 +26,7 @@
                     "label": "Project Footprint",
                     "validateAs": {
                         "type": "OGR"
-			}
+                    }
                 },
                 {
                     "id": "impact_type",
@@ -39,7 +39,7 @@
                 {
                     "id": "area_of_influence",
                     "type": "file",
-                    "label": "Area of Influence (optional),
+                    "label": "Area of Influence (optional)",
                     "validateAs": {
                         "type": "file"
                     }
