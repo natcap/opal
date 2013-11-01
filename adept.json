@@ -115,7 +115,8 @@
                     "label": "Custom static map (optional)",
                     "validateas": {
                         "type": "GDAL"
-                    }
+                    },
+                    "defaultValue": "./data/colombia_tool_data/sample_static_impact_map.tif"
                 }
             ]
         }
