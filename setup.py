@@ -57,7 +57,6 @@ else:
     lib_path = os.path.join('lib', python_version, 'site-packages')
     iui_icon_path = os.path.join(lib_path, 'invest_natcap', 'iui')
     DATA_FILES.append((iui_icon_path, iui_icons))
-    DATA_FILES.append((lib_path, ['report_style.css']))
 
 
 
