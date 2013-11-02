@@ -12,7 +12,9 @@ LOGGER = logging.getLogger('adept')
 def execute(args):
     """The main execution function for adept.
         args - a python dictionary containing the following elements:
-            <none>
+           'project_footprint' - a URI to a shapefile of the project
+                footprint
+            'impact_type' - ???
 
         Returns nothing."""
 
@@ -24,3 +26,4 @@ def execute(args):
     LOGGER.debug('        \\/      \\/    \\/|__|         ')
     LOGGER.debug('                                     ')
 
+    LOGGER.debug('args %s' % args)

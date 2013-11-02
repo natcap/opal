@@ -8,7 +8,7 @@
     "width": 700,
     "elements": [
         {
-            "id": "data_list",
+            "id": "workspace_list",
             "type": "list",
             "elements": [
                 {
