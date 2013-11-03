@@ -24,6 +24,7 @@
                 {
                     "id": "project_footprint",
                     "type": "file",
+                    "args_id": "project_footprint",
                     "label": "Project Footprint",
                     "validateAs": {
                         "type": "OGR"
@@ -32,6 +33,7 @@
                 },
                 {
                     "id": "impact_type",
+                    "args_id": "impact_type",
                     "type": "dropdown",
                     "label": "Impact type",
                     "options": ["Road/Mine", "Bare ground/Paved"],
@@ -40,6 +42,7 @@
                 },
                 {
                     "id": "area_of_influence",
+                    "args_id": "area_of_influence",
                     "type": "file",
                     "label": "Area of Influence (optional)",
                     "validateAs": {
@@ -49,24 +52,28 @@
                 },
                 {
                     "id": "ecosystems_map",
+                    "args_id": "ecosystems_map",
                     "type": "hideableFileEntry",
                     "label": "Use custom ecosystems map",
                     "validateAs": {"type": "GDAL"}
                 },
                 {
                     "id": "threat_map",
+                    "args_id": "threat_map",
                     "type": "file",
                     "label": "Threat map (optional)",
                     "validateAs": {"type": "GDAL"}
                 },
                 {
                     "id": "species_richness_map",
+                    "args_id": "species_richness_map",
                     "type": "file",
                     "label": "Species richness map (optional)",
                     "validateAs": {"type": "GDAL"}
                 },
                 {
                     "id": "avoidance_areas",
+                    "args_id": "avoidance_areas",
                     "type": "file",
                     "label": "Avoidance areas (optional)",
                     "validateAs": {
@@ -81,6 +88,7 @@
                 },
                 {
                     "id": "conservation_portfolio",
+                    "args_id": "conservation_portfolio",
                     "type": "file",
                     "label": "Conservation portfolio (optional)",
                     "validateas": {
@@ -95,6 +103,7 @@
                 },
                 {
                     "id": "previously_granted_impacts",
+                    "args_id": "previously_granted_impacts",
                     "type": "file",
                     "label": "Previously granted impacts (optional)",
                     "validateas": {
@@ -103,6 +112,7 @@
                 },
                 {
                     "id": "previously_selected_offsets",
+                    "args_id": "previously_selected_offsets",
                     "type": "file",
                     "label": "Previously selected offsets (optional)",
                     "validateas": {
@@ -111,6 +121,7 @@
                 },
                 {
                     "id": "custom_static_maps",
+                    "args_id": "custom_static_maps",
                     "type": "file",
                     "label": "Custom static map (optional)",
                     "validateas": {
