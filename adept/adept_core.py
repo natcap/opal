@@ -53,13 +53,19 @@ def execute(args):
                     args['project_footprint_uri'],
                     os.path.basename(args['project_footprint_uri']))),
             'Impact Type': args['impact_type'],
-            'Custom Impact Amount': custom_static_values_flat.total.values()[0]
+            'Custom Impact Amount': custom_static_values_flat.total.values()[0],
+            'Water Yield Impact Amount': 'n/a',
+            'Carbon Storage Impact Amount': 'n/a',
+            'Biodiversity Impact Amount': 'n/a',
         },
     }
     columns = {
         0: {'name': 'Site Shapefile', 'total': False},
         1: {'name': 'Impact Type', 'total': False},
         2: {'name': 'Custom Impact Amount', 'total': True},
+        3: {'name': 'Water Yield Impact Amount', 'total': True},
+        4: {'name': 'Carbon Storage Impact Amount', 'total': True},
+        5: {'name': 'Biodiversity Impact Amount', 'total': True},
     }
     
     report_data_source_directory = 'adept_report_html_style_data'
