@@ -37,7 +37,7 @@
                     "type": "dropdown",
                     "label": "Impact type",
                     "options": ["Road/Mine", "Bare ground/Paved"],
-                    "returns": "ordinals",
+                    "returns": "strings",
                     "defaultValue": 0
                 },
                 {
