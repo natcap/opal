@@ -56,7 +56,7 @@ def execute(args):
     columns = {
         0: {'name': 'Site', 'total': False},
         1: {'name': 'Impact Type', 'total': False},
-        2: {'name': 'Impact Amount', 'total': False},
+        2: {'name': 'Impact Amount', 'total': True},
     }
     
     report_data_source_directory = 'adept_report_html_style_data'
@@ -97,7 +97,6 @@ def execute(args):
                 'total':True,
                 'data_type':'dictionary',
                 'columns':columns,
-                'key':'ws_id',
                 'data': impact_dict,
                 'position': 1
             },
