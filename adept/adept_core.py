@@ -46,6 +46,15 @@ def execute(args):
     LOGGER.debug('custom_static_values_flat = %s' % str(custom_static_values_flat))
     
     LOGGER.info("Building output report")
+    impact_columns = {
+        0: {'name': 'Site Shapefile', 'total': False},
+        1: {'name': 'Impact Type', 'total': False},
+        2: {'name': 'Custom Impact Amount', 'total': True},
+        3: {'name': 'Water Yield Impact Amount', 'total': True},
+        4: {'name': 'Carbon Storage Impact Amount', 'total': True},
+        5: {'name': 'Biodiversity Impact Amount', 'total': True},
+    }
+    
     impact_dict = {
         0: {
             'Site Shapefile': (
@@ -59,13 +68,30 @@ def execute(args):
             'Biodiversity Impact Amount': 'n/a',
         },
     }
-    columns = {
-        0: {'name': 'Site Shapefile', 'total': False},
-        1: {'name': 'Impact Type', 'total': False},
-        2: {'name': 'Custom Impact Amount', 'total': True},
-        3: {'name': 'Water Yield Impact Amount', 'total': True},
-        4: {'name': 'Carbon Storage Impact Amount', 'total': True},
-        5: {'name': 'Biodiversity Impact Amount', 'total': True},
+    
+    offset_columns = {
+        0: {'name': 'Offset Site', 'total': False},
+        1: {'name': 'Custom Offset Amount', 'total': True},
+        2: {'name': 'Water Yield Offset Amount', 'total': True},
+        3: {'name': 'Carbon Storage Offset Amount', 'total': True},
+        4: {'name': 'Biodiversity Offset Amount', 'total': True},
+    }
+    
+    offset_dict = {
+        0: {
+            'Offset Site': 'Sample Site 1',
+            'Custom Offset Amount': 534.3,
+            'Water Yield Offset Amount': 'n/a',
+            'Carbon Storage Offset Amount': 'n/a',
+            'Biodiversity Offset Amount': 'n/a',
+        },
+        1: {
+            'Offset Site': 'Sample Site 2',
+            'Custom Offset Amount': 1234.2,
+            'Water Yield Offset Amount': 'n/a',
+            'Carbon Storage Offset Amount': 'n/a',
+            'Biodiversity Offset Amount': 'n/a',
+        },
     }
     
     report_data_source_directory = 'adept_report_html_style_data'
@@ -99,23 +125,6 @@ def execute(args):
         'title': 'Adept Test Report',
         'elements': [
             {
-                'type': 'table',
-                'section': 'body',
-                'sortable': True,
-                'checkbox': True,
-                'total':True,
-                'data_type':'dictionary',
-                'columns':columns,
-                'data': impact_dict,
-                'position': 1
-            },
-            {
-                'type': 'text',
-                'section': 'body',
-                'position': 0,
-                'text': '<h1>Impact Site Summary</h1>'
-            },
-            {
                 'type': 'head',
                 'section': 'head',
                 'format': 'link',
@@ -142,7 +151,41 @@ def execute(args):
                 'format': 'script',
                 'position': 3,
                 'src': jsc_fun_uri
-            }
+            },
+            {
+                'type': 'text',
+                'section': 'body',
+                'position': 0,
+                'text': '<h1>Impact Site Summary</h1>'
+            },
+            {
+                'type': 'table',
+                'section': 'body',
+                'sortable': True,
+                'checkbox': True,
+                'total':True,
+                'data_type':'dictionary',
+                'columns': impact_columns,
+                'data': impact_dict,
+                'position': 1
+            },
+            {
+                'type': 'text',
+                'section': 'body',
+                'position': 2,
+                'text': '<h1>Offset Site Summary</h1>'
+            },
+            {
+                'type': 'table',
+                'section': 'body',
+                'sortable': True,
+                'checkbox': True,
+                'total':True,
+                'data_type':'dictionary',
+                'columns': offset_columns,
+                'data': offset_dict,
+                'position': 3
+            },
         ],
         'out_uri': os.path.join(args['workspace_dir'], 'report.html')
     }
