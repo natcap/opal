@@ -2,6 +2,7 @@
 
 import logging
 import os
+import shutil
 
 from invest_natcap import raster_utils
 from invest_natcap import reporting
@@ -59,10 +60,25 @@ def execute(args):
         2: {'name': 'Impact Amount', 'total': False},
     }
     
-    css_uri = '../reporting_data/table_style.css'
-    jsc_uri = '../reporting_data/sorttable.js'
-    jquery_uri = '../reporting_data/jquery-1.10.2.min.js'
-    jsc_fun_uri = '../reporting_data/total_functions.js'
+    report_data_source_directory = 'adept_report_html_style_data'
+    report_data_out_directory = (
+        os.path.join(args['workspace_dir'], report_data_source_directory))
+    
+    if os.path.exists(report_data_out_directory):
+        shutil.rmtree(report_data_out_directory)
+    
+    shutil.copytree(
+        report_data_source_directory,
+        report_data_out_directory)
+    
+    css_uri = os.path.join(
+        report_data_source_directory, 'table_style.css')
+    jsc_uri = os.path.join(
+        report_data_source_directory, 'sorttable.js')
+    jquery_uri = os.path.join(
+        report_data_source_directory, 'jquery-1.10.2.min.js')
+    jsc_fun_uri = os.path.join(
+        report_data_source_directory, 'total_functions.js')
     
     report_args = {
         'title': 'Adept Test Report',
