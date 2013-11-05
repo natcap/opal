@@ -28,7 +28,7 @@ def execute(args):
 
     LOGGER.debug('   _____       .___             __   ')
     LOGGER.debug('  /  _  \\    __| _/____ _______/  |_ ')
-    LOGGER.debug(' /  /_\\  \\  / __ |/ __ \\\\____ \\   __\\\\')
+    LOGGER.debug(' /  /_\\  \\  / __ |/ __ \\\\____ \\   __\\')
     LOGGER.debug('/    |    \\/ /_/ \\  ___/|  |_> >  |  ')
     LOGGER.debug('\\____|__  /\\____ |\\___  >   __/|__|  ')
     LOGGER.debug('        \\/      \\/    \\/|__|         ')
@@ -48,15 +48,18 @@ def execute(args):
     LOGGER.info("Building output report")
     impact_dict = {
         0: {
-            'Site':os.path.basename(args['project_footprint_uri']),
+            'Site Shapefile': (
+                '<a href="%s">%s</a>' % (
+                    args['project_footprint_uri'],
+                    os.path.basename(args['project_footprint_uri']))),
             'Impact Type': args['impact_type'],
-            'Impact Amount': custom_static_values_flat.total.values()[0]
+            'Custom Impact Amount': custom_static_values_flat.total.values()[0]
         },
     }
     columns = {
-        0: {'name': 'Site', 'total': False},
+        0: {'name': 'Site Shapefile', 'total': False},
         1: {'name': 'Impact Type', 'total': False},
-        2: {'name': 'Impact Amount', 'total': True},
+        2: {'name': 'Custom Impact Amount', 'total': True},
     }
     
     report_data_source_directory = 'adept_report_html_style_data'
@@ -104,7 +107,7 @@ def execute(args):
                 'type': 'text',
                 'section': 'body',
                 'position': 0,
-                'text': 'Here is an example of some text'
+                'text': '<h1>Impact Site Summary</h1>'
             },
             {
                 'type': 'head',
