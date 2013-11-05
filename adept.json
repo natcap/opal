@@ -24,7 +24,7 @@
                 {
                     "id": "project_footprint",
                     "type": "file",
-                    "args_id": "project_footprint",
+                    "args_id": "project_footprint_uri",
                     "label": "Project Footprint",
                     "validateAs": {
                         "type": "OGR"
@@ -42,7 +42,7 @@
                 },
                 {
                     "id": "area_of_influence",
-                    "args_id": "area_of_influence",
+                    "args_id": "area_of_influence_uri",
                     "type": "file",
                     "label": "Area of Influence (optional)",
                     "validateAs": {
@@ -121,7 +121,7 @@
                 },
                 {
                     "id": "custom_static_maps",
-                    "args_id": "custom_static_maps",
+                    "args_id": "custom_static_map_uri",
                     "type": "file",
                     "label": "Custom static map (optional)",
                     "validateas": {
