@@ -2,7 +2,7 @@
 
 import logging
 
-import invest_natcap
+from invest_natcap import raster_utils
 
 logging.basicConfig(format='%(asctime)s %(name)-18s %(levelname)-8s \
      %(message)s', level=logging.DEBUG, datefmt='%m/%d/%Y %H:%M:%S ')
@@ -31,5 +31,16 @@ def execute(args):
     LOGGER.debug('\\____|__  /\\____ |\\___  >   __/|__|  ')
     LOGGER.debug('        \\/      \\/    \\/|__|         ')
     LOGGER.debug('                                     ')
-
+    
+    #can we rasterize based on polygon Z value?
+    custom_static_values_flat = raster_utils.aggregate_raster_values_uri(
+        args['custom_static_map_uri'], args['area_of_influence_uri'], 
+        None)
+        
+    custom_static_values_id = raster_utils.aggregate_raster_values_uri(
+        args['custom_static_map_uri'], args['area_of_influence_uri'], 
+        'Id')
+        
+    LOGGER.debug('custom_static_values_flat = %s' % str(custom_static_values_flat))
+    LOGGER.debug('custom_static_values_id = %s' % str(custom_static_values_id))
     
