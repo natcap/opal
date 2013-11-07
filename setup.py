@@ -51,6 +51,8 @@ if platform.system() == 'Windows':
         'build_installer': {'nsis_dir': dist_dir},
     }
     py2exe_options['console'] = ['run_adept.py']
+
+    DATA_FILES.append(('invest_natcap/iui', iui_icons))
 else:
     python_version = 'python%s' % '.'.join([str(r) for r in
         sys.version_info[:2]])
