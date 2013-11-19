@@ -2,6 +2,7 @@ import ogr
 import osr
 import logging
 import os
+import shapely.geometry
 import shapely.wkb
 
 logging.basicConfig(format='%(asctime)s %(name)-18s %(levelname)-8s \
@@ -37,15 +38,16 @@ for field_name in ['FACTOR_DE', 'Ecos_dis']:
     clipped_layer.CreateField(current_def)
 
 
+#1) Load the impact dataset into a shapely multipolygon
 impact_ds = ogr.Open(impact_ds_uri)
 impact_layer = impact_ds.GetLayer()
+polygon_list = []
 for feature_index in xrange(impact_layer.GetFeatureCount()):
     feature = impact_layer.GetFeature(feature_index)
     geometry = feature.GetGeometryRef()
-    polygon = shapely.wkb.loads(geometry.ExportToWkb())
-    print polygon
-
-#1) Load the impact dataset into a shapely multipolygon
+    polygon_list.append(shapely.wkb.loads(geometry.ExportToWkb()))
+multipolygon = shapely.geometry.MultiPolygon(polygon_list)
+print multipolygon
 
 
 
