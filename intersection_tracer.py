@@ -111,28 +111,30 @@ def clip_shape(shape_to_clip_uri, binding_shape_uri, output_path):
         
         
 impact_ds_uri = './data/colombia_tool_data/Example permitting footprints/Example_mining_projects.shp'
-ecosystems_ds_uri = ('./data/colombia_tool_data/Ecosystems_Colombia.shp')
+ecosystems_ds_uri = ('./data/colombia_tool_data/ecosys_dis_nat_comp_fac.shp')
 clipped_uri = 'impact_areas'
 
-impact_ds = ogr.Open(impact_ds_uri)
-
-impact_ds_layer = impact_ds.GetLayer(0)
+ecosystems_ds = ogr.Open(ecosystems_ds_uri)
+print ecosystems_ds
+ecosystems_ds_layer = ecosystems_ds.GetLayer(0)
     # Get the layer definition which holds needed attribute values
-impact_ds_defn = impact_ds_layer.GetLayerDefn()
+ecosystems_ds_defn = ecosystems_ds_layer.GetLayerDefn()
     # Get the layer of the polygon (binding) geometry shape
-
+print ecosystems_ds_defn
 clipped_ds = ogr.GetDriverByName('ESRI Shapefile').CreateDataSource(clipped_uri)
 clipped_layer = clipped_ds.CreateLayer(
-    clipped_uri, impact_ds_layer.GetSpatialRef(), impact_ds_defn.GetGeomType())
+    clipped_uri, ecosystems_ds_layer.GetSpatialRef(), ecosystems_ds_defn.GetGeomType())
 
-for field_index in xrange(impact_ds_defn.GetFieldCount()):
-    current_field = impact_ds_defn.GetFieldDefn(field_index)
-    current_def = ogr.FieldDefn(current_field.GetName(), current_field.GetType())
+print ecosystems_ds_defn
+
+#for field_index in xrange(ecosystems_ds_defn.GetFieldCount()):
+for field_name in ['FACTOR_DE', 'Ecos_dis']:
+    field_index = ecosystems_ds_defn.GetFieldIndex(field_name)
+    print field_index, field_name
+    current_field = ecosystems_ds_defn.GetFieldDefn(field_index)
+    current_def = ogr.FieldDefn(field_name, current_field.GetType())
     current_def.SetWidth(current_field.GetWidth())
     current_def.SetPrecision(current_field.GetPrecision())
     clipped_layer.CreateField(current_def)
 
-
-
-
-#clip_shape(ds_bio_uri, ds_impact_uri, clipped_uri)
+#clip_shape(ds_bio_uri, ds_ecosystems_uri, clipped_uri)
