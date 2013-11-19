@@ -110,8 +110,29 @@ def clip_shape(shape_to_clip_uri, binding_shape_uri, output_path):
 
         
         
-ds_impact_uri = './data/colombia_tool_data/Example permitting footprints/Example_mining_projects.shp'
-ds_bio_uri = ('./data/colombia_tool_data/Ecosystems_Colombia.shp')
+impact_ds_uri = './data/colombia_tool_data/Example permitting footprints/Example_mining_projects.shp'
+ecosystems_ds_uri = ('./data/colombia_tool_data/Ecosystems_Colombia.shp')
+clipped_uri = 'impact_areas'
 
-clipped_uri = './clipped_impact_area.shp'
-clip_shape(ds_bio_uri, ds_impact_uri, clipped_uri)
+impact_ds = ogr.Open(impact_ds_uri)
+
+impact_ds_layer = impact_ds.GetLayer(0)
+    # Get the layer definition which holds needed attribute values
+impact_ds_defn = impact_ds_layer.GetLayerDefn()
+    # Get the layer of the polygon (binding) geometry shape
+
+clipped_ds = ogr.GetDriverByName('ESRI Shapefile').CreateDataSource(clipped_uri)
+clipped_layer = clipped_ds.CreateLayer(
+    clipped_uri, impact_ds_layer.GetSpatialRef(), impact_ds_defn.GetGeomType())
+
+for field_index in xrange(impact_ds_defn.GetFieldCount()):
+    current_field = impact_ds_defn.GetFieldDefn(field_index)
+    current_def = ogr.FieldDefn(current_field.GetName(), current_field.GetType())
+    current_def.SetWidth(current_field.GetWidth())
+    current_def.SetPrecision(current_field.GetPrecision())
+    clipped_layer.CreateField(current_def)
+
+
+
+
+#clip_shape(ds_bio_uri, ds_impact_uri, clipped_uri)
