@@ -56,8 +56,9 @@ def execute(args):
     LOGGER.info("Building output report")
     impact_columns = {
         0: {'name': 'Site Shapefile', 'total': False},
-        2: {'name': 'Custom Impact Amount', 'total': True},
-        3: {'name': 'Water Yield Impact Amount', 'total': True},
+        1: {'name': 'Custom Impact Amount', 'total': True},
+        2: {'name': 'Nutrient Impact Amount', 'total': True},
+        3: {'name': 'Sediment Impact Amount', 'total': True},
         4: {'name': 'Carbon Storage Impact Amount', 'total': True},
         5: {'name': 'Biodiversity Impact Amount', 'total': True},
     }
@@ -74,13 +75,14 @@ def execute(args):
                     args['project_footprint_uri'],
                     os.path.basename(args['project_footprint_uri']))),
             'Custom Impact Amount': custom_static_values_flat.total.values()[0],
-            'Water Yield Impact Amount': 'n/a',
             'Carbon Storage Impact Amount': 'n/a',
+            'Sediment Impact Amount': 'n/a',
+            'Nutrient Impact Amount': 'n/a',
             'Biodiversity Impact Amount': 'n/a',
         },
     }
 
-    offset_biodiversity_column_index = 5
+    offset_biodiversity_column_index = 6
     for ecosystem_name, bio_impact_dict in biodiversity_impact.iteritems():
         ecosystem_name = unicode(ecosystem_name, 'utf-8')
         impact_dict[0][ecosystem_name] = bio_impact_dict['area']
@@ -102,9 +104,10 @@ def execute(args):
     offset_columns = {
         0: {'name': 'Offset Site', 'total': False},
         1: {'name': 'Custom Offset Amount', 'total': True},
-        2: {'name': 'Water Yield Offset Amount', 'total': True},
-        3: {'name': 'Carbon Storage Offset Amount', 'total': True},
-        4: {'name': 'Biodiversity Offset Amount', 'total': True},
+        2: {'name': 'Nutrient Offset Amount', 'total': True},
+        3: {'name': 'Sediment Offset Amount', 'total': True},
+        4: {'name': 'Carbon Storage Offset Amount', 'total': True},
+        5: {'name': 'Biodiversity Offset Amount', 'total': True},
     }
     
     
@@ -113,14 +116,16 @@ def execute(args):
         0: {
             'Offset Site': 'Sample Site 1',
             'Custom Offset Amount': 534.3,
-            'Water Yield Offset Amount': 'n/a',
+            'Nutrient Offset Amount': 'n/a',
+            'Sediment Offset Amount': 'n/a',
             'Carbon Storage Offset Amount': 'n/a',
             'Biodiversity Offset Amount': 'n/a',
         },
         1: {
             'Offset Site': 'Sample Site 2',
             'Custom Offset Amount': 1234.2,
-            'Water Yield Offset Amount': 'n/a',
+            'Nutrient Offset Amount': 'n/a',
+            'Sediment Offset Amount': 'n/a',
             'Carbon Storage Offset Amount': 'n/a',
             'Biodiversity Offset Amount': 'n/a',
         },
