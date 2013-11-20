@@ -24,7 +24,6 @@ try:
 except OSError as e:
     print 'warning: ', e
 
-
 ecosystems_ds = ogr.Open(ecosystems_ds_uri)
 print ecosystems_ds
 ecosystems_ds_layer = ecosystems_ds.GetLayer(0)
@@ -49,7 +48,7 @@ for field_name in ['FACTOR_DE', 'Ecos_dis']:
     current_def.SetPrecision(current_field.GetPrecision())
     clipped_layer.CreateField(current_def)
 
-#1) Load the impact dataset into a shapely multipolygon
+#1) Load the impact dataset into a shapely impact_polygon
 impact_ds = ogr.Open(impact_ds_uri)
 impact_layer = impact_ds.GetLayer()
 polygon_list = []
@@ -57,9 +56,9 @@ for feature_index in xrange(impact_layer.GetFeatureCount()):
     feature = impact_layer.GetFeature(feature_index)
     geometry = feature.GetGeometryRef()
     polygon_list.append(shapely.wkb.loads(geometry.ExportToWkb()))
-multipolygon = shapely.ops.cascaded_union(polygon_list)
+impact_polygon = shapely.ops.cascaded_union(polygon_list)
 
-if not multipolygon.is_valid:
+if not impact_polygon.is_valid:
     print 'permitting area is not valid'
     sys.exit(1)
 
@@ -69,25 +68,27 @@ if shapely.speedups.available:
     shapely.speedups.enable()
 
 #3) Loop through each feature in impact ds and build a polygon out of it
+biodiversity_impacts = {}
 for feature_index in xrange(ecosystems_ds_layer.GetFeatureCount()):
-    print '.', 
+    sys.stdout.write('.')
     feature = ecosystems_ds_layer.GetFeature(feature_index)
     ecosystem_type = feature.GetField('Ecos_dis')
     impact_factor = feature.GetField('FACTOR_DE')
     geometry = feature.GetGeometryRef()
     polygon = shapely.wkb.loads(geometry.ExportToWkb())
     prepared_polygon = shapely.prepared.prep(polygon)
-    if prepared_polygon.intersects(multipolygon):
-        print 'permitting area intersects ', ecosystem_type, 'calculating area overlap'
-        intersection = multipolygon.intersection(polygon)
-        print 'overlaps ', intersection.area / 10000.0, 'Ha required offset: ', 
-        print intersection.area / 10000.0 * impact_factor, ' Ha'
+    if prepared_polygon.intersects(impact_polygon):
+        print '\npermitting area intersects ', ecosystem_type, 'calculating area overlap'
+        intersection = impact_polygon.intersection(polygon)
         
+        biodiversity_impacts[ecosystem_type] = {
+            'area': intersection.area / 10000.0,
+            'mitigation_area': intersection.area / 10000.0 * impact_factor
+        }
+        
+        print 'overlaps ', biodiversity_impacts[ecosystem_type]['area'],
+        print 'Ha required offset: ', 
+        print biodiversity_impacts[ecosystem_type]['mitigation_area'], ' Ha'
+print '\ndone'
 
-
-#3a) intersect that polygon with the impact multipolygon
-#3b) if non-empty intersection, add the intersection to clipped_layer with features from ecosystems's feature
-
-
-
-#clip_shape(ds_bio_uri, ds_ecosystems_uri, clipped_uri)
+print biodiversity_impacts
