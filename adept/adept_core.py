@@ -62,6 +62,11 @@ def execute(args):
         5: {'name': 'Biodiversity Impact Amount', 'total': True},
     }
 
+    biodiversity_impact = calculate_biodiversity_impact(
+        args['project_footprint_uri'], args['ecosystems_map_uri'])
+    
+    LOGGER.info(biodiversity_impact)
+    
     impact_dict = {
         0: {
             'Site Shapefile': (
@@ -75,6 +80,25 @@ def execute(args):
         },
     }
 
+    offset_biodiversity_column_index = 5
+    for ecosystem_name, bio_impact_dict in biodiversity_impact.iteritems():
+        ecosystem_name = unicode(ecosystem_name, 'utf-8')
+        impact_dict[0][ecosystem_name] = bio_impact_dict['area']
+        impact_dict[0]['(impact factor) ' + ecosystem_name] = (
+            bio_impact_dict['mitigation_area'])
+        
+        impact_columns[offset_biodiversity_column_index] = {
+            'name': ecosystem_name,
+            'total': True,
+        }
+        offset_biodiversity_column_index += 1
+        impact_columns[offset_biodiversity_column_index] = {
+            'name': '(impact factor) ' + ecosystem_name,
+            'total': True,
+        }
+        offset_biodiversity_column_index += 1
+
+    
     offset_columns = {
         0: {'name': 'Offset Site', 'total': False},
         1: {'name': 'Custom Offset Amount', 'total': True},
@@ -82,6 +106,8 @@ def execute(args):
         3: {'name': 'Carbon Storage Offset Amount', 'total': True},
         4: {'name': 'Biodiversity Offset Amount', 'total': True},
     }
+    
+    
 
     offset_dict = {
         0: {
@@ -201,22 +227,19 @@ def execute(args):
     reporting.generate_report(report_args)
 
 
-def calculate_biodiversity_impact(impact_ds_uri, ecosystems_ds_uri, ):
-    impact_ds_uri = './data/colombia_tool_data/Example permitting footprints/Example_mining_projects.shp'
-    ecosystems_ds_uri = ('./data/colombia_tool_data/ecosys_dis_nat_comp_fac.shp')
-
-
-    #1) Load the impact dataset into a shapely impact_polygon
-    impact_ds = ogr.Open(impact_ds_uri)
-    impact_layer = impact_ds.GetLayer()
+def calculate_biodiversity_impact(permitting_area_ds_uri, ecosystems_ds_uri):
+    
+    #1) Load the permitting_area dataset into a shapely permitting_area_polygon
+    permitting_area_ds = ogr.Open(permitting_area_ds_uri)
+    permitting_area_layer = permitting_area_ds.GetLayer()
     polygon_list = []
-    for feature_index in xrange(impact_layer.GetFeatureCount()):
-        feature = impact_layer.GetFeature(feature_index)
+    for feature_index in xrange(permitting_area_layer.GetFeatureCount()):
+        feature = permitting_area_layer.GetFeature(feature_index)
         geometry = feature.GetGeometryRef()
         polygon_list.append(shapely.wkb.loads(geometry.ExportToWkb()))
-    impact_polygon = shapely.ops.cascaded_union(polygon_list)
+    permitting_area_polygon = shapely.ops.cascaded_union(polygon_list)
 
-    if not impact_polygon.is_valid:
+    if not permitting_area_polygon.is_valid:
         print 'permitting area is not valid'
         sys.exit(1)
 
@@ -225,21 +248,21 @@ def calculate_biodiversity_impact(impact_ds_uri, ecosystems_ds_uri, ):
         print 'speedups available. speeding up'
         shapely.speedups.enable()
 
-    #3) Loop through each feature in impact ds and build a polygon out of it
+    #3) Loop through each feature in permitting_area ds and build a polygon out of it
     biodiversity_impacts = {}
     ecosystems_ds = ogr.Open(ecosystems_ds_uri)
     ecosystems_ds_layer = ecosystems_ds.GetLayer()
     for feature_index in xrange(ecosystems_ds_layer.GetFeatureCount()):
         feature = ecosystems_ds_layer.GetFeature(feature_index)
         ecosystem_type = feature.GetField('Ecos_dis')
-        LOGGER.info('testing ecosystem %s', ecosystem_type)
+        print ('testing ecosystem %s', ecosystem_type)
         impact_factor = feature.GetField('FACTOR_DE')
         geometry = feature.GetGeometryRef()
         polygon = shapely.wkb.loads(geometry.ExportToWkb())
         prepared_polygon = shapely.prepared.prep(polygon)
-        if prepared_polygon.intersects(impact_polygon):
+        if prepared_polygon.intersects(permitting_area_polygon):
             print '\npermitting area intersects! calculating area overlap'
-            intersection = impact_polygon.intersection(polygon)
+            intersection = permitting_area_polygon.intersection(polygon)
 
             biodiversity_impacts[ecosystem_type] = {
                 'area': intersection.area / 10000.0,

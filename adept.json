@@ -52,10 +52,10 @@
                 },
                 {
                     "id": "ecosystems_map",
-                    "args_id": "ecosystems_map",
+                    "args_id": "ecosystems_map_uri",
                     "type": "hideableFileEntry",
                     "label": "Use custom ecosystems map",
-                    "validateAs": {"type": "GDAL"}
+                    "validateAs": {"type": "OGR"}
                 },
                 {
                     "id": "threat_map",
