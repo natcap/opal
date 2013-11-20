@@ -1,9 +1,12 @@
 import ogr
+import sys
 import osr
 import logging
 import os
 import shapely.geometry
 import shapely.wkb
+import shapely.speedups
+import shapely.prepared
 
 logging.basicConfig(format='%(asctime)s %(name)-18s %(levelname)-8s \
     %(message)s', level=logging.DEBUG, datefmt='%m/%d/%Y %H:%M:%S ')
@@ -47,14 +50,34 @@ for feature_index in xrange(impact_layer.GetFeatureCount()):
     geometry = feature.GetGeometryRef()
     polygon_list.append(shapely.wkb.loads(geometry.ExportToWkb()))
 multipolygon = shapely.geometry.MultiPolygon(polygon_list)
-print multipolygon
-
-
 
 #2) Make a spatial index?
 
+print 'speedups available? ', shapely.speedups.available
+shapely.speedups.enable()
 
 #3) Loop through each feature in impact ds and build a polygon out of it
+for feature_index in xrange(ecosystems_ds_layer.GetFeatureCount()):
+    print 'intersecting permitting layer with ecosystem ', feature_index
+    feature = ecosystems_ds_layer.GetFeature(feature_index)
+    geometry = feature.GetGeometryRef()
+    print 'building polygon'
+    polygon = shapely.wkb.loads(geometry.ExportToWkb())
+    prepared_polygon = shapely.prepared.prep(polygon)
+    print 'intersecting polygon'
+    if prepared_polygon.intersects(multipolygon):
+        print 'intersects'
+
+        print 'simplifying'
+        #simple = polygon.simplify(0.9, False)
+        intersection = multipolygon.intersection(polygon)
+        print intersection.area
+        sys.exit(1)
+    else:
+        print 'not contained'
+    
+
+
 #3a) intersect that polygon with the impact multipolygon
 #3b) if non-empty intersection, add the intersection to clipped_layer with features from ecosystems's feature
 
