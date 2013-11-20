@@ -3,6 +3,14 @@
 import logging
 import os
 import shutil
+import ogr
+import sys
+import shapely.geometry
+import shapely.wkb
+import shapely.speedups
+import shapely.prepared
+import shapely.ops
+
 
 from invest_natcap import raster_utils
 from invest_natcap import reporting
@@ -22,7 +30,7 @@ def execute(args):
                 area of influcence of the impact site
             'custom_static_map_uri' - a uri to a custom static map to assess
                 impact
-            
+
 
         Returns nothing."""
 
@@ -33,18 +41,18 @@ def execute(args):
     LOGGER.debug('\\____|__  /\\____ |\\___  >   __/|__|  ')
     LOGGER.debug('        \\/      \\/    \\/|__|         ')
     LOGGER.debug('                                     ')
-    
+
     raster_utils.create_directories([args['workspace_dir']])
-    
+
     #can we rasterize based on polygon Z value?
     LOGGER.info(
         "Assessing impact of project footprint over a custom static map")
     custom_static_values_flat = raster_utils.aggregate_raster_values_uri(
-        args['custom_static_map_uri'], args['project_footprint_uri'], 
+        args['custom_static_map_uri'], args['project_footprint_uri'],
         None)
-    
-    LOGGER.debug('custom_static_values_flat = %s' % str(custom_static_values_flat))
-    
+
+    LOGGER.debug('custom_static_values_flat = %s', str(custom_static_values_flat))
+
     LOGGER.info("Building output report")
     impact_columns = {
         0: {'name': 'Site Shapefile', 'total': False},
@@ -53,7 +61,7 @@ def execute(args):
         4: {'name': 'Carbon Storage Impact Amount', 'total': True},
         5: {'name': 'Biodiversity Impact Amount', 'total': True},
     }
-    
+
     impact_dict = {
         0: {
             'Site Shapefile': (
@@ -66,7 +74,7 @@ def execute(args):
             'Biodiversity Impact Amount': 'n/a',
         },
     }
-    
+
     offset_columns = {
         0: {'name': 'Offset Site', 'total': False},
         1: {'name': 'Custom Offset Amount', 'total': True},
@@ -74,7 +82,7 @@ def execute(args):
         3: {'name': 'Carbon Storage Offset Amount', 'total': True},
         4: {'name': 'Biodiversity Offset Amount', 'total': True},
     }
-    
+
     offset_dict = {
         0: {
             'Offset Site': 'Sample Site 1',
@@ -91,25 +99,25 @@ def execute(args):
             'Biodiversity Offset Amount': 'n/a',
         },
     }
-    
+
     report_data_source_directory = 'adept_report_html_style_data'
     report_data_out_directory = (
         os.path.join(args['workspace_dir'], report_data_source_directory))
-    
+
     if os.path.exists(report_data_out_directory):
         try:
             shutil.rmtree(report_data_out_directory)
         except OSError as e:
             LOGGER.warn(e)
-    
+
     try:
         shutil.copytree(
             report_data_source_directory,
             report_data_out_directory)
     except OSError as e:
-            LOGGER.warn(e)
-    
-    
+        LOGGER.warn(e)
+
+
     css_uri = os.path.join(
         report_data_source_directory, 'table_style.css')
     jsc_uri = os.path.join(
@@ -118,7 +126,7 @@ def execute(args):
         report_data_source_directory, 'jquery-1.10.2.min.js')
     jsc_fun_uri = os.path.join(
         report_data_source_directory, 'total_functions.js')
-    
+
     report_args = {
         'title': 'Adept Test Report',
         'elements': [
@@ -189,6 +197,57 @@ def execute(args):
         ],
         'out_uri': os.path.join(args['workspace_dir'], 'report.html')
     }
-    
+
     reporting.generate_report(report_args)
-    
+
+
+def calculate_biodiversity_impact(impact_ds_uri, ecosystems_ds_uri, ):
+    impact_ds_uri = './data/colombia_tool_data/Example permitting footprints/Example_mining_projects.shp'
+    ecosystems_ds_uri = ('./data/colombia_tool_data/ecosys_dis_nat_comp_fac.shp')
+
+
+    #1) Load the impact dataset into a shapely impact_polygon
+    impact_ds = ogr.Open(impact_ds_uri)
+    impact_layer = impact_ds.GetLayer()
+    polygon_list = []
+    for feature_index in xrange(impact_layer.GetFeatureCount()):
+        feature = impact_layer.GetFeature(feature_index)
+        geometry = feature.GetGeometryRef()
+        polygon_list.append(shapely.wkb.loads(geometry.ExportToWkb()))
+    impact_polygon = shapely.ops.cascaded_union(polygon_list)
+
+    if not impact_polygon.is_valid:
+        print 'permitting area is not valid'
+        sys.exit(1)
+
+    #2) Make a spatial index?
+    if shapely.speedups.available:
+        print 'speedups available. speeding up'
+        shapely.speedups.enable()
+
+    #3) Loop through each feature in impact ds and build a polygon out of it
+    biodiversity_impacts = {}
+    ecosystems_ds = ogr.Open(ecosystems_ds_uri)
+    ecosystems_ds_layer = ecosystems_ds.GetLayer()
+    for feature_index in xrange(ecosystems_ds_layer.GetFeatureCount()):
+        feature = ecosystems_ds_layer.GetFeature(feature_index)
+        ecosystem_type = feature.GetField('Ecos_dis')
+        LOGGER.info('testing ecosystem %s', ecosystem_type)
+        impact_factor = feature.GetField('FACTOR_DE')
+        geometry = feature.GetGeometryRef()
+        polygon = shapely.wkb.loads(geometry.ExportToWkb())
+        prepared_polygon = shapely.prepared.prep(polygon)
+        if prepared_polygon.intersects(impact_polygon):
+            print '\npermitting area intersects! calculating area overlap'
+            intersection = impact_polygon.intersection(polygon)
+
+            biodiversity_impacts[ecosystem_type] = {
+                'area': intersection.area / 10000.0,
+                'mitigation_area': intersection.area / 10000.0 * impact_factor
+            }
+
+            print 'overlaps ', biodiversity_impacts[ecosystem_type]['area'],
+            print 'Ha required offset: ',
+            print biodiversity_impacts[ecosystem_type]['mitigation_area'], ' Ha'
+    print '\ndone'
+    return biodiversity_impacts
