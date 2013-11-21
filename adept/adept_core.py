@@ -233,7 +233,23 @@ def execute(args):
 
 
 def calculate_biodiversity_impact(permitting_area_ds_uri, ecosystems_ds_uri):
-    
+    """Generates a dictionary indexed by ecosystem name that has both the
+        impacted area and required offset area for mitigation.
+        
+        permitting_area_ds_uri - 
+        
+        ecosystems_ds_uri - 
+        
+        returns a dictionary of the format 
+            {
+                ecosystem_name_1: {
+                    'area': impacted area (float),
+                    'mitigation_area'; required_mitigation area (float)
+                    }
+                ecosystem_name_2...
+            }
+        """
+        
     #1) Load the permitting_area dataset into a shapely permitting_area_polygon
     permitting_area_ds = ogr.Open(permitting_area_ds_uri)
     permitting_area_layer = permitting_area_ds.GetLayer()
