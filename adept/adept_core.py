@@ -85,17 +85,17 @@ def execute(args):
     offset_biodiversity_column_index = 6
     for ecosystem_name, bio_impact_dict in biodiversity_impact.iteritems():
         ecosystem_name = unicode(ecosystem_name, 'utf-8')
-        impact_dict[0][ecosystem_name] = bio_impact_dict['area']
-        impact_dict[0]['(impact factor) ' + ecosystem_name] = (
+        impact_dict[0][ecosystem_name + " AREA (ha)"] = bio_impact_dict['area']
+        impact_dict[0][ecosystem_name + " IMPACT (area * factor)"] = (
             bio_impact_dict['mitigation_area'])
         
         impact_columns[offset_biodiversity_column_index] = {
-            'name': ecosystem_name,
+            'name': ecosystem_name + " AREA (ha)",
             'total': True,
         }
         offset_biodiversity_column_index += 1
         impact_columns[offset_biodiversity_column_index] = {
-            'name': '(impact factor) ' + ecosystem_name,
+            'name': ecosystem_name + " IMPACT (area * factor)",
             'total': True,
         }
         offset_biodiversity_column_index += 1
