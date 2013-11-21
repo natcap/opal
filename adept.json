@@ -36,7 +36,7 @@
                     "args_id": "impact_type",
                     "type": "dropdown",
                     "label": "Impact type",
-                    "options": ["Road/Mine", "Bare ground/Paved"],
+                    "options": ["Paved/Mine", "Road/Bare ground"],
                     "returns": "strings",
                     "defaultValue": 0
                 },
