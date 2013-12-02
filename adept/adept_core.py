@@ -34,13 +34,13 @@ def execute(args):
 
         Returns nothing."""
 
-    LOGGER.debug('   _____       .___             __   ')
-    LOGGER.debug('  /  _  \\    __| _/____ _______/  |_ ')
-    LOGGER.debug(' /  /_\\  \\  / __ |/ __ \\\\____ \\   __\\')
-    LOGGER.debug('/    |    \\/ /_/ \\  ___/|  |_> >  |  ')
-    LOGGER.debug('\\____|__  /\\____ |\\___  >   __/|__|  ')
-    LOGGER.debug('        \\/      \\/    \\/|__|         ')
-    LOGGER.debug('                                     ')
+    LOGGER.debug(r'   _____       .___             __    ')
+    LOGGER.debug(r'  /  _  \    __| _/____ _______/  |_  ')
+    LOGGER.debug(r' /  /_\  \  / __ |/ __ \\____ \   __\ ')
+    LOGGER.debug(r'/    |    \/ /_/ \  ___/|  |_> >  |   ')
+    LOGGER.debug(r'\____|__  /\____ |\___  >   __/|__|   ')
+    LOGGER.debug(r'        \/      \/    \/|__|          ')
+    LOGGER.debug(r'                                      ')
 
     raster_utils.create_directories([args['workspace_dir']])
 
