@@ -21,4 +21,4 @@ cd ..
 
 :: Now that everything is installed, we can run the permitting project's
 :: setup.py commands to build everything we want/need.
-%ENVDIR%\Scripts\python setup.py py2exe win_installer bdist_wininst
+%ENVDIR%\Scripts\python setup.py py2exe win_installer
