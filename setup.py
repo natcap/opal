@@ -5,6 +5,7 @@ import imp
 import os
 import subprocess
 import sys
+import glob
 
 import adept
 
@@ -53,6 +54,8 @@ if platform.system() == 'Windows':
     py2exe_options['console'] = ['run_adept.py']
 
     DATA_FILES.append(('invest_natcap/iui', iui_icons))
+    DATA_FILES.append(('adept/report_data',
+        glob.glob('adept/adept/report_data/*')))
 else:
     python_version = 'python%s' % '.'.join([str(r) for r in
         sys.version_info[:2]])
