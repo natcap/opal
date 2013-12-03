@@ -1,7 +1,7 @@
 {
     "id": "adept_window",
     "label": "Permitting",
-    "targetScript": "adept",
+    "targetScript": "adept.adept_core",
     "modelName": "permitting",
     "condenseElements": true,
     "height": 700,
