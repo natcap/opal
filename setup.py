@@ -13,7 +13,7 @@ py2exe_options = {}
 
 
 DATA_FILES = [('.', ['adept.json',
-                        'windows_build/msvcp90.dll'])]
+                        'msvcp90.dll'])]
 
 # Use the determined virtualenv site-packages path to add all files in the
 # IUI resources directory to our setup.py data files.
@@ -47,7 +47,6 @@ if platform.system() == 'Windows':
                 'scipy.sparse.csgraph._validation',
             ],
             'excludes': ['Tkconstants', 'Tkinter', 'tcl'],
-            'dll_excludes': ['mscvp90.dll'],
         },
         'build_installer': {'nsis_dir': dist_dir},
     }
