@@ -47,6 +47,7 @@ if platform.system() == 'Windows':
                 'scipy.sparse.csgraph._validation',
             ],
             'excludes': ['Tkconstants', 'Tkinter', 'tcl'],
+            'dll_excludes': ['mscvp90.dll'],
         },
         'build_installer': {'nsis_dir': dist_dir},
     }
@@ -140,5 +141,4 @@ setup(
     },
     version = adept.__version__,
     data_files = DATA_FILES,
-    packages=['adept'],
     **py2exe_options)
