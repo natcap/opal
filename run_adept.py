@@ -1,3 +1,6 @@
-import invest_natcap.iui.modelui
+import palisades
+from palisades import elements
 
-invest_natcap.iui.modelui.main('adept.json')
+ui = elements.Application('adept.json')
+gui = palisades.gui.build(ui._window)
+gui.execute()

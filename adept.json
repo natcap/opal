@@ -69,16 +69,17 @@
             }
         }, 
         {
-            "validateAs": {
-                "type": "OGR"
-            }, 
-            "type": "hideableFileEntry", 
-            "id": "ecosystems_map", 
-            "args_id": "ecosystems_map_uri", 
+            "hideable": true, 
+            "type": "file", 
             "label": {
                 "en": "Use custom ecosystems map", 
                 "es": null
-            }
+            }, 
+            "validateAs": {
+                "type": "OGR"
+            }, 
+            "id": "ecosystems_map", 
+            "args_id": "ecosystems_map_uri"
         }, 
         {
             "validateAs": {
