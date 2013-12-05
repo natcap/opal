@@ -1,137 +1,190 @@
 {
-    "id": "adept_window",
-    "label": "Permitting",
-    "targetScript": "adept.adept_core",
-    "modelName": "permitting",
-    "condenseElements": true,
-    "height": 700,
-    "width": 700,
+    "modelName": {
+        "en": "permitting", 
+        "es": null
+    }, 
+    "targetScript": "adept.adept_core", 
+    "height": 700, 
+    "width": 700, 
+    "condenseElements": true, 
     "elements": [
         {
-            "id": "workspace_list",
-            "type": "list",
-            "elements": [
-                {
-                    "id": "workspace",
-                    "type": "folder",
-                    "label": "Workspace",
-                    "args_id": "workspace_dir",
-                    "required": true,
-                    "validateAs": {"type": "folder", "permissions": "rwx"},
-                    "helpText": "Select a folder to be used as your workspace.  If the folder you select does not exist, it will be created for you.<br/><br/>This folder will contain the rasters produced by this model.  <b>If datasets already exist in this folder, they will be overwritten</b>.",
-                    "defaultValue": "./adept_workspace"
-                },
-                {
-                    "id": "project_footprint",
-                    "type": "file",
-                    "args_id": "project_footprint_uri",
-                    "label": "Project Footprint",
-                    "validateAs": {
-                        "type": "OGR"
-                    },
-                    "defaultValue": "./data/colombia_tool_data/Example permitting footprints/Example_mining_projects.shp"
-                },
-                {
-                    "id": "impact_type",
-                    "args_id": "impact_type",
-                    "type": "dropdown",
-                    "label": "Impact type",
-                    "options": ["Paved/Mine", "Road/Bare ground"],
-                    "returns": "strings",
-                    "defaultValue": 0
-                },
-                {
-                    "id": "area_of_influence",
-                    "args_id": "area_of_influence_uri",
-                    "type": "file",
-                    "label": "Area of Influence (optional)",
-                    "validateAs": {
-                        "type": "file"
-                    },
-                    "defaultValue": "./data/colombia_tool_data/sample_aoi.shp"
-                },
-                {
-                    "id": "ecosystems_map",
-                    "args_id": "ecosystems_map_uri",
-                    "type": "hideableFileEntry",
-                    "label": "Use custom ecosystems map",
-                    "validateAs": {"type": "OGR"}
-                },
-                {
-                    "id": "threat_map",
-                    "args_id": "threat_map",
-                    "type": "file",
-                    "label": "Threat map (optional)",
-                    "validateAs": {"type": "GDAL"}
-                },
-                {
-                    "id": "species_richness_map",
-                    "args_id": "species_richness_map",
-                    "type": "file",
-                    "label": "Species richness map (optional)",
-                    "validateAs": {"type": "GDAL"}
-                },
-                {
-                    "id": "avoidance_areas",
-                    "args_id": "avoidance_areas",
-                    "type": "file",
-                    "label": "Avoidance areas (optional)",
-                    "validateAs": {
-                        "type": "OGR",
-                        "layers": [
-                            {
-                                "name": {"inheritFrom": "file"},
-                                "type": "polygons"
-                            }
-                        ]
+            "type": "folder", 
+            "defaultValue": "./adept_workspace", 
+            "required": true, 
+            "label": {
+                "en": "Workspace", 
+                "es": null
+            }, 
+            "helpText": {
+                "en": "Select a folder to be used as your workspace.  If the folder you select does not exist, it will be created for you.<br/><br/>This folder will contain the rasters produced by this model.  <b>If datasets already exist in this folder, they will be overwritten</b>.", 
+                "es": null
+            }, 
+            "validateAs": {
+                "type": "folder", 
+                "permissions": "rwx"
+            }, 
+            "id": "workspace", 
+            "args_id": "workspace_dir"
+        }, 
+        {
+            "type": "file", 
+            "defaultValue": "./data/colombia_tool_data/Example permitting footprints/Example_mining_projects.shp", 
+            "validateAs": {
+                "type": "OGR"
+            }, 
+            "id": "project_footprint", 
+            "args_id": "project_footprint_uri", 
+            "label": {
+                "en": "Project Footprint", 
+                "es": null
+            }
+        }, 
+        {
+            "returns": "strings", 
+            "defaultValue": 0, 
+            "label": {
+                "en": "Impact type", 
+                "es": null
+            }, 
+            "type": "dropdown", 
+            "options": [
+                "Paved/Mine", 
+                "Road/Bare ground"
+            ], 
+            "args_id": "impact_type", 
+            "id": "impact_type"
+        }, 
+        {
+            "type": "file", 
+            "defaultValue": "./data/colombia_tool_data/sample_aoi.shp", 
+            "validateAs": {
+                "type": "file"
+            }, 
+            "id": "area_of_influence", 
+            "args_id": "area_of_influence_uri", 
+            "label": {
+                "en": "Area of Influence (optional)", 
+                "es": null
+            }
+        }, 
+        {
+            "validateAs": {
+                "type": "OGR"
+            }, 
+            "type": "hideableFileEntry", 
+            "id": "ecosystems_map", 
+            "args_id": "ecosystems_map_uri", 
+            "label": {
+                "en": "Use custom ecosystems map", 
+                "es": null
+            }
+        }, 
+        {
+            "validateAs": {
+                "type": "GDAL"
+            }, 
+            "type": "file", 
+            "id": "threat_map", 
+            "args_id": "threat_map", 
+            "label": {
+                "en": "Threat map (optional)", 
+                "es": null
+            }
+        }, 
+        {
+            "validateAs": {
+                "type": "GDAL"
+            }, 
+            "type": "file", 
+            "id": "species_richness_map", 
+            "args_id": "species_richness_map", 
+            "label": {
+                "en": "Species richness map (optional)", 
+                "es": null
+            }
+        }, 
+        {
+            "validateAs": {
+                "layers": [
+                    {
+                        "type": "polygons", 
+                        "name": {
+                            "inheritFrom": "file"
+                        }
                     }
-                },
-                {
-                    "id": "conservation_portfolio",
-                    "args_id": "conservation_portfolio",
-                    "type": "file",
-                    "label": "Conservation portfolio (optional)",
-                    "validateas": {
-                        "type": "OGR",
-                        "layers": [
-                            {
-                                "name": {"inheritfrom": "file"},
-                                "type": "polygons"
-                            }
-                        ]
+                ], 
+                "type": "OGR"
+            }, 
+            "type": "file", 
+            "id": "avoidance_areas", 
+            "args_id": "avoidance_areas", 
+            "label": {
+                "en": "Avoidance areas (optional)", 
+                "es": null
+            }
+        }, 
+        {
+            "validateas": {
+                "layers": [
+                    {
+                        "type": "polygons", 
+                        "name": {
+                            "inheritfrom": "file"
+                        }
                     }
-                },
-                {
-                    "id": "previously_granted_impacts",
-                    "args_id": "previously_granted_impacts",
-                    "type": "file",
-                    "label": "Previously granted impacts (optional)",
-                    "validateas": {
-                        "type": "GDAL"
-                    }
-                },
-                {
-                    "id": "previously_selected_offsets",
-                    "args_id": "previously_selected_offsets",
-                    "type": "file",
-                    "label": "Previously selected offsets (optional)",
-                    "validateas": {
-                        "type": "GDAL"
-                    }
-                },
-                {
-                    "id": "custom_static_maps",
-                    "args_id": "custom_static_map_uri",
-                    "type": "file",
-                    "label": "Custom static map (optional)",
-                    "validateas": {
-                        "type": "GDAL"
-                    },
-                    "defaultValue": "./data/colombia_tool_data/sample_static_impact_map.tif"
-                }
-            ]
+                ], 
+                "type": "OGR"
+            }, 
+            "type": "file", 
+            "id": "conservation_portfolio", 
+            "args_id": "conservation_portfolio", 
+            "label": {
+                "en": "Conservation portfolio (optional)", 
+                "es": null
+            }
+        }, 
+        {
+            "validateas": {
+                "type": "GDAL"
+            }, 
+            "type": "file", 
+            "id": "previously_granted_impacts", 
+            "args_id": "previously_granted_impacts", 
+            "label": {
+                "en": "Previously granted impacts (optional)", 
+                "es": null
+            }
+        }, 
+        {
+            "validateas": {
+                "type": "GDAL"
+            }, 
+            "type": "file", 
+            "id": "previously_selected_offsets", 
+            "args_id": "previously_selected_offsets", 
+            "label": {
+                "en": "Previously selected offsets (optional)", 
+                "es": null
+            }
+        }, 
+        {
+            "type": "file", 
+            "defaultValue": "./data/colombia_tool_data/sample_static_impact_map.tif", 
+            "validateas": {
+                "type": "GDAL"
+            }, 
+            "id": "custom_static_maps", 
+            "args_id": "custom_static_map_uri", 
+            "label": {
+                "en": "Custom static map (optional)", 
+                "es": null
+            }
         }
-    ]
+    ], 
+    "label": {
+        "en": "Permitting", 
+        "es": null
+    }, 
+    "id": "adept_window"
 }
-
-
