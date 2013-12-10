@@ -41,7 +41,7 @@
             }
         }, 
         {
-            "returns": "strings", 
+            "returns": {"type": "strings"}, 
             "defaultValue": 0, 
             "label": {
                 "en": "Impact type", 
