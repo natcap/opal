@@ -12,7 +12,7 @@
         "build_folder": "..\\adept_py2exe",
         "publisher": "The Natural Capital Project",
         "website": "http://www.naturalcapitalproject.org",
-        "languages": ["English", "Spanish"],
+        "languages": ["English", "Spanish"]
     },
     "installer": {
         "title": "${TITLE}",

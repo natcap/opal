@@ -1,6 +1,6 @@
 """Genesis - NSIS generator"""
 
-import demjson  # using for js compaibility -- comments in JSON files.
+import json
 import sys
 import argparse
 
@@ -95,7 +95,7 @@ UNINSTALLER_REG_KEYS = """
 
 def build_installer_script(config_file_uri, out_file_uri):
     new_file = open(out_file_uri, 'w')
-    config_dict = demjson.decode(open(config_file_uri).read())
+    config_dict = json.loads(open(config_file_uri).read())
 
     # check for default values before writing the script.
     sanitized_config = check_defaults(config_dict)
