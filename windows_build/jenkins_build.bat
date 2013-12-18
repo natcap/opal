@@ -13,6 +13,11 @@ copy C:\Python27\Lib\distutils\distutils.cfg .\%ENVDIR%\Lib\distutils\distutils.
 cd invest-natcap.invest-3
 ..\%ENVDIR%\Scripts\python setup.py build_ext install
 cd ..
+::
+:: CD to the palisades directory to install it to the virtual environment
+cd user-interface
+..\%ENVDIR%\Scripts\python setup.py build_ext install
+cd ..
 
 :: CD to the Adept directory to install adept to the virtual environment
 cd adept
