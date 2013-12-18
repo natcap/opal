@@ -70,7 +70,7 @@ Section "uninstall"
     ; Need to enforce execution level as admin.  See
     ; nsis.sourceforge.net/Shortcuts_removal_fails_on_Windows_Vista
     SetShellVarContext all
-    rmdir /r "$SMPROGRAMS\${START_MENU_FOLDER}"
+    rmdir /r "${START_MENU_FOLDER}"
 
     ; Delete the installation directory on disk
     rmdir /r "$INSTDIR"
