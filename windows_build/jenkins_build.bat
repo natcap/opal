@@ -9,6 +9,8 @@ IF NOT "%1" == "" SET PYTHON="%1"
 %PYTHON% setup_environment.py --clear --system-site-packages %ENVDIR%
 copy C:\Python27\Lib\distutils\distutils.cfg .\%ENVDIR%\Lib\distutils\distutils.cfg
 
+%ENVDIR%\Scripts\pip install windows_build\dbfpy-2.2.5.tar.gz
+
 :: CD to the invest-3 directory to install it to the virtual environment
 cd invest-natcap.invest-3
 ..\%ENVDIR%\Scripts\python setup.py build_ext install
