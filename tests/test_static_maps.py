@@ -26,7 +26,7 @@ class StaticMapTest(GISTest):
         }
 
         lulc_uri = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
-        workspace = raster_utils.temporary_folder()
+        workspace = 'test_workspace'
         static_maps.execute_model('sediment', lulc_uri, workspace,
             config=config)
 
