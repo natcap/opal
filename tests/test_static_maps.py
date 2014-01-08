@@ -8,9 +8,9 @@ DATA = os.path.join(os.path.dirname(__file__), '..', 'data')
 CLIPPED_DATA = os.path.join(DATA, 'colombia_clipped')
 FULL_DATA = os.path.join(DATA, 'colombia_tool_data')
 
-class StaticMapTest(GISTest):
-    def test_execute_sediment_smoke(self):
-        config = {
+class SedimentStaticMapTest(GISTest):
+    def setUp(self):
+        self.config = {
             "workspace_dir": "",
             "dem_uri": os.path.join(CLIPPED_DATA, 'dem.tif'),
             "erosivity_uri": os.path.join(CLIPPED_DATA, "erosivity.tif"),
@@ -25,9 +25,18 @@ class StaticMapTest(GISTest):
             "sediment_threshold_table_uri": os.path.join(FULL_DATA, "sediment_threshold.csv"),
         }
 
+    def test_execute_sediment_smoke(self):
         lulc_uri = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
         workspace = 'test_workspace'
         static_maps.execute_model('sediment', lulc_uri, workspace,
-            config=config)
+            config=self.config)
+
+    def test_sediment_static_map(self):
+        lulc_uri = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
+        target_lucode = 124
+        static_map_uri = 'sediment_static_map.tif'
+
+        static_maps.build_static_map('sediment', lulc_uri, target_lucode,
+            static_map_uri, config=self.config)
 
 
