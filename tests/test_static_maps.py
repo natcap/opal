@@ -39,4 +39,28 @@ class SedimentStaticMapTest(GISTest):
         static_maps.build_static_map('sediment', lulc_uri, target_lucode,
             static_map_uri, config=self.config)
 
+class CarbonStaticMapTest(GISTest):
+    def setUp(self):
+        self.config = {
+            "workspace_dir": "",
+            "do_biophysical": True,
+            "do_uncertainty": False,
+            "do_valuation": False,
+            "lulc_cur_uri": "",
+            "carbon_pools_uri": os.path.join(FULL_DATA, "Carbon_pools_Colombia.csv")
+        }
+
+    def test_execute_carbon_smoke(self):
+        lulc_uri = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
+        workspace = 'test_workspace_carbon'
+        static_maps.execute_model('carbon', lulc_uri, workspace,
+            config=self.config)
+
+    def test_carbon_static_map(self):
+        lulc_uri = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
+        target_lucode = 124
+        static_map_uri = 'carbon_static_map.tif'
+
+        static_maps.build_static_map('carbon', lulc_uri, target_lucode,
+            static_map_uri, config=self.config)
 
