@@ -20,7 +20,7 @@ class SedimentStaticMapTest(GISTest):
             "reservoir_locations_uri": os.path.join(CLIPPED_DATA, "reservoirs.shp"),
             "reservoir_properties_uri": "",
             "biophysical_table_uri": os.path.join(FULL_DATA, "Biophysical_Colombia.csv"),
-            "threshold_flow_accumulation": 4000,
+            "threshold_flow_accumulation": 40,
             "slope_threshold": "5",
             "sediment_threshold_table_uri": os.path.join(FULL_DATA, "sediment_threshold.csv"),
         }
