@@ -13,11 +13,12 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     workspace = os.path.join(os.getcwd(), 'neighborhood_analysis')
     raster_utils.create_directories([workspace])
 
-    es_raster_raw = os.path.join(os.getcwd(), 'es_raw.tif')
+    es_raster_raw = os.path.join(workspace, 'es_raw.tif')
     es_raster_nodata = raster_utils.get_nodata_from_uri(es_raster_raw)
+    es_raster_pixel_size = raster_utils.get_cell_size_from_uri(es_raster_raw)
 
-    raster_utils.new_raster_from_base_uri(sample_raster, es_raster_raw, 'GTiff', -1
-        gdal.GDT_Int32)
+    raster_utils.new_raster_from_base_uri(sample_raster, es_raster_raw,
+        'GTiff', -1, gdal.GDT_Int32)
 
     raster_utils.rasterize_layer_uri(es_raster_raw, ecosystems_vector,
             option_list=["ATTRIBUTE=lucode"])
@@ -36,7 +37,7 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
 
         binned_raster = os.path.join(workspace, "%s_bin.tif" % min_lucode)
         raster_utils.reclassify_by_dictionary(es_raster_raw, reclass_map,
-            binned_raster, 'GTiff', es_nodata, gdal.GDT_Int32)
+            binned_raster, 'GTiff', es_raster_nodata, gdal.GDT_Int32, 0.0)
 
         filtered_raster = os.path.join(workspace, "%s_bin_filtered.tif" %
             min_lucode)
@@ -45,6 +46,15 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
 
         filtered_rasters.append(filtered_raster)
 
+    def pick_values(*pixels):
+        return max(pixels)
 
+    expanded_raster = os.path.join(workspace, 'es_complete.tif')
+    raster_utils.vectorize_datasets(filtered_rasters, pick_values,
+        expanded_raster, gdal.GDT_Float32, es_raster_nodata,
+        es_raster_pixel_size, 'intersection')
 
+if __name__ == '__main__':
+    neighborhood_analysis('data/colombia_tool_data/Ecosystems_Col.shp',
+        'data/colombia_tool_data/DEM.tif')
 
