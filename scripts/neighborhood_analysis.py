@@ -42,7 +42,7 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
 
         LOGGER.debug('Binning lucode %s', min_lucode)
         binned_raster = os.path.join(workspace, "%s_bin.tif" % min_lucode)
-        raster_utils.reclassify_by_dictionary(es_raster_raw, reclass_map,
+        raster_utils.reclassify_by_dictionary(gdal.Open(es_raster_raw), reclass_map,
             binned_raster, 'GTiff', es_raster_nodata, gdal.GDT_Int32, 0.0)
 
         LOGGER.debug('Starting gaussian filter for bin %s', min_lucode)
