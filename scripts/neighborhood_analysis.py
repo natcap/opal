@@ -14,11 +14,11 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     raster_utils.create_directories([workspace])
 
     es_raster_raw = os.path.join(workspace, 'es_raw.tif')
-    es_raster_nodata = raster_utils.get_nodata_from_uri(es_raster_raw)
-    es_raster_pixel_size = raster_utils.get_cell_size_from_uri(es_raster_raw)
 
     raster_utils.new_raster_from_base_uri(sample_raster, es_raster_raw,
         'GTiff', -1, gdal.GDT_Int32)
+    es_raster_nodata = raster_utils.get_nodata_from_uri(es_raster_raw)
+    es_raster_pixel_size = raster_utils.get_cell_size_from_uri(es_raster_raw)
 
     raster_utils.rasterize_layer_uri(es_raster_raw, ecosystems_vector,
             option_list=["ATTRIBUTE=lucode"])
