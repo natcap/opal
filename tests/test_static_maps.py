@@ -1,4 +1,5 @@
 import os
+import unittest
 
 from invest_natcap.testing import GISTest
 from invest_natcap import raster_utils
@@ -39,6 +40,15 @@ class SedimentStaticMapTest(GISTest):
         static_maps.build_static_map('sediment', lulc_uri, target_lucode,
             static_map_uri, config=self.config)
 
+    @unittest.skip("This takes 13 hours to run.")
+    def test_sediment_static_map_full(self):
+        lulc_uri = os.path.join(FULL_DATA, 'ecosystems.tif')
+        target_lucode = 124
+        static_map_uri = 'sediment_static_map_full.tif'
+
+        static_maps.build_static_map('sediment', lulc_uri, target_lucode,
+            static_map_uri)
+
 class CarbonStaticMapTest(GISTest):
     def setUp(self):
         self.config = {
@@ -63,4 +73,13 @@ class CarbonStaticMapTest(GISTest):
 
         static_maps.build_static_map('carbon', lulc_uri, target_lucode,
             static_map_uri, config=self.config)
+
+    @unittest.skip("This takes a long time to run")
+    def test_carbon_static_map_full(self):
+        lulc_uri = os.path.join(FULL_DATA, 'ecosystems.tif')
+        target_lucode = 124
+        static_map_uri = 'carbon_static_map_full.tif'
+
+        static_maps.build_static_map('carbon', lulc_uri, target_lucode,
+            static_map_uri)
 
