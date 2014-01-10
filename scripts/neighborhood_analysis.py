@@ -1,7 +1,10 @@
 import os
+import logging
 
 from osgeo import gdal
 from invest_natcap import raster_utils
+
+LOGGER = logging.getLogger('neighborhood_analysis')
 
 def neighborhood_analysis(ecosystems_vector, sample_raster):
     # create a new raster for the ecosystems vector to be burned to.
@@ -15,11 +18,13 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
 
     es_raster_raw = os.path.join(workspace, 'es_raw.tif')
 
+    LOGGER.debug('Creating new raster from base')
     raster_utils.new_raster_from_base_uri(sample_raster, es_raster_raw,
         'GTiff', -1, gdal.GDT_Int32)
     es_raster_nodata = raster_utils.get_nodata_from_uri(es_raster_raw)
     es_raster_pixel_size = raster_utils.get_cell_size_from_uri(es_raster_raw)
 
+    LOGGER.debug('Rasterizing ecosystems vector')
     raster_utils.rasterize_layer_uri(es_raster_raw, ecosystems_vector,
             option_list=["ATTRIBUTE=lucode"])
 
@@ -35,10 +40,12 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
         min_lucode = lu_bin[0]
         reclass_map = dict((code, min_lucode) for code in lu_bin)
 
+        LOGGER.debug('Binning lucode %s', min_lucode)
         binned_raster = os.path.join(workspace, "%s_bin.tif" % min_lucode)
         raster_utils.reclassify_by_dictionary(es_raster_raw, reclass_map,
             binned_raster, 'GTiff', es_raster_nodata, gdal.GDT_Int32, 0.0)
 
+        LOGGER.debug('Starting gaussian filter for bin %s', min_lucode)
         filtered_raster = os.path.join(workspace, "%s_bin_filtered.tif" %
             min_lucode)
         raster_utils.gaussian_filter_dataset(binned_raster, 5, filtered_raster,
@@ -49,6 +56,7 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     def pick_values(*pixels):
         return max(pixels)
 
+    LOGGER.debug('Picking the final raster')
     expanded_raster = os.path.join(workspace, 'es_complete.tif')
     raster_utils.vectorize_datasets(filtered_rasters, pick_values,
         expanded_raster, gdal.GDT_Float32, es_raster_nodata,
