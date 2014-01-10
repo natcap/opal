@@ -48,7 +48,7 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
         LOGGER.debug('Starting gaussian filter for bin %s', min_lucode)
         filtered_raster = os.path.join(workspace, "%s_bin_filtered.tif" %
             min_lucode)
-        raster_utils.gaussian_filter_dataset(binned_raster, 5, filtered_raster,
+        raster_utils.gaussian_filter_dataset_uri(binned_raster, 5, filtered_raster,
             es_raster_nodata)
 
         filtered_rasters.append(filtered_raster)
