@@ -55,6 +55,8 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
         es_raster_pixel_size, 'intersection')
 
 if __name__ == '__main__':
-    neighborhood_analysis('data/colombia_tool_data/Ecosystems_Col.shp',
-        'data/colombia_tool_data/DEM.tif')
+    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
+    ecosystems_vector = os.path.join(tool_data_dir, 'Ecosystems_Colombia.shp')
+    dem_raster = os.path.join(tool_data_dir, 'DEM.tif')
+    neighborhood_analysis(ecosystems_vector, dem_raster)
 
