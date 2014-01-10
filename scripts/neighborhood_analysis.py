@@ -1,0 +1,50 @@
+import os
+
+from osgeo import gdal
+from invest_natcap import raster_utils
+
+def neighborhood_analysis(ecosystems_vector, sample_raster):
+    # create a new raster for the ecosystems vector to be burned to.
+    # burn the ecosystems vector into the new raster
+    # reclassify: bin desired lucodes into lucode groups
+    # gaussian filter each lucode  # later on, we'll add an expansion factor
+    # Vectorize this stack of filtered lucode groups, picking the highest val.
+
+    workspace = os.path.join(os.getcwd(), 'neighborhood_analysis')
+    raster_utils.create_directories([workspace])
+
+    es_raster_raw = os.path.join(os.getcwd(), 'es_raw.tif')
+    es_raster_nodata = raster_utils.get_nodata_from_uri(es_raster_raw)
+
+    raster_utils.new_raster_from_base_uri(sample_raster, es_raster_raw, 'GTiff', -1
+        gdal.GDT_Int32)
+
+    raster_utils.rasterize_layer_uri(es_raster_raw, ecosystems_vector,
+            option_list=["ATTRIBUTE=lucode"])
+
+    lucode_bins = [
+        range(51, 81),  # we want values from 50-80, inclusive.
+        range(138, 149),
+        range(149, 168),
+        range(168, 187),
+        range(244, 272),
+    ]
+    filtered_rasters = []
+    for lu_bin in lucode_bins:
+        min_lucode = lu_bin[0]
+        reclass_map = dict((code, min_lucode) for code in lu_bin)
+
+        binned_raster = os.path.join(workspace, "%s_bin.tif" % min_lucode)
+        raster_utils.reclassify_by_dictionary(es_raster_raw, reclass_map,
+            binned_raster, 'GTiff', es_nodata, gdal.GDT_Int32)
+
+        filtered_raster = os.path.join(workspace, "%s_bin_filtered.tif" %
+            min_lucode)
+        raster_utils.gaussian_filter_dataset(binned_raster, 5, filtered_raster,
+            es_raster_nodata)
+
+        filtered_rasters.append(filtered_raster)
+
+
+
+
