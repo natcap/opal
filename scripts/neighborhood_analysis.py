@@ -38,7 +38,7 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     filtered_rasters = []
     for lu_bin in lucode_bins:
         min_lucode = lu_bin[0]
-        reclass_map = dict((code, min_lucode) for code in lu_bin)
+        reclass_map = dict((code, 1.0) for code in lu_bin)
 
         LOGGER.debug('Binning lucode %s', min_lucode)
         binned_raster = os.path.join(workspace, "%s_bin.tif" % min_lucode)
