@@ -53,18 +53,32 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
 
         filtered_rasters.append(filtered_raster)
 
-    def pick_values(*pixels):
-        return max(pixels)
+    natural_landcovers = []
+    for natural_bin in lucode_bins:
+        natural_landcovers += natural_bin
+
+    def pick_values(starting_lulc, *filtered_pixels):
+        if starting_lulc not in natural_landcovers:
+            return starting_lulc
+
+        max_value = max(filtered_pixels)
+        max_index = filtered_pixels.index(max_value)
+        return lucode_bins[max_index][0]
 
     LOGGER.debug('Picking the final raster')
     expanded_raster = os.path.join(workspace, 'es_complete.tif')
-    raster_utils.vectorize_datasets(filtered_rasters, pick_values,
+    raster_utils.vectorize_datasets([es_raster_raw] + filtered_rasters, pick_values,
         expanded_raster, gdal.GDT_Float32, es_raster_nodata,
         es_raster_pixel_size, 'intersection')
 
 if __name__ == '__main__':
-    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
-    ecosystems_vector = os.path.join(tool_data_dir, 'Ecosystems_Colombia.shp')
-    dem_raster = os.path.join(tool_data_dir, 'DEM.tif')
+#    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
+#    ecosystems_vector = os.path.join(tool_data_dir, 'Ecosystems_Colombia.shp')
+#    dem_raster = os.path.join(tool_data_dir, 'DEM.tif')
+
+    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_clipped')
+    ecosystems_vector = os.path.join(tool_data_dir, 'ecosystems_colombia.shp')
+    dem_raster = os.path.join(tool_data_dir, 'dem.tif')
+
     neighborhood_analysis(ecosystems_vector, dem_raster)
 
