@@ -53,6 +53,28 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
 
         filtered_rasters.append(filtered_raster)
 
+    # Objective: prevent plantations from expanding to natural forest.
+    #
+    # Take the plantation landcover (workspace/138_bin.tif) and mask out all
+    # the pixels where there is natural forest in the original landcover.
+    # Then, use this new raster instead of the 138_bin.tif raster in the
+    # filtered_rasters list.
+    plantation_raster = os.path.join(workspace, "%s_bin_filtered.tif" % 138)
+    plantation_no_forest = os.path.join(workspace, "%s_bin_filtered_no_forest.tif" % 138)
+    plantation_index = filtered_rasters.index(plantation_raster)
+    filtered_rasters[plantation_index] = plantation_no_forest
+    natural_forest = range(110, 138)
+
+    def mask_out_natural_forest(orig_lulc, expansion_index):
+        if orig_lulc in natural_forest:
+            return 0.0
+        return expansion_index
+
+    raster_utils.vectorize_datasets([es_raster_raw, plantation_raster],
+        mask_out_natural_forest, plantation_no_forest, gdal.GDT_Float32,
+        es_raster_nodata, es_raster_pixel_size, 'intersection')
+
+
     natural_landcovers = []
     for natural_bin in lucode_bins:
         natural_landcovers += natural_bin
