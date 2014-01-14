@@ -1,5 +1,7 @@
 import os
 import logging
+import cProfile
+import pstats
 
 from osgeo import gdal
 from invest_natcap import raster_utils
@@ -29,7 +31,7 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
             option_list=["ATTRIBUTE=lucode"])
 
     lucode_bins = [
-        range(51, 81),  # we want values from 50-80, inclusive.
+        range(51, 81),  # we want values from 51-80, inclusive.
         range(138, 149),
         range(149, 168),
         range(168, 187),
@@ -75,12 +77,29 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
         es_raster_nodata, es_raster_pixel_size, 'intersection')
 
 
-    natural_landcovers = []
-    for natural_bin in lucode_bins:
-        natural_landcovers += natural_bin
+    expanding_landcovers = []
+    for expanding_bin in lucode_bins:
+        expanding_landcovers += expanding_bin
+
+    persistent_landcover_groups = [
+        range(1, 4),  # [1-3], Aflorametes rocoscos
+        range(4, 9),  # [4-9], Aguas continentales artificiales
+        range(10, 29),  #[10-29], Aguas continentales naturales
+        range(81, 88),  #[81-88], (A)reas mayormente alteradas
+        range(89, 109), #[89-109], (a)reas urbanas
+        range(187, 188), #[187-188], Glaciares y nieves
+        range(236, 240), #[236-240], Lagunas costeras
+        range(301, 314)  #[301-314], Zonas desnudas, sin o con poca vegetaci(o)n
+    ]
+    landcovers_that_persist = []
+    for persistent_landcover in persistent_landcover_groups:
+        landcovers_that_persist += persistent_landcover
 
     def pick_values(starting_lulc, *filtered_pixels):
-        if starting_lulc not in natural_landcovers:
+        if starting_lulc in landcovers_that_persist:
+            return starting_lulc
+
+        if starting_lulc not in expanding_landcovers:
             return starting_lulc
 
         max_value = max(filtered_pixels)
