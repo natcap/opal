@@ -53,7 +53,18 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
         raster_utils.gaussian_filter_dataset_uri(binned_raster, 5, filtered_raster,
             es_raster_nodata)
 
-        filtered_rasters.append(filtered_raster)
+        def check_orig_landcover(orig_lucode, filtered_value):
+            if orig_lucode in reclass_map:
+                return 1.0
+            return filtered_value
+
+        lossless_raster = os.path.join(workspace,
+            "%s_bin_filtered_lossless.tif" % min_lucode)
+        raster_utils.vectorize_datasets([es_raster_raw, filtered_raster],
+            check_orig_landcover, lossless_raster, gdal.GDT_Float32,
+            es_raster_nodata, es_raster_pixel_size, 'intersection')
+
+        filtered_rasters.append(lossless_raster)
 
     # Objective: prevent plantations from expanding to natural forest.
     #
@@ -61,15 +72,21 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     # the pixels where there is natural forest in the original landcover.
     # Then, use this new raster instead of the 138_bin.tif raster in the
     # filtered_rasters list.
-    plantation_raster = os.path.join(workspace, "%s_bin_filtered.tif" % 138)
+    plantation_raster = os.path.join(workspace, "%s_bin_filtered_lossless.tif" % 138)
     plantation_no_forest = os.path.join(workspace, "%s_bin_filtered_no_forest.tif" % 138)
     plantation_index = filtered_rasters.index(plantation_raster)
     filtered_rasters[plantation_index] = plantation_no_forest
     natural_forest = range(110, 138)
 
+    natural_forest_map = dict((forest_lucode, 0.0) for forest_lucode in natural_forest)
+
     def mask_out_natural_forest(orig_lulc, expansion_index):
-        if orig_lulc in natural_forest:
-            return 0.0
+#        if orig_lulc in natural_forest:
+#            return 0.0
+#        return expansion_index
+
+        if orig_lulc in natural_forest_map:
+            return orig_lulc
         return expansion_index
 
     raster_utils.vectorize_datasets([es_raster_raw, plantation_raster],
@@ -83,28 +100,48 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
 
     persistent_landcover_groups = [
         range(1, 4),  # [1-3], Aflorametes rocoscos
-        range(4, 9),  # [4-9], Aguas continentales artificiales
-        range(10, 29),  #[10-29], Aguas continentales naturales
-        range(81, 88),  #[81-88], (A)reas mayormente alteradas
-        range(89, 109), #[89-109], (a)reas urbanas
-        range(187, 188), #[187-188], Glaciares y nieves
-        range(236, 240), #[236-240], Lagunas costeras
-        range(301, 314)  #[301-314], Zonas desnudas, sin o con poca vegetaci(o)n
+        range(4, 10),  # [4-9], Aguas continentales artificiales
+        range(10, 30),  #[10-29], Aguas continentales naturales
+        range(81, 89),  #[81-88], (A)reas mayormente alteradas
+        range(89, 110), #[89-109], (a)reas urbanas
+        range(187, 189), #[187-188], Glaciares y nieves
+        range(236, 241), #[236-240], Lagunas costeras
+        range(301, 315)  #[301-314], Zonas desnudas, sin o con poca vegetaci(o)n
     ]
+
+    persistent_landcovers = {}
+    for landcover_group in persistent_landcover_groups:
+        for lucode in landcover_group:
+            persistent_landcovers[lucode] = lucode
+
     landcovers_that_persist = []
     for persistent_landcover in persistent_landcover_groups:
         landcovers_that_persist += persistent_landcover
 
+
+    # FOR INFORMATION:
+    # calculate and report which landcovers can be expanded into.
+    all_landcovers = range(1, 315)
+    for persistent_lulc in landcovers_that_persist:
+        all_landcovers.remove(persistent_lulc)
+    for expanding_landcover in expanding_landcovers:
+        all_landcovers.remove(expanding_landcover)
+    LOGGER.debug('Non-natural landcovers can expand into these landcovers: %s',
+        all_landcovers)
+
+    bin_lucodes = dict((index, lu_bin[0]) for (index, lu_bin) in
+            enumerate(lucode_bins))
+
     def pick_values(starting_lulc, *filtered_pixels):
-        if starting_lulc in landcovers_that_persist:
-            return starting_lulc
+        if starting_lulc == es_raster_nodata:
+            return es_raster_nodata
 
-        if starting_lulc not in expanding_landcovers:
-            return starting_lulc
-
-        max_value = max(filtered_pixels)
-        max_index = filtered_pixels.index(max_value)
-        return lucode_bins[max_index][0]
+        if starting_lulc in persistent_landcovers:
+            return persistent_landcovers[starting_lulc]
+        else:
+            max_value = max(filtered_pixels)
+            max_index = filtered_pixels.index(max_value)
+            return bin_lucodes[max_index]
 
     LOGGER.debug('Picking the final raster')
     expanded_raster = os.path.join(workspace, 'es_complete.tif')
