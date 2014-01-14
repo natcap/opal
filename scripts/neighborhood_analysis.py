@@ -2,11 +2,33 @@ import os
 import logging
 import cProfile
 import pstats
+import itertools
 
 from osgeo import gdal
 from invest_natcap import raster_utils
 
 LOGGER = logging.getLogger('neighborhood_analysis')
+
+# These landcover codes will be retained as-is.
+PERSISTENT_LUCODES = itertools.chain(*[
+    range(1, 4),  # [1-3], Aflorametes rocoscos
+    range(4, 10),  # [4-9], Aguas continentales artificiales
+    range(10, 30),  #[10-29], Aguas continentales naturales
+    range(81, 89),  #[81-88], (A)reas mayormente alteradas
+    range(89, 110), #[89-109], (a)reas urbanas
+    range(187, 189), #[187-188], Glaciares y nieves
+    range(236, 241), #[236-240], Lagunas costeras
+    range(301, 315)  #[301-314], Zonas desnudas, sin o con poca vegetaci(o)n
+])
+
+# These are land use codes that can expand.
+EXPANDING_LUCODE_BINS = [
+    range(51, 81),   # we want values from 51-80, inclusive.
+    range(138, 149),
+    range(149, 168),
+    range(168, 187),
+    range(244, 272),
+]
 
 def neighborhood_analysis(ecosystems_vector, sample_raster):
     # create a new raster for the ecosystems vector to be burned to.
@@ -30,17 +52,39 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     raster_utils.rasterize_layer_uri(es_raster_raw, ecosystems_vector,
             option_list=["ATTRIBUTE=lucode"])
 
-    lucode_bins = [
-        range(51, 81),  # we want values from 51-80, inclusive.
-        range(138, 149),
-        range(149, 168),
-        range(168, 187),
-        range(244, 272),
-    ]
+#    persistent_landcover_groups = [
+#        range(1, 4),  # [1-3], Aflorametes rocoscos
+#        range(4, 10),  # [4-9], Aguas continentales artificiales
+#        range(10, 30),  #[10-29], Aguas continentales naturales
+#        range(81, 89),  #[81-88], (A)reas mayormente alteradas
+#        range(89, 110), #[89-109], (a)reas urbanas
+#        range(187, 189), #[187-188], Glaciares y nieves
+#        range(236, 241), #[236-240], Lagunas costeras
+#        range(301, 315)  #[301-314], Zonas desnudas, sin o con poca vegetaci(o)n
+#    ]
+
+    # Create a dictionary of persistent landcover codes, mapping to the output
+    # landcover code.
+    persistent_landcovers = dict((lucode, lucode) for lucode in
+        PERSISTENT_LUCODES)
+#    persistent_landcovers = {}
+#    for landcover_group in persistent_landcover_groups:
+#        persistent_landcovers[lucode] = lucode
+
+#    lucode_bins = [
+#        range(51, 81),  # we want values from 51-80, inclusive.
+#        range(138, 149),
+#        range(149, 168),
+#        range(168, 187),
+#        range(244, 272),
+#    ]
     filtered_rasters = []
-    for lu_bin in lucode_bins:
+    for lu_bin in EXPANDING_LUCODE_BINS:
         min_lucode = lu_bin[0]
         reclass_map = dict((code, 1.0) for code in lu_bin)
+
+        for code in lu_bin:
+            persistent_landcovers[code] = min_lucode
 
         LOGGER.debug('Binning lucode %s', min_lucode)
         binned_raster = os.path.join(workspace, "%s_bin.tif" % min_lucode)
@@ -53,18 +97,19 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
         raster_utils.gaussian_filter_dataset_uri(binned_raster, 5, filtered_raster,
             es_raster_nodata)
 
-        def check_orig_landcover(orig_lucode, filtered_value):
-            if orig_lucode in reclass_map:
-                return 1.0
-            return filtered_value
-
-        lossless_raster = os.path.join(workspace,
-            "%s_bin_filtered_lossless.tif" % min_lucode)
-        raster_utils.vectorize_datasets([es_raster_raw, filtered_raster],
-            check_orig_landcover, lossless_raster, gdal.GDT_Float32,
-            es_raster_nodata, es_raster_pixel_size, 'intersection')
-
-        filtered_rasters.append(lossless_raster)
+        filtered_rasters.append(filtered_raster)
+#        def check_orig_landcover(orig_lucode, filtered_value):
+#            if orig_lucode in reclass_map:
+#                return 1.0
+#            return filtered_value
+#
+#        lossless_raster = os.path.join(workspace,
+#            "%s_bin_filtered_lossless.tif" % min_lucode)
+#        raster_utils.vectorize_datasets([es_raster_raw, filtered_raster],
+#            check_orig_landcover, lossless_raster, gdal.GDT_Float32,
+#            es_raster_nodata, es_raster_pixel_size, 'intersection')
+#
+#        filtered_rasters.append(lossless_raster)
 
     # Objective: prevent plantations from expanding to natural forest.
     #
@@ -72,7 +117,8 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     # the pixels where there is natural forest in the original landcover.
     # Then, use this new raster instead of the 138_bin.tif raster in the
     # filtered_rasters list.
-    plantation_raster = os.path.join(workspace, "%s_bin_filtered_lossless.tif" % 138)
+#    plantation_raster = os.path.join(workspace, "%s_bin_filtered_lossless.tif" % 138)
+    plantation_raster = os.path.join(workspace, "%s_bin_filtered.tif" % 138)
     plantation_no_forest = os.path.join(workspace, "%s_bin_filtered_no_forest.tif" % 138)
     plantation_index = filtered_rasters.index(plantation_raster)
     filtered_rasters[plantation_index] = plantation_no_forest
@@ -94,43 +140,18 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
         es_raster_nodata, es_raster_pixel_size, 'intersection')
 
 
-    expanding_landcovers = []
-    for expanding_bin in lucode_bins:
-        expanding_landcovers += expanding_bin
-
-    persistent_landcover_groups = [
-        range(1, 4),  # [1-3], Aflorametes rocoscos
-        range(4, 10),  # [4-9], Aguas continentales artificiales
-        range(10, 30),  #[10-29], Aguas continentales naturales
-        range(81, 89),  #[81-88], (A)reas mayormente alteradas
-        range(89, 110), #[89-109], (a)reas urbanas
-        range(187, 189), #[187-188], Glaciares y nieves
-        range(236, 241), #[236-240], Lagunas costeras
-        range(301, 315)  #[301-314], Zonas desnudas, sin o con poca vegetaci(o)n
-    ]
-
-    persistent_landcovers = {}
-    for landcover_group in persistent_landcover_groups:
-        for lucode in landcover_group:
-            persistent_landcovers[lucode] = lucode
-
-    landcovers_that_persist = []
-    for persistent_landcover in persistent_landcover_groups:
-        landcovers_that_persist += persistent_landcover
-
-
     # FOR INFORMATION:
     # calculate and report which landcovers can be expanded into.
     all_landcovers = range(1, 315)
-    for persistent_lulc in landcovers_that_persist:
+    for persistent_lulc in PERSISTENT_LUCODES:
         all_landcovers.remove(persistent_lulc)
-    for expanding_landcover in expanding_landcovers:
+    for expanding_landcover in itertools.chain(*EXPANDING_LUCODE_BINS):
         all_landcovers.remove(expanding_landcover)
     LOGGER.debug('Non-natural landcovers can expand into these landcovers: %s',
         all_landcovers)
 
     bin_lucodes = dict((index, lu_bin[0]) for (index, lu_bin) in
-            enumerate(lucode_bins))
+            enumerate(EXPANDING_LUCODE_BINS))
 
     def pick_values(starting_lulc, *filtered_pixels):
         if starting_lulc == es_raster_nodata:
