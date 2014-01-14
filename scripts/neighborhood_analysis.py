@@ -121,5 +121,9 @@ if __name__ == '__main__':
     ecosystems_vector = os.path.join(tool_data_dir, 'ecosystems_colombia.shp')
     dem_raster = os.path.join(tool_data_dir, 'dem.tif')
 
-    neighborhood_analysis(ecosystems_vector, dem_raster)
+   # neighborhood_analysis(ecosystems_vector, dem_raster)
+    cProfile.run("neighborhood_analysis('%s', '%s')" % (ecosystems_vector,
+        dem_raster), 'profiled_stats')
 
+    p = pstats.Stats('profiled_stats')
+    p.sort_stats('cumulative').print_stats(20)
