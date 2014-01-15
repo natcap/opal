@@ -30,6 +30,18 @@ EXPANDING_LUCODE_BINS = [
     range(244, 272),
 ]
 
+# How aggressive each bin's expansion is.
+EXPANDING_FACTORS = {
+    51: 1.5,
+    138: 1.0,
+    149: 2.0,
+    168: 1.5,
+    244: 4.0,
+}
+
+# The sigma for the gaussian filter.
+SIGMA = 3500
+
 def neighborhood_analysis(ecosystems_vector, sample_raster):
     # create a new raster for the ecosystems vector to be burned to.
     # burn the ecosystems vector into the new raster
@@ -60,7 +72,8 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     filtered_rasters = []
     for lu_bin in EXPANDING_LUCODE_BINS:
         min_lucode = lu_bin[0]
-        reclass_map = dict((code, 1.0) for code in lu_bin)
+        reclass_value = 1.0 * EXPANDING_FACTORS[min_lucode]
+        reclass_map = dict((code, reclass_value) for code in lu_bin)
 
         for code in lu_bin:
             persistent_landcovers[code] = min_lucode
@@ -73,7 +86,7 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
         LOGGER.debug('Starting gaussian filter for bin %s', min_lucode)
         filtered_raster = os.path.join(workspace, "%s_bin_filtered.tif" %
             min_lucode)
-        raster_utils.gaussian_filter_dataset_uri(binned_raster, 5, filtered_raster,
+        raster_utils.gaussian_filter_dataset_uri(binned_raster, SIGMA, filtered_raster,
             es_raster_nodata)
 
         filtered_rasters.append(filtered_raster)
