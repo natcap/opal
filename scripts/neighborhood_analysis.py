@@ -135,12 +135,6 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
         expanded_raster, gdal.GDT_Float32, es_raster_nodata,
         es_raster_pixel_size, 'intersection')
 
-    LOGGER.debug('Determining areas that have changed')
-    changed_raster = os.path.join(workspace, 'es_changed.tif')
-    raster_utils.vectorize_datasets([es_raster_raw, expanded_raster],
-        lambda x, y: 1 if x != y else es_raster_nodata,
-        changed_raster, gdal.GDT_Byte, es_raster_nodata, es_raster_pixel_size,
-        'intersection')
     LOGGER.debug('Finished')
 
 if __name__ == '__main__':
