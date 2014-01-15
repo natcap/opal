@@ -135,14 +135,22 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
         expanded_raster, gdal.GDT_Float32, es_raster_nodata,
         es_raster_pixel_size, 'intersection')
 
-if __name__ == '__main__':
-#    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
-#    ecosystems_vector = os.path.join(tool_data_dir, 'Ecosystems_Colombia.shp')
-#    dem_raster = os.path.join(tool_data_dir, 'DEM.tif')
+    LOGGER.debug('Determining areas that have changed')
+    changed_raster = os.path.join(workspace, 'es_changed.tif')
+    raster_utils.vectorize_datasets([es_raster_raw, expanded_raster],
+        lambda x, y: 1 if x != y else es_raster_nodata,
+        changed_raster, gdal.GDT_Byte, es_raster_nodata, es_raster_pixel_size,
+        'intersection')
+    LOGGER.debug('Finished')
 
-    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_clipped')
-    ecosystems_vector = os.path.join(tool_data_dir, 'ecosystems_colombia.shp')
-    dem_raster = os.path.join(tool_data_dir, 'dem.tif')
+if __name__ == '__main__':
+    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
+    ecosystems_vector = os.path.join(tool_data_dir, 'Ecosystems_Colombia.shp')
+    dem_raster = os.path.join(tool_data_dir, 'DEM.tif')
+
+#    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_clipped')
+#    ecosystems_vector = os.path.join(tool_data_dir, 'ecosystems_colombia.shp')
+#    dem_raster = os.path.join(tool_data_dir, 'dem.tif')
 
    # neighborhood_analysis(ecosystems_vector, dem_raster)
     cProfile.run("neighborhood_analysis('%s', '%s')" % (ecosystems_vector,
