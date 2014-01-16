@@ -3,6 +3,7 @@ import logging
 import cProfile
 import pstats
 import itertools
+import multiprocessing
 
 from osgeo import gdal
 from invest_natcap import raster_utils
@@ -40,7 +41,7 @@ EXPANDING_FACTORS = {
 }
 
 # The sigma for the gaussian filter.
-SIGMA = 3500
+SIGMA = 500
 
 def neighborhood_analysis(ecosystems_vector, sample_raster):
     # create a new raster for the ecosystems vector to be burned to.
@@ -49,8 +50,15 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     # gaussian filter each lucode  # later on, we'll add an expansion factor
     # Vectorize this stack of filtered lucode groups, picking the highest val.
 
-    workspace = os.path.join(os.getcwd(), 'neighborhood_analysis')
+    workspace = os.path.join(os.getcwd(), 'neighborhood_analysis_clipped')
     raster_utils.create_directories([workspace])
+
+    # save all logging to a file in the workspace.
+    logfile = logging.FileHandler(os.path.join(workspace, 'analysis.log'))
+    formatter = logging.Formatter('%(asctime)s %(name)-18s %(levelname)-8s \
+    %(message)s','%m/%d/%Y %H:%M:%S ')
+    logfile.setFormatter(formatter)
+    LOGGER.addHandler(logfile)
 
     es_raster_raw = os.path.join(workspace, 'es_raw.tif')
 
@@ -69,8 +77,7 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     persistent_landcovers = dict((lucode, lucode) for lucode in
         PERSISTENT_LUCODES)
 
-    filtered_rasters = []
-    for lu_bin in EXPANDING_LUCODE_BINS:
+    def expand(lu_bin, filtered_raster_uri):
         min_lucode = lu_bin[0]
         reclass_value = 1.0 * EXPANDING_FACTORS[min_lucode]
         reclass_map = dict((code, reclass_value) for code in lu_bin)
@@ -84,12 +91,23 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
             binned_raster, 'GTiff', es_raster_nodata, gdal.GDT_Int32, 0.0)
 
         LOGGER.debug('Starting gaussian filter for bin %s', min_lucode)
-        filtered_raster = os.path.join(workspace, "%s_bin_filtered.tif" %
-            min_lucode)
-        raster_utils.gaussian_filter_dataset_uri(binned_raster, SIGMA, filtered_raster,
-            es_raster_nodata)
+        raster_utils.gaussian_filter_dataset_uri(binned_raster, SIGMA,
+            filtered_raster_uri, es_raster_nodata)
 
-        filtered_rasters.append(filtered_raster)
+    filtered_rasters = []
+    processes = []
+    for lu_bin in EXPANDING_LUCODE_BINS:
+        filtered_raster_uri = os.path.join(workspace, "%s_bin_filtered.tif" %
+            lu_bin[0])
+        filtered_rasters.append(filtered_raster_uri)
+        p = multiprocessing.Process(target=expand, args=(lu_bin, filtered_raster_uri))
+        p.start()
+        processes.append(p)
+
+    LOGGER.debug('Waiting for the processes to finish ...')
+    for p in processes:
+        p.join()
+    LOGGER.debug('Processes finished!')
 
     # Objective: prevent plantations from expanding to natural forest.
     #
@@ -97,6 +115,7 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     # the pixels where there is natural forest in the original landcover.
     # Then, use this new raster instead of the 138_bin.tif raster in the
     # filtered_rasters list.
+    LOGGER.debug('filtered_raster_list: %s', filtered_rasters)
     plantation_raster = os.path.join(workspace, "%s_bin_filtered.tif" % 138)
     plantation_no_forest = os.path.join(workspace, "%s_bin_filtered_no_forest.tif" % 138)
     plantation_index = filtered_rasters.index(plantation_raster)
@@ -107,7 +126,7 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
 
     def mask_out_natural_forest(orig_lulc, expansion_index):
         if orig_lulc in natural_forest_map:
-            return orig_lulc
+            return 0.0
         return expansion_index
 
     raster_utils.vectorize_datasets([es_raster_raw, plantation_raster],
@@ -151,17 +170,17 @@ def neighborhood_analysis(ecosystems_vector, sample_raster):
     LOGGER.debug('Finished')
 
 if __name__ == '__main__':
-    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
-    ecosystems_vector = os.path.join(tool_data_dir, 'Ecosystems_Colombia.shp')
-    dem_raster = os.path.join(tool_data_dir, 'DEM.tif')
+#    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
+#    ecosystems_vector = os.path.join(tool_data_dir, 'Ecosystems_Colombia.shp')
+#    dem_raster = os.path.join(tool_data_dir, 'DEM.tif')
 
-#    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_clipped')
-#    ecosystems_vector = os.path.join(tool_data_dir, 'ecosystems_colombia.shp')
-#    dem_raster = os.path.join(tool_data_dir, 'dem.tif')
+    tool_data_dir = os.path.join(os.getcwd(), 'data', 'colombia_clipped')
+    ecosystems_vector = os.path.join(tool_data_dir, 'ecosystems_colombia.shp')
+    dem_raster = os.path.join(tool_data_dir, 'dem.tif')
 
    # neighborhood_analysis(ecosystems_vector, dem_raster)
     cProfile.run("neighborhood_analysis('%s', '%s')" % (ecosystems_vector,
         dem_raster), 'profiled_stats')
 
     p = pstats.Stats('profiled_stats')
-    p.sort_stats('cumulative').print_stats(20)
+    LOGGER.debug("\n%s", p.sort_stats('cumulative').print_stats(20))
