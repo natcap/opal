@@ -10,5 +10,7 @@ class OffsetTest(GISTest):
     def test_locate_parcels(self):
         ecosystems = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
         selection_area = os.path.join(DATA, 'sample_aoi.shp')
+        impact_sites = os.path.join(DATA, 'Example permitting footprints',
+            'Example_mining_projects.shp')
 
-        offsets.locate_parcels(ecosystems, selection_area)
+        offsets.locate_parcels(ecosystems, selection_area, impact_sites)
