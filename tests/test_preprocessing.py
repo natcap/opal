@@ -39,3 +39,15 @@ class PreprocessingTest(GISTest):
 #        json.dump(raster_stats_dict, json_file, indent=4)
 #        json_file.close()
 
+    def test_exclude_polygons(self):
+        ecosystems = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
+        workspace = os.path.join(os.getcwd(), 'test_split_workspace')
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        crop_vector = os.path.join(DATA, 'hydrozones.shp')
+        out_vector = os.path.join(workspace, 'test_crop.shp')
+        preprocessing.exclude_polygons(ecosystems, crop_vector, 8,
+            out_vector)
+
