@@ -51,3 +51,19 @@ class PreprocessingTest(GISTest):
         preprocessing.exclude_polygons(ecosystems, crop_vector, 8,
             out_vector)
 
+    def test_prepare_impact_sites(self):
+        services = [
+            ('sediment', os.path.join(DATA, 'ecosystems.tif'))
+        ]
+        workspace = os.path.join(os.getcwd(), 'output_ag_stats')
+        impact_sites = os.path.join(DATA, 'Example permitting footprints',
+            'Example_mining_projects.shp')
+        out_vector = os.path.join(workspace, 'output.shp')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        preprocessing.prepare_impact_sites(impact_sites, services,
+            out_vector)
+
