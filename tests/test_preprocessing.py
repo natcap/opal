@@ -67,3 +67,19 @@ class PreprocessingTest(GISTest):
         preprocessing.prepare_impact_sites(impact_sites, services,
             out_vector)
 
+    def test_prepare_offset_parcels(self):
+        services = [
+            ('sediment', os.path.join(DATA, 'ecosystems.tif'))
+        ]
+        workspace = os.path.join(os.getcwd(), 'output_ag_stats')
+        offset_parcels = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
+        out_vector = os.path.join(workspace, 'offset_parcels.shp')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        preprocessing.prepare_offset_parcels(offset_parcels, services,
+            out_vector)
+
+
