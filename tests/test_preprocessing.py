@@ -82,4 +82,15 @@ class PreprocessingTest(GISTest):
         preprocessing.prepare_offset_parcels(offset_parcels, services,
             out_vector)
 
+    def test_locate_hydrozone(self):
+        hydrozones = os.path.join(DATA, 'hydrozones.shp')
+        aoi_vector= os.path.join(DATA, 'sample_aoi.shp')
+        workspace = os.path.join(os.getcwd(), 'output_hydrozone')
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+        output_vector = os.path.join(workspace, 'focal_hydrozone.shp')
+
+        preprocessing.locate_hydrozone(hydrozones, aoi_vector, output_vector)
+
 
