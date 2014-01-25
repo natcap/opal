@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from invest_natcap.testing import GISTest
 
@@ -13,4 +14,11 @@ class OffsetTest(GISTest):
         impact_sites = os.path.join(DATA, 'Example permitting footprints',
             'Example_mining_projects.shp')
 
-        offsets.locate_parcels(ecosystems, selection_area, impact_sites)
+        workspace = os.path.join(os.getcwd(), 'offset_selection')
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        offsets.locate_parcels(ecosystems, selection_area, impact_sites,
+                workspace)
+
