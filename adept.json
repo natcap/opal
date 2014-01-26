@@ -181,6 +181,11 @@
                 "en": "Custom static map (optional)", 
                 "es": null
             }
+        },
+        {
+            "type": "hidden",
+            "defaultValue": ".",
+            "args_id": "data_dir"
         }
     ], 
     "label": {
