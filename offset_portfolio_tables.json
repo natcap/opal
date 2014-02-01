@@ -1,0 +1,95 @@
+{
+    "services": {},
+    "offset_parcels": {
+        "columns": {
+            "parcel_fid": "Parcel ID",
+            "distance": "Distance to nearest impact site (m)",
+            "lci": "Landscape Context Index",
+            "ecosystem_type": "Ecosystem Name",
+            "biodiversity_offsets": "Biodiversity offsets (ha)",
+            "carbon_offsets": "Carbon offsets (tons)",
+            "sediment_offsets": "Sediment offsets (tons)"
+        },
+        "data": [
+            {
+                "parcel_details": {
+                    "parcel_fid": 5,
+                    "distance": 493.57,
+                    "lci": 0.24,
+                    "ecosystem_type": "some fun ecosystem name!",
+                    "biodiversity_offsets": 10.7,
+                    "carbon_offsets": 4589,
+                    "sediment_offsets": 823
+                },
+                "servicesheds_affected": {
+                    "Bogota": 892,
+                    "Cartagena": 1092
+                }
+            },
+            {
+                "parcel_details": {
+                    "parcel_fid": 92,
+                    "distance": 4935.7,
+                    "lci": 0.24,
+                    "ecosystem_type": "another fun ecosystem name!",
+                    "biodiversity_offsets": 124.2,
+                    "carbon_offsets": 4359,
+                    "sediment_offsets": 123
+                },
+                "servicesheds_affected": {
+                    "Bogota": 9124,
+                    "Cali": 723
+                }
+            }
+        ]
+    }
+}
+
+
+// two options about representing servicesheds data:
+//   * have the servicesheds information stored in with the parcel information, where each
+//     serviceshed has a percentage of the total offsets that are associated with the
+//     serviceshed.  This percentage (between 0 and 1) represents what proportion of the
+//     impact site's area is in the serviceshed in question.  This is not a perfect method
+//     of attributing service to a single place because it ignores things like routing, but
+//     it would be better than nothing at all.
+//      parcel A:
+//          serviceshed 1:
+//              sediment: percentage
+//              carbon: percentage
+//          serviceshed 2:
+//              sediment: percentage
+//              carbon: percentage
+//      parcel B:
+//          serviceshed 2:
+//              sediment: percentage
+//              carbon: percentage
+//          serviceshed 3:
+//              sediment: percentage
+//              carbon: percentage
+//   * Have servicesheds listed out and how much of each service would be added if the offset
+//     parcel is enabled:
+//      serviceshed 1:
+//          parcel A:
+//              sediment: amount of sediment (not percentage)
+//              carbon: amoung of carbon
+//          parcel B:
+//              sediment: amount
+//              carbon: amount
+//      serviceshed 2:
+//          parcel A:
+//              sediment: amount
+//              carbon: amount
+//          parcel B:
+//              sediment: amount
+//              carbon: amount
+//      serviceshed 3:
+//          parcel C:
+//              sediment: amount
+//              carbon: amount
+//
+//
+// In both of these cases, we only ever need to list out as many servicesheds as are affected by the
+// offsets, and as many offset parcels as are selected by the tool.  This means that the two tables
+// affected by this JSON document have a finite size.
+
