@@ -92,4 +92,26 @@
 // In both of these cases, we only ever need to list out as many servicesheds as are affected by the
 // offsets, and as many offset parcels as are selected by the tool.  This means that the two tables
 // affected by this JSON document have a finite size.
+//
+//
+// Here's another option: include parcel details with the parcels and per-serviceshed details with
+// the servicesheds.
+//
+//      parcels:
+//          parcel A:
+//              fid: ___
+//              distance: ___
+//              lci: ___
+//              carbon_offsets: ___
+//              sediment_offsets: ___
+//              ...
+//
+//      servicesheds:
+//          Bogota:
+//              parcel A: 50%
+//              parcel B: 68%
+//
+//          Cali:
+//              parcel A: 50%
+//              parcel B: 32%
 
