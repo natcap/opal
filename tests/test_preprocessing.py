@@ -8,6 +8,7 @@ from invest_natcap import raster_utils
 from adept import preprocessing
 
 DATA = os.path.join(os.getcwd(), '..', 'data', 'colombia_tool_data')
+TEST_DATA = os.path.join(os.getcwd(), '..', 'data', 'colombia_testing')
 
 class PreprocessingTest(GISTest):
     def test_split_multipolygons(self):
@@ -88,15 +89,15 @@ class PreprocessingTest(GISTest):
         preprocessing.prepare_offset_parcels(offset_parcels, focal_hydrozone, services,
             out_vector)
 
-    def test_locate_hydrozone(self):
+    def test_locate_hydrozones(self):
         hydrozones = os.path.join(DATA, 'hydrozones.shp')
-        aoi_vector= os.path.join(DATA, 'sample_aoi.shp')
+        impact_vector = os.path.join(TEST_DATA, 'multi_hydrozone_impacts.shp')
         workspace = os.path.join(os.getcwd(), 'output_hydrozone')
         if os.path.exists(workspace):
             shutil.rmtree(workspace)
         os.makedirs(workspace)
-        output_vector = os.path.join(workspace, 'focal_hydrozone.shp')
+        output_vector = os.path.join(workspace, 'focal_hydrozones.shp')
 
-        preprocessing.locate_hydrozone(hydrozones, aoi_vector, output_vector)
+        preprocessing.locate_hydrozones(hydrozones, impact_vector, output_vector)
 
 
