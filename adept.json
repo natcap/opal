@@ -63,8 +63,9 @@
             }, 
             "id": "area_of_influence", 
             "args_id": "area_of_influence_uri", 
+            "required": true,
             "label": {
-                "en": "Area of Influence (optional)", 
+                "en": "Area of Influence", 
                 "es": null
             }
         }, 
