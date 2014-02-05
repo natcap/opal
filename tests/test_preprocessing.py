@@ -138,4 +138,9 @@ class PreprocessingTest(GISTest):
         preprocessing.subtract_vectors(hydrozones, impact_vector,
                 output_vector)
 
+    def test_lci(self):
+        natural_parcels = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
+        lci_dict = preprocessing.calculate_lci(natural_parcels)
+
+        print lci_dict
 
