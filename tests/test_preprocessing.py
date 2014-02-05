@@ -109,4 +109,19 @@ class PreprocessingTest(GISTest):
 
         preprocessing.locate_intersecting_polygons(hydrozones, impact_vector, output_vector)
 
+    def test_union(self):
+        hydrozones = os.path.join(DATA, 'hydrozones.shp')
+        impact_vector = os.path.join(TEST_DATA, 'multi_hydrozone_impacts.shp')
+        workspace = os.path.join(os.getcwd(), 'output_hydrozone')
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+        output_vector = os.path.join(workspace, 'focal_hydrozones.shp')
+        aoi_vector = os.path.join(TEST_DATA, 'multi_hydrozone_aoi.shp')
+        aoi_and_hydrozones = os.path.join(workspace, 'union.shp')
+
+        preprocessing.locate_intersecting_polygons(hydrozones, impact_vector, output_vector)
+        preprocessing.union_of_vectors([output_vector, aoi_vector],
+            aoi_and_hydrozones)
+
 
