@@ -78,11 +78,12 @@ class PreprocessingTest(GISTest):
             out_vector)
 
     def test_prepare_offset_parcels(self):
-        services = [
-            ('sediment', os.path.join(DATA, 'ecosystems.tif'))
-        ]
+#        services = [
+#            ('sediment', os.path.join(DATA, 'ecosystems.tif'))
+#        ]
         workspace = os.path.join(os.getcwd(), 'output_ag_stats')
         offset_parcels = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
+        impact_vector = os.path.join(TEST_DATA, 'multi_hydrozone_impacts.shp')
         out_vector = os.path.join(workspace, 'offset_parcels.shp')
 
         if os.path.exists(workspace):
@@ -91,12 +92,13 @@ class PreprocessingTest(GISTest):
 
         sample_aoi = os.path.join(DATA, 'sample_aoi.shp')
         hydrozones = os.path.join(DATA, 'hydrozones.shp')
-        focal_hydrozone = os.path.join(workspace, 'focal_hydrozone.shp')
+        focal_hydrozones = os.path.join(workspace, 'focal_hydrozone.shp')
 
-        preprocessing.locate_intersecting_polygons(hydrozones, sample_aoi, focal_hydrozone)
+        preprocessing.locate_intersecting_polygons(hydrozones, impact_vector,
+                focal_hydrozones)
 
-        preprocessing.prepare_offset_parcels(offset_parcels, focal_hydrozone, services,
-            out_vector)
+        preprocessing.prepare_offset_parcels(offset_parcels, focal_hydrozones,
+            impact_vector, out_vector)
 
     def test_locate_intersecting_polygons(self):
         hydrozones = os.path.join(DATA, 'hydrozones.shp')
