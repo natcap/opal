@@ -40,17 +40,26 @@ class PreprocessingTest(GISTest):
 #        json.dump(raster_stats_dict, json_file, indent=4)
 #        json_file.close()
 
-    def test_exclude_polygons(self):
-        ecosystems = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
+    def test_locate_intersecting_polygons_all_parcels(self):
         workspace = os.path.join(os.getcwd(), 'test_split_workspace')
+        hydrozones = os.path.join(DATA, 'hydrozones.shp')
+        hydrozones_output_vector = os.path.join(workspace, 'focal_hydrozones.shp')
+        impact_vector = os.path.join(TEST_DATA, 'multi_hydrozone_impacts.shp')
+        ecosystems = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
+        crop_vector = os.path.join(DATA, 'hydrozones.shp')
+        out_vector = os.path.join(workspace, 'test_crop.shp')
+
         if os.path.exists(workspace):
             shutil.rmtree(workspace)
         os.makedirs(workspace)
 
-        crop_vector = os.path.join(DATA, 'hydrozones.shp')
-        out_vector = os.path.join(workspace, 'test_crop.shp')
-        preprocessing.exclude_polygons(ecosystems, crop_vector, 8,
-            out_vector)
+        split_vector = os.path.join(workspace, 'split_ecosystems.shp')
+
+        preprocessing.split_multipolygons(ecosystems, split_vector)
+        preprocessing.locate_intersecting_polygons(hydrozones, impact_vector,
+                hydrozones_output_vector)
+        preprocessing.locate_intersecting_polygons(split_vector, hydrozones_output_vector,
+                out_vector)
 
     def test_prepare_impact_sites(self):
         services = [
@@ -84,12 +93,12 @@ class PreprocessingTest(GISTest):
         hydrozones = os.path.join(DATA, 'hydrozones.shp')
         focal_hydrozone = os.path.join(workspace, 'focal_hydrozone.shp')
 
-        preprocessing.locate_hydrozone(hydrozones, sample_aoi, focal_hydrozone)
+        preprocessing.locate_intersecting_polygons(hydrozones, sample_aoi, focal_hydrozone)
 
         preprocessing.prepare_offset_parcels(offset_parcels, focal_hydrozone, services,
             out_vector)
 
-    def test_locate_hydrozones(self):
+    def test_locate_intersecting_polygons(self):
         hydrozones = os.path.join(DATA, 'hydrozones.shp')
         impact_vector = os.path.join(TEST_DATA, 'multi_hydrozone_impacts.shp')
         workspace = os.path.join(os.getcwd(), 'output_hydrozone')
@@ -98,6 +107,6 @@ class PreprocessingTest(GISTest):
         os.makedirs(workspace)
         output_vector = os.path.join(workspace, 'focal_hydrozones.shp')
 
-        preprocessing.locate_hydrozones(hydrozones, impact_vector, output_vector)
+        preprocessing.locate_intersecting_polygons(hydrozones, impact_vector, output_vector)
 
 
