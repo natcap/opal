@@ -124,4 +124,16 @@ class PreprocessingTest(GISTest):
         preprocessing.union_of_vectors([output_vector, aoi_vector],
             aoi_and_hydrozones)
 
+    def test_difference(self):
+        hydrozones = os.path.join(DATA, 'hydrozones.shp')
+        impact_vector = os.path.join(TEST_DATA, 'multi_hydrozone_impacts.shp')
+        workspace = os.path.join(os.getcwd(), 'output_difference')
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        output_vector = os.path.join(workspace, 'difference.shp')
+        preprocessing.subtract_vectors(hydrozones, impact_vector,
+                output_vector)
+
 
