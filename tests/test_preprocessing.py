@@ -140,18 +140,11 @@ class PreprocessingTest(GISTest):
                 output_vector)
 
     def test_lci(self):
-        natural_parcels = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
-        #natural_parcels = os.path.join(CLIPPED_DATA, 'ecosystems_colombia.shp')
-
-        workspace = os.path.join(os.getcwd(), 'sample_lci')
-        if os.path.exists(workspace):
-            shutil.rmtree(workspace)
-        os.makedirs(workspace)
-
-        split_polygons = os.path.join(workspace, 'split_polygons.shp')
-        preprocessing.split_multipolygons(natural_parcels, split_polygons)
-
-        lci_dict = preprocessing.calculate_lci(split_polygons)
+        limited_polygons = os.path.join(TEST_DATA, 'limited_polygons.shp')
+        lci_dict = preprocessing.calculate_lci(limited_polygons)
 
         print lci_dict
 
+    def test_lci_rtree(self):
+        limited_polygons = os.path.join(TEST_DATA, 'limited_polygons.shp')
+        preprocessing._calculate_lci_rtree(limited_polygons)
