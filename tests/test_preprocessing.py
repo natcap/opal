@@ -9,6 +9,7 @@ from adept import preprocessing
 
 DATA = os.path.join(os.getcwd(), '..', 'data', 'colombia_tool_data')
 TEST_DATA = os.path.join(os.getcwd(), '..', 'data', 'colombia_testing')
+CLIPPED_DATA = os.path.join(os.getcwd(), '..', 'data', 'colombia_clipped')
 
 class PreprocessingTest(GISTest):
     def test_split_multipolygons(self):
@@ -140,7 +141,17 @@ class PreprocessingTest(GISTest):
 
     def test_lci(self):
         natural_parcels = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
-        lci_dict = preprocessing.calculate_lci(natural_parcels)
+        #natural_parcels = os.path.join(CLIPPED_DATA, 'ecosystems_colombia.shp')
+
+        workspace = os.path.join(os.getcwd(), 'sample_lci')
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        split_polygons = os.path.join(workspace, 'split_polygons.shp')
+        preprocessing.split_multipolygons(natural_parcels, split_polygons)
+
+        lci_dict = preprocessing.calculate_lci(split_polygons)
 
         print lci_dict
 
