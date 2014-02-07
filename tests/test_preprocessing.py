@@ -139,24 +139,12 @@ class PreprocessingTest(GISTest):
         preprocessing.subtract_vectors(hydrozones, impact_vector,
                 output_vector)
 
-    def test_lci(self):
-        limited_polygons = os.path.join(TEST_DATA, 'limited_polygons.shp')
-        lci_dict = preprocessing.calculate_lci(limited_polygons)
-
-        print lci_dict
-
     def test_lci_rtree(self):
-        ecosystems = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
-
         workspace = os.path.join(os.getcwd(), 'test_split_workspace_lci')
         if os.path.exists(workspace):
             shutil.rmtree(workspace)
-
         os.makedirs(workspace)
-#        out_vector = os.path.join(workspace, 'test_split.shp')
-#
-#        preprocessing.split_multipolygons(ecosystems, out_vector, ['Ecos_dis',
-#            'Ecosistema', 'FACTOR_DE'])
+
         limited_polygons = os.path.join(TEST_DATA, 'limited_polygons.shp')
         out_vector = os.path.join(workspace, 'test_lci.shp')
-        preprocessing._calculate_lci_rtree(limited_polygons, out_vector)
+        preprocessing.calculate_lci(limited_polygons, out_vector)
