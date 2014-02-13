@@ -31,3 +31,15 @@ class AdeptTest(GISTest):
         }
         adept_core.execute(args)
 
+    def test_write_vector(self):
+        os.makedirs(self.workspace)
+
+        impact_sites = os.path.join(DATA, 'Example permitting footprints',
+            'Example_mining_projects.shp')
+        out_vector = os.path.join(self.workspace, 'test_out.shp')
+        feature_indices = range(5, 10)
+
+
+        adept_core.write_vector(impact_sites, feature_indices, out_vector,
+            'all')
+
