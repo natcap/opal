@@ -148,3 +148,34 @@ class PreprocessingTest(GISTest):
         limited_polygons = os.path.join(TEST_DATA, 'limited_polygons.shp')
         out_vector = os.path.join(workspace, 'test_lci.shp')
         preprocessing.calculate_lci(limited_polygons, out_vector)
+
+    def test_buffer_vector(self):
+        workspace = os.path.join(os.getcwd(), 'test_buffer_vector')
+        input_vector = os.path.join(TEST_DATA, 'limited_polygons.shp')
+        output_vector = os.path.join(workspace, 'buffered.shp')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        preprocessing.buffer_vector(input_vector, 500, output_vector)
+
+    def test_locate_lci_parcels(self):
+        workspace = os.path.join(os.getcwd(), 'test_locate_lci_parcels')
+        input_vector = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
+        max_search_vector = os.path.join(workspace, 'hydrozone.shp')
+        hydrozones = os.path.join(DATA, 'hydrozones.shp')
+        impact_sites = os.path.join(DATA, 'Example permitting footprints',
+            'Example_mining_projects.shp')
+        output_vector = os.path.join(workspace, 'output.shp')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        preprocessing.locate_intersecting_polygons(hydrozones, impact_sites,
+            max_search_vector)
+
+        preprocessing._locate_lci_parcels(input_vector, max_search_vector, 500,
+            output_vector)
+
