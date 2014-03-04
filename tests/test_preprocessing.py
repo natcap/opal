@@ -162,7 +162,7 @@ class PreprocessingTest(GISTest):
 
     def test_locate_lci_parcels(self):
         workspace = os.path.join(os.getcwd(), 'test_locate_lci_parcels')
-        input_vector = os.path.join(DATA, 'ecosys_dis_nat_comp_fac.shp')
+        input_vector = os.path.join(TEST_DATA, 'test_split.shp')
         max_search_vector = os.path.join(workspace, 'hydrozone.shp')
         hydrozones = os.path.join(DATA, 'hydrozones.shp')
         impact_sites = os.path.join(DATA, 'Example permitting footprints',
