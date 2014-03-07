@@ -1,0 +1,118 @@
+{
+    "id": "window", 
+    "label": {
+        "en": "InVEST Carbon Model (Biophysical and Valuation)", 
+        "es": null
+    }, 
+    "localDocURI": "../documentation/carbonstorage.html", 
+    "modelName": {
+        "en": "carbon_combined", 
+        "es": null
+    }, 
+    "targetScript": "invest_natcap.carbon.carbon_combined", 
+    "height": 800, 
+    "width": 700,
+    "elements": [
+        {
+            "args_id": "workspace_dir", 
+            "defaultValue": "~/custom_static_maps", 
+            "helpText": {
+                "en": "A directory that will contain the intermediate and output files for this run.", 
+                "es": null
+            }, 
+            "id": "workspace", 
+            "label": {
+                "en": "Workspace", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "folder",
+            "validateAs": {
+                "type": "folder",
+                "mustExist": false
+            }
+        }, 
+        {
+            "args_id": "suffix", 
+            "dataType": "string", 
+            "defaultValue": "", 
+            "helpText": {
+                "en": "This text will be appended to the end of the output files to help separate outputs from multiple runs.", 
+                "es": null
+            }, 
+            "id": "results_suffix", 
+            "label": {
+                "en": "Results Suffix (optional)", 
+                "es": null
+            }, 
+            "required": false, 
+            "returns": {
+                "ifEmpty": "pass"
+            }, 
+            "type": "text", 
+            "validText": "[a-zA-Z0-9]*"
+        }, 
+        {
+            "args_id": "landuse_uri", 
+            "helpText": {
+                "en": "Location of the landcover map for the current scenario.", 
+                "es": null
+            }, 
+            "id": "cur_lulc_raster", 
+            "label": {
+                "en": "Land Use/Land Cover raster", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "carbon_pools_uri", 
+            "helpText": {
+                "en": "A table that maps the land cover ids to carbon pools.  The table must contain columns of 'LULC', 'C_above', 'C_Below', 'C_Soil', 'C_Dead' as described in the user's guide.  The values in LULC must at least include the LULC ids in the land cover maps.", 
+                "es": null
+            }, 
+            "hideable": true,
+            "id": "carbon_pools", 
+            "label": {
+                "en": "Carbon pools", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "fieldsExist": [
+                    "lucode", 
+                    "C_above", 
+                    "C_Below", 
+                    "C_Soil", 
+                    "C_Dead"
+                ], 
+                "type": "CSV"
+            }
+        },
+        {
+            "args_id": "do_biophysical",
+            "returns": true,
+            "type": "hidden"
+        },
+        {
+            "args_id": "do_valuation",
+            "returns": false,
+            "type": "hidden"
+        },
+        {
+            "args_id": "do_uncertainty",
+            "returns": false,
+            "type": "hidden"
+        },
+        {
+            "args_id": "model_name",
+            "returns": "carbon",
+            "type": "hidden"
+        }
+    ] 
+}

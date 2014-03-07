@@ -1,0 +1,232 @@
+{
+    "id": "window", 
+    "label": {
+        "en": "Sediment", 
+        "es": null
+    }, 
+    "modelName": {
+        "en": "sediment", 
+        "es": null
+    }, 
+    "targetScript": "adept.static_maps", 
+    "height": 700, 
+    "width": 700,
+    "elements": [
+        {
+            "args_id": "workspace_dir", 
+            "defaultValue": "~/static_maps", 
+            "helpText": {
+                "en": "This is the directory in which the output and intermediate files will be saved.", 
+                "es": null
+            }, 
+            "id": "workspace", 
+            "label": {
+                "en": "Workspace", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "folder",
+            "validateAs": {
+                "type": "folder",
+                "mustExist": false
+            }
+        }, 
+        {
+            "args_id": "suffix", 
+            "dataType": "string", 
+            "helpText": {
+                "en": "This text will be appended to the end of the output files to help separate multiple runs.", 
+                "es": null
+            }, 
+            "id": "results_suffix", 
+            "label": {
+                "en": "Results Suffix (optional)", 
+                "es": null
+            }, 
+            "returns": {
+                "ifEmpty": "pass"
+            }, 
+            "type": "text", 
+            "validText": "[a-zA-Z0-9]*"
+        }, 
+        {
+            "args_id": "landuse_uri", 
+            "helpText": {
+                "en": "A GIS raster dataset, with an integer LULC code for each cell.", 
+                "es": null
+            }, 
+            "label": {
+                "en": "LULC Raster", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "model_name",
+            "type": "hidden",
+            "returns": "sediment"
+        },
+        {
+            "args_id": "landcover_code",
+            "helpText": {
+                "en": null,
+                "es": null
+            },
+            "defaultValue": 124,
+            "required": true,
+            "label": "Impact landcover code",
+            "type": "text",
+            "validateAs": {
+                "type": "number"
+            }
+        },
+        {
+            "args_id": "dem_uri", 
+            "helpText": {
+                "en": "A GIS raster dataset with an elevation value for each cell. Make sure the DEM is corrected by filling in sinks, and if necessary burning hydrographic features into the elevation model (recommended when you see unusual streams.) See the Working with the DEM section of the InVEST user's guide for more information.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "dem_uri", 
+            "label": {
+                "en": "DEM Raster", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "erosivity_uri", 
+            "helpText": {
+                "en": "A GIS raster dataset, with an erosivity index value for each cell. This variable depends on the intensity and duration of rainfall in the area of interest. The greater the intensity and duration of the rain storm, the higher the erosion potential. The erosivity index is widely used, but in case of its absence, there are methods and equations to help generate a grid using climatic data. The units are MJ*mm/(ha*h*yr).", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "erosivity_uri", 
+            "label": {
+                "en": "Erosivity Raster", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "erodibility_uri", 
+            "helpText": {
+                "en": "This is a GIS raster dataset, with a soil erodibility value for each cell which is a measure of the susceptibility of soil particles to detachment and transport by rainfall and runoff.  Units are in T*ha*h/(ha*MJ*mm).", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "erodibility_uri", 
+            "label": {
+                "en": "Erodibility Raster", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "watersheds_uri", 
+            "helpText": {
+                "en": "This is a layer of watersheds such that each watershed contributes to a point of interest where water quality will be analyzed.  It must have the integer field 'ws_id' where the values uniquely identify each watershed.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "watersheds_uri", 
+            "label": {
+                "en": "Watershed Polygons", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "fieldsExist": [
+                    "ws_id"
+                ], 
+                "layers": [
+                    {
+                        "name": {
+                            "inheritFrom": "file"
+                        }, 
+                        "projection": {
+                            "exists": true
+                        }, 
+                        "type": "polygons"
+                    }
+                ], 
+                "type": "OGR"
+            }
+        }, 
+        {
+            "args_id": "biophysical_table_uri", 
+            "helpText": {
+                "en": "A table containing model information corresponding to each of the land use classes in the LULC raster input. It must contain the fields 'lucode', 'usle_c', 'usle_p', and 'sedret_eff'.  See the InVEST sediment user's guide for more information about these fields.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "biophysical_table_uri", 
+            "label": {
+                "en": "Biophysical Table", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "fieldsExist": [
+                    "lucode", 
+                    "sedret_eff", 
+                    "usle_c", 
+                    "usle_p"
+                ], 
+                "type": "CSV"
+            }
+        }, 
+        {
+            "args_id": "threshold_flow_accumulation", 
+            "deafaultValue": 4000, 
+            "helpText": {
+                "en": "The number of upstream cells that must flow into a cell before it's considered part of a stream such that retention stops and the remaining export is exported to the stream. Used to define streams from the DEM.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "threshold_flow_accumulation", 
+            "label": {
+                "en": "Threshold Flow Accumluation", 
+                "es": null
+            }, 
+            "type": "text", 
+            "validText": "^[0-9]+$"
+        }, 
+        {
+            "args_id": "sediment_threshold_table_uri", 
+            "helpText": {
+                "en": "A table containing annual sediment load threshold information for each of the watersheds. There must be one row for each watershed in the Watersheds layer and have the fields 'ws_id', 'dr_time', 'dr_deadvol', and 'wq_annload'.  See the user's guide for the meaning of these fields.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "sediment_threshold_table_uri", 
+            "label": {
+                "en": "Sediment threshold table", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "fieldsExist": [
+                    "ws_id", 
+                    "dr_time", 
+                    "dr_deadvol", 
+                    "wq_annload"
+                ], 
+                "type": "CSV"
+            }
+        }
+    ]
+}
