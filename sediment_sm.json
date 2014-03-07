@@ -55,7 +55,6 @@
                 "en": "A GIS raster dataset, with an integer LULC code for each cell.", 
                 "es": null
             }, 
-            "id": "landuse_uri", 
             "label": {
                 "en": "LULC Raster", 
                 "es": null
@@ -66,6 +65,20 @@
                 "type": "GDAL"
             }
         }, 
+        {
+            "args_id": "landcover_code",
+            "helpText": {
+                "en": null,
+                "es": null
+            },
+            "defaultValue": 124,
+            "required": true,
+            "label": "Impact landcover code",
+            "type": "text",
+            "validateAs": {
+                "type": "number"
+            }
+        },
         {
             "args_id": "dem_uri", 
             "helpText": {
