@@ -15,7 +15,7 @@
     "elements": [
         {
             "args_id": "workspace_dir", 
-            "defaultValue": "../Carbon", 
+            "defaultValue": "~/custom_static_maps", 
             "helpText": {
                 "en": "A directory that will contain the intermediate and output files for this run.", 
                 "es": null
@@ -26,7 +26,11 @@
                 "es": null
             }, 
             "required": true, 
-            "type": "folder"
+            "type": "folder",
+            "validateAs": {
+                "type": "folder",
+                "mustExist": false
+            }
         }, 
         {
             "args_id": "suffix", 
@@ -50,14 +54,13 @@
         }, 
         {
             "args_id": "landuse_uri", 
-            "defaultValue": "../Base_Data/Terrestrial/lulc_samp_cur/hdr.adf", 
             "helpText": {
                 "en": "Location of the landcover map for the current scenario.", 
                 "es": null
             }, 
             "id": "cur_lulc_raster", 
             "label": {
-                "en": "Raster location", 
+                "en": "Land Use/Land Cover raster", 
                 "es": null
             }, 
             "required": true, 
@@ -68,8 +71,6 @@
         }, 
         {
             "args_id": "carbon_pools_uri", 
-            "defaultValue": "../Carbon/Input/carbon_pools_samp.csv", 
-            "disabledBy": "uncertain_carbon_pool_container", 
             "helpText": {
                 "en": "A table that maps the land cover ids to carbon pools.  The table must contain columns of 'LULC', 'C_above', 'C_Below', 'C_Soil', 'C_Dead' as described in the user's guide.  The values in LULC must at least include the LULC ids in the land cover maps.", 
                 "es": null
@@ -106,6 +107,11 @@
         {
             "args_id": "do_uncertainty",
             "returns": false,
+            "type": "hidden"
+        },
+        {
+            "args_id": "model_name",
+            "returns": "carbon",
             "type": "hidden"
         }
     ] 
