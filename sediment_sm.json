@@ -10,7 +10,7 @@
     }, 
     "targetScript": "adept.static_maps", 
     "height": 700, 
-    "width": 700
+    "width": 700,
     "elements": [
         {
             "args_id": "workspace_dir", 
