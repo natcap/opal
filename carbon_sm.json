@@ -1,4 +1,17 @@
 {
+    "id": "window", 
+    "label": {
+        "en": "InVEST Carbon Model (Biophysical and Valuation)", 
+        "es": null
+    }, 
+    "localDocURI": "../documentation/carbonstorage.html", 
+    "modelName": {
+        "en": "carbon_combined", 
+        "es": null
+    }, 
+    "targetScript": "invest_natcap.carbon.carbon_combined", 
+    "height": 800, 
+    "width": 700,
     "elements": [
         {
             "args_id": "workspace_dir", 
@@ -95,18 +108,5 @@
             "returns": false,
             "type": "hidden"
         }
-    ], 
-    "height": 800, 
-    "id": "window", 
-    "label": {
-        "en": "InVEST Carbon Model (Biophysical and Valuation)", 
-        "es": null
-    }, 
-    "localDocURI": "../documentation/carbonstorage.html", 
-    "modelName": {
-        "en": "carbon_combined", 
-        "es": null
-    }, 
-    "targetScript": "invest_natcap.carbon.carbon_combined", 
-    "width": 700
+    ] 
 }
