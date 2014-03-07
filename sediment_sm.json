@@ -25,7 +25,6 @@
         }, 
         {
             "dataType": "string", 
-            "required": false, 
             "label": {
                 "en": "Results Suffix (optional)", 
                 "es": null
@@ -47,8 +46,8 @@
                 "en": "A GIS raster dataset with an elevation value for each cell. Make sure the DEM is corrected by filling in sinks, and if necessary burning hydrographic features into the elevation model (recommended when you see unusual streams.) See the Working with the DEM section of the InVEST user's guide for more information.", 
                 "es": null
             }, 
-            "type": "file", 
-            "required": true, 
+            "type": "file",
+            "hideable": true,
             "validateAs": {
                 "type": "GDAL"
             }, 
@@ -65,11 +64,11 @@
                 "es": null
             }, 
             "type": "file", 
-            "required": true, 
             "validateAs": {
                 "type": "GDAL"
             }, 
             "id": "erosivity_uri", 
+            "hideable": true,
             "args_id": "erosivity_uri", 
             "label": {
                 "en": "Erosivity Raster", 
@@ -82,11 +81,11 @@
                 "es": null
             }, 
             "type": "file", 
-            "required": true, 
             "validateAs": {
                 "type": "GDAL"
             }, 
             "id": "erodibility_uri", 
+            "hideable": true,
             "args_id": "erodibility_uri", 
             "label": {
                 "en": "Erodibility Raster", 
@@ -116,7 +115,7 @@
                 "es": null
             }, 
             "type": "file", 
-            "required": true, 
+            "hideable": true,
             "validateAs": {
                 "layers": [
                     {
@@ -147,7 +146,7 @@
                 "es": null
             }, 
             "type": "file", 
-            "required": true, 
+            "hideable": true,
             "validateAs": {
                 "type": "CSV", 
                 "fieldsExist": [
@@ -170,8 +169,9 @@
                 "es": null
             }, 
             "validText": "^[0-9]+$", 
-            "required": true, 
             "type": "text", 
+            "hideable": true,
+            "deafaultValue": 4000,
             "id": "threshold_flow_accumulation", 
             "args_id": "threshold_flow_accumulation", 
             "label": {
@@ -185,7 +185,7 @@
                 "es": null
             }, 
             "type": "file", 
-            "required": true, 
+            "hideable": true,
             "validateAs": {
                 "type": "CSV", 
                 "fieldsExist": [
