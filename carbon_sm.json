@@ -36,7 +36,7 @@
             "validText": "[a-zA-Z0-9]*"
         }, 
         {
-            "args_id": "lulc_cur_uri", 
+            "args_id": "landuse_uri", 
             "defaultValue": "../Base_Data/Terrestrial/lulc_samp_cur/hdr.adf", 
             "helpText": {
                 "en": "Location of the landcover map for the current scenario.", 
@@ -61,6 +61,7 @@
                 "en": "A table that maps the land cover ids to carbon pools.  The table must contain columns of 'LULC', 'C_above', 'C_Below', 'C_Soil', 'C_Dead' as described in the user's guide.  The values in LULC must at least include the LULC ids in the land cover maps.", 
                 "es": null
             }, 
+            "hideable": true,
             "id": "carbon_pools", 
             "label": {
                 "en": "Carbon pools", 
@@ -78,6 +79,21 @@
                 ], 
                 "type": "CSV"
             }
+        },
+        {
+            "args_id": "do_biophysical",
+            "returns": true,
+            "type": "hidden"
+        },
+        {
+            "args_id": "do_valuation",
+            "returns": false,
+            "type": "hidden"
+        },
+        {
+            "args_id": "do_uncertainty",
+            "returns": false,
+            "type": "hidden"
         }
     ], 
     "height": 800, 
