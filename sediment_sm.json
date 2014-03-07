@@ -43,6 +43,23 @@
         }, 
         {
             "helpText": {
+                "en": "A GIS raster dataset, with an integer LULC code for each cell.", 
+                "es": null
+            }, 
+            "type": "file", 
+            "required": true, 
+            "validateAs": {
+                "type": "GDAL"
+            }, 
+            "id": "landuse_uri", 
+            "args_id": "landuse_uri", 
+            "label": {
+                "en": "LULC Raster", 
+                "es": null
+            }
+        }, 
+        {
+            "helpText": {
                 "en": "A GIS raster dataset with an elevation value for each cell. Make sure the DEM is corrected by filling in sinks, and if necessary burning hydrographic features into the elevation model (recommended when you see unusual streams.) See the Working with the DEM section of the InVEST user's guide for more information.", 
                 "es": null
             }, 
@@ -89,23 +106,6 @@
             "args_id": "erodibility_uri", 
             "label": {
                 "en": "Erodibility Raster", 
-                "es": null
-            }
-        }, 
-        {
-            "helpText": {
-                "en": "A GIS raster dataset, with an integer LULC code for each cell.", 
-                "es": null
-            }, 
-            "type": "file", 
-            "required": true, 
-            "validateAs": {
-                "type": "GDAL"
-            }, 
-            "id": "landuse_uri", 
-            "args_id": "landuse_uri", 
-            "label": {
-                "en": "LULC Raster", 
                 "es": null
             }
         }, 
