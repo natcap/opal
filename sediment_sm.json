@@ -25,7 +25,11 @@
                 "es": null
             }, 
             "required": true, 
-            "type": "folder"
+            "type": "folder",
+            "validateAs": {
+                "type": "folder",
+                "mustExist": false
+            }
         }, 
         {
             "args_id": "suffix", 
