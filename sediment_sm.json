@@ -66,6 +66,11 @@
             }
         }, 
         {
+            "args_id": "model_name",
+            "type": "hidden",
+            "returns": "sediment"
+        },
+        {
             "args_id": "landcover_code",
             "helpText": {
                 "en": null,
