@@ -4,12 +4,11 @@
         "en": "InVEST Carbon Model (Biophysical and Valuation)", 
         "es": null
     }, 
-    "localDocURI": "../documentation/carbonstorage.html", 
     "modelName": {
         "en": "carbon_combined", 
         "es": null
     }, 
-    "targetScript": "invest_natcap.carbon.carbon_combined", 
+    "targetScript": "adept.static_maps", 
     "height": 800, 
     "width": 700,
     "elements": [
@@ -33,26 +32,6 @@
             }
         }, 
         {
-            "args_id": "suffix", 
-            "dataType": "string", 
-            "defaultValue": "", 
-            "helpText": {
-                "en": "This text will be appended to the end of the output files to help separate outputs from multiple runs.", 
-                "es": null
-            }, 
-            "id": "results_suffix", 
-            "label": {
-                "en": "Results Suffix (optional)", 
-                "es": null
-            }, 
-            "required": false, 
-            "returns": {
-                "ifEmpty": "pass"
-            }, 
-            "type": "text", 
-            "validText": "[a-zA-Z0-9]*"
-        }, 
-        {
             "args_id": "landuse_uri", 
             "helpText": {
                 "en": "Location of the landcover map for the current scenario.", 
@@ -69,6 +48,34 @@
                 "type": "GDAL"
             }
         }, 
+        {
+            "args_id": "paved_landcover_code",
+            "helpText": {
+                "en": null,
+                "es": null
+            },
+            "defaultValue": 124,
+            "required": true,
+            "label": "Paved landcover code",
+            "type": "text",
+            "validateAs": {
+                "type": "number"
+            }
+        },
+        {
+            "args_id": "bare_landcover_code",
+            "helpText": {
+                "en": null,
+                "es": null
+            },
+            "defaultValue": 124,
+            "required": true,
+            "label": "Bare landcover code",
+            "type": "text",
+            "validateAs": {
+                "type": "number"
+            }
+        },
         {
             "args_id": "carbon_pools_uri", 
             "helpText": {
