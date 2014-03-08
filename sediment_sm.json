@@ -32,24 +32,6 @@
             }
         }, 
         {
-            "args_id": "suffix", 
-            "dataType": "string", 
-            "helpText": {
-                "en": "This text will be appended to the end of the output files to help separate multiple runs.", 
-                "es": null
-            }, 
-            "id": "results_suffix", 
-            "label": {
-                "en": "Results Suffix (optional)", 
-                "es": null
-            }, 
-            "returns": {
-                "ifEmpty": "pass"
-            }, 
-            "type": "text", 
-            "validText": "[a-zA-Z0-9]*"
-        }, 
-        {
             "args_id": "landuse_uri", 
             "helpText": {
                 "en": "A GIS raster dataset, with an integer LULC code for each cell.", 
@@ -71,14 +53,28 @@
             "returns": "sediment"
         },
         {
-            "args_id": "landcover_code",
+            "args_id": "paved_landcover_code",
             "helpText": {
                 "en": null,
                 "es": null
             },
             "defaultValue": 124,
             "required": true,
-            "label": "Impact landcover code",
+            "label": "Paved landcover code",
+            "type": "text",
+            "validateAs": {
+                "type": "number"
+            }
+        },
+        {
+            "args_id": "bare_landcover_code",
+            "helpText": {
+                "en": null,
+                "es": null
+            },
+            "defaultValue": 124,
+            "required": true,
+            "label": "Bare landcover code",
             "type": "text",
             "validateAs": {
                 "type": "number"
