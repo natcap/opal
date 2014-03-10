@@ -13,6 +13,6 @@ if __name__ == '__main__':
         'workspace_dir': os.path.join(os.getcwd(), 'sediment_static_maps'),
         'model_name': 'sediment',
         'landuse_uri': os.path.join(FULL_DATA, 'ecosystems.tif'),
-        'use_parallelism': True,
+        'do_parallelism': True,
     }
     static_maps.execute(args)
