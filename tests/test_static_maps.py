@@ -49,6 +49,19 @@ class SedimentStaticMapTest(GISTest):
         static_maps.build_static_map('sediment', lulc_uri, target_lucode,
             static_map_uri)
 
+    def test_execute(self):
+        self.config['workspace_dir'] = os.path.join(os.getcwd(),
+            'sed_execute_test')
+        self.config['model_name'] = 'sediment'
+        self.config['paved_landcover_code'] = 60
+        self.config['bare_landcover_code'] = 80
+        self.config['landuse_uri'] = os.path.join(CLIPPED_DATA,
+            'ecosystems.tif')
+        self.config['do_parallelism'] = True
+
+        static_maps.execute(self.config)
+
+
 class CarbonStaticMapTest(GISTest):
     def setUp(self):
         self.config = {
