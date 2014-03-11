@@ -9,6 +9,8 @@ from adept import static_maps
 DATA = os.path.join(os.path.dirname(__file__), '..', 'data')
 CLIPPED_DATA = os.path.join(DATA, 'colombia_clipped')
 FULL_DATA = os.path.join(DATA, 'colombia_tool_data')
+INVEST_DATA = os.path.join(os.path.dirname(__file__), '..',
+    'invest-natcap.invest-3', 'test', 'invest-data')
 
 class SedimentStaticMapTest(GISTest):
     def setUp(self):
@@ -69,6 +71,40 @@ class SedimentStaticMapTest(GISTest):
         num_iterations = 10
         workspace = os.path.join(os.getcwd(), 'static_map_quality')
         impact_region = os.path.join(CLIPPED_DATA, 'servicesheds_col.shp')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        base_workspace = os.path.join(workspace, 'base_run')
+        static_maps.execute_model(model_name, lulc_uri, base_workspace, self.config)
+        base_run = os.path.join(base_workspace, 'output', 'sed_export.tif')
+
+        static_maps.test_static_map_quality(lulc_uri, impact_lucode, base_run,
+            self.config, model_name, num_iterations, impact_region, workspace)
+
+    def test_static_map_quality_willamette(self):
+        TERRESTRIAL = os.path.join(INVEST_DATA, 'Base_Data', 'Terrestrial')
+        FRESHWATER = os.path.join(INVEST_DATA, 'Base_Data', 'Freshwater')
+        lulc_uri = os.path.join(INVEST_DATA, 'Base_Data', 'Terrestrial',
+            'lulc_samp_cur')
+        impact_lucode = 60
+        model_name = 'sediment'
+        num_iterations = 10
+        workspace = os.path.join(os.getcwd(), 'static_map_quality')
+        impact_region = os.path.join(FRESHWATER, 'watersheds.shp')
+
+        self.config['dem_uri'] = os.path.join(FRESHWATER, 'dem')
+        self.config['erosivity_uri'] = os.path.join(FRESHWATER, 'erosivity')
+        self.config['erodibility_uri'] = os.path.join(FRESHWATER, 'erodibility')
+        self.config['watersheds_uri'] = os.path.join(FRESHWATER,
+            'watersheds.shp')
+        self.config['biophysical_table_uri'] = os.path.join(FRESHWATER,
+            'biophysical_table.csv')
+        self.config['threshold_flow_accumulation'] = 400
+        self.config['slope_threshold'] = "5",
+        self.config['sediment_threshold_table_uri'] = os.path.join(INVEST_DATA,
+            'Sedimentation', 'input', 'sediment_threshold_table.csv')
 
         if os.path.exists(workspace):
             shutil.rmtree(workspace)
