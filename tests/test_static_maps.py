@@ -1,5 +1,6 @@
 import os
 import unittest
+import shutil
 
 from invest_natcap.testing import GISTest
 from invest_natcap import raster_utils
@@ -60,6 +61,25 @@ class SedimentStaticMapTest(GISTest):
         self.config['do_parallelism'] = True
 
         static_maps.execute(self.config)
+
+    def test_static_map_quality(self):
+        lulc_uri = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
+        impact_lucode = 60
+        model_name = 'sediment'
+        num_iterations = 10
+        workspace = os.path.join(os.getcwd(), 'static_map_quality')
+        impact_region = os.path.join(CLIPPED_DATA, 'servicesheds_col.shp')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        base_workspace = os.path.join(workspace, 'base_run')
+        static_maps.execute_model(model_name, lulc_uri, base_workspace, self.config)
+        base_run = os.path.join(base_workspace, 'output', 'sed_export.tif')
+
+        static_maps.test_static_map_quality(lulc_uri, impact_lucode, base_run,
+            self.config, model_name, num_iterations, impact_region, workspace)
 
 
 class CarbonStaticMapTest(GISTest):
