@@ -90,9 +90,9 @@ class SedimentStaticMapTest(GISTest):
         FRESHWATER = os.path.join(INVEST_DATA, 'Base_Data', 'Freshwater')
         lulc_uri = os.path.join(INVEST_DATA, 'Base_Data', 'Terrestrial',
             'lulc_samp_cur')
-        impact_lucode = 60
+        impact_lucode = 88
         model_name = 'sediment'
-        num_iterations = 20  # not used unless explicitly pased to function
+        num_iterations = 15  # not used unless explicitly pased to function
         workspace = os.path.join(os.getcwd(), 'static_map_quality')
         watersheds = os.path.join(FRESHWATER, 'watersheds.shp')
 
@@ -125,7 +125,11 @@ class SedimentStaticMapTest(GISTest):
         static_maps.test_static_map_quality(base_run, static_map_uri,
             lulc_uri, impact_lucode, watersheds, model_name, workspace,
             self.config, num_iterations=num_iterations)
-        #static_maps.graph_it(os.path.join(workspace, 'logfile.txt'))
+
+        print 'graphing'
+        log_file = os.path.join(workspace, 'impact_site_simulation.csv')
+        graph_file = os.path.join(workspace, 'results_plot.png')
+        static_maps.graph_it(log_file, graph_file)
 
 class CarbonStaticMapTest(GISTest):
     def setUp(self):
