@@ -171,3 +171,40 @@ class CarbonStaticMapTest(GISTest):
         static_maps.build_static_map('carbon', lulc_uri, target_lucode,
             static_map_uri)
 
+    def test_carbon_static_map_quality(self):
+        TERRESTRIAL = os.path.join(INVEST_DATA, 'Base_Data', 'Terrestrial')
+        FRESHWATER = os.path.join(INVEST_DATA, 'Base_Data', 'Freshwater')
+        lulc_uri = os.path.join(INVEST_DATA, 'Base_Data', 'Terrestrial',
+            'lulc_samp_cur')
+        impact_lucode = 88
+        model_name = 'carbon'
+        num_iterations = 15  # not used unless explicitly pased to function
+        workspace = os.path.join(os.getcwd(), 'static_map_quality_carbon')
+        watersheds = os.path.join(FRESHWATER, 'watersheds.shp')
+
+        self.config['carbon_pools_uri'] = os.path.join(INVEST_DATA, 'Carbon',
+            'Input', 'carbon_pools_samp.csv')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        base_workspace = os.path.join(workspace, 'base_run')
+        static_maps.execute_model(model_name, lulc_uri, base_workspace, self.config)
+        base_run = os.path.join(base_workspace, 'output', 'tot_C_cur.tif')
+
+        static_map_uri = os.path.join(workspace, 'base_static_map.tif')
+        static_map_workspace = os.path.join(workspace, 'static_map')
+        static_maps.build_static_map(model_name, lulc_uri, impact_lucode,
+            static_map_uri, base_run, self.config,
+            workspace=static_map_workspace)
+
+        static_maps.test_static_map_quality(base_run, static_map_uri,
+            lulc_uri, impact_lucode, watersheds, model_name, workspace,
+            self.config, num_iterations=num_iterations)
+
+        print 'graphing'
+        log_file = os.path.join(workspace, 'impact_site_simulation.csv')
+        graph_file = os.path.join(workspace, 'results_plot.png')
+        static_maps.graph_it(log_file, graph_file)
+
