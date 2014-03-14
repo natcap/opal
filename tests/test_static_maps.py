@@ -131,6 +131,12 @@ class SedimentStaticMapTest(GISTest):
         graph_file = os.path.join(workspace, 'results_plot.png')
         static_maps.graph_it(log_file, graph_file)
 
+    def test_graphing(self):
+        workspace = os.path.join(os.getcwd(), 'static_map_quality')
+        csv_path = os.path.join(workspace, 'impact_site_simulation.csv')
+        graph_file = os.path.join(workspace, 'results_plot.png')
+        static_maps.graph_it(csv_path, graph_file)
+
 class CarbonStaticMapTest(GISTest):
     def setUp(self):
         self.config = {
