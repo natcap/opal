@@ -1,7 +1,7 @@
 #!/bin/bash
 # EXECUTE THIS FROM THE PERMITTING ROOT
 
-ENVDIR=adept_py_env
+ENVDIR=adept_py_env_static_maps
 deactivate
 
 rm -rf build
@@ -22,6 +22,6 @@ pushd adept
 python setup.py install
 popd
 
-python scripts/build_carbon_maps.py &> sm_carbon.log &
-python scripts/build_sediment_maps.py &> sm_sediment.log &
-python scripts/build_nutrient_maps.py &> sm_nutrient.log &
+python scripts/build_carbon_maps.py &
+python scripts/build_sediment_maps.py &
+python scripts/build_nutrient_maps.py &
