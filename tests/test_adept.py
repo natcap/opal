@@ -77,6 +77,8 @@ class AdeptTest(GISTest):
         impact_type = 'An impact type!'
         output_workspace = self.workspace
 
+        os.remove(os.path.join(self.workspace, 'tmp_municipalities.shp'))
+
         adept_core.build_report(municipalities, biodiversity_impact,
             selected_parcels,
             custom_static_values_flat, project_footprint,
