@@ -75,7 +75,7 @@ if platform.system() == 'Windows':
         'Plant_available_water_content', 'Precipitation',
         'Ref_evapotranspiration', 'Soil_depth', 'ecosystems']
     for raster in rasters:
-        tool_data.append("%s.tif" % raster)
+        tool_data.append("data/colombia_tool_data/%s.tif" % raster)
     DATA_FILES.append(('data/colombia_tool_data', tool_data))
 
 else:
