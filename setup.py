@@ -69,13 +69,13 @@ if platform.system() == 'Windows':
         'sample_aoi', 'watersheds_cuencas']
     for vector_base in vectors:
         glob_pattern = 'data/colombia_tool_data/%s.*' % vector_base
-        tool_data.append(glob.glob(glob_pattern))
+        tool_data += glob.glob(glob_pattern)
 
     rasters = ['DEM', 'Erodability', 'Erosivity',
         'Plant_available_water_content', 'Precipitation',
         'Ref_evapotranspiration', 'Soil_depth', 'ecosystems']
     for raster in rasters:
-        tool_data.append("data/colombia_tool_data/%s.tif" % raster)
+        tool_data.append('data/colombia_tool_data/%s.tif' % raster)
     DATA_FILES.append(('data/colombia_tool_data', tool_data))
 
 else:
