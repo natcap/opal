@@ -76,7 +76,7 @@ if platform.system() == 'Windows':
         'Ref_evapotranspiration', 'Soil_depth', 'ecosystems']
     for raster in rasters:
         tool_data.append("%s.tif" % raster)
-    DATA_FILES.append('data/colombia_tool_data', tool_data)
+    DATA_FILES.append(('data/colombia_tool_data', tool_data))
 
 else:
     python_version = 'python%s' % '.'.join([str(r) for r in
