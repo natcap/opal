@@ -53,9 +53,31 @@ if platform.system() == 'Windows':
     }
     py2exe_options['console'] = ['run_adept.py']
 
+    # Since this repo is not for specific packages, I'm assuming that this
+    # section is for py2exe ONLY.
     DATA_FILES.append(('invest_natcap/iui', iui_icons))
     DATA_FILES.append(('adept/report_data',
         glob.glob('adept/adept/report_data/*')))
+    DATA_FILES.append(('data/colombia_static_data',
+        glob.glob('data/colombia_static_data/*')))
+
+    # get specific sets of data files from the tool_data.
+    # first, get the vectors.
+    tool_data = []
+    vectors = ['Ecosystems_Colombia', 'Hydrographic_subzones',
+        'Municipalities', 'ecosys_dis_nat_comp_fac', 'hydrozones',
+        'sample_aoi', 'watersheds_cuencas']
+    for vector_base in vectors:
+        glob_pattern = 'data/colombia_tool_data/%s.*' % vector_base
+        tool_data.append(glob.glob(glob_pattern))
+
+    rasters = ['DEM', 'Erodability', 'Erosivity',
+        'Plant_available_water_content', 'Precipitation',
+        'Ref_evapotranspiration', 'Soil_depth', 'ecosystems']
+    for raster in rasters:
+        tool_data.append("%s.tif" % raster)
+    DATA_FILES.append('data/colombia_tool_data', tool_data)
+
 else:
     python_version = 'python%s' % '.'.join([str(r) for r in
         sys.version_info[:2]])
