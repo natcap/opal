@@ -73,13 +73,17 @@ class AdeptTest(GISTest):
         custom_static_values_flat = custom
         project_footprint = os.path.join(DATA, ('Example permitting'
             ' footprints'), 'Example_mining_projects.shp')
-        sediment_total_impact = 1234567
+        sediment_total_impact = {
+            'sediment': 1234567,
+        }
         impact_type = 'An impact type!'
         output_workspace = self.workspace
+        impact_sites = os.path.join(self.workspace, 'intermediate',
+            'impact_sites.shp')
 
         os.remove(os.path.join(self.workspace, 'tmp_municipalities.shp'))
 
         adept_core.build_report(municipalities, biodiversity_impact,
             selected_parcels,
             custom_static_values_flat, project_footprint,
-            sediment_total_impact, impact_type, output_workspace)
+            sediment_total_impact, impact_type, output_workspace, impact_sites)
