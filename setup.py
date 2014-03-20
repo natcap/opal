@@ -106,8 +106,8 @@ if platform.system() == 'Windows':
             for tool_data_file in tool_data:
                 new_uri = os.path.join(tool_data_dir,
                         os.path.basename(tool_data_file))
-                shutil.copy(tool_data_file, new_uri)
                 print 'copying %s -> %s' % (tool_data_file, new_uri)
+                shutil.copy(tool_data_file, new_uri)
 
             # copy all static map data into the static maps folder.
             static_maps_dir = os.path.join(data_dir, 'colombia_static_data')
@@ -116,8 +116,8 @@ if platform.system() == 'Windows':
             for static_file in static_files:
                 new_uri = os.path.join(static_maps_dir,
                     os.path.basename(static_file))
-                shutil.copy(static_file, new_uri)
                 print 'copying %s -> %s' % (static_file, new_uri)
+                shutil.copy(static_file, new_uri)
 
             # make the data archive.
             archive_path = os.path.join(build_dir, 'permitting_data')
