@@ -58,8 +58,8 @@ if platform.system() == 'Windows':
     DATA_FILES.append(('invest_natcap/iui', iui_icons))
     DATA_FILES.append(('adept/report_data',
         glob.glob('adept/adept/report_data/*')))
-    DATA_FILES.append(('data/colombia_static_data',
-        glob.glob('data/colombia_static_data/*')))
+#    DATA_FILES.append(('data/colombia_static_data',
+#        glob.glob('data/colombia_static_data/*')))
 
     # get specific sets of data files from the tool_data.
     # first, get the vectors.
@@ -76,7 +76,7 @@ if platform.system() == 'Windows':
         'Ref_evapotranspiration', 'Soil_depth', 'ecosystems']
     for raster in rasters:
         tool_data.append('data/colombia_tool_data/%s.tif' % raster)
-    DATA_FILES.append(('data/colombia_tool_data', tool_data))
+#    DATA_FILES.append(('data/colombia_tool_data', tool_data))
 
     from py2exe.build_exe import py2exe as py2exeCommand
     class CustomPy2exe(py2exeCommand):
