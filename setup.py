@@ -6,13 +6,16 @@ import os
 import subprocess
 import sys
 import glob
+import shutil
+
+import matplotlib
 
 import adept
 
 
 py2exe_options = {}
 
-
+CMD_CLASSES = {}
 DATA_FILES = [('.', ['adept.json',
                         'msvcp90.dll'])]
 
@@ -128,6 +131,7 @@ if platform.system() == 'Windows':
             # the data files provided by default in setup.py.
             py2exeCommand.create_binaries(self, py_files, extensions, dlls)
 
+    CMD_CLASSES['py2exe'] = CustomPy2exe
 else:
     python_version = 'python%s' % '.'.join([str(r) for r in
         sys.version_info[:2]])
@@ -206,13 +210,11 @@ class NSISCommand(Command):
 
         subprocess.call(program_path + [makensis_path] + command)
         os.chdir(cwd)
-
+CMD_CLASSES['win_installer'] = NSISCommand
 
 setup(
     name='adept',
-    cmdclass={
-        'win_installer': NSISCommand
-    },
+    cmdclass=CMD_CLASSES,
     version = adept.__version__,
     data_files = DATA_FILES,
     **py2exe_options)
