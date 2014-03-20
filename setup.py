@@ -93,7 +93,7 @@ if platform.system() == 'Windows':
                 self.distribution.data_files = []
 
 
-            self.distribution.data_files += matplotlib.get_py2exe_datafiles()
+#            self.distribution.data_files += matplotlib.get_py2exe_datafiles()
 
             build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
             data_dir = os.path.join(build_dir, 'data')
