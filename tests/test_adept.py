@@ -1,6 +1,7 @@
 """Top-level tests for running the permitting tool through to the end."""
 import os
 import shutil
+import json
 
 from invest_natcap.testing import GISTest
 
@@ -14,10 +15,10 @@ class AdeptTest(GISTest):
     def setUp(self):
         self.workspace = os.path.join(os.getcwd(), 'adept_smoke')
 
+    def test_smoke(self):
         if os.path.exists(self.workspace):
             shutil.rmtree(self.workspace)
 
-    def test_smoke(self):
         args = {
             'workspace_dir': self.workspace,
             'project_footprint_uri': os.path.join(DATA, ('Example permitting'
@@ -53,3 +54,36 @@ class AdeptTest(GISTest):
         temp_file = os.path.join(self.workspace, 'tmp_inters_muni.shp')
 
         analysis.percent_overlap(offset_sites, municipalities, temp_file)
+
+    def test_reporting(self):
+        municipalities = os.path.join(DATA, 'Municipalities.shp')
+        biodiversity_impact = json.load(open(os.path.join(self.workspace,
+            'intermediate', 'bio_impacts.json')))
+        selected_parcels = os.path.join(self.workspace, 'output',
+            'selected_offsets.shp')
+
+        # create a hacky temp object here so I can pass something in with the
+        # correct attribute.
+        class Custom(object):
+            def __init__(self):
+                self.total = None
+
+        custom = Custom()
+        custom.total = {1: 1, 2: 2}
+        custom_static_values_flat = custom
+        project_footprint = os.path.join(DATA, ('Example permitting'
+            ' footprints'), 'Example_mining_projects.shp')
+        sediment_total_impact = {
+            'sediment': 1234567,
+        }
+        impact_type = 'An impact type!'
+        output_workspace = self.workspace
+        impact_sites = os.path.join(self.workspace, 'intermediate',
+            'impact_sites.shp')
+
+        os.remove(os.path.join(self.workspace, 'tmp_municipalities.shp'))
+
+        adept_core.build_report(municipalities, biodiversity_impact,
+            selected_parcels,
+            custom_static_values_flat, project_footprint,
+            sediment_total_impact, impact_type, output_workspace, impact_sites)
