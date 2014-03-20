@@ -213,6 +213,9 @@ class NSISCommand(Command):
         os.chdir(cwd)
 CMD_CLASSES['win_installer'] = NSISCommand
 
+print 'DATA_FILES'
+print DATA_FILES
+
 setup(
     name='adept',
     cmdclass=CMD_CLASSES,
