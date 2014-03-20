@@ -111,6 +111,7 @@ if platform.system() == 'Windows':
 
             # copy all static map data into the static maps folder.
             static_maps_dir = os.path.join(data_dir, 'colombia_static_data')
+            os.makedirs(static_maps_dir)
             static_files = glob.glob('data/colombia_static_data/*')
             for static_file in static_files:
                 new_uri = os.path.join(static_maps_dir,
