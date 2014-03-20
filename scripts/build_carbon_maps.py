@@ -8,11 +8,12 @@ FULL_DATA = os.path.join(DATA, 'colombia_tool_data')
 
 if __name__ == '__main__':
     args = {
-        'paved_landcover_code': 100,
-        'bare_landcover_code': 124,
+        'paved_landcover_code': 89,
+        'bare_landcover_code': 301,
         'workspace_dir': os.path.join(os.getcwd(), 'carbon_static_maps'),
         'model_name': 'carbon',
         'landuse_uri': os.path.join(FULL_DATA, 'ecosystems.tif'),
         'fut_landuse_uri': os.path.join(FULL_DATA, 'es_comp_rd.tif'),
+        'do_parallelism': True,
     }
     static_maps.execute(args)
