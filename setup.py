@@ -78,6 +78,56 @@ if platform.system() == 'Windows':
         tool_data.append('data/colombia_tool_data/%s.tif' % raster)
     DATA_FILES.append(('data/colombia_tool_data', tool_data))
 
+    from py2exe.build_exe import py2exe as py2exeCommand
+    class CustomPy2exe(py2exeCommand):
+        """This is a custom Py2exe command that allows us to define data files
+        that are only used for the built executeables.  This is especially
+        important now that we include 30MB or so of GDAL DLLs that we don't need
+        for any other distribution scheme."""
+
+        def create_binaries(self, py_files, extensions, dlls):
+            if self.distribution.data_files == None:
+                self.distribution.data_files = []
+
+
+            self.distribution.data_files += matplotlib.get_py2exe_datafiles()
+
+            build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
+            data_dir = os.path.join(build_dir, 'data')
+            tool_data_dir = os.path.join(data_dir, 'colombia_tool_data')
+            if os.path.exists(tool_data_dir):
+                shutil.rmtree(tool_data_dir)
+            os.makedirs(tool_data_dir)
+
+            # copy relevant tool data into the tool_data folder.
+            for tool_data_file in tool_data:
+                new_uri = os.path.join(tool_data_dir,
+                        os.path.basename(tool_data_file))
+                shutil.copy(tool_data_file, new_uri)
+                print 'copying %s -> %s' % (tool_data_file, new_uri)
+
+            # copy all static map data into the static maps folder.
+            static_maps_dir = os.path.join(data_dir, 'colombia_static_data')
+            static_files = glob.glob('data/colombia_static_data/*')
+            for static_file in static_files:
+                new_uri = os.path.join(static_maps_dir,
+                    os.path.basename(static_file))
+                shutil.copy(static_file, new_uri)
+                print 'copying %s -> %s' % (static_file, new_uri)
+
+            # make the data archive.
+            archive_path = os.path.join(build_dir, 'permitting_data')
+            shutil.make_archive(archive_path, 'zip', root_dir=build_dir,
+                base_dir=data_dir)
+            archive_path += '.zip'
+            print 'Saved archive %s' % archive_path
+
+            self.distribution.data_files.append(('.', archive_path))
+
+            # After we've defined all our custom data files, we can now add on
+            # the data files provided by default in setup.py.
+            py2exeCommand.create_binaries(self, py_files, extensions, dlls)
+
 else:
     python_version = 'python%s' % '.'.join([str(r) for r in
         sys.version_info[:2]])
