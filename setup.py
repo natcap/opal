@@ -103,6 +103,7 @@ if platform.system() == 'Windows':
             os.makedirs(tool_data_dir)
 
             # copy relevant tool data into the tool_data folder.
+            print '\nStarting to copy tool data'
             for tool_data_file in tool_data:
                 new_uri = os.path.join(tool_data_dir,
                         os.path.basename(tool_data_file))
@@ -110,6 +111,7 @@ if platform.system() == 'Windows':
                 shutil.copy(tool_data_file, new_uri)
 
             # copy all static map data into the static maps folder.
+            print '\nStarting to copy static data'
             static_maps_dir = os.path.join(data_dir, 'colombia_static_data')
             os.makedirs(static_maps_dir)
             static_files = glob.glob('data/colombia_static_data/*')
@@ -120,13 +122,14 @@ if platform.system() == 'Windows':
                 shutil.copy(static_file, new_uri)
 
             # make the data archive.
+            print '\nMaking the permitting data archive'
             archive_path = os.path.join(build_dir, 'permitting_data')
             shutil.make_archive(archive_path, 'zip', root_dir=build_dir,
                 base_dir=data_dir)
             archive_path += '.zip'
             print 'Saved archive %s' % archive_path
 
-            self.distribution.data_files.append(('.', archive_path))
+            self.distribution.data_files.append(('.', [archive_path]))
 
             # After we've defined all our custom data files, we can now add on
             # the data files provided by default in setup.py.
