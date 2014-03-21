@@ -92,7 +92,7 @@ class SedimentStaticMapTest(GISTest):
             'lulc_samp_cur')
         impact_lucode = 88
         model_name = 'sediment'
-        num_iterations = 15  # not used unless explicitly pased to function
+        num_iterations = 50  # not used unless explicitly pased to function
         workspace = os.path.join(os.getcwd(), 'static_map_quality')
         watersheds = os.path.join(FRESHWATER, 'watersheds.shp')
 
@@ -121,6 +121,12 @@ class SedimentStaticMapTest(GISTest):
         static_maps.build_static_map(model_name, lulc_uri, impact_lucode,
             static_map_uri, base_run, self.config,
             workspace=static_map_workspace)
+
+#        difference_raster = os.path.join(workspace, 'difference.tif')
+#        converted_raster = os.path.join(static_map_workspace,
+#            'sediment_converted', 'output', 'sed_export.tif')
+#        static_maps.subtract_rasters(base_run, converted_raster,
+#            difference_raster)
 
         static_maps.test_static_map_quality(base_run, static_map_uri,
             lulc_uri, impact_lucode, watersheds, model_name, workspace,
