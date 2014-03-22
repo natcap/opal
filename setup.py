@@ -9,7 +9,7 @@ import glob
 import shutil
 
 import matplotlib
-
+import palisades
 import adept
 
 
@@ -48,44 +48,56 @@ if platform.system() == 'Windows':
             'skip_archive': True,
             'includes': [
                 'sip',
+                'adept',
                 'scipy.sparse.csgraph._validation',
+                'matplotlib',
+                'distutils',
             ],
-            'excludes': ['Tkconstants', 'Tkinter', 'tcl'],
+            'excludes': ['Tkconstants', 'Tkinter', 'tcl', '_gtkagg', '_tkagg',
+                '_qt4agg'],
+            'xref': True,
         },
         'build_installer': {'nsis_dir': dist_dir},
     }
     py2exe_options['console'] = ['run_adept.py']
+    DATA_FILES += matplotlib.get_py2exe_datafiles()
+    DATA_FILES += palisades.get_py2exe_datafiles()
 
-    # Since this repo is not for specific packages, I'm assuming that this
-    # section is for py2exe ONLY.
-    DATA_FILES.append(('invest_natcap/iui', iui_icons))
-    DATA_FILES.append(('adept/report_data',
-        glob.glob('adept/adept/report_data/*')))
-#    DATA_FILES.append(('data/colombia_static_data',
-#        glob.glob('data/colombia_static_data/*')))
-
-    # get specific sets of data files from the tool_data.
-    # first, get the vectors.
-    tool_data = []
-    vectors = ['Ecosystems_Colombia', 'Hydrographic_subzones',
-        'Municipalities', 'ecosys_dis_nat_comp_fac', 'hydrozones',
-        'sample_aoi', 'watersheds_cuencas']
-    for vector_base in vectors:
-        glob_pattern = 'data/colombia_tool_data/%s.*' % vector_base
-        tool_data += glob.glob(glob_pattern)
-
-    rasters = ['DEM', 'Erodability', 'Erosivity',
-        'Plant_available_water_content', 'Precipitation',
-        'Ref_evapotranspiration', 'Soil_depth', 'ecosystems']
-    for raster in rasters:
-        tool_data.append('data/colombia_tool_data/%s.tif' % raster)
-#    DATA_FILES.append(('data/colombia_tool_data', tool_data))
 else:
     python_version = 'python%s' % '.'.join([str(r) for r in
         sys.version_info[:2]])
     lib_path = os.path.join('lib', python_version, 'site-packages')
     iui_icon_path = os.path.join(lib_path, 'invest_natcap', 'iui')
     DATA_FILES.append((iui_icon_path, iui_icons))
+
+# Since this repo is not for specific packages, I'm assuming that this
+# section is for py2exe ONLY.
+DATA_FILES.append(('invest_natcap/iui', iui_icons))
+DATA_FILES.append(('adept/report_data',
+    glob.glob('adept/adept/report_data/*')))
+#    DATA_FILES.append(('data/colombia_static_data',
+#        glob.glob('data/colombia_static_data/*')))
+
+# get specific sets of data files from the tool_data.
+# first, get the vectors.
+tool_data = []
+vectors = ['Ecosystems_Colombia', 'Hydrographic_subzones',
+    'Municipalities', 'ecosys_dis_nat_comp_fac', 'hydrozones',
+    'sample_aoi', 'watersheds_cuencas']
+for vector_base in vectors:
+    glob_pattern = 'data/colombia_tool_data/%s.*' % vector_base
+    tool_data += glob.glob(glob_pattern)
+
+tif_rasters = ['DEM', 'Erodability', 'Erosivity',
+    'Plant_available_water_content', 'Precipitation',
+    'Ref_evapotranspiration', 'Soil_depth']
+for raster in tif_rasters:
+    tool_data.append('data/colombia_tool_data/%s.tif' % raster)
+#    DATA_FILES.append(('data/colombia_tool_data', tool_data))
+
+png_rasters = ['ecosystems']
+for raster in png_rasters:
+    tool_data.append('data/colombia_tool_data/%s.png' % raster)
 
 
 class ZipDataCommand(Command):
@@ -106,6 +118,7 @@ class ZipDataCommand(Command):
 
     def run(self):
         build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
+        dist_dir = os.path.join(os.getcwd(), 'dist')
         data_dir = os.path.join(build_dir, 'data')
         tool_data_dir = os.path.join(data_dir, 'colombia_tool_data')
         if os.path.exists(tool_data_dir):
@@ -132,10 +145,13 @@ class ZipDataCommand(Command):
             shutil.copy(static_file, new_uri)
 
         # make the data archives
-        shutil.make_archive(os.path.join(build_dir, 'tool_data'), 'zip',
-            root_dir=build_dir, base_dir=tool_data_dir)
-        shutil.make_archive(os.path.join(build_dir, 'static_data'), 'zip',
-            root_dir=build_dir, base_dir=static_maps_dir)
+        tool_zip = os.path.join(dist_dir, 'tool_data')
+        print "Building %s.zip" % tool_zip
+        shutil.make_archive(tool_zip, 'zip', root_dir=tool_data_dir)
+
+        static_data_zip = os.path.join(dist_dir, 'static_data')
+        print "Building %s.zip" % static_data_zip
+        shutil.make_archive(static_data_zip, 'zip', root_dir=static_maps_dir)
 
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
@@ -160,9 +176,9 @@ class NSISCommand(Command):
         cwd = os.getcwd()
         os.chdir('installer')  # CD into the installer folder to build it.
 
-        genesis = imp.load_source('genesis', 'genesis.py')
-        genesis.build_installer_script('permitting_installer.json',
-            'adept_installer.nsi')
+#        genesis = imp.load_source('genesis', 'genesis.py')
+#        genesis.build_installer_script('permitting_installer.json',
+#            'adept_installer.nsi')
 
         program_path = []
 
