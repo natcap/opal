@@ -15,5 +15,6 @@ if __name__ == '__main__':
         'landuse_uri': os.path.join(FULL_DATA, 'ecosystems.tif'),
         'fut_landuse_uri': os.path.join(FULL_DATA, 'es_comp_rd.tif'),
         'do_parallelism': True,
+        'valuation_enabled': False,
     }
     static_maps.execute(args)
