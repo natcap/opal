@@ -14,7 +14,8 @@
 ; INSTALLER INFORMATION
 !define INSTALLER_TITLE "${TITLE}"
 #!define BUILD_FOLDER "..\adept_py2exe"
-!define BUILD_FOLDER "..\data\colombia_static_data"
+#!define BUILD_FOLDER "..\data\colombia_static_data"
+!define BUILD_FOLDER "${PY2EXE_FOLDER}"
 !define INSTALLER_FILENAME "${APP_NAME}_${VERSION}_${APP_ARCHITECTURE}_Setup.exe"
 !define INSTALLER_LOGFILE "install_log.txt"
 !define INSTALLER_ICON "installer_icon.png"
@@ -170,22 +171,25 @@ CreateShortCut "${START_MENU_FOLDER}\${APP_NAME} Documentation.lnk" "$INSTDIR\ad
     WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayVersion"       "${APP_VERSION}"
     WriteRegDWORD HKLM "${REGISTRY_PATH}" "NoModify" 1
     WriteRegDWORD HKLM "${REGISTRY_PATH}" "NoRepair" 1
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;CUSTOM CODE HERE
+
+    CreateDirectory "$INSTDIR\data"
+    CreateDirectory "$INSTDIR\data\colombia_static_data"
+    SetOutPath "$INSTDIR\data\colombia_static_data\"
+    nsisunz::UnzipToLog "static_data.zip" "$INSTDIR\colombia_static_data\"
+
+    CreateDirectory "$INSTDIR\data\colombia_tool_data"
+    SetOutPath "$INSTDIR\data\colombia_tool_data\"
+    nsisunz::UnzipToLog "tool_data.zip" "$INSTDIR\colombia_tool_data\"
+
+    ;END OF CUSTOM UNZIPPING
     
     ; Write the install log to a text file on disk.
     StrCpy $0 "$INSTDIR\${INSTALLER_LOGFILE}"
     Push $0
     Call DumpLog
-
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;CUSTOM CODE HERE
-    CreateDirectory "$INSTDIR\data"
-    CreateDirectory "$INSTDIR\colombia_static_data"
-    nsisunz::UnzipToLog "static_data.zip" "$INSTDIR\colombia_static_data\"
-
-    CreateDirectory "$INSTDIR\colombia_tool_data"
-    nsisunz::UnzipToLog "tool_data.zip" "$INSTDIR\colombia_tool_data\"
-
-    ;END OF CUSTOM UNZIPPING
     
 SectionEnd
 
