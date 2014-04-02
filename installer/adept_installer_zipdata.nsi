@@ -63,30 +63,30 @@ StrCpy $DataDirPath "$0\data" ; Default folder for the data folder selection dia
 #nsDialogs::SelectFolderDialog "SELECT FOLDER" "C:\data"
 FunctionEnd
 
-PageEx Directory
-    DirVar $DataDirPath
-    PageCallbacks DataPageShow "" DataPageLeave
-    DirText "Select data folder" "Data Folder" "" "Select data folder"
-    DirVerify leave
-PageExEnd
-
-Function DataPageShow
-    ;Hide space texts
-    FindWindow $0 "#32770" "" $HWNDPARENT
-    GetDlgItem $1 $0 0x3FF
-    ShowWindow $1 0
-    GetDlgItem $1 $0 0x400
-    ShowWindow $1 0
-FunctionEnd
-
-Function DataPageLeave
-    GetInstDirError $0
-    ${If} $0 <> 0
-    ${OrIfNot} ${FileExists} "$DataDirPath"
-        MessageBox mb_iconstop "You must locate the php folder to continue!"
-        Abort
-    ${EndIf}
-FunctionEnd
+;PageEx Directory
+;    DirVar $DataDirPath
+;    PageCallbacks DataPageShow "" DataPageLeave
+;    DirText "Select data folder" "Data Folder" "" "Select data folder"
+;    DirVerify leave
+;PageExEnd
+;
+;Function DataPageShow
+;    ;Hide space texts
+;    FindWindow $0 "#32770" "" $HWNDPARENT
+;    GetDlgItem $1 $0 0x3FF
+;    ShowWindow $1 0
+;    GetDlgItem $1 $0 0x400
+;    ShowWindow $1 0
+;FunctionEnd
+;
+;Function DataPageLeave
+;    GetInstDirError $0
+;    ${If} $0 <> 0
+;    ${OrIfNot} ${FileExists} "$DataDirPath"
+;        MessageBox mb_iconstop "You must locate the php folder to continue!"
+;        Abort
+;    ${EndIf}
+;FunctionEnd
 
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
