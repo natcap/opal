@@ -20,16 +20,21 @@ a = Analysis(['run_adept.py'],
 
 a.datas += [('adept.json', 'adept.json', 'DATA')]
 
+# TODO: incorporate these into hooks.
 mpl_data_tree = Tree(matplotlib._get_data_path(), prefix='mpl-data')
 adept_pkg_static = Tree('adept/adept/static_data', prefix='static_data')
 
 pyz = PYZ(a.pure)
 
 import platform
+if platform.system() == 'Windows':
+    exe_name = 'run_adept.exe'
+else:
+    exe_name = 'run_adept'
 exe = EXE(pyz,
           a.scripts,
           a.binaries,
-          name='run_adept_%s' % platform.platform(),
+          name=exe_name,
           debug=False,
           strip=None,
           upx=False,  # says UPX is not available
@@ -43,7 +48,7 @@ coll = COLLECT(exe,
                adept_pkg_static,
                strip=None,
                upx=True,
-               name='run_adept_coll_%s' % platform.platform())
+               name='run_adept_coll_%s' % platform.platform())  # the output folder name.
 app = BUNDLE(coll,
              name='run_adept.app',
              icon=None)
