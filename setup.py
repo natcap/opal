@@ -173,12 +173,34 @@ class NSISCommand(Command):
         pass
 
     def run(self):
+        print ''
+        print 'Starting NSIS installer build'
+
+        build_dir = os.path.join(os.getcwd(), 'build', 'nsis-build')
+        os.makedirs(build_dir)
+
+        self.nsis_dir = os.path.expanduser(self.nsis_dir)
+        if not os.path.isdir(self.nsis_dir):
+            self.nsis_dir = self.nsis_dir[:-1]
+
+        target_dir = os.path.join(build_dir, os.path.basename(self.nsis_dir))
+        print 'Copying %s -> %s' % (self.nsis_dir, target_dir)
+        shutil.copytree(self.nsis_dir, target_dir)
+
+        # copy the zipfiles we need into the right place.
+        for filename in ['static_data.zip', 'tool_data.zip']:
+            source_file = os.path.join('dist', filename)
+            dest_file = os.path.join(target_dir, filename)
+            print 'Copying %s -> %s' % (source_file, dest_file)
+            shutil.copyfile(source_file, dest_file)
+
         cwd = os.getcwd()
         os.chdir('installer')  # CD into the installer folder to build it.
 
 #        genesis = imp.load_source('genesis', 'genesis.py')
 #        genesis.build_installer_script('permitting_installer.json',
 #            'adept_installer.nsi')
+        installer_path = os.path.join('adept_installer_zipdata.nsi')
 
         program_path = []
 
@@ -213,12 +235,17 @@ class NSISCommand(Command):
         else:
             architecture = 'x86'
 
+        # make the build dir (which should be relative to __file__), relative
+        # to the installer dir (cwd).
+        build_dir = os.path.join('..', self.nsis_dir)
+
         version_string = adept.__version__.replace(':', '_').replace(' ', '_')
         command = ['/DVERSION=%s' % version_string,
-                   '/DPY2EXE_FOLDER=%s' % self.nsis_dir,
+                   '/DPY2EXE_FOLDER=%s' % build_dir.replace('/', '\\'),
                    '/DARCHITECTURE=%s' % architecture,
-                   'adept_installer.nsi']
+                   installer_path]
 
+        print 'Executing command: %s' % command
         subprocess.call(program_path + [makensis_path] + command)
         os.chdir(cwd)
 CMD_CLASSES['win_installer'] = NSISCommand
