@@ -48,7 +48,7 @@ coll = COLLECT(exe,
                adept_pkg_static,
                strip=None,
                upx=True,
-               name='run_adept_coll_%s' % platform.platform())  # the output folder name.
+               name='run_adept_coll')  # the output folder name.
 app = BUNDLE(coll,
              name='run_adept.app',
              icon=None)
