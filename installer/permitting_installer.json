@@ -34,7 +34,8 @@
                 "name": "${APP_NAME} Documentation",
                 "target": "adept_documentation.docx"
             }
-        ]
+        ],
+        "post_install": "install_data_zips.nsi"
     },
     "uninstaller": {
         "icon": "{NSISDIR}\\Contrib\\Graphics\\Icons\\orange-uninstall.ico",

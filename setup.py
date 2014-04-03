@@ -197,10 +197,11 @@ class NSISCommand(Command):
         cwd = os.getcwd()
         os.chdir('installer')  # CD into the installer folder to build it.
 
-#        genesis = imp.load_source('genesis', 'genesis.py')
-#        genesis.build_installer_script('permitting_installer.json',
-#            'adept_installer.nsi')
-        installer_path = os.path.join('adept_installer_zipdata.nsi')
+        installer_path = os.path.join('adept_installer.nsi')
+        genesis = imp.load_source('genesis', 'genesis.py')
+        genesis.build_installer_script('permitting_installer.json',
+            installer_path)
+        #installer_path = os.path.join('adept_installer_zipdata.nsi')
 
         program_path = []
 

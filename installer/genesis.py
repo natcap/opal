@@ -265,6 +265,9 @@ Section \"Install\" SEC01\n
     formatted_string += start_menu_links(installer_options['start_menu'])
     formatted_string += UNINSTALLER_REG_KEYS
 
+    if 'post_install' in installer_options:
+        formatted_string += open(installer_options['post_install'], 'r').read()
+
     if installer_options['save_log']:
         formatted_string += SAVE_LOG_FILE
 
