@@ -175,14 +175,16 @@ CreateShortCut "${START_MENU_FOLDER}\${APP_NAME} Documentation.lnk" "$INSTDIR\ad
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;CUSTOM CODE HERE
 
+    SetOutPath "$INSTDIR"
+    File ..\dist\*.zip
     CreateDirectory "$INSTDIR\data"
     CreateDirectory "$INSTDIR\data\colombia_static_data"
     SetOutPath "$INSTDIR\data\colombia_static_data\"
-    nsisunz::UnzipToLog "static_data.zip" "$INSTDIR\colombia_static_data\"
+    nsisunz::UnzipToLog "$INSTDIR\static_data.zip" "."
 
     CreateDirectory "$INSTDIR\data\colombia_tool_data"
     SetOutPath "$INSTDIR\data\colombia_tool_data\"
-    nsisunz::UnzipToLog "tool_data.zip" "$INSTDIR\colombia_tool_data\"
+    nsisunz::UnzipToLog "$INSTDIR\tool_data.zip" "."
 
     ;END OF CUSTOM UNZIPPING
     
