@@ -9,7 +9,7 @@
         "name": "${APP_NAME}",
         "version": "${APP_VERSION}",
         "architecture": "${APP_ARCHITECTURE}",
-        "build_folder": "..\\adept_py2exe",
+        "build_folder": "..\\dist\\run_adept_coll",
         "publisher": "The Natural Capital Project",
         "website": "http://www.naturalcapitalproject.org",
         "languages": ["English", "Spanish"]
