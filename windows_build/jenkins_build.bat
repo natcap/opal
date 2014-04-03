@@ -31,4 +31,5 @@ cd ..
 
 :: Now that everything is installed, we can run the permitting project's
 :: setup.py commands to build everything we want/need.
-%ENVDIR%\Scripts\python setup.py py2exe win_installer
+%ENVDIR%\Scripts\python src\pyinstaller\pyinstaller.py -y --onedir --noupx run_adept.spec
+%ENVDIR%\Scripts\python setup.py zip_data win_installer
