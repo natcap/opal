@@ -81,7 +81,7 @@ DATA_FILES.append(('adept/report_data',
 # get specific sets of data files from the tool_data.
 # first, get the vectors.
 tool_data = []
-vectors = ['Ecosystems_Colombia', 'Hydrographic_subzones',
+vectors = ['Hydrographic_subzones',
     'Municipalities', 'ecosys_dis_nat_comp_fac', 'hydrozones',
     'sample_aoi', 'watersheds_cuencas']
 for vector_base in vectors:
