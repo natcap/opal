@@ -26,7 +26,7 @@ cd ..
 :: CD to the Adept directory to install adept to the virtual environment
 cd src/adept
 DEL /S /Q build
-..\%ENVDIR%\Scripts\python setup.py install
+..\..\%ENVDIR%\Scripts\python setup.py install
 cd ..
 
 :: Now that everything is installed, we can run the permitting project's
