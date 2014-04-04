@@ -215,6 +215,9 @@ class NSISCommand(Command):
                 makensis_path = ''
                 print str('ERROR: "%s" does not exist.' % self.nsis_install +
                     ' Checking the usual place(s) on this computer instead')
+        else:
+            makensis_path = self.nsis_install
+
         if program_path == []:
             if platform.system() == 'Windows':
                 possible_paths = ['C:/Program Files/NSIS/makensis.exe',
