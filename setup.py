@@ -246,6 +246,7 @@ class NSISCommand(Command):
         build_dir = os.path.join('..', self.nsis_dir)
 
         version_string = adept.__version__.replace(':', '_').replace(' ', '_')
+        version_string = version_string.replace('[', '').replace(']', '')
         command = ['/DVERSION=%s' % version_string,
                    '/DPY2EXE_FOLDER=%s' % build_dir.replace('/', '\\'),
                    '/DARCHITECTURE=%s' % architecture,

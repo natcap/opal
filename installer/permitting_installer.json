@@ -3,7 +3,8 @@
         "APP_ARCHITECTURE": "${ARCHITECTURE}",
         "APP_VERSION": "${VERSION}",
         "APP_NAME": "Adept",
-        "TITLE": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}"
+        "TITLE": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}",
+        "SAFE_VERSION": "${APP_NAME}_${VERSION}"
     },
     "general": {
         "name": "${APP_NAME}",
@@ -17,7 +18,7 @@
     "installer": {
         "title": "${TITLE}",
         "filename": "${APP_NAME}_${VERSION}_${APP_ARCHITECTURE}_Setup.exe",
-        "install_dir": "C:\\Program Files\\${TITLE}",
+        "install_dir": "C:\\Program Files\\${SAFE_VERSION}",
         "save_log": true,
         "assert_not_running": true,
         "assert_arch_is_compatible": true,
