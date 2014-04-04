@@ -24,7 +24,7 @@ DEL /S /Q build
 cd ..
 
 :: CD to the Adept directory to install adept to the virtual environment
-cd adept
+cd src/adept
 DEL /S /Q build
 ..\%ENVDIR%\Scripts\python setup.py install
 cd ..

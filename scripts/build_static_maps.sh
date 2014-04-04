@@ -18,7 +18,7 @@ python setup.py install
 popd
 
 # return to adept dir to build adept.
-pushd adept
+pushd src/adept
 python setup.py install
 popd
 
