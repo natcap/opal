@@ -12,6 +12,8 @@ import matplotlib
 import palisades
 import adept
 
+print 'Adept package version: %s' % adept.__version__
+print 'Palisades package version: %s' % palisades.__version__
 
 py2exe_options = {}
 
