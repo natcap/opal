@@ -27,7 +27,7 @@ cd ..
 cd src/adept
 DEL /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py install
-cd ..
+cd ..\..
 
 :: Now that everything is installed, we can run the permitting project's
 :: setup.py commands to build everything we want/need.
