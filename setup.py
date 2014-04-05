@@ -75,8 +75,8 @@ else:
 # Since this repo is not for specific packages, I'm assuming that this
 # section is for py2exe ONLY.
 DATA_FILES.append(('invest_natcap/iui', iui_icons))
-DATA_FILES.append(('adept/report_data',
-    glob.glob('adept/adept/report_data/*')))
+DATA_FILES.append(('src/adept/report_data',
+    glob.glob('src/adept/adept/report_data/*')))
 #    DATA_FILES.append(('data/colombia_static_data',
 #        glob.glob('data/colombia_static_data/*')))
 
