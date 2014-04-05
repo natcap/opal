@@ -22,7 +22,7 @@ a.datas += [('adept.json', 'adept.json', 'DATA')]
 
 # TODO: incorporate these into hooks.
 mpl_data_tree = Tree(matplotlib._get_data_path(), prefix='mpl-data')
-adept_pkg_static = Tree('adept/adept/static_data', prefix='static_data')
+adept_pkg_static = Tree('src/adept/adept/static_data', prefix='static_data')
 
 pyz = PYZ(a.pure)
 
