@@ -34,12 +34,13 @@ else:
 exe = EXE(pyz,
           a.scripts,
           a.binaries,
+          a.datas,
           name=exe_name,
-          debug=False,
+          debug=True,
           strip=None,
           upx=False,  # says UPX is not available
           append_pkg=True,
-          console=False )
+          console=True )
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
@@ -47,7 +48,7 @@ coll = COLLECT(exe,
                mpl_data_tree,
                adept_pkg_static,
                strip=None,
-               upx=True,
+               upx=False,
                name='run_adept_coll')  # the output folder name.
 app = BUNDLE(coll,
              name='run_adept.app',
