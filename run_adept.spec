@@ -10,19 +10,7 @@ print matplotlib._get_data_path()
 import sys
 for item in sys.path:
     print item
-a = Analysis(['run_adept.py'],
-             pathex=['/Users/jdouglass/workspace/invest-natcap.permitting',
-                     '/Users/jdouglass/workspace/invest-natcap.permitting/adept_py_env/lib/',
-                     '/Users/jdouglass/workspace/invest-natcap.permitting/adept_py_env/lib/site-packages'],
-             hookspath=['./hooks'],
-             runtime_hooks=['hooks/hook-adept.py', 'hooks/hook-adept.adept_core.py'])
-
-
-a.datas += [('adept.json', 'adept.json', 'DATA')]
-
-# TODO: incorporate these into hooks.
-mpl_data_tree = Tree(matplotlib._get_data_path(), prefix='mpl-data')
-adept_pkg_static = Tree('src/adept/adept/static_data', prefix='static_data')
+a = Analysis(['run_adept.py'], hookspath=['./hooks'])
 
 pyz = PYZ(a.pure)
 
@@ -40,13 +28,9 @@ exe = EXE(pyz,
           strip=None,
           upx=False,  # says UPX is not available
           append_pkg=True,
-          console=True )
+          console=False)
 coll = COLLECT(exe,
-               a.binaries,
-               a.zipfiles,
-               a.datas,
-               mpl_data_tree,
-               adept_pkg_static,
+               [('adept.json', 'adept.json', 'DATA')],
                strip=None,
                upx=False,
                name='run_adept_coll')  # the output folder name.
