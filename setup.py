@@ -144,8 +144,7 @@ class ZipDataCommand(Command):
         for static_file in static_files:
             new_uri = os.path.join(static_maps_dir,
                 os.path.basename(static_file))
-            print 'copying %s -> %s' % (static_file, new_uri)
-            #shutil.copy(static_file, new_uri)
+            print 'Uncompressing %s -> %s' % (static_file, new_uri)
             preprocessing.uncompress_gtiff(static_file, new_uri)
 
         # make the data archives
