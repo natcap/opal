@@ -11,6 +11,7 @@ import shutil
 import matplotlib
 import palisades
 import adept
+from adept import preprocessing
 
 print 'Adept package version: %s' % adept.__version__
 print 'Palisades package version: %s' % palisades.__version__
@@ -139,12 +140,13 @@ class ZipDataCommand(Command):
         print '\nStarting to copy static data'
         static_maps_dir = os.path.join(data_dir, 'colombia_static_data')
         os.makedirs(static_maps_dir)
-        static_files = glob.glob('data/colombia_static_data/*')
+        static_files = glob.glob('data/colombia_static_data/*.tif')
         for static_file in static_files:
             new_uri = os.path.join(static_maps_dir,
                 os.path.basename(static_file))
             print 'copying %s -> %s' % (static_file, new_uri)
-            shutil.copy(static_file, new_uri)
+            #shutil.copy(static_file, new_uri)
+            preprocessing.uncompress_gtiff(static_file, new_uri)
 
         # make the data archives
         tool_zip = os.path.join(dist_dir, 'tool_data')
