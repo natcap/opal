@@ -120,6 +120,11 @@
             "args_id": "model_name",
             "returns": "carbon",
             "type": "hidden"
+        },
+        {
+            "args_id": "do_parallelism",
+            "returns": false,
+            "type": "hidden"
         }
     ] 
 }
