@@ -75,6 +75,8 @@ class AdeptTest(GISTest):
             ' footprints'), 'Example_mining_projects.shp')
         sediment_total_impact = {
             'sediment': 1234567,
+            'nutrient': 1234567,
+            'carbon': 1234567,
         }
         impact_type = 'An impact type!'
         output_workspace = self.workspace
