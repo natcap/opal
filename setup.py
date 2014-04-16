@@ -133,8 +133,12 @@ class ZipDataCommand(Command):
         for tool_data_file in tool_data:
             new_uri = os.path.join(tool_data_dir,
                     os.path.basename(tool_data_file))
-            print 'copying %s -> %s' % (tool_data_file, new_uri)
-            shutil.copy(tool_data_file, new_uri)
+            if tool_data_file.endswith('.tif'):
+                print 'Uncompressing %s -> %s' % (tool_data_file, new_uri)
+                preprocessing.uncompress_gtiff(tool_data_file, new_uri)
+            else:
+                print 'copying %s -> %s' % (tool_data_file, new_uri)
+                shutil.copy(tool_data_file, new_uri)
 
         # copy all static map data into the static maps folder.
         print '\nStarting to copy static data'
