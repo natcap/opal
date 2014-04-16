@@ -179,3 +179,12 @@ class PreprocessingTest(GISTest):
         preprocessing._locate_lci_parcels(input_vector, max_search_vector, 500,
             output_vector)
 
+    def test_decompression(self):
+        raster_name = 'sediment_protection_static_map_lzw.tif'
+        compressed_path = os.path.join(DATA, 'DEM.tif')
+        uncompressed_path = os.path.join(os.getcwd(), 'DEM_uncompressed.tif')
+
+        preprocessing.uncompress_gtiff(compressed_path, uncompressed_path)
+
+        self.assertRastersEqual(compressed_path, uncompressed_path)
+
