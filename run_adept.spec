@@ -10,7 +10,7 @@ print matplotlib._get_data_path()
 import sys
 for item in sys.path:
     print item
-a = Analysis(['run_adept.py'], hookspath=['./hooks'],
+a = Analysis(['run_adept.py', 'run_carbon_sm.py'], hookspath=['./hooks'],
     runtime_hooks=['./hooks/rthook.py'])
 
 pyz = PYZ(a.pure)
