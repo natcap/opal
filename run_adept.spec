@@ -31,7 +31,7 @@ exe = EXE(pyz,
           append_pkg=True,
           console=False)
 coll = COLLECT(exe,
-               [('adept.json', 'adept.json', 'DATA')],
+               [(name, name, 'DATA') for name in ['adept.json', 'carbon_sm.json', 'sediment_sm.json', 'nutrient_sm.json']],
                strip=None,
                upx=False,
                name='run_adept_coll')  # the output folder name.
