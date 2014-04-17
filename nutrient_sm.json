@@ -1,0 +1,297 @@
+{
+    "id": "window", 
+    "label": {
+        "en": "Nutrient", 
+        "es": null
+    }, 
+    "modelName": {
+        "en": "nutrient", 
+        "es": null
+    }, 
+    "targetScript": "adept.static_maps", 
+    "height": 700, 
+    "width": 700,
+    "elements": [
+        {
+            "args_id": "workspace_dir", 
+            "defaultValue": "~/static_maps", 
+            "helpText": {
+                "en": "This is the directory in which the output and intermediate files will be saved.", 
+                "es": null
+            }, 
+            "id": "workspace", 
+            "label": {
+                "en": "Workspace", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "folder",
+            "validateAs": {
+                "type": "folder",
+                "mustExist": false
+            }
+        }, 
+        {
+            "args_id": "landuse_uri", 
+            "helpText": {
+                "en": "A GIS raster dataset, with an integer LULC code for each cell.", 
+                "es": null
+            }, 
+            "label": {
+                "en": "LULC Raster", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "model_name",
+            "type": "hidden",
+            "returns": "nutrient"
+        },
+        {
+            "args_id": "paved_landcover_code",
+            "helpText": {
+                "en": null,
+                "es": null
+            },
+            "defaultValue": 124,
+            "required": true,
+            "label": "Paved landcover code",
+            "type": "text",
+            "validateAs": {
+                "type": "number"
+            }
+        },
+        {
+            "args_id": "bare_landcover_code",
+            "helpText": {
+                "en": null,
+                "es": null
+            },
+            "defaultValue": 124,
+            "required": true,
+            "label": "Bare landcover code",
+            "type": "text",
+            "validateAs": {
+                "type": "number"
+            }
+        },
+        {
+            "args_id": "dem_uri", 
+            "helpText": {
+                "en": "A GIS raster dataset with an elevation value for each cell. Make sure the DEM is corrected by filling in sinks, and if necessary burning hydrographic features into the elevation model (recommended when you see unusual streams.) See the Working with the DEM section of the InVEST user's guide for more information.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "dem_uri", 
+            "label": {
+                "en": "DEM Raster", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "precipitation_uri", 
+            "helpText": {
+                "en": "A GIS raster dataset with a non-zero value for average annual precipitation for each cell. The precipitation units should be in millimeters.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "precipitation", 
+            "label": {
+                "en": "Precipitation", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "potential_evapotranspiration", 
+            "helpText": {
+                "en": "A GIS raster dataset, with an annual average evapotranspiration value for each cell. Potential evapotranspiration is the potential loss of water from soil by both evaporation from the soil and transpiration by healthy Alfalfa (or grass) if sufficient water is available. The evapotranspiration values should be in millimeters.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "potential_evapotranspiration", 
+            "label": {
+                "en": "Reference Evapotranspiration", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        },
+        {
+            "args_id": "depth_to_root_rest_layer_uri", 
+            "helpText": {
+                "en": "GIS raster dataset with an average root restricting layer depth value for each cell. Root restricting layer depth is the soil depth at which root penetration is strongly inhibited because of physical or chemical characteristics. The root restricting layer depth values should be in millimeters.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "soil_depth", 
+            "label": {
+                "en": "Depth To Root Restricting Layer", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "pawc_uri", 
+            "helpText": {
+                "en": "A GIS raster dataset with a plant available water content value for each cell. Plant Available Water Content fraction (PAWC) is the fraction of water that can be stored in the soil profile that is available for plants' use.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "plant_available_water_fraction", 
+            "label": {
+                "en": "Plant Available Water Fraction", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        },
+        {
+            "args_id": "seasonality_constant", 
+            "deafaultValue": 5,  
+            "helpText": {
+                "en": "Floating point value on the order of 1 to 20 corresponding to the seasonal distribution of precipitation. See the user's guide for a detailed explanation.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "seasonality_constant", 
+            "label": {
+                "en": "Seasonality Constant", 
+                "es": null
+            }, 
+            "type": "text", 
+            "validText": "^[0-9]+\\.?[0-9]+$"
+        },
+        {
+            "args_id": "watersheds_uri", 
+            "helpText": {
+                "en": "This is a layer of watersheds such that each watershed contributes to a point of interest where water quality will be analyzed.  It must have the integer field 'ws_id' where the values uniquely identify each watershed.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "watersheds_uri", 
+            "label": {
+                "en": "Watershed Polygons", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "fieldsExist": [
+                    "ws_id"
+                ], 
+                "layers": [
+                    {
+                        "name": {
+                            "inheritFrom": "file"
+                        }, 
+                        "projection": {
+                            "exists": true
+                        }, 
+                        "type": "polygons"
+                    }
+                ], 
+                "type": "OGR"
+            }
+        }, 
+        {
+            "args_id": "biophysical_table_uri", 
+            "helpText": {
+                "en": "A table containing model information corresponding to each of the land use classes in the LULC raster input. It must contain the fields 'lucode', 'usle_c', 'usle_p', and 'sedret_eff'.  See the InVEST sediment user's guide for more information about these fields.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "biophysical_table_uri", 
+            "label": {
+                "en": "Biophysical Table", 
+                "es": null
+            }, 
+            "type": "file", 
+		    "validateAs": {"type": "CSV",
+				  "fieldsExist": ["lucode", "Kc", "root_depth", "LULC_veg"],
+                                    "restrictions": [{"field": "lucode",
+                                                    "validateAs":{"type": "number",
+                                                                  "allowedValues": {"pattern":"^[0-9]+$"}
+                                                                  }},
+                                                     {"field": "Kc",
+                                                      "validateAs": {"type": "number",
+                                                                     "allowedValues":{"pattern":"^[-+]?[0-9]*\\.?[0-9]+$"}
+                                                                     }},
+                                                     {"field": "LULC_veg",
+                                                      "validateAs":{"type": "number",
+                                                                  "allowedValues": {"pattern":"^[01]"}
+                                                                  }}, 
+                                                     {"field": "root_depth",
+                                                      "validateAs": {"type": "number",
+                                                                     "allowedValues":{"pattern":"^[-+]?[0-9]*\\.?[0-9]+$"}
+                                                                     }}]}
+        }, 
+        {
+            "args_id": "threshold_flow_accumulation", 
+            "defaultValue": 4000, 
+            "helpText": {
+                "en": "The number of upstream cells that must flow into a cell before it's considered part of a stream such that retention stops and the remaining export is exported to the stream. Used to define streams from the DEM.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "threshold_flow_accumulation", 
+            "label": {
+                "en": "Threshold Flow Accumluation", 
+                "es": null
+            }, 
+            "type": "text", 
+            "validText": "^[0-9]+$"
+        }, 
+        {
+            "args_id": "water_purification_threshold_table_uri", 
+            "helpText": {
+                "en": "A table containing annual nutrient load threshold information.  Must have a ws_id index and thres_n (or p) field depending if nitrogen and/or phosphorous is simulated.", 
+                "es": null
+            }, 
+            "hideable": true, 
+            "id": "water_purification_threshold_table_uri", 
+            "label": {
+                "en": "Water Purification Threshold Table", 
+                "es": null
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "fieldsExist": ["ws_id"], 
+                "type": "CSV"
+            }
+        },
+        {
+            "args_id": "do_parallelism",
+            "returns": false,
+            "type": "hidden"
+        },
+        {
+            "args_id": "calc_n",
+            "returns": true,
+            "type": "hidden"
+        },
+        {
+            "args_id": "calc_p",
+            "returns": false,
+            "type": "hidden"
+        }
+    ]
+}
