@@ -32,6 +32,21 @@
                 "icon": "${icon}"
             },
             {
+                "name": "${APP_NAME} Carbon Static Map Generator",
+                "target": "run_carbon_sm.exe",
+                "icon": "${icon}"
+            },
+            {
+                "name": "${APP_NAME} Sediment Static Map Generator",
+                "target": "run_sediment_sm.exe",
+                "icon": "${icon}"
+            },
+            {
+                "name": "${APP_NAME} Nutrient Static Map Generator",
+                "target": "run_nutrient_sm.exe",
+                "icon": "${icon}"
+            },
+            {
                 "name": "${APP_NAME} Documentation",
                 "target": "adept_documentation.docx"
             }
