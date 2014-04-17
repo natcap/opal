@@ -18,14 +18,16 @@ pyz = PYZ(a.pure)
 import platform
 if platform.system() == 'Windows':
     exe_name = 'run_adept.exe'
+    debug_program = False
 else:
     exe_name = 'run_adept'
+    debug_program = True
 exe = EXE(pyz,
           a.scripts,
           a.binaries,
           a.datas,
           name=exe_name,
-          debug=True,
+          debug=debug_program,
           strip=None,
           upx=False,  # says UPX is not available
           append_pkg=True,
