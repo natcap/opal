@@ -49,6 +49,23 @@
             }
         }, 
         {
+            "args_id": "fut_landuse_uri", 
+            "helpText": {
+                "en": "Location of the landcover map for the future (protection) scenario.", 
+                "es": null
+            }, 
+            "id": "cur_lulc_raster", 
+            "label": {
+                "en": "Future Land Use/Land Cover raster", 
+                "es": null
+            }, 
+            "hideable": true,
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
             "args_id": "paved_landcover_code",
             "helpText": {
                 "en": null,
