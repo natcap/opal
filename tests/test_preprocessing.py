@@ -188,3 +188,11 @@ class PreprocessingTest(GISTest):
 
         self.assertRastersEqual(compressed_path, uncompressed_path)
 
+    def test_filter_by_raster(self):
+        raster = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
+        vector = os.path.join(DATA, 'watersheds_cuencas.shp')
+
+        out_uri = os.path.join(os.getcwd(), 'filtered.shp')
+
+        preprocessing.filter_by_raster(raster, vector, out_uri)
+
