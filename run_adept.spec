@@ -72,6 +72,9 @@ exe_objects = []
 
 for analysis, json_file in exe_files:
     name = json_file.replace('.json', '')
+    if platform.system() == 'Windows':
+        name += '.exe'
+
     pyz = PYZ(analysis.pure)
     exe = EXE(
         pyz,
