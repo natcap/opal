@@ -16,8 +16,8 @@ common_kwargs = {
 
 adept_analysis = Analysis(['run_adept.py'], **common_kwargs)
 carbon_analysis = Analysis(['run_carbon_sm.py'], **common_kwargs)
-sediment_analysis = Analysis(['run_nutrient_sm.py'], **common_kwargs)
-nutrient_analysis = Analysis(['run_sediment_sm.py'], **common_kwargs)
+sediment_analysis = Analysis(['run_sediment_sm.py'], **common_kwargs)
+nutrient_analysis = Analysis(['run_nutrient_sm.py'], **common_kwargs)
 
 # Merge all of the analysis objects together.
 MERGE(
@@ -85,6 +85,7 @@ for analysis, json_file in exe_files:
 
 total_coll = COLLECT(
     [('adept.json', 'adept.json', 'DATA')],
+    [(json_name, json_name, 'DATA') for (_, json_name) in exe_files],
     adept_analysis.binaries,
     adept_analysis.zipfiles,
     adept_analysis.datas,
