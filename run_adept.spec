@@ -11,7 +11,7 @@ import platform
 common_kwargs = {
     'hookspath': ['./hooks'],
     'runtime_hooks': ['./hooks/rthook.py'],
-    'hiddenimports': ['adept'],
+    'hiddenimports': ['adept', 'adept.static_maps'],
 }
 
 adept_analysis = Analysis(['run_adept.py'], **common_kwargs)
