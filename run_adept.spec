@@ -8,13 +8,6 @@ import matplotlib
 print matplotlib._get_data_path()
 import platform
 
-import sys
-for item in sys.path:
-    print item
-
-#a = Analysis(['run_adept.py', 'run_carbon_sm.py', 'run_sediment_sm.py', 'run_nutrient_sm.py'], hookspath=['./hooks'],
-#    runtime_hooks=['./hooks/rthook.py'])
-
 common_kwargs = {
     'hookspath': ['./hooks'],
     'runtime_hooks': ['./hooks/rthook.py'],
@@ -36,7 +29,6 @@ MERGE(
 
 pyz = PYZ(adept_analysis.pure)
 
-#import platform
 if platform.system() == 'Windows':
     exe_name = 'run_adept.exe'
     debug_program = False
@@ -45,10 +37,7 @@ else:
     debug_program = True
 adept_exe = EXE(pyz,
           adept_analysis.scripts,
-#          adept_analysis.binaries,
-#          adept_analysis.zipfiles,
           adept_analysis.dependencies,
-#          adept_analysis.datas,
           name='adept_exe',
           debug=debug_program,
           exclude_binaries=True,  # makes all files located in same dir
@@ -56,17 +45,8 @@ adept_exe = EXE(pyz,
           upx=False,  # says UPX is not available
           append_pkg=True,
           console=False)
-#adept_coll = COLLECT(adept_exe,
-#               [(name, name, 'DATA') for name in ['adept.json', 'carbon_sm.json', 'sediment_sm.json', 'nutrient_sm.json']],
-#               strip=None,
-#               upx=False,
-#               name='run_adept_coll')  # the output folder name.
-#app = BUNDLE(adept_coll,
-#             name='run_adept.app',
-#             icon=None)
 
 exe_files = [
-#    (adept_analysis, 'adept.json'),
     (carbon_analysis, 'carbon_sm.json'),
     (sediment_analysis, 'sediment_sm.json'),
     (nutrient_analysis, 'nutrient_sm.json'),
@@ -83,13 +63,7 @@ for analysis, json_file in exe_files:
 
     pyz = PYZ(analysis.pure)
 
-#    for d in analysis.datas:
-#        if 'Makefile' in d[0]:
-#            analysis.datas.remove(d)
-#            break
-
     print name, 'exe'
-#    print analysis.dependencies
     exe = EXE(
         pyz,
         analysis.scripts,
@@ -109,26 +83,11 @@ for analysis, json_file in exe_files:
     for item in [analysis.binaries, analysis.zipfiles, analysis.datas]:
         analysis_items.append(item)
 
-
-#    print name, 'coll'
-#    coll = COLLECT(
-#        exe,
-#        [(json_file, json_file, 'DATA')],
-#        analysis.binaries,
-#        analysis.zipfiles,
-#        analysis.datas,
-#        strip=None,
-#        upx=False,  # must be False on mac
-#        name=name
-#    )
-
-
 total_coll = COLLECT(
     [('adept.json', 'adept.json', 'DATA')],
     adept_analysis.binaries,
     adept_analysis.zipfiles,
     adept_analysis.datas,
-#    *exe_objects,
     *analysis_items,
     strip=None,
     upx=False,
