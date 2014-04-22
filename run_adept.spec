@@ -65,7 +65,6 @@ adept_exe = EXE(pyz,
 #             name='run_adept.app',
 #             icon=None)
 
-
 exe_files = [
 #    (adept_analysis, 'adept.json'),
     (carbon_analysis, 'carbon_sm.json'),
@@ -74,6 +73,7 @@ exe_files = [
 ]
 
 exe_objects = []
+analysis_items = [adept_exe]
 
 for analysis, json_file in exe_files:
     name = json_file.replace('.json', '')
@@ -89,10 +89,11 @@ for analysis, json_file in exe_files:
 #            break
 
     print name, 'exe'
+#    print analysis.dependencies
     exe = EXE(
         pyz,
         analysis.scripts,
-        #        analysis.dependencies,
+#        analysis.dependencies,  # causes crash when Mach-O reads .nib file
 #        analysis.zipfiles,
 #        analysis.binaries,
 #        analysis.datas,
@@ -100,32 +101,36 @@ for analysis, json_file in exe_files:
         debug=True,
         onefile=False,
 #        strip=None,
-        exclude_binaries=True,  # makes all files located in same dir
+#        exclude_binaries=True,  # makes all files located in same dir
         strip=False,
         upx=False,
     )
-    print name, 'coll'
-    #exe_objects.append(exe)
-    coll = COLLECT(
-        exe,
-        [(json_file, json_file, 'DATA')],
-        analysis.binaries,
-        analysis.zipfiles,
-        analysis.datas,
-        strip=None,
-        upx=False,  # must be False on mac
-        name=name
-    )
+    analysis_items.append(exe)
+    for item in [analysis.binaries, analysis.zipfiles, analysis.datas]:
+        analysis_items.append(item)
+
+
+#    print name, 'coll'
+#    coll = COLLECT(
+#        exe,
+#        [(json_file, json_file, 'DATA')],
+#        analysis.binaries,
+#        analysis.zipfiles,
+#        analysis.datas,
+#        strip=None,
+#        upx=False,  # must be False on mac
+#        name=name
+#    )
+
 
 total_coll = COLLECT(
-    adept_exe,
-#    [(json_file, json_file, 'DATA') for (a, json_file) in exe_files],
     [('adept.json', 'adept.json', 'DATA')],
-#    *exe_objects,
     adept_analysis.binaries,
     adept_analysis.zipfiles,
     adept_analysis.datas,
+#    *exe_objects,
+    *analysis_items,
     strip=None,
-#    upx=False,
+    upx=False,
     name='total_coll'
 )
