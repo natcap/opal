@@ -94,14 +94,14 @@ for analysis, json_file in exe_files:
         pyz,
         analysis.scripts,
 #        analysis.dependencies,  # causes crash when Mach-O reads .nib file
-#        analysis.zipfiles,
-#        analysis.binaries,
+        analysis.zipfiles,
+        analysis.binaries,
 #        analysis.datas,
         name=name,
         debug=True,
         onefile=False,
 #        strip=None,
-#        exclude_binaries=True,  # makes all files located in same dir
+        exclude_binaries=True,  # makes all files located in same dir
         strip=False,
         upx=False,
     )
@@ -132,5 +132,6 @@ total_coll = COLLECT(
     *analysis_items,
     strip=None,
     upx=False,
+    exclude_binaries=True,
     name='total_coll'
 )
