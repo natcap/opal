@@ -98,10 +98,6 @@ class SedimentStaticMapTest(GISTest):
         base_run = os.path.join(base_workspace, 'output', 'sed_export.tif')
         base_static_map = os.path.join(base_workspace, 'base_static_map.tif')
 
-
-        static_maps.test_static_map_quality(lulc_uri, impact_lucode, base_run,
-            self.config, model_name, num_iterations, impact_region, workspace)
-
         static_maps.test_static_map_quality(base_run, base_static_map,
             lulc_uri, impact_lucode, watersheds_uri, model_name, workspace,
             self.config)
