@@ -93,10 +93,23 @@ class SedimentStaticMapTest(GISTest):
 #        }
         watersheds_uri = self.config['watersheds_uri']
 
-        base_workspace = os.path.join(workspace, 'base_run')
-        static_maps.execute_model(model_name, lulc_uri, base_workspace, self.config)
+        #base_workspace = os.path.join(workspace, 'base_run')
+        #static_maps.execute_model(model_name, lulc_uri, base_workspace, self.config)
+
+        # assume that I've generated the static map before
+        base_workspace = os.path.join(os.path.dirname(__file__), '..',
+            'sediment_static_maps', 'sediment_base')
         base_run = os.path.join(base_workspace, 'output', 'sed_export.tif')
-        base_static_map = os.path.join(base_workspace, 'base_static_map.tif')
+        base_static_map = os.path.join(base_workspace, '..',
+            'sediment_paved_static_map.tif')
+
+        if not os.path.exists(base_run):
+            raise IOError(('You must generate a sediment static map.  Its '
+                'base export must be located here: %s' % os.path.abspath(base_run)))
+
+        if not os.path.exists(base_static_map):
+            raise IOError(('You must generate a sediment static map in its '
+                'usual place: %s' % os.path.abspath(base_static_map)))
 
         static_maps.test_static_map_quality(base_run, base_static_map,
             lulc_uri, impact_lucode, watersheds_uri, model_name, workspace,
