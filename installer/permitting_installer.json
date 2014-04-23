@@ -28,22 +28,22 @@
         "start_menu": [
             {
                 "name": "${APP_NAME}",
-                "target": "run_adept.exe",
+                "target": "adept_exe.exe",
                 "icon": "${icon}"
             },
             {
                 "name": "${APP_NAME} Carbon Static Map Generator",
-                "target": "run_carbon_sm.exe",
+                "target": "carbon_sm.exe",
                 "icon": "${icon}"
             },
             {
                 "name": "${APP_NAME} Sediment Static Map Generator",
-                "target": "run_sediment_sm.exe",
+                "target": "sediment_sm.exe",
                 "icon": "${icon}"
             },
             {
                 "name": "${APP_NAME} Nutrient Static Map Generator",
-                "target": "run_nutrient_sm.exe",
+                "target": "nutrient_sm.exe",
                 "icon": "${icon}"
             },
             {
