@@ -32,4 +32,4 @@ cd ..\..
 :: Now that everything is installed, we can run the permitting project's
 :: setup.py commands to build everything we want/need.
 %ENVDIR%\Scripts\python src\pyinstaller\pyinstaller.py -y --onedir --noupx -c run_adept.spec
-%ENVDIR%\Scripts\python setup.py zip_data win_installer --nsis-dir=dist/run_adept_coll
+%ENVDIR%\Scripts\python setup.py zip_data win_installer --nsis-dir=dist/total_coll
