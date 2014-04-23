@@ -77,20 +77,20 @@ class SedimentStaticMapTest(GISTest):
         os.makedirs(workspace)
 
         # tweak the config for running on full datasets
-#        self.config = {
-#            "workspace_dir": "",
-#            "dem_uri": os.path.join(FULL_DATA, 'DEM.tif'),
-#            "erosivity_uri": os.path.join(FULL_DATA, "Erosivity.tif"),
-#            "erodibility_uri": os.path.join(FULL_DATA, "Erodability.tif"),
-#            "landuse_uri": "",
-#            "watersheds_uri": os.path.join(FULL_DATA, "Servicesheds_Col.shp"),
-#            "reservoir_locations_uri": os.path.join(FULL_DATA, "Reservoirs.shp"),
-#            "reservoir_properties_uri": "",
-#            "biophysical_table_uri": os.path.join(FULL_DATA, "Biophysical_Colombia.csv"),
-#            "threshold_flow_accumulation": 40,
-#            "slope_threshold": "5",
-#            "sediment_threshold_table_uri": os.path.join(FULL_DATA, "sediment_threshold.csv"),
-#        }
+        self.config = {
+            "workspace_dir": "",
+            "dem_uri": os.path.join(FULL_DATA, 'DEM.tif'),
+            "erosivity_uri": os.path.join(FULL_DATA, "Erosivity.tif"),
+            "erodibility_uri": os.path.join(FULL_DATA, "Erodability.tif"),
+            "landuse_uri": "",
+            "watersheds_uri": os.path.join(FULL_DATA, "Servicesheds_Col.shp"),
+            "reservoir_locations_uri": os.path.join(FULL_DATA, "Reservoirs.shp"),
+            "reservoir_properties_uri": "",
+            "biophysical_table_uri": os.path.join(FULL_DATA, "Biophysical_Colombia.csv"),
+            "threshold_flow_accumulation": 40,
+            "slope_threshold": "5",
+            "sediment_threshold_table_uri": os.path.join(FULL_DATA, "sediment_threshold.csv"),
+        }
         watersheds_uri = self.config['watersheds_uri']
 
         #base_workspace = os.path.join(workspace, 'base_run')
