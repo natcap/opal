@@ -30,15 +30,15 @@ MERGE(
 pyz = PYZ(adept_analysis.pure)
 
 if platform.system() == 'Windows':
-    exe_name = 'run_adept.exe'
+    exe_name = 'adept_exe.exe'
     debug_program = False
 else:
-    exe_name = 'run_adept'
+    exe_name = 'adept_exe'
     debug_program = True
 adept_exe = EXE(pyz,
           adept_analysis.scripts,
           adept_analysis.dependencies,
-          name='adept_exe',
+          name=exe_name,
           debug=debug_program,
           exclude_binaries=True,  # makes all files located in same dir
           strip=None,
