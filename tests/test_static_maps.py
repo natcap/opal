@@ -65,25 +65,50 @@ class SedimentStaticMapTest(GISTest):
         static_maps.execute(self.config)
 
     def test_static_map_quality(self):
-        lulc_uri = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
-        impact_lucode = 60
+        lulc_uri = os.path.join(FULL_DATA, 'ecosystems.tif')
+        impact_lucode = 60  # paved landcover code
         model_name = 'sediment'
         num_iterations = 10
         workspace = os.path.join(os.getcwd(), 'static_map_quality')
-        impact_region = os.path.join(CLIPPED_DATA, 'servicesheds_col.shp')
+        impact_region = os.path.join(FULL_DATA, 'servicesheds_col.shp')
+        watersheds_uri = os.path.join(FULL_DATA, 'watersheds_cuencas.shp')
 
         if os.path.exists(workspace):
             shutil.rmtree(workspace)
         os.makedirs(workspace)
 
+        # tweak the config for running on full datasets
+        self.config = {
+            "workspace_dir": "",
+            "dem_uri": os.path.join(FULL_DATA, 'DEM.tif'),
+            "erosivity_uri": os.path.join(FULL_DATA, "Erosivity.tif"),
+            "erodibility_uri": os.path.join(FULL_DATA, "Erodability.tif"),
+            "landuse_uri": "",
+            "watersheds_uri": os.path.join(FULL_DATA, "Servicesheds_Col.shp"),
+            "reservoir_locations_uri": os.path.join(FULL_DATA, "Reservoirs.shp"),
+            "reservoir_properties_uri": "",
+            "biophysical_table_uri": os.path.join(FULL_DATA, "Biophysical_Colombia.csv"),
+            "threshold_flow_accumulation": 40,
+            "slope_threshold": "5",
+            "sediment_threshold_table_uri": os.path.join(FULL_DATA, "sediment_threshold.csv"),
+        }
+
         base_workspace = os.path.join(workspace, 'base_run')
         static_maps.execute_model(model_name, lulc_uri, base_workspace, self.config)
         base_run = os.path.join(base_workspace, 'output', 'sed_export.tif')
+        base_static_map = os.path.join(base_workspace, 'base_static_map.tif')
+
 
         static_maps.test_static_map_quality(lulc_uri, impact_lucode, base_run,
             self.config, model_name, num_iterations, impact_region, workspace)
 
-        static_maps.graph_it(os.path.join(workspace, 'logfile.txt'))
+        static_maps.test_static_map_quality(base_run, base_static_map,
+            lulc_uri, impact_lucode, watersheds_uri, model_name, workspace,
+            self.config)
+
+        csv_path = os.path.join(workspace, 'impact_site_simulation.csv')
+        static_maps.graph_it(csv_path, os.path.join(workspace, 'logfile.txt'))
+
 
     def test_static_map_quality_willamette(self):
         TERRESTRIAL = os.path.join(INVEST_DATA, 'Base_Data', 'Terrestrial')
