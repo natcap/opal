@@ -117,7 +117,8 @@ class SedimentStaticMapTest(GISTest):
             self.config)
 
         csv_path = os.path.join(workspace, 'impact_site_simulation.csv')
-        static_maps.graph_it(csv_path, os.path.join(workspace, 'logfile.txt'))
+        static_maps.graph_it(csv_path, os.path.join(workspace,
+            'results_plot.png'))
 
 
     def test_static_map_quality_willamette(self):
