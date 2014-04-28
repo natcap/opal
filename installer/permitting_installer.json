@@ -51,7 +51,18 @@
                 "target": "adept_documentation.docx"
             }
         ],
-        "post_install": "install_data_zips.nsi"
+        "post_install": "install_data_zips.nsi",
+        "sections": [
+            {
+                "name": "Static Data",
+                "size": "10000000",
+                "action": {
+                    "type": "unzip",
+                    "zipfile": "..\\dist\\static_data.zip",
+                    "target_dir": "$INSTDIR\\colombia_static_data"
+                }
+            }
+        ]
     },
     "uninstaller": {
         "icon": "{NSISDIR}\\Contrib\\Graphics\\Icons\\orange-uninstall.ico",

@@ -111,6 +111,7 @@ def build_installer_script(config_file_uri, out_file_uri):
     #TODO: write the .onInit function
 
     new_file.write(installer(sanitized_config['installer']))
+
     new_file.write(UNINSTALLER_SECTION)
 
     new_file.close()
@@ -193,6 +194,26 @@ ShowInstDetails show
     return general_settings
 
 
+def section(options):
+    # ASSUMING ONLY ONE LEVEL OF OPTIONS
+    strings = [
+        'Section \"%s\"' % options['name'],
+        'AddSize \"%s\"' % options['size']
+    ]
+    if options['action']['type'] == 'unzip':
+        unzip_commands = [
+            'File %s' % options['action']['zipfile'],
+            'CreateDirectory \"%s\"' % options['action']['target_dir'],
+            'SetOutPath \"%s\"' % options['action']['target_dir'],
+            'nsisunz::UnzipToLog \"%s\" \".\"' % options['action']['zipfile'],
+        ]
+        for command in unzip_commands:
+            strings.append(command)
+
+    strings.append('SectionEnd\n')
+
+    return '\n'.join(strings)
+
 def local_variables(options):
     custom_vars = []
     for var_name, var_value in options['variables'].iteritems():
@@ -274,7 +295,14 @@ Section \"Install\" SEC01\n
 
     formatted_string += """
 SectionEnd
+
 """
+    try:
+        for section_config in installer_options['sections']:
+            formatted_string += section(section_config)
+    except KeyError:
+        raise
+
 
     return formatted_string
 
