@@ -275,7 +275,7 @@ def start_menu_links(options):
 
 def installer(installer_options):
     formatted_string = """
-Section \"Install\" SEC01\n
+Section \"Core scripts and data\" SEC01\n
   SetShellVarContext all
   SetOutPath "$INSTDIR"
   writeUninstaller "$INSTDIR\${UNINSTALLER_FILENAME}.exe"
@@ -283,6 +283,12 @@ Section \"Install\" SEC01\n
   ; Desired files are up one directory and in the given build folder.
   File /r "${BUILD_FOLDER}\*"
     """
+
+    try:
+        if installer_options['required']:
+            formatted_string += 'SectionIn RO\n'
+    except KeyError:
+        pass
 
     formatted_string += start_menu_links(installer_options['start_menu'])
     formatted_string += UNINSTALLER_REG_KEYS
