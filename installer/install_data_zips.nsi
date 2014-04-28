@@ -6,7 +6,7 @@
 
 SetOutPath "$INSTDIR"
 
-Section "Static Data"
+SectionGroup "Static Data"
     AddSize "10000000"
 
     File ..\dist\*.zip
@@ -14,7 +14,7 @@ Section "Static Data"
     CreateDirectory "$INSTDIR\data\colombia_static_data"
     SetOutPath "$INSTDIR\data\colombia_static_data\"
     nsisunz::UnzipToLog "$INSTDIR\static_data.zip" "."
-SectionEnd
+SectionGroupEnd
 
 CreateDirectory "$INSTDIR\data\colombia_tool_data"
 SetOutPath "$INSTDIR\data\colombia_tool_data\"
