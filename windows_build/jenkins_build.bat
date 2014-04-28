@@ -14,22 +14,27 @@ copy C:\Python27\Lib\distutils\distutils.cfg .\%ENVDIR%\Lib\distutils\distutils.
 :: CD to the invest-3 directory to install it to the virtual environment
 cd invest-natcap.invest-3
 DEL /S /Q build
-..\%ENVDIR%\Scripts\python setup.py build_ext install
+..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..
 ::
 :: CD to the palisades directory to install it to the virtual environment
 cd user-interface
 DEL /S /Q build
-..\%ENVDIR%\Scripts\python setup.py build_ext install
+..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..
 
 :: CD to the Adept directory to install adept to the virtual environment
 cd src/adept
 DEL /S /Q build
-..\..\%ENVDIR%\Scripts\python setup.py install
+..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
 cd ..\..
 
 :: Now that everything is installed, we can run the permitting project's
 :: setup.py commands to build everything we want/need.
-%ENVDIR%\Scripts\python src\pyinstaller\pyinstaller.py -y --onedir --noupx -c run_adept.spec
-%ENVDIR%\Scripts\python setup.py zip_data win_installer --nsis-dir=dist/total_coll
+%ENVDIR%\Scripts\python src\pyinstaller\pyinstaller.py -y --onedir --noupx -c run_adept.spec || goto :error
+%ENVDIR%\Scripts\python setup.py zip_data win_installer --nsis-dir=dist/total_coll || goto :error
+
+goto :EOF
+
+:error
+exit /b %errorlevel%
