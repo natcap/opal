@@ -1,6 +1,7 @@
 import sys
 import os
-import adept
-from adept import static_maps
+import multiprocessing
+
+multiprocessing.freeze_support()
 
 os.environ['MATPLOTLIBDATA'] = os.path.join(sys._MEIPASS, 'mpl-data')
