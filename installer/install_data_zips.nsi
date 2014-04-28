@@ -5,11 +5,16 @@
 ;CUSTOM CODE HERE
 
 SetOutPath "$INSTDIR"
-File ..\dist\*.zip
-CreateDirectory "$INSTDIR\data"
-CreateDirectory "$INSTDIR\data\colombia_static_data"
-SetOutPath "$INSTDIR\data\colombia_static_data\"
-nsisunz::UnzipToLog "$INSTDIR\static_data.zip" "."
+
+Section "Static Data"
+    AddSize "10000000"
+
+    File ..\dist\*.zip
+    CreateDirectory "$INSTDIR\data"
+    CreateDirectory "$INSTDIR\data\colombia_static_data"
+    SetOutPath "$INSTDIR\data\colombia_static_data\"
+    nsisunz::UnzipToLog "$INSTDIR\static_data.zip" "."
+SectionEnd
 
 CreateDirectory "$INSTDIR\data\colombia_tool_data"
 SetOutPath "$INSTDIR\data\colombia_tool_data\"
