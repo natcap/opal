@@ -140,7 +140,7 @@
         },
         {
             "args_id": "do_parallelism",
-            "returns": false,
+            "returns": true,
             "type": "hidden"
         }
     ] 
