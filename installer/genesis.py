@@ -290,6 +290,11 @@ Section \"Core scripts and data\" SEC01\n
     except KeyError:
         pass
 
+    try:
+        formatted_string += 'AddSize \"%s\"\n' % installer_options['size']
+    except KeyError:
+        pass
+
     formatted_string += start_menu_links(installer_options['start_menu'])
     formatted_string += UNINSTALLER_REG_KEYS
 

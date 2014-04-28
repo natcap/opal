@@ -20,6 +20,7 @@
         "filename": "${APP_NAME}_${VERSION}_${APP_ARCHITECTURE}_Setup.exe",
         "install_dir": "C:\\Program Files\\${SAFE_VERSION}",
         "required": true,
+        "size": 3772307,
         "save_log": true,
         "assert_not_running": true,
         "assert_arch_is_compatible": true,
