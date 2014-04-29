@@ -83,7 +83,7 @@ DATA_FILES.append(('src/adept/report_data',
 
 # get specific sets of data files from the tool_data.
 # first, get the vectors.
-tool_data = []
+tool_data = glob.glob('data/colombia_tool_data/*.csv')
 vectors = ['Hydrographic_subzones',
     'Municipalities', 'ecosys_dis_nat_comp_fac', 'hydrozones',
     'sample_aoi', 'watersheds_cuencas']
