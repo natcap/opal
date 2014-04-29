@@ -61,7 +61,7 @@
                 "size": "10000000",
                 "action": {
                     "type": "unzip",
-                    "zipfile": "static_data.zip",
+                    "zipfile": "$INSTDIR\\static_data.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data"
                 }
             }
