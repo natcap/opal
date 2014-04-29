@@ -202,7 +202,6 @@ def section(options):
     ]
     if options['action']['type'] == 'unzip':
         unzip_commands = [
-            'File %s' % options['action']['zipfile'],
             'CreateDirectory \"%s\"' % options['action']['target_dir'],
             'SetOutPath \"%s\"' % options['action']['target_dir'],
             'nsisunz::UnzipToLog \"%s\" \".\"' % options['action']['zipfile'],
@@ -297,6 +296,10 @@ Section \"Core scripts and data\" SEC01\n
 
     formatted_string += start_menu_links(installer_options['start_menu'])
     formatted_string += UNINSTALLER_REG_KEYS
+
+    if 'extra_files' in installer_options:
+        for extra_file in installer_options['extra_files']:
+            formatted_string += '    File %s\n' % extra_file
 
     if 'post_install' in installer_options:
         formatted_string += open(installer_options['post_install'], 'r').read()
