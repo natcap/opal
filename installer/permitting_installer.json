@@ -61,7 +61,7 @@
                 "action": {
                     "type": "unzip",
                     "zipfile": "..\\dist\\static_data.zip",
-                    "target_dir": "$INSTDIR\\colombia_static_data"
+                    "target_dir": "$INSTDIR\\data\\colombia_static_data"
                 }
             }
         ]
