@@ -5,7 +5,6 @@
 ;CUSTOM CODE HERE
 
 SetOutPath "$INSTDIR"
-file ..\dist\tool_data.zip
 CreateDirectory "$INSTDIR\data"
 CreateDirectory "$INSTDIR\data\colombia_tool_data"
 SetOutPath "$INSTDIR\data\colombia_tool_data\"
