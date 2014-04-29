@@ -93,15 +93,10 @@ for vector_base in vectors:
 
 tif_rasters = ['DEM', 'Erodability', 'Erosivity',
     'Plant_available_water_content', 'Precipitation',
-    'Ref_evapotranspiration', 'Soil_depth', 'es_comp_rd']
+    'Ref_evapotranspiration', 'Soil_depth', 'es_comp_rd',
+    'ecosystems']
 for raster in tif_rasters:
     tool_data.append('data/colombia_tool_data/%s.tif' % raster)
-#    DATA_FILES.append(('data/colombia_tool_data', tool_data))
-
-png_rasters = ['ecosystems']
-for raster in png_rasters:
-    tool_data.append('data/colombia_tool_data/%s.png' % raster)
-
 
 class ZipDataCommand(Command):
     """Zips up all the data required for distribution."""
