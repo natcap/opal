@@ -184,6 +184,78 @@
             }
         },
         {
+            "type": "folder", 
+            "defaultValue": "", 
+            "required": false,
+            "hideable": true,
+            "label": {
+                "en": "Use Custom Carbon Static Maps", 
+                "es": null
+            }, 
+            "helpText": {
+                "en": null, 
+                "es": null
+            }, 
+            "validateAs": {
+                "type": "folder", 
+                "contains": [
+                    "carbon_bare_static_map.tif",
+                    "carbon_paved_static_map.tif",
+                    "carbon_protection_static_map.tif"
+                ]
+            }, 
+            "id": "carbon_static_maps", 
+            "args_id": "carbon_static_maps"
+        }, 
+        {
+            "type": "folder", 
+            "defaultValue": "", 
+            "required": false,
+            "hideable": true,
+            "label": {
+                "en": "Use Custom Nutrient Static Maps", 
+                "es": null
+            }, 
+            "helpText": {
+                "en": null, 
+                "es": null
+            }, 
+            "validateAs": {
+                "type": "folder", 
+                "contains": [
+                    "nutrient_bare_static_map.tif",
+                    "nutrient_paved_static_map.tif",
+                    "nutrient_protection_static_map.tif"
+                ]
+            }, 
+            "id": "nutrient_static_maps", 
+            "args_id": "nutrient_static_maps"
+        }, 
+        {
+            "type": "folder", 
+            "defaultValue": "", 
+            "required": false,
+            "hideable": true,
+            "label": {
+                "en": "Use Custom Sediment Static Maps", 
+                "es": null
+            }, 
+            "helpText": {
+                "en": null, 
+                "es": null
+            }, 
+            "validateAs": {
+                "type": "folder", 
+                "contains": [
+                    "sediment_bare_static_map.tif",
+                    "sediment_paved_static_map.tif",
+                    "sediment_protection_static_map.tif"
+                ]
+            }, 
+            "id": "sediment_static_maps", 
+            "args_id": "sediment_static_maps"
+        }, 
+        {
             "type": "hidden",
             "defaultValue": ".",
             "args_id": "data_dir"
