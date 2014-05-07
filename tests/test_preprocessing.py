@@ -122,9 +122,12 @@ class PreprocessingTest(GISTest):
         output_vector = os.path.join(workspace, 'focal_hydrozones.shp')
         aoi_vector = os.path.join(TEST_DATA, 'multi_hydrozone_aoi.shp')
         aoi_and_hydrozones = os.path.join(workspace, 'union.shp')
+        limited_parcels = os.path.join(TEST_DATA, 'limited_polygons.shp')
 
         preprocessing.locate_intersecting_polygons(hydrozones, impact_vector, output_vector)
-        preprocessing.union_of_vectors([output_vector, aoi_vector],
+#        preprocessing.union_of_vectors([output_vector, aoi_vector],
+#            aoi_and_hydrozones)
+        preprocessing.union_of_vectors([output_vector, limited_parcels],
             aoi_and_hydrozones)
 
     def test_difference(self):
