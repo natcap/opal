@@ -34,6 +34,25 @@ class AdeptTest(GISTest):
         }
         adept_core.execute(args)
 
+    def test_smoke_multi_hydrozone(self):
+        if os.path.exists(self.workspace):
+            shutil.rmtree(self.workspace)
+
+        args = {
+            'workspace_dir': self.workspace,
+            'project_footprint_uri': os.path.join(TEST_DATA,
+                'multi_hydrozone_impacts.shp'),
+            'impact_type': 'Road/Mine',
+            'area_of_influence_uri': os.path.join(DATA, 'sample_aoi.shp'),
+            'ecosystems_map_uri': os.path.join(DATA,
+                'ecosys_dis_nat_comp_fac.shp'),
+            'custom_static_map_uri': os.path.join(DATA,
+                'DEM.tif'),
+            'hydrozones': os.path.join(DATA, 'hydrozones.shp'),
+            'data_dir': '..',
+        }
+        adept_core.execute(args)
+
     def test_write_vector(self):
         os.makedirs(self.workspace)
 

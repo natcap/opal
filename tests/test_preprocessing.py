@@ -196,3 +196,15 @@ class PreprocessingTest(GISTest):
 
         preprocessing.filter_by_raster(raster, vector, out_uri)
 
+    def test_split_impacts(self):
+        impacts = os.path.join(TEST_DATA, 'multi_hydrozone_impacts.shp')
+        hydrozones = os.path.join(DATA, 'hydrozones.shp')
+
+        workspace = os.path.join(os.getcwd(), 'split_impacts')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        preprocessing.split_impacts(impacts, hydrozones, workspace)
+
