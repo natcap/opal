@@ -41,7 +41,7 @@ class AdeptTest(GISTest):
         args = {
             'workspace_dir': self.workspace,
             'project_footprint_uri': os.path.join(TEST_DATA,
-                'multi_hydrozone_impacts.shp'),
+                'multi_hydrozone_impact_nat.shp'),
             'impact_type': 'Road/Mine',
             'area_of_influence_uri': os.path.join(DATA, 'sample_aoi.shp'),
             'ecosystems_map_uri': os.path.join(DATA,
