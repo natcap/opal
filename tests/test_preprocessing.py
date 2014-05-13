@@ -62,6 +62,19 @@ class PreprocessingTest(GISTest):
         preprocessing.locate_intersecting_polygons(split_vector, hydrozones_output_vector,
                 out_vector)
 
+    def test_locate_intersecting_polygons_clip(self):
+        workspace = os.path.join(os.getcwd(), 'test_split_clip')
+        hydrozones = os.path.join(DATA, 'hydrozones.shp')
+        ecosystems = os.path.join(TEST_DATA, 'limited_polygons.shp')
+        output_vector = os.path.join(workspace, 'split_clip.shp')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        preprocessing.locate_intersecting_polygons(ecosystems, hydrozones,
+            output_vector, True)
+
     def test_prepare_impact_sites(self):
         services = [
             ('sediment', os.path.join(DATA, 'ecosystems.tif'))
