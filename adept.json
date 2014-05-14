@@ -256,6 +256,30 @@
             "args_id": "sediment_static_maps"
         }, 
         {
+            "type": "folder", 
+            "defaultValue": "", 
+            "required": false,
+            "hideable": true,
+            "label": {
+                "en": "Use Custom Ecosystem Service Static Maps", 
+                "es": null
+            }, 
+            "helpText": {
+                "en": null, 
+                "es": null
+            }, 
+            "validateAs": {
+                "type": "folder", 
+                "contains": [
+                    "custom_bare_static_map.tif",
+                    "custom_paved_static_map.tif",
+                    "custom_protection_static_map.tif"
+                ]
+            }, 
+            "id": "custom_static_maps", 
+            "args_id": "custom_static_maps"
+        },
+        {
             "type": "hidden",
             "defaultValue": ".",
             "args_id": "data_dir"
