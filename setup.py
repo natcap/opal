@@ -130,7 +130,7 @@ class ZipDataCommand(Command):
                     os.path.basename(tool_data_file))
             if tool_data_file.endswith('.tif'):
                 print 'Uncompressing %s -> %s' % (tool_data_file, new_uri)
-                preprocessing.uncompress_gtiff(tool_data_file, new_uri)
+                preprocessing.recompress_gtiff(tool_data_file, new_uri, 'NONE')
             else:
                 print 'copying %s -> %s' % (tool_data_file, new_uri)
                 shutil.copy(tool_data_file, new_uri)
@@ -144,7 +144,7 @@ class ZipDataCommand(Command):
             new_uri = os.path.join(static_maps_dir,
                 os.path.basename(static_file))
             print 'Uncompressing %s -> %s' % (static_file, new_uri)
-            preprocessing.uncompress_gtiff(static_file, new_uri)
+            preprocessing.recompress_gtiff(static_file, new_uri, 'NONE')
 
         # make the data archives
         tool_zip = os.path.join(dist_dir, 'tool_data')
