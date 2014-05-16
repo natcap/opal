@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from invest_natcap.testing import GISTest
 from invest_natcap import raster_utils
@@ -17,6 +18,10 @@ class ReportingTest(GISTest):
             'Example_mining_projects.shp')
         workspace = os.path.join(os.getcwd(), 'impacted_parcels')
         csv_uri = os.path.join(workspace, 'parcels.csv')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
 
         reporting.impacted_parcels_table(impact_sites, offset_sites, csv_uri)
 
