@@ -77,8 +77,8 @@ class AdeptTest(GISTest):
     def test_reporting(self):
         municipalities = os.path.join(DATA, 'Servicesheds_Col.shp')
         biodiversity_impact = json.load(open(os.path.join(self.workspace,
-            'intermediate', 'bio_impacts.json')))
-        selected_parcels = os.path.join(self.workspace, 'output',
+            'Medio Magdalena', 'bio_impacts.json')))
+        selected_parcels = os.path.join(self.workspace, 'Medio Magdalena',
             'selected_offsets.shp')
 
         # create a hacky temp object here so I can pass something in with the
