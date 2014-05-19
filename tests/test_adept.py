@@ -30,6 +30,7 @@ class AdeptTest(GISTest):
             'custom_static_map_uri': os.path.join(DATA,
                 'DEM.tif'),
             'hydrozones': os.path.join(DATA, 'hydrozones.shp'),
+            'threat_map': os.path.join(DATA, 'DEM.tif'),
             'data_dir': '..',
         }
         adept_core.execute(args)
@@ -80,6 +81,8 @@ class AdeptTest(GISTest):
             'Medio Magdalena', 'bio_impacts.json')))
         selected_parcels = os.path.join(self.workspace, 'Medio Magdalena',
             'selected_offsets.shp')
+        natural_parcels = os.path.join(TEST_DATA,
+            'medio_magdalena_avail_offsets.shp')
 
         # create a hacky temp object here so I can pass something in with the
         # correct attribute.
@@ -100,12 +103,15 @@ class AdeptTest(GISTest):
         impact_type = 'An impact type!'
         output_workspace = self.workspace
         impact_sites = os.path.join(self.workspace, 'intermediate',
-            'impact_sites.shp')
+            'impact_sites', 'impacts_Medio Magdalena.shp')
 
-        os.remove(os.path.join(self.workspace, 'tmp_municipalities.shp'))
+        tmp_muni = os.path.join(self.workspace,
+            'tmp_municipalities.shp')
+        if os.path.exists(tmp_muni):
+            os.remove(tmp_muni)
 
         adept_core.build_report(municipalities, biodiversity_impact,
             selected_parcels,
             custom_static_values_flat, project_footprint,
             sediment_total_impact, impact_type, output_workspace, impact_sites,
-            'Pop_center')
+            'Pop_center', 'report.html', natural_parcels)
