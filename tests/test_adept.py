@@ -93,8 +93,8 @@ class AdeptTest(GISTest):
         custom = Custom()
         custom.total = {1: 1, 2: 2}
         custom_static_values_flat = custom
-        project_footprint = os.path.join(DATA, ('Example permitting'
-            ' footprints'), 'Example_mining_projects.shp')
+        project_footprint = os.path.join(self.workspace, 'intermediate',
+            'impact_sites', 'impact_Medio Magdalena.shp')
         sediment_total_impact = {
             'sediment': 1234567,
             'nutrient': 1234567,
