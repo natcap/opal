@@ -76,7 +76,7 @@ class AdeptTest(GISTest):
         analysis.percent_overlap(offset_sites, municipalities, temp_file)
 
     def test_reporting(self):
-        municipalities = os.path.join(DATA, 'Servicesheds_Col.shp')
+        municipalities = os.path.join(TEST_DATA, 'limited_servicesheds_2.shp')
         biodiversity_impact = json.load(open(os.path.join(self.workspace,
             'Medio Magdalena', 'bio_impacts.json')))
         selected_parcels = os.path.join(self.workspace, 'Medio Magdalena',
