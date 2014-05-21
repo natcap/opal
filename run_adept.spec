@@ -18,6 +18,7 @@ adept_analysis = Analysis(['run_adept.py'], **common_kwargs)
 carbon_analysis = Analysis(['run_carbon_sm.py'], **common_kwargs)
 sediment_analysis = Analysis(['run_sediment_sm.py'], **common_kwargs)
 nutrient_analysis = Analysis(['run_nutrient_sm.py'], **common_kwargs)
+custom_analysis = Analysis(['run_custom_sm.py'], **common_kwargs)
 
 # Merge all of the analysis objects together.
 MERGE(
