@@ -25,6 +25,7 @@ MERGE(
     (carbon_analysis, 'run_carbon_sm', 'carbon_sm'),
     (sediment_analysis, 'run_sediment_sm', 'sediment_sm'),
     (nutrient_analysis, 'run_nutrient_sm', 'nutrient_sm'),
+    (custom_analysis, 'run_custom_sm', 'custom_sm'),
 )
 
 pyz = PYZ(adept_analysis.pure)
@@ -50,6 +51,7 @@ exe_files = [
     (carbon_analysis, 'carbon_sm.json'),
     (sediment_analysis, 'sediment_sm.json'),
     (nutrient_analysis, 'nutrient_sm.json'),
+    (custom_analysis, 'generic_sm.json'),
 ]
 
 exe_objects = []
