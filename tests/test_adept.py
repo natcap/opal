@@ -31,6 +31,7 @@ class AdeptTest(GISTest):
                 'DEM.tif'),
             'hydrozones': os.path.join(DATA, 'hydrozones.shp'),
             'threat_map': os.path.join(DATA, 'DEM.tif'),
+#            'avoidance_areas': os.path.join(DATA, 'sample_aoi.shp'),
             'data_dir': '..',
         }
         adept_core.execute(args)
