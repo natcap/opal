@@ -250,3 +250,28 @@ class CarbonStaticMapTest(GISTest):
         graph_file = os.path.join(workspace, 'results_plot.png')
         static_maps.graph_it(log_file, graph_file)
 
+class RasterMathTest(GISTest):
+    def setUp(self):
+        self.workspace = os.path.join(os.path.dirname(__file__), 'raster_math')
+
+        if os.path.exists(self.workspace):
+            shutil.rmtree(self.workspace)
+        os.makedirs(self.workspace)
+
+    def test_raster_math_smoke(self):
+        sample_raster = os.path.join(FULL_DATA, 'ecosystems.tif')
+        args = {
+            'workspace': self.workspace,
+            'name': 'sample',
+            'base_uri': sample_raster,
+            'paved_uri': sample_raster,
+            'bare_uri': sample_raster,
+            'protection_uri': sample_raster,
+        }
+
+        static_maps.raster_math(args)
+
+        for filename_base in ['bare', 'protection', 'paved']:
+            filename = os.path.join(self.workspace, '%s_%s_static_map.tif' % (
+                args['name'], filename_base))
+            self.assertEqual(os.path.exists(filename), True)
