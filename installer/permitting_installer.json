@@ -50,6 +50,11 @@
                 "icon": "${icon}"
             },
             {
+                "name": "${APP_NAME} Custom Static Map Calculator",
+                "target": "custom_sm.exe",
+                "icon": "${icon}"
+            },
+            {
                 "name": "${APP_NAME} Documentation",
                 "target": "adept_documentation.docx"
             }
