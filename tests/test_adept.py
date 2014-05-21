@@ -114,4 +114,4 @@ class AdeptTest(GISTest):
             selected_parcels,
             custom_static_values_flat, project_footprint,
             sediment_total_impact, impact_type, output_workspace, impact_sites,
-            'Pop_center', 'report.html', natural_parcels)
+            'Pop_center', 'report.html', natural_parcels, True)
