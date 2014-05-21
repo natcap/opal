@@ -9,6 +9,7 @@
         "es": null
     }, 
     "targetScript": "adept.static_maps", 
+    "targetFunction": "raster_math",
     "height": 800, 
     "width": 700,
     "elements": [
