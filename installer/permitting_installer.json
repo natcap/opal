@@ -51,7 +51,7 @@
             },
             {
                 "name": "${APP_NAME} Custom Static Map Calculator",
-                "target": "custom_sm.exe",
+                "target": "generic_sm.exe",
                 "icon": "${icon}"
             },
             {
