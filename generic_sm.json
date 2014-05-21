@@ -1,0 +1,121 @@
+{
+    "id": "window", 
+    "label": {
+        "en": "Static Map Raster Calculator", 
+        "es": null
+    }, 
+    "modelName": {
+        "en": "generic_static_map", 
+        "es": null
+    }, 
+    "targetScript": "adept.static_maps", 
+    "height": 800, 
+    "width": 700,
+    "elements": [
+        {
+            "args_id": "workspace_dir", 
+            "defaultValue": "~/custom_static_maps", 
+            "helpText": {
+                "en": "A directory that will contain the output files for this run.", 
+                "es": null
+            }, 
+            "id": "workspace", 
+            "label": {
+                "en": "Workspace", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "folder",
+            "validateAs": {
+                "type": "folder",
+                "mustExist": false
+            }
+        }, 
+        {
+            "args_id": "name",
+            "helpText": {
+                "en": "This text will be used to correctly name the output static maps.",
+                "es": null
+            },
+            "width": 60,
+            "defaultValue": "custom",
+            "required": true,
+            "label": {
+                "en": "Name",
+                "es": null
+            },
+            "type": "text",
+            "validateAs": {
+                "type": "string"
+            }
+        },
+        {
+            "args_id": "base_uri", 
+            "helpText": {
+                "en": "Location of the raster for the base scenario's service values.", 
+                "es": null
+            }, 
+            "id": "base_uri", 
+            "label": {
+                "en": "Base raster", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "paved_uri", 
+            "helpText": {
+                "en": "Location of the raster for the paved scenario's service values.", 
+                "es": null
+            }, 
+            "id": "paved_uri", 
+            "label": {
+                "en": "Paved raster", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "bare_uri", 
+            "helpText": {
+                "en": "Location of the raster for the bare scenario's service values.", 
+                "es": null
+            }, 
+            "id": "bare_uri", 
+            "label": {
+                "en": "Bare raster", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "protection_uri", 
+            "helpText": {
+                "en": "Location of the raster for the protection scenario's service values.", 
+                "es": null
+            }, 
+            "id": "protection_uri", 
+            "label": {
+                "en": "Protection raster", 
+                "es": null
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }
+    ] 
+}
