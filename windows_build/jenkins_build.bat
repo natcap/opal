@@ -13,19 +13,19 @@ copy C:\Python27\Lib\distutils\distutils.cfg .\%ENVDIR%\Lib\distutils\distutils.
 
 :: CD to the invest-3 directory to install it to the virtual environment
 cd invest-natcap.invest-3
-DEL /S /Q build
+rmdir /S /Q build
 ..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..
 ::
 :: CD to the palisades directory to install it to the virtual environment
 cd user-interface
-DEL /S /Q build
+rmdir /S /Q build
 ..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..
 
 :: CD to the Adept directory to install adept to the virtual environment
 cd src/adept
-DEL /S /Q build
+rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
 cd ..\..
 
