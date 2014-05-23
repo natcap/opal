@@ -3,6 +3,7 @@
 import json
 import sys
 import argparse
+import os
 
 LOG_FILE_SCRIPT = """
 ; This function (and these couple variables) allow us to dump the NSIS
@@ -198,16 +199,31 @@ def section(options):
     # ASSUMING ONLY ONE LEVEL OF OPTIONS
     strings = [
         'Section \"%s\"' % options['name'],
-        'AddSize \"%s\"' % options['size']
     ]
-    if options['action']['type'] == 'unzip':
-        unzip_commands = [
+
+    section_type = options['action']['type']
+    if section_type.startswith('unzip'):
+        strings.append(
+            'AddSize \"%s\"' % os.path.getsize(
+                options['action']['zipfile'].replace('\\', '/'))
+        )
+
+        if section_type == 'unzipSelect':
+            strings += [
+                'nsDialogs::SelectFileDialog "open" "" "Zipfiles *.zip"',
+                'pop $ZipFileURI',
+            ]
+            zipfile_uri = "$ZipFileURI"
+        else:
+            zipfile_uri = options['action']['zipfile']
+
+        strings += [
             'CreateDirectory \"%s\"' % options['action']['target_dir'],
             'SetOutPath \"%s\"' % options['action']['target_dir'],
-            'nsisunz::UnzipToLog \"%s\" \".\"' % options['action']['zipfile'],
+            'nsisunz::UnzipToLog \"%s\" \".\"' % zipfile_uri,
         ]
-        for command in unzip_commands:
-            strings.append(command)
+    else:
+        strings.append('AddSize \"%s\"' % options['size'])
 
     strings.append('SectionEnd\n')
 
@@ -217,6 +233,10 @@ def local_variables(options):
     custom_vars = []
     for var_name, var_value in options['variables'].iteritems():
         custom_vars.append('!define %s "%s"' % (var_name, var_value))
+
+    # NSIS variables for custom functionality that might be used later on.
+    for var_name in ['ZipFileURI']:
+        custom_vars.append('Var %s' % var_name)
 
     strings = [
         '',

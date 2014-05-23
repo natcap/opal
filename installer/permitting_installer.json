@@ -27,7 +27,7 @@
         "install_log": "install_log.txt",
         "license": "..\\LICENSE.TXT",
         "icon": "installer_icon.png",
-        "extra_files": ["..\\dist\\*.zip"],
+        "extra_files": ["..\\dist\\tool_data.zip"],
         "start_menu": [
             {
                 "name": "${APP_NAME}",
@@ -65,8 +65,8 @@
                 "name": "Static Data",
                 "size": "10000000",
                 "action": {
-                    "type": "unzip",
-                    "zipfile": "$INSTDIR\\static_data.zip",
+                    "type": "unzipSelect",
+                    "zipfile": "..\\dist\\static_data.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data"
                 }
             }
