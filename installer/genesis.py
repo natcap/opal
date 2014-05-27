@@ -203,9 +203,10 @@ def section(options):
 
     section_type = options['action']['type']
     if section_type.startswith('unzip'):
+        zipfile_size = os.path.getsize(
+            options['action']['zipfile'].replace('\\', '/'))
         strings.append(
-            'AddSize \"%s\"' % os.path.getsize(
-                options['action']['zipfile'].replace('\\', '/'))
+            'AddSize \"%s\"' % zipfile_size >> 10,  # convert to kb
         )
 
         if section_type == 'unzipSelect':
