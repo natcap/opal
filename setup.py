@@ -202,7 +202,7 @@ class NSISCommand(Command):
         shutil.copytree(self.nsis_dir, target_dir)
 
         # copy the zipfiles we need into the right place.
-        for filename in ['static_data.zip', 'tool_data.zip']:
+        for filename in ['tool_data.zip']:
             source_file = os.path.join('dist', filename)
             dest_file = os.path.join(target_dir, filename)
             print 'Copying %s -> %s' % (source_file, dest_file)
