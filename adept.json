@@ -210,19 +210,6 @@
             }
         }, 
         {
-            "type": "file", 
-            "defaultValue": "./data/colombia_tool_data/sample_static_impact_map.tif", 
-            "validateas": {
-                "type": "GDAL"
-            }, 
-            "id": "custom_static_maps", 
-            "args_id": "custom_static_map_uri", 
-            "label": {
-                "en": "Custom static map (optional)", 
-                "es": "Mapa personalizado estática (opcional)"
-            }
-        },
-        {
             "type": "folder", 
             "defaultValue": "", 
             "required": false,
