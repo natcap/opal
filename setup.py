@@ -138,22 +138,30 @@ class ZipDataCommand(Command):
         # copy all static map data into the static maps folder.
         print '\nStarting to copy static data'
         static_maps_dir = os.path.join(data_dir, 'colombia_static_data')
-        os.makedirs(static_maps_dir)
-        static_files = glob.glob('data/colombia_static_data/*.tif')
-        for static_file in static_files:
-            new_uri = os.path.join(static_maps_dir,
-                os.path.basename(static_file))
-            print 'Uncompressing %s -> %s' % (static_file, new_uri)
-            preprocessing.recompress_gtiff(static_file, new_uri, 'NONE')
+
+        static_files = [
+            ('carbon', glob.glob('data/colombia_static_data/carbon*.tif')),
+            ('nutrient', glob.glob('data/colombia_static_data/nutrient*.tif')),
+            ('sediment', glob.glob('data/colombia_static_data/sediment*.tif'))
+        ]
+        for sm_name, static_rasters in static_files:
+            print '\nCopying %s data' % sm_name
+            sm_dir = os.path.join(static_maps_dir, sm_name)
+            os.makedirs(sm_dir)
+
+            for static_file in static_rasters:
+                new_uri = os.path.join(sm_dir, os.path.basename(static_file))
+                print 'Uncompressing %s -> %s' % (static_file, new_uri)
+                preprocessing.recompress_gtiff(static_file, new_uri, 'NONE')
+
+            static_data_zip = os.path.join(dist_dir, sm_name)
+            print "Building %s.zip" % static_data_zip
+            shutil.make_archive(static_data_zip, 'zip', root_dir=sm_dir)
 
         # make the data archives
         tool_zip = os.path.join(dist_dir, 'tool_data')
         print "Building %s.zip" % tool_zip
         shutil.make_archive(tool_zip, 'zip', root_dir=tool_data_dir)
-
-        static_data_zip = os.path.join(dist_dir, 'static_data')
-        print "Building %s.zip" % static_data_zip
-        shutil.make_archive(static_data_zip, 'zip', root_dir=static_maps_dir)
 
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
