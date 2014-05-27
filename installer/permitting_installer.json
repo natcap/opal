@@ -62,11 +62,29 @@
         "post_install": "install_data_zips.nsi",
         "sections": [
             {
-                "name": "Static Data",
+                "name": "Carbon Static Data",
                 "size": "10000000",
                 "action": {
                     "type": "unzipSelect",
-                    "zipfile": "..\\dist\\static_data.zip",
+                    "zipfile": "..\\dist\\carbon.zip",
+                    "target_dir": "$INSTDIR\\data\\colombia_static_data"
+                }
+            },
+            {
+                "name": "Sediment Static Data",
+                "size": "10000000",
+                "action": {
+                    "type": "unzipSelect",
+                    "zipfile": "..\\dist\\sediment.zip",
+                    "target_dir": "$INSTDIR\\data\\colombia_static_data"
+                }
+            },
+            {
+                "name": "Nutrient Static Data",
+                "size": "10000000",
+                "action": {
+                    "type": "unzipSelect",
+                    "zipfile": "..\\dist\\nutrient.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data"
                 }
             }
