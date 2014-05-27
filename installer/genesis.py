@@ -206,7 +206,7 @@ def section(options):
         zipfile_size = os.path.getsize(
             options['action']['zipfile'].replace('\\', '/'))
         strings.append(
-            'AddSize \"%s\"' % zipfile_size >> 10,  # convert to kb
+            'AddSize \"%s\"' % (zipfile_size >> 10),  # convert to kb
         )
 
         if section_type == 'unzipSelect':
