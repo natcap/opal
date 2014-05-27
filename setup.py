@@ -157,11 +157,15 @@ class ZipDataCommand(Command):
             static_data_zip = os.path.join(dist_dir, sm_name)
             print "Building %s.zip" % static_data_zip
             shutil.make_archive(static_data_zip, 'zip', root_dir=sm_dir)
+            print 'Finished %s.zip (%sMB)' % (static_data_zip,
+                    os.path.getsize(static_data_zip + '.zip') >> 20)
 
         # make the data archives
         tool_zip = os.path.join(dist_dir, 'tool_data')
         print "Building %s.zip" % tool_zip
         shutil.make_archive(tool_zip, 'zip', root_dir=tool_data_dir)
+        print 'Finished %s.zip (%sMB)' % (tool_zip,
+            os.path.getsize(tool_zip + '.zip') >> 20)
 
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
