@@ -83,6 +83,45 @@
             "args_id": "ecosystems_map_uri"
         }, 
         {
+            "hideable": true, 
+            "type": "file", 
+            "label": {
+                "en": "Use custom servicesheds", 
+                "es": null
+            }, 
+            "validateAs": {
+                "type": "OGR"
+            }, 
+            "id": "servicesheds_map", 
+            "args_id": "servicesheds_uri"
+        }, 
+        {
+            "hideable": true, 
+            "type": "file", 
+            "label": {
+                "en": "Use custom search areas", 
+                "es": null
+            }, 
+            "validateAs": {
+                "type": "OGR"
+            }, 
+            "id": "search_areas_map", 
+            "args_id": "search_areas_uri"
+        }, 
+        {
+            "hideable": true, 
+            "type": "file", 
+            "label": {
+                "en": "Use custom municipalities", 
+                "es": null
+            }, 
+            "validateAs": {
+                "type": "OGR"
+            }, 
+            "id": "municipalities_map", 
+            "args_id": "municipalities_uri"
+        }, 
+        {
             "validateAs": {
                 "type": "GDAL"
             }, 
