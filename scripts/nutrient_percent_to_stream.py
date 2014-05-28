@@ -8,6 +8,7 @@
 
 import os
 import logging
+import tempfile
 
 from invest_natcap.routing import routing_utils
 
@@ -21,6 +22,11 @@ if __name__ == '__main__':
 
     if not os.path.exists(output_workspace):
         os.makedirs(output_workspace)
+
+    temp_dir = os.path.join(output_workspace, 'tmp')
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+    tempfile.tempdir = temp_dir
 
     for scenario in ['bare', 'paved', 'protection']:
         scenario_workspace = os.path.join(input_workspace, scenario,
