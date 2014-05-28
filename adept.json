@@ -77,7 +77,8 @@
                 "es": "Utilice ecosistemas personalizados mapa"
             }, 
             "validateAs": {
-                "type": "OGR"
+                "type": "OGR",
+                "fieldsExist": ["Ecos_dis", "FACTOR_DE"]
             }, 
             "id": "ecosystems_map", 
             "args_id": "ecosystems_map_uri"
