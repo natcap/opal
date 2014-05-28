@@ -113,7 +113,30 @@
                 "es": null
             }, 
             "validateAs": {
-                "type": "OGR"
+                "type": "OGR",
+                "fieldsExist": ["Pop_center", "pop_cent_5"],
+                "layers": [
+                    {
+                        "type": "polygons", 
+                        "name": {
+                            "inheritFrom": "file"
+                        }
+                    }
+                ],
+                "restrictions": [
+                    {
+                        "field": "Pop_center",
+                        "validateAs": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "field": "pop_cent_5",
+                        "validateAs": {
+                            "type": "number"
+                        }
+                    }
+                ]
             }, 
             "id": "servicesheds_map", 
             "args_id": "servicesheds_uri"
