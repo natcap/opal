@@ -78,7 +78,29 @@
             }, 
             "validateAs": {
                 "type": "OGR",
-                "fieldsExist": ["Ecos_dis", "FACTOR_DE"]
+                "fieldsExist": ["Ecos_dis", "FACTOR_DE"],
+                "layers": [
+                    {
+                        "type": "polygons", 
+                        "name": {
+                            "inheritFrom": "file"
+                        }
+                    }
+                ],
+                "restrictions": [
+                    {
+                        "field": "Ecos_dis",
+                        "validateAs": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "field": "FACTOR_DE",
+                        "validateAs": {
+                            "type": "number"
+                        }
+                    }
+                ]
             }, 
             "id": "ecosystems_map", 
             "args_id": "ecosystems_map_uri"
