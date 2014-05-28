@@ -1,4 +1,9 @@
 {
+    "label": {
+        "en": "Permitting", 
+        "es": "Permiso"
+    }, 
+    "id": "adept_window",
     "modelName": {
         "en": "permitting", 
         "es": null
@@ -9,6 +14,8 @@
     "condenseElements": true, 
     "elements": [
         {
+            "id": "workspace", 
+            "args_id": "workspace_dir",
             "type": "folder", 
             "defaultValue": "./adept_workspace", 
             "required": true, 
@@ -23,24 +30,24 @@
             "validateAs": {
                 "type": "folder", 
                 "permissions": "rwx"
-            }, 
-            "id": "workspace", 
-            "args_id": "workspace_dir"
-        }, 
-        {
-            "type": "file", 
-            "defaultValue": "./data/colombia_tool_data/Example permitting footprints/Example_mining_projects.shp", 
-            "validateAs": {
-                "type": "OGR"
-            }, 
-            "id": "project_footprint", 
-            "args_id": "project_footprint_uri", 
-            "label": {
-                "en": "Project Footprint", 
-                "es": "Huella del Proyecto"
             }
         }, 
         {
+            "id": "project_footprint", 
+            "args_id": "project_footprint_uri", 
+            "type": "file", 
+            "defaultValue": "./data/colombia_tool_data/Example permitting footprints/Example_mining_projects.shp", 
+            "label": {
+                "en": "Project Footprint", 
+                "es": "Huella del Proyecto"
+            },
+            "validateAs": {
+                "type": "OGR"
+            } 
+        }, 
+        {
+            "args_id": "impact_type", 
+            "id": "impact_type",
             "returns": {"type": "strings"}, 
             "defaultValue": 0, 
             "label": {
@@ -51,18 +58,16 @@
             "options": [
                 "Bare ground/Mine", 
                 "Paved/Road"
-            ], 
-            "args_id": "impact_type", 
-            "id": "impact_type"
+            ] 
         }, 
         {
+            "id": "area_of_influence", 
+            "args_id": "area_of_influence_uri", 
             "type": "file", 
             "defaultValue": "./data/colombia_tool_data/sample_aoi.shp", 
             "validateAs": {
                 "type": "file"
             }, 
-            "id": "area_of_influence", 
-            "args_id": "area_of_influence_uri", 
             "required": true,
             "label": {
                 "en": "Area of Influence", 
@@ -70,6 +75,8 @@
             }
         }, 
         {
+            "id": "ecosystems_map", 
+            "args_id": "ecosystems_map_uri",
             "hideable": true, 
             "type": "file", 
             "label": {
@@ -101,11 +108,11 @@
                         }
                     }
                 ]
-            }, 
-            "id": "ecosystems_map", 
-            "args_id": "ecosystems_map_uri"
+            }
         }, 
         {
+            "id": "servicesheds_map", 
+            "args_id": "servicesheds_uri",
             "hideable": true, 
             "type": "file", 
             "label": {
@@ -137,11 +144,11 @@
                         }
                     }
                 ]
-            }, 
-            "id": "servicesheds_map", 
-            "args_id": "servicesheds_uri"
+            } 
         }, 
         {
+            "id": "search_areas_map", 
+            "args_id": "search_areas_uri",
             "hideable": true, 
             "type": "file", 
             "label": {
@@ -167,48 +174,53 @@
                         }
                     }
                 ]
-            }, 
-            "id": "search_areas_map", 
-            "args_id": "search_areas_uri"
+            }
         }, 
         {
-            "hideable": true, 
+            "id": "municipalities_map", 
+            "args_id": "municipalities_uri",
             "type": "file", 
+            "hideable": true, 
             "label": {
                 "en": "Use custom municipalities", 
                 "es": null
             }, 
             "validateAs": {
                 "type": "OGR"
-            }, 
-            "id": "municipalities_map", 
-            "args_id": "municipalities_uri"
+            } 
         }, 
         {
-            "validateAs": {
-                "type": "GDAL"
-            }, 
             "type": "file", 
             "id": "threat_map", 
             "args_id": "threat_map", 
             "label": {
                 "en": "Threat map (optional)", 
                 "es": "Mapa de Amenazas (opcional)"
-            }
-        }, 
-        {
+            },
             "validateAs": {
                 "type": "GDAL"
-            }, 
+            } 
+        }, 
+        {
             "type": "file", 
             "id": "species_richness_map", 
             "args_id": "species_richness_map", 
             "label": {
                 "en": "Species richness map (optional)", 
                 "es": "Especies mapa riqueza (opcional)"
-            }
+            },
+            "validateAs": {
+                "type": "GDAL"
+            } 
         }, 
         {
+            "type": "file", 
+            "id": "avoidance_areas", 
+            "args_id": "avoidance_areas", 
+            "label": {
+                "en": "Avoidance areas (optional)", 
+                "es": "Áreas de evitación (opcional)"
+            },
             "validateAs": {
                 "layers": [
                     {
@@ -219,16 +231,16 @@
                     }
                 ], 
                 "type": "OGR"
-            }, 
-            "type": "file", 
-            "id": "avoidance_areas", 
-            "args_id": "avoidance_areas", 
-            "label": {
-                "en": "Avoidance areas (optional)", 
-                "es": "Áreas de evitación (opcional)"
-            }
+            } 
         }, 
         {
+            "type": "file", 
+            "id": "conservation_portfolio", 
+            "args_id": "conservation_portfolio", 
+            "label": {
+                "en": "Conservation portfolio (optional)", 
+                "es": "Cartera de la Naturaleza (opcional)"
+            },
             "validateas": {
                 "layers": [
                     {
@@ -239,40 +251,35 @@
                     }
                 ], 
                 "type": "OGR"
-            }, 
-            "type": "file", 
-            "id": "conservation_portfolio", 
-            "args_id": "conservation_portfolio", 
-            "label": {
-                "en": "Conservation portfolio (optional)", 
-                "es": "Cartera de la Naturaleza (opcional)"
-            }
+            } 
         }, 
         {
-            "validateas": {
-                "type": "GDAL"
-            }, 
             "type": "file", 
             "id": "previously_granted_impacts", 
             "args_id": "previously_granted_impacts", 
             "label": {
                 "en": "Previously granted impacts (optional)", 
                 "es": "Impactos previamente otorgados (opcional)"
-            }
-        }, 
-        {
+            },
             "validateas": {
                 "type": "GDAL"
-            }, 
+            } 
+        }, 
+        {
             "type": "file", 
             "id": "previously_selected_offsets", 
             "args_id": "previously_selected_offsets", 
             "label": {
                 "en": "Previously selected offsets (optional)", 
                 "es": "Compensaciones Previamente seleccionados (opcional)"
-            }
+            },
+            "validateas": {
+                "type": "GDAL"
+            } 
         }, 
         {
+            "id": "carbon_static_maps", 
+            "args_id": "carbon_static_maps",
             "type": "folder", 
             "defaultValue": "", 
             "required": false,
@@ -292,11 +299,11 @@
                     "carbon_paved_static_map.tif",
                     "carbon_protection_static_map.tif"
                 ]
-            }, 
-            "id": "carbon_static_maps", 
-            "args_id": "carbon_static_maps"
+            }
         }, 
         {
+            "id": "nutrient_static_maps", 
+            "args_id": "nutrient_static_maps",
             "type": "folder", 
             "defaultValue": "", 
             "required": false,
@@ -319,11 +326,11 @@
                     "nutrient_paved_pts.tif",
                     "nutrient_protection_pts.tif"
                 ]
-            }, 
-            "id": "nutrient_static_maps", 
-            "args_id": "nutrient_static_maps"
+            }
         }, 
         {
+            "id": "sediment_static_maps", 
+            "args_id": "sediment_static_maps",
             "type": "folder", 
             "defaultValue": "", 
             "required": false,
@@ -346,11 +353,11 @@
                     "sediment_paved_pts.tif",
                     "sediment_protection_pts.tif"
                 ]
-            }, 
-            "id": "sediment_static_maps", 
-            "args_id": "sediment_static_maps"
+            } 
         }, 
         {
+            "id": "custom_static_maps", 
+            "args_id": "custom_static_maps",
             "type": "folder", 
             "defaultValue": "", 
             "required": false,
@@ -370,19 +377,12 @@
                     "custom_paved_static_map.tif",
                     "custom_protection_static_map.tif"
                 ]
-            }, 
-            "id": "custom_static_maps", 
-            "args_id": "custom_static_maps"
+            }
         },
         {
             "type": "hidden",
             "defaultValue": ".",
             "args_id": "data_dir"
         }
-    ], 
-    "label": {
-        "en": "Permitting", 
-        "es": "Permiso"
-    }, 
-    "id": "adept_window"
+    ] 
 }
