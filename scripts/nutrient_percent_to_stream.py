@@ -15,7 +15,7 @@ DATA = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
 LOGGER = logging.getLogger('nutrient_pts_builder')
 
 if __name__ == '__main__':
-    output_workspace = os.path.join(os.getcwd(), 'calculated_pts')
+    output_workspace = os.path.join(os.getcwd(), '..', 'ignore_me', 'calculated_pts')
     input_workspace = os.path.join(os.getcwd(), '..', 'ignore_me',
         'nutrient_static_maps')
 
@@ -32,7 +32,7 @@ if __name__ == '__main__':
         in_stream = os.path.join(intermediate, 'stream.tif')
         in_retention = os.path.join(intermediate, 'eff_n.tif')
         in_source = os.path.join(intermediate, 'alv_n.tif')
-        pixel_export = os.path.join(output_workspace, 'n_export.tif')
+        pixel_export = os.path.join(output_workspace, 'n_export_%s.tif' % scenario)
 
         percent_to_stream = os.path.join(output_workspace,
             'nutrient_%s_pts.tif' % scenario)
