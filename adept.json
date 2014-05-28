@@ -149,7 +149,24 @@
                 "es": null
             }, 
             "validateAs": {
-                "type": "OGR"
+                "type": "OGR",
+                "fieldsExist": ["NOMZH"],
+                "layers": [
+                    {
+                        "type": "polygons", 
+                        "name": {
+                            "inheritFrom": "file"
+                        }
+                    }
+                ],
+                "restrictions": [
+                    {
+                        "field": "NOMZH",
+                        "validateAs": {
+                            "type": "string"
+                        }
+                    }
+                ]
             }, 
             "id": "search_areas_map", 
             "args_id": "search_areas_uri"
