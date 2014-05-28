@@ -312,3 +312,18 @@ class NutrientStaticMapTest(GISTest):
 
         static_maps.build_static_map('sediment', lulc_uri, target_lucode,
             static_map_uri, config=self.config)
+
+    def test_execute(self):
+        self.config['workspace_dir'] = os.path.join(os.getcwd(),
+            'nut_execute_test')
+        self.config['model_name'] = 'nutrient'
+        self.config['paved_landcover_code'] = 60
+        self.config['bare_landcover_code'] = 80
+        self.config['landuse_uri'] = os.path.join(CLIPPED_DATA,
+            'ecosystems.tif')
+        self.config['do_parallelism'] = True
+        self.config['fut_landuse_uri'] = os.path.join(CLIPPED_DATA,
+            'ecosystems.tif')  # just to ensure it runs.
+
+
+        static_maps.execute(self.config)
