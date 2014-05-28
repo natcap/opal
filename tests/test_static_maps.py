@@ -275,3 +275,40 @@ class RasterMathTest(GISTest):
             filename = os.path.join(self.workspace, '%s_%s_static_map.tif' % (
                 args['name'], filename_base))
             self.assertEqual(os.path.exists(filename), True)
+
+class NutrientStaticMapTest(GISTest):
+    def setUp(self):
+        self.config = {
+            "workspace_dir": "",
+            "dem_uri": os.path.join(CLIPPED_DATA, 'dem.tif'),
+            "lulc_uri": "",
+            "watersheds_uri": os.path.join(CLIPPED_DATA, "servicesheds_col.shp"),
+            "biophysical_table_uri": os.path.join(FULL_DATA, "Biophysical_Colombia.csv"),
+            "soil_depth_uri": os.path.join(FULL_DATA, 'Soil_depth.tif'),
+            "precipitation": os.path.join(FULL_DATA, 'Precipitation.tif'),
+            "pawc_uri": os.path.join(FULL_DATA, 'Plant_available_water_content.tif'),
+            "eto_uri": os.path.join(FULL_DATA, 'Ref_evapotranspiration.tif'),
+            "seasonality_constant": 5,
+            "calc_p": False,
+            "calc_n": True,
+            "water_purification_threshold_table_uri": os.path.join(FULL_DATA,
+                'sediment_threshold.csv'),
+            "accum_threshold": 1000,
+            "depth_to_root_rest_layer_uri": os.path.join(FULL_DATA,
+                'Soil_depth.tif'),
+            "valuation_enabled": False,
+        }
+
+    def test_execute_sediment_smoke(self):
+        lulc_uri = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
+        workspace = 'test_workspace'
+        static_maps.execute_model('sediment', lulc_uri, workspace,
+            config=self.config)
+
+    def test_sediment_static_map(self):
+        lulc_uri = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
+        target_lucode = 124
+        static_map_uri = 'sediment_static_map.tif'
+
+        static_maps.build_static_map('sediment', lulc_uri, target_lucode,
+            static_map_uri, config=self.config)
