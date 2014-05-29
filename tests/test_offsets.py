@@ -1,5 +1,6 @@
 import os
 import shutil
+import json
 
 from invest_natcap.testing import GISTest
 
@@ -21,4 +22,29 @@ class OffsetTest(GISTest):
 
         offsets.locate_parcels(ecosystems, selection_area, impact_sites,
                 workspace)
+
+    def test_locate_offsets(self):
+        previous_run = os.path.join(os.getcwd(), 'adept_smoke', ('Medio '
+            'Magdalena'))
+
+        if not os.path.exists(previous_run):
+            raise AssertionError('You need to run a smoke test first')
+
+        offset_sites = os.path.join(previous_run, 'offset_sites.shp')
+        impact_sites = os.path.join(previous_run, '..', 'intermediate',
+            'impact_sites', 'impacts_Medio Magdalena.shp')
+        biodiversity_impacts = json.load(open(os.path.join(previous_run,
+            'bio_impacts.json')))
+
+        workspace = os.path.join(os.getcwd(), 'locate_offsets')
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        output_vector = os.path.join(workspace, 'selected_offsets.shp')
+        output_json = os.path.join(workspace, 'selected_parcels.json')
+
+        offsets._select_offsets(offset_sites, impact_sites,
+            biodiversity_impacts, output_vector,
+            output_json)
 
