@@ -1,6 +1,8 @@
 
 var CarbonDialog
 var CarbonLabel
+var CarbonDataDownload
+var CarbonDataLocal
 var CarbonFile
 var CarbonFileLabel
 var CarbonFileButton
@@ -17,13 +19,19 @@ Function CarbonSMDataPageNSD
     ${NSD_CreateLabel} 5 5 100% 24u "Select a zipfile containing default carbon static data.  This can be downloaded from http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/carbon.zip."
     pop $CarbonLabel
 
-    ${NSD_CreateLabel} 5 50 15% 12u "Select Zipfile"
+    ${NSD_CreateRadioButton} 5 50 100% 12u "Download during install"
+    pop $CarbonDataDownload
+
+    ${NSD_CreateRadioButton} 5 70 100% 12u "Use a local file"
+    pop $CarbonDataLocal
+
+    ${NSD_CreateLabel} 5 120 15% 12u "Select Zipfile"
     pop $CarbonFileLabel
 
-    ${NSD_CreateFileRequest} 100 50 60% 12u "label"
+    ${NSD_CreateFileRequest} 100 120 60% 12u "label"
     pop $CarbonFile
 
-    ${NSD_CreateBrowseButton} 400 50 10% 12u "file"
+    ${NSD_CreateBrowseButton} 400 120 10% 12u "file"
     pop $CarbonFileButton
     ${NSD_OnClick} $CarbonFileButton GetZipFile
 
