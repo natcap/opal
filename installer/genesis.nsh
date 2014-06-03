@@ -107,7 +107,7 @@ var DataLocal
 ;    strcpy $FileLabel $0
 ;    EnableWindow $FileLabel 0
 
-    ${NSD_CreateFileRequest} 100 120 60% 12u "label"
+    ${NSD_CreateFileRequest} 100 120 60% 12u ""
     pop $FileField
 ;    strcpy $FileField $0
 ;    EnableWindow $FileField 0
@@ -141,4 +141,19 @@ FunctionEnd
 
 !macro DataPageLeave FileVar
     ${NSD_GetText} $FileField ${FileVar}
+!macroend
+
+!macro DownloadIfEmpty Path DestDir DownloadURL LocalFileName
+    CreateDirectory "${DestDir}"
+    SetOutPath "${DestDir}"
+;    MessageBox MB_OK "${Path}"
+
+    ${If} ${Path} == ""  ; if no path defined
+        NSISdl::download ${DownloadURL} "$LocalFileName"
+        ; $0 contains the local file name
+;        MessageBox MB_OK "$LocalFileName"
+        nsisunz::UnzipToLog $LocalFileName "."
+    ${Else}
+        nsisunz::UnzipToLog ${Path} "."
+    ${EndIf}
 !macroend
