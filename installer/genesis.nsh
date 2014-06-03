@@ -1,3 +1,5 @@
+!include "nsDialogs.nsh"
+
 !macro locateDataZip Title Label
     Page custom CarbonSMDataPageNSD1
 
@@ -149,10 +151,10 @@ FunctionEnd
 ;    MessageBox MB_OK "${Path}"
 
     ${If} ${Path} == ""  ; if no path defined
-        NSISdl::download ${DownloadURL} "$LocalFileName"
+        NSISdl::download ${DownloadURL} "${LocalFileName}"
         ; $0 contains the local file name
 ;        MessageBox MB_OK "$LocalFileName"
-        nsisunz::UnzipToLog $LocalFileName "."
+        nsisunz::UnzipToLog "${LocalFileName}" "."
     ${Else}
         nsisunz::UnzipToLog ${Path} "."
     ${EndIf}
