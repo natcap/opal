@@ -102,7 +102,13 @@ def build_installer_script(config_file_uri, out_file_uri):
     sanitized_config = check_defaults(config_dict)
 
     new_file.write(local_variables(sanitized_config))
-    new_file.write(general_settings())
+    try:
+        custom_pages = sanitized_config['installer']['custom_pages']
+    except KeyError:
+        custom_pages = []
+
+    new_file.write(general_settings(custom_pages))
+
     new_file.write(languages(sanitized_config['general']['languages']))
     new_file.write(installer_init(sanitized_config['general']['languages']))
 
@@ -149,12 +155,19 @@ Function un.onInit
 FunctionEnd
 """
 
-def installer_pages():
+def installer_pages(custom_pages):
     pages_string = """
 ; MUI installer pages
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE ${LICENSE_FILE}
 !insertmacro MUI_PAGE_COMPONENTS
+"""
+    for custom_page in custom_pages:
+        custom_string = 'Page Custom %s %s\n' % (custom_page['enter_funcname'],
+            custom_page['leave_funcname'])
+        pages_string += custom_string
+
+    pages_string += """
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
@@ -171,7 +184,7 @@ def uninstaller_pages():
 """
     return pages_string
 
-def general_settings():
+def general_settings(custom_pages):
     general_settings = """
 ; Set the compression size and type.
 SetCompressor /FINAL /SOLID lzma
@@ -182,9 +195,11 @@ SetCompressorDictSize 64
 !include "MUI.nsh"
 !include "LogicLib.nsh"
 !include "x64.nsh"
+!include "FileFunc.nsh"
+!include "genesis.nsh"
 """
 
-    general_settings += installer_pages()
+    general_settings += installer_pages(custom_pages)
     general_settings += uninstaller_pages()
     general_settings += """
 Name "${INTERNAL_NAME} ${VERSION}"
@@ -197,11 +212,20 @@ ShowInstDetails show
 
 def section(options):
     # ASSUMING ONLY ONE LEVEL OF OPTIONS
-    strings = [
-        'Section \"%s\"' % options['name'],
+    compact_section_name = options['name'].replace(' ', '')
+    section_type = options['action']['type']
+    if section_type.startswith('unzip'):
+        file_varname = "%sFile" % os.path.splitext(
+            os.path.basename(options['action']['zipfile'].replace('\\', '/')))[0]
+        strings = ['var %s' % file_varname]
+    else:
+        strings = []
+
+    strings += [
+        'Section \"%s\" %s' % (options['name'], compact_section_name)
     ]
 
-    section_type = options['action']['type']
+    unzip_page_funcs = False
     if section_type.startswith('unzip'):
         zipfile_size = os.path.getsize(
             options['action']['zipfile'].replace('\\', '/'))
@@ -210,23 +234,41 @@ def section(options):
         )
 
         if section_type == 'unzipSelect':
-            strings += [
-                'nsDialogs::SelectFileDialog "open" "" "Zipfiles *.zip"',
-                'pop $ZipFileURI',
-            ]
-            zipfile_uri = "$ZipFileURI"
+            strings.append('!insertmacro DownloadIfEmpty "$%s" "%s" "%s" "%s"' % (
+                file_varname, options['action']['target_dir'],
+                options['action']['downloadURL'],
+                os.path.basename(options['action']['zipfile'].replace('\\',
+                    '/'))))
+
+            unzip_page_funcs = True
         else:
             zipfile_uri = options['action']['zipfile']
-
-        strings += [
-            'CreateDirectory \"%s\"' % options['action']['target_dir'],
-            'SetOutPath \"%s\"' % options['action']['target_dir'],
-            'nsisunz::UnzipToLog \"%s\" \".\"' % zipfile_uri,
-        ]
+            strings += [
+                'CreateDirectory \"%s\"' % options['action']['target_dir'],
+                'SetOutPath \"%s\"' % options['action']['target_dir'],
+                'nsisunz::UnzipToLog \"%s\" \".\"' % zipfile_uri,
+            ]
     else:
         strings.append('AddSize \"%s\"' % options['size'])
 
     strings.append('SectionEnd\n')
+
+    if unzip_page_funcs:
+        label_name = options['name'].replace(' ', '_').upper()
+        func_name = options['name'].replace(' ', '') + 'Function'
+        strings += [
+            '',
+            '!define %s_LABEL "%s"' % (label_name, options['label']),
+            'Function %s' % func_name,
+            '    !insertmacro DataPage ${%s} "" "${%s}"' %
+                (compact_section_name, label_name + '_LABEL'),
+            'FunctionEnd',
+            ''
+            'Function %s' % func_name + 'Leave',
+            '    !insertmacro DataPageLeave $%s' % file_varname,
+            'FunctionEnd\n\n'
+            ''
+        ]
 
     return '\n'.join(strings)
 
