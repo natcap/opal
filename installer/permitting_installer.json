@@ -26,6 +26,20 @@
         "assert_arch_is_compatible": true,
         "install_log": "install_log.txt",
         "license": "..\\LICENSE.TXT",
+        "custom_pages": [
+            {
+                "enter_funcname": "CarbonStaticDataFunction",
+                "leave_funcname": "CarbonStaticDataFunctionLeave"
+            },
+            {
+                "enter_funcname": "SedimentStaticDataFunction",
+                "leave_funcname": "SedimentStaticDataFunctionLeave"
+            },
+            {
+                "enter_funcname": "NutrientStaticDataFunction",
+                "leave_funcname": "NutrientStaticDataFunctionLeave"
+            }
+        ],
         "icon": "installer_icon.png",
         "extra_files": ["..\\dist\\tool_data.zip"],
         "start_menu": [
@@ -64,28 +78,34 @@
             {
                 "name": "Carbon Static Data",
                 "size": "10000000",
+                "label": "Select an option to download Carbon static data",
                 "action": {
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\carbon.zip",
-                    "target_dir": "$INSTDIR\\data\\colombia_static_data"
+                    "target_dir": "$INSTDIR\\data\\colombia_static_data",
+                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/carbon.zip"
                 }
             },
             {
                 "name": "Sediment Static Data",
                 "size": "10000000",
+                "label": "Select an option to download sediment static data",
                 "action": {
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\sediment.zip",
-                    "target_dir": "$INSTDIR\\data\\colombia_static_data"
+                    "target_dir": "$INSTDIR\\data\\colombia_static_data",
+                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/sediment.zip"
                 }
             },
             {
                 "name": "Nutrient Static Data",
                 "size": "10000000",
+                "label": "Select an option to download nutrient static data.",
                 "action": {
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\nutrient.zip",
-                    "target_dir": "$INSTDIR\\data\\colombia_static_data"
+                    "target_dir": "$INSTDIR\\data\\colombia_static_data",
+                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/nutrient.zip"
                 }
             }
         ]
