@@ -44,5 +44,5 @@ if __name__ == '__main__':
 
         csv_path = os.path.join(impact_workspace, 'impact_site_simulation.csv')
         static_maps.graph_it(csv_path, os.path.join(impact_workspace,
-            '%s_%s_plot.png' % (model_name, 'impact_name')))
+            '%s_%s_plot.png' % (model_name, impact_name)))
 
