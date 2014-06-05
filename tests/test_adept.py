@@ -111,8 +111,19 @@ class AdeptTest(GISTest):
         if os.path.exists(tmp_muni):
             os.remove(tmp_muni)
 
-        adept_core.build_report(municipalities, biodiversity_impact,
-            selected_parcels,
-            custom_static_values_flat, project_footprint,
-            sediment_total_impact, impact_type, output_workspace, impact_sites,
-            'Pop_center', 'report.html', natural_parcels, True)
+        adept_core.build_report(
+            municipalities=municipalities,
+            biodiversity_impact=biodiversity_impact,
+            selected_parcels=selected_parcels,
+            project_footprint=project_footprint,
+            total_impacts=sediment_total_impact,
+            impact_type=impact_type,
+            output_workspace=output_workspace,
+            impact_sites=impact_sites,
+            pop_col='Pop_center',
+            report_name='report.html',
+            natural_parcels=natural_parcels,
+            impacts_error=True,
+            suggested_parcels=[]
+        )
+
