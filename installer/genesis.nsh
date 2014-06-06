@@ -129,7 +129,7 @@ Function GetZipFile
     ${GetFileExt} $0 $1
     ${If} "$1" != "zip"
         MessageBox MB_OK "File must be a zipfile"
-        Abord
+        Abort
     ${EndIf}
     ${NSD_SetText} $FileField $0
 FunctionEnd
