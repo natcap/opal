@@ -33,6 +33,8 @@ class AdeptTest(GISTest):
             'threat_map': os.path.join(DATA, 'DEM.tif'),
 #            'avoidance_areas': os.path.join(DATA, 'sample_aoi.shp'),
             'data_dir': '..',
+#            'custom_static_maps': os.path.join(os.getcwd(), '..',
+#                'custom_static_maps'),
         }
         adept_core.execute(args)
 
@@ -100,6 +102,7 @@ class AdeptTest(GISTest):
             'sediment': 1234567,
             'nutrient': 1234567,
             'carbon': 1234567,
+#            'custom': 1234567,
         }
         impact_type = 'An impact type!'
         output_workspace = self.workspace
