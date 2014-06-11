@@ -24,6 +24,4 @@ if __name__ == '__main__':
     if os.path.exists(args['workspace_dir']):
         shutil.rmtree(args['workspace_dir'])
     os.makedirs(args['workspace_dir'])
-    log_file = os.path.join(args['workspace_dir'], 'logfile.txt')
-    LOGGER.addHandler(logging.FileHandler(log_file, 'a'))
     static_maps.execute(args)
