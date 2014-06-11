@@ -24,7 +24,7 @@ class AdeptTest(GISTest):
             'project_footprint_uri': os.path.join(DATA, ('Example permitting'
                 ' footprints'), 'Example_mining_projects.shp'),
             'impact_type': 'Road/Mine',
-            'area_of_influence_uri': os.path.join(DATA, 'sample_aoi.shp'),
+#            'area_of_influence_uri': os.path.join(DATA, 'sample_aoi.shp'),
             'ecosystems_map_uri': os.path.join(DATA,
                 'ecosys_dis_nat_comp_fac.shp'),
             'custom_static_map_uri': os.path.join(DATA,
