@@ -51,7 +51,7 @@ if __name__ == '__main__':
         static_maps.test_static_map_quality(base_run, impact_static_map,
             lulc_uri, impact_lucode, watersheds, model_name, impact_workspace,
             config=static_maps.get_static_data_json(model_name),
-            num_iterations=num_iterations)
+            num_iterations=num_iterations, start_ws=ws_start_index)
 
         csv_path = os.path.join(impact_workspace, 'impact_site_simulation.csv')
         static_maps.graph_it(csv_path, os.path.join(impact_workspace,
