@@ -15,7 +15,7 @@ if __name__ == '__main__':
     lulc_uri = os.path.join(FULL_DATA, 'ecosystems.tif')
     model_name = 'nutrient'
     num_iterations = 50
-    workspace = '/media/jadoug06/Natural Capital Project/james/nutrient_map_quality'
+    workspace = '/media/jadoug06/Natural Capital Project/james/nutrient_map_quality_2'
 #    workspace = os.path.join(os.getcwd(), 'ignore_me', 'nutrient_map_quality')
     impact_region = os.path.join(FULL_DATA, 'servicesheds_col.shp')
     watersheds = os.path.join(FULL_DATA, 'watersheds_cuencas.shp')
@@ -34,6 +34,14 @@ if __name__ == '__main__':
         static_maps.execute_model(model_name, lulc_uri, base_workspace)
 
     for impact_name, impact_lucode in [('paved', 89), ('bare', 301)]:
+        # if we're running the paved nutrient simulation, start the simulation
+        # on watershed 46.  This will allow us to avoid a crash I experienced
+        # by accidentally wiping out a temp folder.
+        if impact_name == 'paved':
+            ws_start_index = 46
+        else:
+            ws_start_index = 0
+
         impact_workspace = os.path.join(workspace, impact_name)
         impact_static_map = os.path.join(DATA, 'colombia_static_data',
             '%s_%s_static_map_lzw.tif' % (model_name, impact_name))
