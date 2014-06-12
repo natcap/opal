@@ -123,6 +123,12 @@ class ZipDataCommand(Command):
             shutil.rmtree(tool_data_dir)
         os.makedirs(tool_data_dir)
 
+        # copy the whole sample_data dir over to the sample_data folder.
+        print '\nStarting to copy sample project data'
+        source_path = 'data/colombia_sample_data'
+        sample_data_dir = os.path.join(data_dir, 'colombia_sample_data')
+        shutil.copytree(source_path, sample_data_dir)
+
         # copy relevant tool data into the tool_data folder.
         print '\nStarting to copy tool data'
         for tool_data_file in tool_data:
@@ -159,6 +165,13 @@ class ZipDataCommand(Command):
             shutil.make_archive(static_data_zip, 'zip', root_dir=sm_dir)
             print 'Finished %s.zip (%sMB)' % (static_data_zip,
                     os.path.getsize(static_data_zip + '.zip') >> 20)
+
+        # make the sample_data zipfile.
+        sample_data_zip = os.path.join(dist_dir, 'sample_data')
+        print "Building %s.zip" % sample_data_zip
+        shutil.make_archive(sample_data_zip, 'zip', root_dir=sample_data_dir)
+        print 'Finished %s.zip (%sMB)' % (sample_data_zip,
+            os.path.getsize(sample_data_zip + '.zip') >> 20)
 
         # make the data archives
         tool_zip = os.path.join(dist_dir, 'tool_data')

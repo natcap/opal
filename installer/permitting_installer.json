@@ -41,7 +41,7 @@
             }
         ],
         "icon": "installer_icon.png",
-        "extra_files": ["..\\dist\\tool_data.zip"],
+        "extra_files": ["..\\dist\\tool_data.zip", "..\\dist\\sample_data.zip"],
         "start_menu": [
             {
                 "name": "${APP_NAME}",
