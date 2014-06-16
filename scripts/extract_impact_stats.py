@@ -38,7 +38,8 @@ if __name__ == '__main__':
         for impact_dir in glob.glob(glob_pattern):
             run_number = impact_dir.split('_')[-1]  # get the impact index
             impact_stats = static_maps.compute_impact_stats(impact_dir,
-                model_name, watershed_vector, base_stats, base_static_map)
+                model_name, watershed_vector, base_stats[watershed_id + 1],
+                base_static_map)
 
             stats_to_write = [watershed_id, run_number,
                 impact_stats['impact_site_area'],
