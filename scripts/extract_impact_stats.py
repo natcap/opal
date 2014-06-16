@@ -14,12 +14,12 @@ if __name__ == '__main__':
         'watersheds_cuencas.shp')
 
     model_name = 'sediment'
-    base_static_map = os.path.join(os.getcwd(), 'data', 'colombia_static_maps',
+    base_static_map = os.path.join(os.getcwd(), 'data', 'colombia_static_data',
             '%s_%s_static_map_lzw.tif' % (model_name,
-            watershed_base_dir.split('/')[0].lower()))
+            watershed_base_dir.split('/')[-1].lower()))
 
     base_stats = raster_utils.aggregate_raster_values_uri(base_static_map,
-            watersheds
+        base_watersheds, 'ws_id', 'sum').total
 
     logfile_uri = os.path.join(watershed_base_dir, 'scraped_simulations.csv')
     logfile = open(logfile_uri, 'w')
@@ -46,5 +46,5 @@ if __name__ == '__main__':
                 impact_stats['invest_estimate'],
                 impact_stats['export_ratio'],
             ]
-            logfile.write('%s\n' % ','.join(stats_to_write)
+            logfile.write('%s\n' % ','.join(stats_to_write))
 
