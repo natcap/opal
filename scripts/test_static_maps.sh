@@ -23,4 +23,5 @@ pushd src/adept
 python setup.py install
 popd
 
+#python scripts/test_nutrient_maps.py
 python scripts/test_sediment_maps.py
