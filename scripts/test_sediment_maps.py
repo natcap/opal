@@ -33,6 +33,12 @@ if __name__ == '__main__':
         static_maps.execute_model(model_name, lulc_uri, base_workspace)
 
     for impact_name, impact_lucode in [('paved', 89), ('bare', 301)]:
+        if impact_name == 'paved':
+            continue
+        else:
+            # name is 'bare'
+            ws_start_index = 40
+
         impact_workspace = os.path.join(workspace, impact_name)
         impact_static_map = os.path.join(DATA, 'colombia_static_data',
             'sediment_%s_static_map_lzw.tif' % impact_name)
@@ -42,7 +48,7 @@ if __name__ == '__main__':
         static_maps.test_static_map_quality(base_run, impact_static_map,
             lulc_uri, impact_lucode, watersheds, model_name, impact_workspace,
             config=static_maps.get_static_data_json(model_name),
-            num_iterations=num_iterations)
+            num_iterations=num_iterations, start_ws=ws_start_index)
 
         csv_path = os.path.join(impact_workspace, 'impact_site_simulation.csv')
         static_maps.graph_it(csv_path, os.path.join(impact_workspace,
