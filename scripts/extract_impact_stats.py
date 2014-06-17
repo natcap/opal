@@ -47,5 +47,5 @@ if __name__ == '__main__':
                 impact_stats['invest_estimate'],
                 impact_stats['export_ratio'],
             ]
-            logfile.write('%s\n' % ','.join(stats_to_write))
+            logfile.write('%s\n' % ','.join(map(str, stats_to_write)))
 
