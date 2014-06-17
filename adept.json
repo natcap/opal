@@ -36,7 +36,7 @@
             "id": "project_footprint", 
             "args_id": "project_footprint_uri", 
             "type": "file", 
-            "defaultValue": "./data/colombia_tool_data/Example permitting footprints/Example_mining_projects.shp", 
+            "defaultValue": "./data/colombia_sample_data/Cedrela Norte/proyecto/Proyecto_split.shp", 
             "label": {
                 "en": "Project Footprint", 
                 "es": "Huella del Proyecto"
@@ -64,7 +64,7 @@
             "id": "area_of_influence", 
             "args_id": "area_of_influence_uri", 
             "type": "file", 
-            "defaultValue": "./data/colombia_tool_data/sample_aoi.shp", 
+            "defaultValue": "", 
             "validateAs": {
                 "type": "file"
             }, 
