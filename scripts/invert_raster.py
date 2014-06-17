@@ -34,6 +34,6 @@ if __name__ == '__main__':
         nodata_out), temp_file, gdal.GDT_Float32, nodata_out, pixel_size,
         'intersection', vectorize_op=False)
 
-    print 'Moving back to original'
-    shutil.move(temp_file, filename)
+    #print 'Moving back to original'
+    #shutil.move(temp_file, filename)
 
