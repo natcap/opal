@@ -33,8 +33,9 @@ class AdeptTest(GISTest):
             'threat_map': os.path.join(DATA, 'DEM.tif'),
 #            'avoidance_areas': os.path.join(DATA, 'sample_aoi.shp'),
             'data_dir': '..',
-#            'custom_static_maps': os.path.join(os.getcwd(), '..',
-#                'custom_static_maps'),
+            'custom_static_maps': os.path.join(os.getcwd(), '..',
+                'custom_static_maps'),
+            'custom_servicesheds': 'global'
         }
         adept_core.execute(args)
 
@@ -102,7 +103,7 @@ class AdeptTest(GISTest):
             'sediment': 1234567,
             'nutrient': 1234567,
             'carbon': 1234567,
-#            'custom': 1234567,
+            'custom': 9999999,
         }
         impact_type = 'An impact type!'
         output_workspace = self.workspace
@@ -127,6 +128,7 @@ class AdeptTest(GISTest):
             report_name='report.html',
             natural_parcels=natural_parcels,
             impacts_error=True,
-            suggested_parcels=[]
+            suggested_parcels=[],
+            custom_es_servicesheds='global',
         )
 
