@@ -80,7 +80,7 @@
             "hideable": true, 
             "type": "file", 
             "label": {
-                "en": "Use custom ecosystems map", 
+                "en": "Use custom natural ecosystems map", 
                 "es": "Utilice ecosistemas personalizados mapa"
             }, 
             "validateAs": {
