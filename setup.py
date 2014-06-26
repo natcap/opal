@@ -182,7 +182,7 @@ class ZipDataCommand(Command):
             os.path.getsize(tool_zip + '.zip') >> 20)
 
 class SampleDataCommand(Command):
-    description = "Prepares sample static map data for a single hydrozone"
+    description = "Prepares sample data for a single hydrozone"
     user_options = []
 
     def initialize_options(self):
@@ -193,12 +193,12 @@ class SampleDataCommand(Command):
 
     def run(self):
         print ''
-        print 'Preparing single-hydrozone static data'
+        print 'Preparing single-hydrozone sample data'
 
         build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
         dist_dir = os.path.join(os.getcwd(), 'dist')
 
-        data_dir = os.path.join(build_dir, 'sample_static_data')
+        data_dir = os.path.join(build_dir, 'sample_data')
         if os.path.exists(data_dir):
             shutil.rmtree(data_dir)
         os.makedirs(data_dir)
@@ -208,7 +208,7 @@ class SampleDataCommand(Command):
         hydrozones = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
             'hydrozones.shp')
         impacts = os.path.join(os.getcwd(), 'data', 'colombia_sample_data',
-            'Cedrela Norte', 'proyecto', 'Proyecto3.shp')
+            'sogamoso_sample', 'mine_site.shp')
 
         # determine the active hydrozone.
         preprocessing.locate_intersecting_polygons(hydrozones, impacts,
@@ -240,8 +240,19 @@ class SampleDataCommand(Command):
                     static_maps.clip_static_map(src_raster, active_hydrozone,
                         dst_raster)
 
-        sample_data_zip = os.path.join(dist_dir, 'sample_static_data')
-        print "Building %s.zip" % sample_data_zip
+
+        print '\nCollecting sample vectors'
+        vectors_to_copy = ['mine_site', 'power_line']
+        for vector_base in vectors_to_copy:
+            glob_pattern = 'data/colombia_sample_data/sogamoso_sample/%s.*' % vector_base
+            for source_file in glob.glob(glob_pattern):
+                dest_file = os.path.join(service_dir,
+                    os.path.basename(source_file))
+                print 'Copying %s -> %s' % (source_file, dest_file)
+                shutil.copyfile(source_file, dest_file)
+
+        sample_data_zip = os.path.join(dist_dir, 'sample_data')
+        print "\nBuilding %s.zip" % sample_data_zip
         shutil.make_archive(sample_data_zip, 'zip', root_dir=service_dir)
         print 'Finished %s.zip (%sMB)' % (sample_data_zip,
                 os.path.getsize(sample_data_zip + '.zip') >> 20)
