@@ -12,6 +12,7 @@ import matplotlib
 import palisades
 import adept
 from adept import preprocessing
+from adept import static_maps
 
 print 'Adept package version: %s' % adept.__version__
 print 'Palisades package version: %s' % palisades.__version__
@@ -123,12 +124,6 @@ class ZipDataCommand(Command):
             shutil.rmtree(tool_data_dir)
         os.makedirs(tool_data_dir)
 
-        # copy the whole sample_data dir over to the sample_data folder.
-        print '\nStarting to copy sample project data'
-        source_path = 'data/colombia_sample_data'
-        sample_data_dir = os.path.join(data_dir, 'colombia_sample_data')
-        shutil.copytree(source_path, sample_data_dir)
-
         # copy relevant tool data into the tool_data folder.
         print '\nStarting to copy tool data'
         for tool_data_file in tool_data:
@@ -166,19 +161,88 @@ class ZipDataCommand(Command):
             print 'Finished %s.zip (%sMB)' % (static_data_zip,
                     os.path.getsize(static_data_zip + '.zip') >> 20)
 
-        # make the sample_data zipfile.
-        sample_data_zip = os.path.join(dist_dir, 'sample_data')
-        print "Building %s.zip" % sample_data_zip
-        shutil.make_archive(sample_data_zip, 'zip', root_dir=sample_data_dir)
-        print 'Finished %s.zip (%sMB)' % (sample_data_zip,
-            os.path.getsize(sample_data_zip + '.zip') >> 20)
-
         # make the data archives
         tool_zip = os.path.join(dist_dir, 'tool_data')
         print "Building %s.zip" % tool_zip
         shutil.make_archive(tool_zip, 'zip', root_dir=tool_data_dir)
         print 'Finished %s.zip (%sMB)' % (tool_zip,
             os.path.getsize(tool_zip + '.zip') >> 20)
+
+class SampleDataCommand(Command):
+    description = "Prepares sample data for a single hydrozone"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        print ''
+        print 'Preparing single-hydrozone sample data'
+
+        build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
+        dist_dir = os.path.join(os.getcwd(), 'dist')
+
+        data_dir = os.path.join(build_dir, 'sample_data')
+        if os.path.exists(data_dir):
+            shutil.rmtree(data_dir)
+        os.makedirs(data_dir)
+
+        print '\nDetermining active hydrozone'
+        active_hydrozone = os.path.join(data_dir, 'active_hzone.shp')
+        hydrozones = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
+            'hydrozones.shp')
+        impacts = os.path.join(os.getcwd(), 'data', 'colombia_sample_data',
+            'sogamoso_sample', 'mine_site.shp')
+
+        # determine the active hydrozone.
+        preprocessing.locate_intersecting_polygons(hydrozones, impacts,
+            active_hydrozone)
+
+        print '\nClipping static maps'
+        service_dir = os.path.join(data_dir, 'services_static_data')
+        static_maps_dir = os.path.join(os.getcwd(), 'data',
+            'colombia_static_data')
+        for service in ['sediment', 'nutrient', 'carbon']:
+            service_out_dir = os.path.join(service_dir, service)
+            os.makedirs(service_out_dir)
+            for scenario in ['bare', 'paved', 'protection']:
+                map_name = '%s_%s_static_map_lzw.tif' % (service, scenario)
+                src_static_map = os.path.join(static_maps_dir, map_name)
+                dst_static_map = os.path.join(service_out_dir, map_name)
+
+                print 'Clipping %s' % map_name
+                static_maps.clip_static_map(src_static_map, active_hydrozone,
+                    dst_static_map)
+
+                if service in ['sediment', 'nutrient']:
+                    # same thing for pts rasters
+                    map_name = '%s_%s_pts.tif' % (service, scenario)
+                    src_raster = os.path.join(static_maps_dir, map_name)
+                    dst_raster = os.path.join(service_out_dir, map_name)
+
+                    print 'Clipping %s' % map_name
+                    static_maps.clip_static_map(src_raster, active_hydrozone,
+                        dst_raster)
+
+
+        print '\nCollecting sample vectors'
+        vectors_to_copy = ['mine_site', 'power_line']
+        for vector_base in vectors_to_copy:
+            glob_pattern = 'data/colombia_sample_data/sogamoso_sample/%s.*' % vector_base
+            for source_file in glob.glob(glob_pattern):
+                dest_file = os.path.join(service_dir,
+                    os.path.basename(source_file))
+                print 'Copying %s -> %s' % (source_file, dest_file)
+                shutil.copyfile(source_file, dest_file)
+
+        sample_data_zip = os.path.join(dist_dir, 'sample_data')
+        print "\nBuilding %s.zip" % sample_data_zip
+        shutil.make_archive(sample_data_zip, 'zip', root_dir=service_dir)
+        print 'Finished %s.zip (%sMB)' % (sample_data_zip,
+                os.path.getsize(sample_data_zip + '.zip') >> 20)
 
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
@@ -282,6 +346,7 @@ class NSISCommand(Command):
         os.chdir(cwd)
 CMD_CLASSES['win_installer'] = NSISCommand
 CMD_CLASSES['zip_data'] = ZipDataCommand
+CMD_CLASSES['sample_data'] = SampleDataCommand
 
 print 'DATA_FILES'
 print DATA_FILES

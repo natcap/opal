@@ -29,7 +29,7 @@ class AdeptTest(GISTest):
                 'ecosys_dis_nat_comp_fac.shp'),
             'custom_static_map_uri': os.path.join(DATA,
                 'DEM.tif'),
-            'hydrozones': os.path.join(DATA, 'hydrozones.shp'),
+            'search_areas_uri': os.path.join(DATA, 'Hydrographic_subzones.shp'),
             'threat_map': os.path.join(DATA, 'DEM.tif'),
 #            'avoidance_areas': os.path.join(DATA, 'sample_aoi.shp'),
             'data_dir': '..',
