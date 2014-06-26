@@ -33,9 +33,9 @@ class AdeptTest(GISTest):
             'threat_map': os.path.join(DATA, 'DEM.tif'),
 #            'avoidance_areas': os.path.join(DATA, 'sample_aoi.shp'),
             'data_dir': '..',
-            'custom_static_maps': os.path.join(os.getcwd(), '..',
-                'custom_static_maps'),
-            'custom_servicesheds': 'global'
+#            'custom_static_maps': os.path.join(os.getcwd(), '..',
+#                'custom_static_maps'),
+#            'custom_servicesheds': 'global'
         }
         adept_core.execute(args)
 
