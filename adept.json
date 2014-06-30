@@ -262,7 +262,7 @@
                 "es": "Impactos previamente otorgados (opcional)"
             },
             "validateas": {
-                "type": "GDAL"
+                "type": "OGR"
             } 
         }, 
         {
@@ -274,7 +274,7 @@
                 "es": "Compensaciones Previamente seleccionados (opcional)"
             },
             "validateas": {
-                "type": "GDAL"
+                "type": "OGR"
             } 
         }, 
         {
