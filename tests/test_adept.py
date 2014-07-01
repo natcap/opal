@@ -23,7 +23,7 @@ class AdeptTest(GISTest):
             'workspace_dir': self.workspace,
             'project_footprint_uri': os.path.join(DATA, ('Example permitting'
                 ' footprints'), 'Example_mining_projects.shp'),
-            'impact_type': 'Road/Mine',
+            'impact_type': 'Road/Paved',
 #            'area_of_influence_uri': os.path.join(DATA, 'sample_aoi.shp'),
             'ecosystems_map_uri': os.path.join(DATA,
                 'ecosys_dis_nat_comp_fac.shp'),
