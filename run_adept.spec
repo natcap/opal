@@ -22,7 +22,7 @@ custom_analysis = Analysis(['run_custom_sm.py'], **common_kwargs)
 
 # Merge all of the analysis objects together.
 MERGE(
-    (adept_analysis, 'run_adept', 'adept'),
+    (adept_analysis, 'run_adept', 'opal'),
     (carbon_analysis, 'run_carbon_sm', 'carbon_sm'),
     (sediment_analysis, 'run_sediment_sm', 'sediment_sm'),
     (nutrient_analysis, 'run_nutrient_sm', 'nutrient_sm'),
@@ -32,10 +32,10 @@ MERGE(
 pyz = PYZ(adept_analysis.pure)
 
 if platform.system() == 'Windows':
-    exe_name = 'adept_exe.exe'
+    exe_name = 'opal_exe.exe'
     debug_program = False
 else:
-    exe_name = 'adept_exe'
+    exe_name = 'opal_exe'
     debug_program = True
 adept_exe = EXE(pyz,
           adept_analysis.scripts,
