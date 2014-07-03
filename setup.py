@@ -259,9 +259,22 @@ class NSISCommand(Command):
     ]
 
     def initialize_options(self):
-        self.genesis_config = 'installer/permitting_installer.json'
         self.build_dir = os.path.join(os.getcwd(), 'build',
             'nsis-%s' % self.dist_name)
+
+        if os.path.exists(self.build_dir):
+            shutil.rmtree(self.build_dir)
+        os.makedirs(self.build_dir)
+
+        self.nsis_dir = os.path.expanduser(self.nsis_dir)
+        if not os.path.exists(self.nsis_dir):
+            print self.nsis_dir, 'does not exist'
+            raise IOError('%s does not exist' % self.nsis_dir)
+
+        if not os.path.isdir(self.nsis_dir):
+            self.nsis_dir = self.nsis_dir[:-1]
+
+        self.nsis_install = None
 
     def finalize_options(self):
         pass
@@ -276,17 +289,12 @@ class NSISCommand(Command):
         print self.genesis_config
         print self.dist_name
         print self.build_dir
-        raise Exception
 
-        if os.path.exists(self.build_dir):
-            shutil.rmtree(self.build_dir)
-        os.makedirs(self.build_dir)
+        target_dir = os.path.join(self.build_dir, os.path.basename(self.nsis_dir))
+        if os.path.exists(target_dir):
+            print 'Removing existing folder %s' % target_dir
+            shutil.rmtree(target_dir)
 
-        self.nsis_dir = os.path.expanduser(self.nsis_dir)
-        if not os.path.isdir(self.nsis_dir):
-            self.nsis_dir = self.nsis_dir[:-1]
-
-        target_dir = os.path.join(build_dir, os.path.basename(self.nsis_dir))
         print 'Copying %s -> %s' % (self.nsis_dir, target_dir)
         shutil.copytree(self.nsis_dir, target_dir)
 
@@ -362,7 +370,7 @@ class ColombiaDistribution(NSISCommand):
     ]
 
     def initialize_options(self):
-        self.genesis_config = 'installer/permitting_installer.json'
+        self.genesis_config = os.path.abspath('installer/permitting_installer.json')
         self.dist_name = 'colombia'
         self.nsis_dir = os.path.abspath('dist/total_coll')
         NSISCommand.initialize_options(self)
@@ -372,6 +380,7 @@ class ColombiaDistribution(NSISCommand):
 
     def run(self):
         self.run_command('static_data_colombia')
+        self.run_command('sample_data')
 
         # copy the zipfiles we need into the right place.
         target_dir = os.path.join(self.build_dir, os.path.basename(self.nsis_dir))
