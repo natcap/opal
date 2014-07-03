@@ -1,0 +1,67 @@
+{
+    "variables": {
+        "APP_ARCHITECTURE": "${ARCHITECTURE}",
+        "APP_VERSION": "${VERSION}",
+        "APP_NAME": "OPAL",
+        "TITLE": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}",
+        "SAFE_VERSION": "${APP_NAME}_${VERSION}"
+    },
+    "general": {
+        "name": "${APP_NAME}",
+        "version": "${APP_VERSION}",
+        "architecture": "${APP_ARCHITECTURE}",
+        "build_folder": "..\\dist\\total_coll",
+        "publisher": "The Natural Capital Project",
+        "website": "http://www.naturalcapitalproject.org",
+        "languages": ["English", "Spanish"]
+    },
+    "installer": {
+        "title": "${TITLE}",
+        "filename": "${APP_NAME}_${VERSION}_${APP_ARCHITECTURE}_Setup.exe",
+        "install_dir": "C:\\Program Files\\${SAFE_VERSION}",
+        "required": true,
+        "size": 3772307,
+        "save_log": true,
+        "assert_not_running": true,
+        "assert_arch_is_compatible": true,
+        "install_log": "install_log.txt",
+        "license": "..\\LICENSE.TXT",
+        "icon": "installer_icon.png",
+        "start_menu": [
+            {
+                "name": "${APP_NAME}",
+                "target": "opal_exe.exe",
+                "icon": "${icon}"
+            },
+            {
+                "name": "${APP_NAME} Carbon Static Map Generator",
+                "target": "carbon_sm.exe",
+                "icon": "${icon}"
+            },
+            {
+                "name": "${APP_NAME} Sediment Static Map Generator",
+                "target": "sediment_sm.exe",
+                "icon": "${icon}"
+            },
+            {
+                "name": "${APP_NAME} Nutrient Static Map Generator",
+                "target": "nutrient_sm.exe",
+                "icon": "${icon}"
+            },
+            {
+                "name": "${APP_NAME} Custom Static Map Calculator",
+                "target": "generic_sm.exe",
+                "icon": "${icon}"
+            },
+            {
+                "name": "${APP_NAME} Documentation",
+                "target": "OPAL_documentation.docx"
+            }
+        ]
+    },
+    "uninstaller": {
+        "icon": "{NSISDIR}\\Contrib\\Graphics\\Icons\\orange-uninstall.ico",
+        "title": "Uninstall ${APP_NAME} ${APP_VERSION}",
+        "filename": "Uninstall ${APP_NAME} ${APP_VERSION}"
+    }
+}
