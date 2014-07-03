@@ -99,8 +99,8 @@ tif_rasters = ['DEM', 'Erodability', 'Erosivity',
 for raster in tif_rasters:
     tool_data.append('data/colombia_tool_data/%s.tif' % raster)
 
-class ZipDataCommand(Command):
-    """Zips up all the data required for distribution."""
+class ZipColombiaData(Command):
+    """Zip up all colombia static and tool data."""
     description = "Custom command to gather up the various data"
 
     user_options = [
@@ -253,12 +253,15 @@ class NSISCommand(Command):
     # This list of tuples allows for command-line options for this distutils
     # command.
     user_options = [
+        ('genesis-config=', None, 'Genesis-compatible configuration file'),
         ('nsis-dir=', None, 'Folder with executeables to compress.'),
-        ('nsis-install=', None, 'Location of the NSIS installation on disk')]
+        ('nsis-install=', None, 'Location of the NSIS installation on disk'),
+    ]
 
     def initialize_options(self):
-        self.nsis_dir = None
-        self.nsis_install = None
+        self.genesis_config = 'installer/permitting_installer.json'
+        self.build_dir = os.path.join(os.getcwd(), 'build',
+            'nsis-%s' % self.dist_name)
 
     def finalize_options(self):
         pass
@@ -267,8 +270,17 @@ class NSISCommand(Command):
         print ''
         print 'Starting NSIS installer build'
 
-        build_dir = os.path.join(os.getcwd(), 'build', 'nsis-build')
-        os.makedirs(build_dir)
+        if not os.path.abspath(self.genesis_config):
+            self.genesis_config = os.path.abspath(self.genesis_config)
+
+        print self.genesis_config
+        print self.dist_name
+        print self.build_dir
+        raise Exception
+
+        if os.path.exists(self.build_dir):
+            shutil.rmtree(self.build_dir)
+        os.makedirs(self.build_dir)
 
         self.nsis_dir = os.path.expanduser(self.nsis_dir)
         if not os.path.isdir(self.nsis_dir):
@@ -278,19 +290,12 @@ class NSISCommand(Command):
         print 'Copying %s -> %s' % (self.nsis_dir, target_dir)
         shutil.copytree(self.nsis_dir, target_dir)
 
-        # copy the zipfiles we need into the right place.
-        for filename in ['tool_data.zip']:
-            source_file = os.path.join('dist', filename)
-            dest_file = os.path.join(target_dir, filename)
-            print 'Copying %s -> %s' % (source_file, dest_file)
-            shutil.copyfile(source_file, dest_file)
-
         cwd = os.getcwd()
         os.chdir('installer')  # CD into the installer folder to build it.
 
-        installer_path = os.path.join('adept_installer.nsi')
+        installer_path = os.path.join('%s_installer.nsi' % self.dist_name)
         genesis = imp.load_source('genesis', 'genesis.py')
-        genesis.build_installer_script('permitting_installer.json',
+        genesis.build_installer_script(os.path.relpath(self.genesis_config),
             installer_path)
         #installer_path = os.path.join('adept_installer_zipdata.nsi')
 
@@ -344,8 +349,68 @@ class NSISCommand(Command):
         print 'Executing command: %s' % command
         subprocess.call(program_path + [makensis_path] + command)
         os.chdir(cwd)
-CMD_CLASSES['win_installer'] = NSISCommand
-CMD_CLASSES['zip_data'] = ZipDataCommand
+
+class ColombiaDistribution(NSISCommand):
+    description = "Build the Colombia installer"
+
+    # This list of tuples allows for command-line options for this distutils
+    # command.
+    user_options = [
+        ('genesis-config=', None, 'Genesis-compatible configuration file'),
+        ('nsis-dir=', None, 'Folder with executeables to compress.'),
+        ('nsis-install=', None, 'Location of the NSIS installation on disk'),
+    ]
+
+    def initialize_options(self):
+        self.genesis_config = 'installer/permitting_installer.json'
+        self.dist_name = 'colombia'
+        self.nsis_dir = os.path.abspath('dist/total_coll')
+        NSISCommand.initialize_options(self)
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        self.run_command('static_data_colombia')
+
+        # copy the zipfiles we need into the right place.
+        target_dir = os.path.join(self.build_dir, os.path.basename(self.nsis_dir))
+        if not os.path.exists(target_dir):
+            os.makedirs(target_dir)
+
+        for filename in ['tool_data.zip']:
+            source_file = os.path.join('dist', filename)
+            dest_file = os.path.join(target_dir, filename)
+            print 'Copying %s -> %s' % (source_file, dest_file)
+            shutil.copyfile(source_file, dest_file)
+
+        NSISCommand.run(self)
+
+
+class GlobalDistribution(NSISCommand):
+    description = "Build the Global OPAL installer"
+
+    # This list of tuples allows for command-line options for this distutils
+    # command.
+    user_options = [
+        ('genesis-config=', None, 'Genesis-compatible configuration file'),
+        ('nsis-dir=', None, 'Folder with executeables to compress.'),
+        ('nsis-install=', None, 'Location of the NSIS installation on disk')
+    ]
+
+    def initialize_options(self):
+        self.genesis_config = 'installer/opal_installer.json'
+        self.nsis_dir = os.path.abspath('dist/total_coll')
+        self.dist_name = 'global'
+        NSISCommand.initialize_options(self)
+
+    def finalize_options(self):
+        pass
+
+
+CMD_CLASSES['dist_colombia'] = ColombiaDistribution
+CMD_CLASSES['dist_global'] = GlobalDistribution
+CMD_CLASSES['static_data_colombia'] = ZipColombiaData
 CMD_CLASSES['sample_data'] = SampleDataCommand
 
 print 'DATA_FILES'
