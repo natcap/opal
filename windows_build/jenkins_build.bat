@@ -33,6 +33,7 @@ cd ..\..
 :: setup.py commands to build everything we want/need.
 %ENVDIR%\Scripts\python src\pyinstaller\pyinstaller.py -y --onedir --noupx -c run_adept.spec || goto :error
 %ENVDIR%\Scripts\python setup.py dist_colombia --nsis-dir=dist/total_coll || goto :error
+%ENVDIR%\Scripts\python setup.py dist_global --nsis-dir=dist/total_coll || goto :error
 
 goto :EOF
 
