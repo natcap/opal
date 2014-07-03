@@ -2,7 +2,7 @@
     "variables": {
         "APP_ARCHITECTURE": "${ARCHITECTURE}",
         "APP_VERSION": "${VERSION}",
-        "APP_NAME": "OPAL",
+        "APP_NAME": "MAFE",
         "TITLE": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}",
         "SAFE_VERSION": "${APP_NAME}_${VERSION}"
     },
@@ -70,7 +70,7 @@
             },
             {
                 "name": "${APP_NAME} Documentation",
-                "target": "OPAL_documentation.docx"
+                "target": "MAFE_documentation.docx"
             }
         ],
         "post_install": "install_data_zips.nsi",
