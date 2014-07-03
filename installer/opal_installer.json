@@ -57,7 +57,8 @@
                 "name": "${APP_NAME} Documentation",
                 "target": "OPAL_documentation.docx"
             }
-        ]
+        ],
+        "sections": []
     },
     "uninstaller": {
         "icon": "{NSISDIR}\\Contrib\\Graphics\\Icons\\orange-uninstall.ico",

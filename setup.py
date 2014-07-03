@@ -408,7 +408,7 @@ class GlobalDistribution(NSISCommand):
     ]
 
     def initialize_options(self):
-        self.genesis_config = 'installer/opal_installer.json'
+        self.genesis_config = os.path.abspath('installer/opal_installer.json')
         self.nsis_dir = os.path.abspath('dist/total_coll')
         self.dist_name = 'global'
         NSISCommand.initialize_options(self)
