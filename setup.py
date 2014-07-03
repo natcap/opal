@@ -370,7 +370,7 @@ class ColombiaDistribution(NSISCommand):
     ]
 
     def initialize_options(self):
-        self.genesis_config = os.path.abspath('installer/permitting_installer.json')
+        self.genesis_config = os.path.abspath('installer/mafe_installer.json')
         self.dist_name = 'colombia'
         self.nsis_dir = os.path.abspath('dist/total_coll')
         NSISCommand.initialize_options(self)
