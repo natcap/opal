@@ -226,11 +226,22 @@ def section(options):
     ]
 
     unzip_page_funcs = False
+    try:
+        # file_size is in kb.
+        file_size = os.path.getsize(options['size'].replace('\\', '/')) >> 10
+    except (OSError, TypeError):
+        # Size MUST be in options, so DO NOT catch a keyError here.
+        # OSError when options['size'] is a string but does not exist on disk
+        # TypeError when options['size'] is not a string
+        file_size = None
+
     if section_type.startswith('unzip'):
-        zipfile_size = os.path.getsize(
-            options['action']['zipfile'].replace('\\', '/'))
+        if file_size is None:
+            # get filesize in kb
+            file_size = os.path.getsize(
+                options['action']['zipfile'].replace('\\', '/')) >> 10
         strings.append(
-            'AddSize \"%s\"' % (zipfile_size >> 10),  # convert to kb
+            'AddSize \"%s\"' % (file_size)
         )
 
         if section_type == 'unzipSelect':
@@ -249,7 +260,7 @@ def section(options):
                 'nsisunz::UnzipToLog \"%s\" \".\"' % zipfile_uri,
             ]
     else:
-        strings.append('AddSize \"%s\"' % options['size'])
+        strings.append('AddSize \"%s\"' % file_size)
 
     strings.append('SectionEnd\n')
 
