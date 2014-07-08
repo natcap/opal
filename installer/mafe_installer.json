@@ -2,7 +2,7 @@
     "variables": {
         "APP_ARCHITECTURE": "${ARCHITECTURE}",
         "APP_VERSION": "${VERSION}",
-        "APP_NAME": "MAFE",
+        "APP_NAME": "MAFE-T",
         "TITLE": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}",
         "SAFE_VERSION": "${APP_NAME}_${VERSION}"
     },
