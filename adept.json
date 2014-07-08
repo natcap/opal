@@ -278,6 +278,36 @@
             } 
         }, 
         {
+            "id": "do_carbon",
+            "args_id": "do_carbon",
+            "type": "checkbox",
+            "defaultValue": true,
+            "label": {
+                "en": "Calculate impacts/offsets to carbon",
+                "es": null
+            }
+        },
+        {
+            "id": "do_sediment",
+            "args_id": "do_sediment",
+            "type": "checkbox",
+            "defaultValue": true,
+            "label": {
+                "en": "Calculate impacts/offsets to sediment",
+                "es": null
+            }
+        },
+        {
+            "id": "do_nutrient",
+            "args_id": "do_nutrient",
+            "type": "checkbox",
+            "defaultValue": true,
+            "label": {
+                "en": "Calculate impacts/offsets to nitrogen",
+                "es": null
+            }
+        },
+        {
             "id": "carbon_static_maps", 
             "args_id": "carbon_static_maps",
             "type": "folder", 
