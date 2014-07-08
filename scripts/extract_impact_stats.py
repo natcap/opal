@@ -8,19 +8,20 @@ import multiprocessing
 from adept import static_maps
 from invest_natcap import raster_utils
 
-def extract_impact_data(service, scenario_dir):
+def extract_impact_data(service, scenario_dir, base_export_raster):
     base_watersheds = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
         'watersheds_cuencas.shp')
 
     model_name = service
-    base_static_map = os.path.join(os.getcwd(), 'data', 'colombia_static_data',
-            '%s_%s_static_map_lzw.tif' % (model_name,
-            scenario_dir.split('/')[-1].lower()))
+    scenario = scenario_dir.split('/')[-1].lower()
 
-    base_stats = raster_utils.aggregate_raster_values_uri(base_static_map,
+    base_static_map = os.path.join(os.getcwd(), 'data', 'colombia_static_data',
+            '%s_%s_static_map_lzw.tif' % (model_name, scenario))
+    base_stats = raster_utils.aggregate_raster_values_uri(base_export_raster,
         base_watersheds, 'ws_id', 'sum').total
 
-    logfile_uri = os.path.join(scenario_dir, 'scraped_simulations.csv')
+    logfile_uri = os.path.join(scenario_dir,
+        '%s_%s_scraped_sims.csv' % (model_name, scenario))
     logfile = open(logfile_uri, 'w')
     labels = ['ws_id', 'Impact ID', 'Impact area', 'Static estimate',
         'InVEST estimate', 'Estimate ratio']
@@ -46,6 +47,11 @@ def extract_impact_data(service, scenario_dir):
                 impact_stats['export_ratio'],
             ]
             logfile.write('%s\n' % ','.join(map(str, stats_to_write)))
+    logfile.close()
+
+    out_png = os.path.join(scenario_dir, '%s_%s_plot.png' % (model_name,
+        scenario))
+    static_maps.graph_it(logfile_uri, out_png)
 
 if __name__ == '__main__':
     #watershed_base_dir = 'F:/sediment_map_quality_backup/Bare'
@@ -54,11 +60,13 @@ if __name__ == '__main__':
     watershed_base_dir = '/colossus'
     for service in ['nutrient', 'sediment']:
         service_dir = os.path.join(watershed_base_dir, '%s_simulations' % service)
+        base_export_raster = os.path.join(service_dir, 'base_run',
+            static_maps.MODELS[service]['target_raster'])
         for scenario in ['bare', 'paved']:
             scenario_dir = os.path.join(service_dir, scenario)
             print scenario_dir
             p = multiprocessing.Process(target=extract_impact_data,
-                args=(service, scenario_dir))
+                args=(service, scenario_dir, base_export_raster))
             p.start()
             processes.append(p)
 
