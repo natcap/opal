@@ -13,6 +13,7 @@ import palisades
 import adept
 from adept import preprocessing
 from adept import static_maps
+from adept import versioning
 
 print 'Adept package version: %s' % adept.__version__
 print 'Palisades package version: %s' % palisades.__version__
@@ -347,7 +348,16 @@ class NSISCommand(Command):
         # to the installer dir (cwd).
         build_dir = os.path.join('..', self.nsis_dir)
 
-        version_string = adept.__version__.replace(':', '_').replace(' ', '_')
+        # determine the version string, based on the tag of the permitting repo
+        # if we're at the tag, then that's the version.  Otherwise, get the
+        # build ID, which includes relevant revision information.
+        if versioning.get_tag_distance() > 0:
+            version_string = versioning.get_build_id()
+        else:
+            version_string = versioning.get_latest_tag()
+
+        # sanitize the version string
+        version_string = version_string.replace(':', '_').replace(' ', '_')
         version_string = version_string.replace('[', '').replace(']', '')
         command = ['/DVERSION=%s' % version_string,
                    '/DPY2EXE_FOLDER=%s' % build_dir.replace('/', '\\'),
