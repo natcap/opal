@@ -56,8 +56,8 @@
             }, 
             "type": "dropdown", 
             "options": [
-                "Bare ground/Mine", 
-                "Paved/Road"
+                "Road/Paved",
+                "Mine/Bare",
             ] 
         }, 
         {
