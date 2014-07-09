@@ -383,6 +383,12 @@ class ColombiaDistribution(NSISCommand):
         self.genesis_config = os.path.abspath('installer/mafe_installer.json')
         self.dist_name = 'colombia'
         self.nsis_dir = os.path.abspath('dist/total_coll')
+
+        mafe_name_src = os.path.join(os.getcwd(), 'windows_build',
+            'MAFE-T_NAME.txt')
+        mafe_name_dest = os.path.join(self.nsis_dir, 'ASCII_NAME.txt')
+        shutil.copyfile(mafe_name_src, mafe_name_dest)
+
         NSISCommand.initialize_options(self)
 
     def finalize_options(self):
@@ -421,6 +427,12 @@ class GlobalDistribution(NSISCommand):
         self.genesis_config = os.path.abspath('installer/opal_installer.json')
         self.nsis_dir = os.path.abspath('dist/total_coll')
         self.dist_name = 'global'
+
+        opal_name_src = os.path.join(os.getcwd(), 'windows_build',
+            'OPAL_NAME.txt')
+        opal_name_dest = os.path.join(self.nsis_dir, 'ASCII_NAME.txt')
+        shutil.copyfile(opal_name_src, opal_name_dest)
+
         NSISCommand.initialize_options(self)
 
     def finalize_options(self):
