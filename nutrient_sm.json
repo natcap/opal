@@ -72,10 +72,10 @@
         {
             "args_id": "paved_landcover_code",
             "helpText": {
-                "en": null,
+                "en": "The numeric land cover class for your LULC that represents pavement.",
                 "es": null
             },
-            "defaultValue": 124,
+            "defaultValue": "",
             "required": true,
             "label": "Paved landcover code",
             "type": "text",
@@ -86,10 +86,10 @@
         {
             "args_id": "bare_landcover_code",
             "helpText": {
-                "en": null,
+                "en": "The numeric land cover class for your LULC that represents bare ground.",
                 "es": null
             },
-            "defaultValue": 124,
+            "defaultValue": "",
             "required": true,
             "label": "Bare landcover code",
             "type": "text",
