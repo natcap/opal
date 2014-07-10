@@ -1,1 +1,1 @@
-grep \"en\" adept.json | grep --color -o \:\ \"[^\"]*\", | sed s/[\":,$]//g
+grep \"en\" $1 | grep --color -o \:\ \"[^\"]*\", | sed s/[\":,$]//g
