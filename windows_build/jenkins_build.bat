@@ -2,8 +2,21 @@ SET ENVDIR=adept_environment
 DEL /S /Q build
 DEL /S /Q %ENVDIR%
 
+:: Set the default python if a python exe is not passed in as arg1
 IF "%1" == "" SET PYTHON=C:\py27_build\python.exe
 IF NOT "%1" == "" SET PYTHON="%1"
+
+:: Indicate (via arg2) whether the build should include static data zips
+IF "%2" == "" SET BUILD_STATIC_DATA="true"
+IF NOT "%2" == "" SET BUILD_STATIC_DATA="%2"
+
+:: Indicate via arg3 whether to build MAFE installer
+IF "%3" == "" SET BUILD_MAFE="true"
+IF NOT "%3" == "" SET BUILD_MAFE="%3"
+
+:: Indicate via arg4 whether to build OPAL installer
+IF "%4" == "" SET BUILD_OPAL="true"
+IF NOT "%4" == "" SET BUILD_OPAL="%4"
 
 %PYTHON% bootstrap_adept_environment.py > setup_environment.py
 %PYTHON% setup_environment.py --clear --system-site-packages %ENVDIR%
@@ -32,8 +45,18 @@ cd ..\..
 :: Now that everything is installed, we can run the permitting project's
 :: setup.py commands to build everything we want/need.
 %ENVDIR%\Scripts\python src\pyinstaller\pyinstaller.py -y --onedir --noupx -c run_adept.spec || goto :error
+
+IF NOT %BUILD_STATIC_DATA% == "true" goto :skip_big_data
+%ENVDIR%\Scripts\python setup.py static_data_colombia || goto :error
+:skip_big_data
+
+IF NOT %BUILD_MAFE% == "true" goto :skip_mafe
 %ENVDIR%\Scripts\python setup.py dist_colombia --nsis-dir=dist/total_coll || goto :error
+:skip_mafe
+
+IF NOT %BUILD_OPAL% == "true" goto :skip_opal
 %ENVDIR%\Scripts\python setup.py dist_global --nsis-dir=dist/total_coll || goto :error
+:skip_opal
 
 goto :EOF
 

@@ -77,7 +77,7 @@
         "sections": [
             {
                 "name": "Carbon Static Data",
-                "size": "..\\dist\\permitting_data\\sample_data\\services_static_data\\carbon",
+                "size": "3700000",
                 "label": "Select an option to download Carbon static data",
                 "action": {
                     "type": "unzipSelect",
@@ -88,7 +88,7 @@
             },
             {
                 "name": "Sediment Static Data",
-                "size": "..\\dist\\permitting_data\\sample_data\\services_static_data\\sediment",
+                "size": "7400000",
                 "label": "Select an option to download sediment static data",
                 "action": {
                     "type": "unzipSelect",
@@ -99,7 +99,7 @@
             },
             {
                 "name": "Nutrient Static Data",
-                "size": "..\\dist\\permitting_data\\sample_data\\services_static_data\\nutrient",
+                "size": "7400000",
                 "label": "Select an option to download nutrient static data.",
                 "action": {
                     "type": "unzipSelect",
