@@ -1,6 +1,6 @@
 invest-natcap.invest-3 = https://code.google.com/p/invest-natcap.invest-3/
 data = [svn]http://ncp-yamato.stanford.edu/svn/permitting-data
-user-interface = https://code.google.com/p/invest-natcap.user-interface
 src/adept = https://code.google.com/p/invest-natcap.adept
 src/pyinstaller = [git]https://github.com/pyinstaller/pyinstaller.git
+src/palisades = [git]https://github.com/phargogh/palisades.git
 

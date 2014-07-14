@@ -1,3 +1,6 @@
+[submodule "src/palisades"]
+	path = src/palisades
+	url = https://github.com/phargogh/palisades.git
 [submodule "src/pyinstaller"]
 	path = src/pyinstaller
 	url = https://github.com/pyinstaller/pyinstaller.git
