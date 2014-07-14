@@ -21,7 +21,7 @@ cd ..
 cd src/palisades
 rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
-cd ..
+cd ..\..
 
 :: CD to the Adept directory to install adept to the virtual environment
 cd src/adept
