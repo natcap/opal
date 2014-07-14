@@ -227,13 +227,17 @@ def section(options):
 
     unzip_page_funcs = False
     try:
-        # file_size is in kb.
-        file_size = os.path.getsize(options['size'].replace('\\', '/')) >> 10
-    except (OSError, TypeError):
-        # Size MUST be in options, so DO NOT catch a keyError here.
-        # OSError when options['size'] is a string but does not exist on disk
-        # TypeError when options['size'] is not a string
-        file_size = None
+        file_size = int(options['size'])
+    except ValueError:
+        # when options['size'] is a path
+        try:
+            # file_size is in kb.
+            file_size = os.path.getsize(options['size'].replace('\\', '/')) >> 10
+        except (OSError, TypeError):
+            # Size MUST be in options, so DO NOT catch a keyError here.
+            # OSError when options['size'] is a string but does not exist on disk
+            # TypeError when options['size'] is not a string
+            file_size = None
 
     if section_type.startswith('unzip'):
         if file_size is None:
