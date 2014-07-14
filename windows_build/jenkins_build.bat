@@ -18,7 +18,7 @@ rmdir /S /Q build
 cd ..
 ::
 :: CD to the palisades directory to install it to the virtual environment
-cd user-interface
+cd src/palisades
 rmdir /S /Q build
 ..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..
