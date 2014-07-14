@@ -395,7 +395,6 @@ class ColombiaDistribution(NSISCommand):
         pass
 
     def run(self):
-        self.run_command('static_data_colombia')
         self.run_command('sample_data')
 
         # copy the zipfiles we need into the right place.
