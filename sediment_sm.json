@@ -242,6 +242,27 @@
             }
         },
         {
+            "type": "container",
+            "label": {
+                "en": "Calculate generated static map quality",
+                "es": null
+            },
+            "collapsible": true,
+            "defaultValue": false,
+            "elements": [
+                {
+                    "type": "text",
+                    "label": "Number of impact simulations per watershed",
+                    "defaultValue": "25",
+                    "args_id": "num_simulations",
+                    "helpText": {
+                        "en": "The number of impact simulations per watershed",
+                        "es": null
+                    }
+                }
+            ]
+        },
+        {
             "args_id": "do_parallelism",
             "returns": true,
             "type": "hidden"
