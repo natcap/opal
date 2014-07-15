@@ -100,30 +100,23 @@ tif_rasters = ['DEM', 'Erodability', 'Erosivity',
 for raster in tif_rasters:
     tool_data.append('data/colombia_tool_data/%s.tif' % raster)
 
-class ZipColombiaData(Command):
-    """Zip up all colombia static and tool data."""
-    description = "Custom command to gather up the various data"
-
+class ToolDataColombia(Command):
+    """Zip up colombia internal tool data"""
+    description = "Custom command to gather up internal tool data for MAFE"
     user_options = [
-        ('static-data-zip=', None, 'Output zip for static data'),
-        ('tool-data-zip=', None, 'Output zip for tool data'),
+        ('tool-data-zip=', None, 'Output zip for tool data')
     ]
 
     def initialize_options(self):
-        self.static_data_zip = None
         self.tool_data_zip = None
 
     def finalize_options(self):
         pass
 
     def run(self):
-        build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
-        dist_dir = os.path.join(os.getcwd(), 'dist')
-        data_dir = os.path.join(build_dir, 'data')
-        tool_data_dir = os.path.join(data_dir, 'colombia_tool_data')
-        if os.path.exists(tool_data_dir):
-            shutil.rmtree(tool_data_dir)
-        os.makedirs(tool_data_dir)
+        tool_data_dir = os.path.join(os.getcwd(), 'build', 'co_tool_data')
+        if not os.path.exists(tool_data_dir):
+            os.makedirs(tool_data_dir)
 
         # copy relevant tool data into the tool_data folder.
         print '\nStarting to copy tool data'
@@ -136,6 +129,37 @@ class ZipColombiaData(Command):
             else:
                 print 'copying %s -> %s' % (tool_data_file, new_uri)
                 shutil.copy(tool_data_file, new_uri)
+
+        # make the data archives
+        dist_dir = os.path.join(os.getcwd(), 'dist')
+        tool_zip = os.path.join(dist_dir, 'tool_data')
+        print "Building %s.zip" % tool_zip
+        shutil.make_archive(tool_zip, 'zip', root_dir=tool_data_dir)
+        print 'Finished %s.zip (%sMB)' % (tool_zip,
+            os.path.getsize(tool_zip + '.zip') >> 20)
+
+class ZipColombiaData(Command):
+    """Zip up all colombia static and tool data."""
+    description = "Custom command to gather up the various data"
+
+    user_options = [
+        ('static-data-zip=', None, 'Output zip for static data'),
+    ]
+
+    def initialize_options(self):
+        self.static_data_zip = None
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
+        dist_dir = os.path.join(os.getcwd(), 'dist')
+        data_dir = os.path.join(build_dir, 'data')
+        tool_data_dir = os.path.join(data_dir, 'colombia_tool_data')
+        if os.path.exists(tool_data_dir):
+            shutil.rmtree(tool_data_dir)
+        os.makedirs(tool_data_dir)
 
         # copy all static map data into the static maps folder.
         print '\nStarting to copy static data'
@@ -161,13 +185,6 @@ class ZipColombiaData(Command):
             shutil.make_archive(static_data_zip, 'zip', root_dir=sm_dir)
             print 'Finished %s.zip (%sMB)' % (static_data_zip,
                     os.path.getsize(static_data_zip + '.zip') >> 20)
-
-        # make the data archives
-        tool_zip = os.path.join(dist_dir, 'tool_data')
-        print "Building %s.zip" % tool_zip
-        shutil.make_archive(tool_zip, 'zip', root_dir=tool_data_dir)
-        print 'Finished %s.zip (%sMB)' % (tool_zip,
-            os.path.getsize(tool_zip + '.zip') >> 20)
 
 class SampleDataCommand(Command):
     description = "Prepares sample data for a single hydrozone"
@@ -396,6 +413,7 @@ class ColombiaDistribution(NSISCommand):
 
     def run(self):
         self.run_command('sample_data')
+        self.run_command('tool_data_colombia')
 
         # copy the zipfiles we need into the right place.
         target_dir = os.path.join(self.build_dir, os.path.basename(self.nsis_dir))
@@ -442,6 +460,7 @@ CMD_CLASSES['dist_colombia'] = ColombiaDistribution
 CMD_CLASSES['dist_global'] = GlobalDistribution
 CMD_CLASSES['static_data_colombia'] = ZipColombiaData
 CMD_CLASSES['sample_data'] = SampleDataCommand
+CMD_CLASSES['tool_data_colombia'] = ToolDataColombia
 
 print 'DATA_FILES'
 print DATA_FILES
