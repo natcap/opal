@@ -67,7 +67,7 @@
         {
             "args_id": "model_name",
             "type": "hidden",
-            "returns": "sediment"
+            "returnValue": "sediment"
         },
         {
             "args_id": "paved_landcover_code",
@@ -264,7 +264,7 @@
         },
         {
             "args_id": "do_parallelism",
-            "returns": true,
+            "returnValue": true,
             "type": "hidden"
         }
     ]
