@@ -41,7 +41,16 @@ class SedimentStaticMapTest(GISTest):
         static_map_uri = 'sediment_static_map.tif'
 
         static_maps.build_static_map('sediment', lulc_uri, target_lucode,
-            static_map_uri, config=self.config)
+            static_map_uri, base_run=lulc_uri, config=self.config)
+
+    def test_sediment_static_map_quality_sims(self):
+        lulc_uri = os.path.join(CLIPPED_DATA, 'ecosystems.tif')
+        target_lucode = 124
+        static_map_uri = 'sediment_static_map.tif'
+        workspace = 'simulations_workspace'
+
+        static_maps.build_static_map('sediment', lulc_uri, target_lucode,
+            static_map_uri, base_run=lulc_uri, workspace=workspace, config=self.config, num_simulations=5)
 
     @unittest.skip("This takes 13 hours to run.")
     def test_sediment_static_map_full(self):
