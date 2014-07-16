@@ -303,7 +303,7 @@ class NSISCommand(Command):
         dist_data['dist_name'] = dist_name
 
         data_file = os.path.join(self.nsis_dir, 'dist_version.json')
-        json.dump(open(data_file, 'w+'), dist_data)
+        json.dump(dist_data, open(data_file, 'w+'))
 
     def run(self):
         print ''
@@ -465,7 +465,7 @@ class GlobalDistribution(NSISCommand):
         pass
 
     def run(self):
-        self.write_dist_data('MAFE-T')
+        self.write_dist_data('OPAL')
         NSISCommand.run(self)
 
 
