@@ -297,6 +297,13 @@ class NSISCommand(Command):
     def finalize_options(self):
         pass
 
+    def write_dist_data(self, dist_name):
+        dist_data = versioning.build_data()
+        dist_data['dist_name'] = dist_name
+
+        data_file = os.path.join(self.nsis_dir, 'dist_version.json')
+        json.dump(open(data_file, 'w+'), dist_data)
+
     def run(self):
         print ''
         print 'Starting NSIS installer build'
@@ -414,6 +421,7 @@ class ColombiaDistribution(NSISCommand):
     def run(self):
         self.run_command('sample_data')
         self.run_command('tool_data_colombia')
+        self.write_dist_data('MAFE-T')
 
         # copy the zipfiles we need into the right place.
         target_dir = os.path.join(self.build_dir, os.path.basename(self.nsis_dir))
@@ -454,6 +462,10 @@ class GlobalDistribution(NSISCommand):
 
     def finalize_options(self):
         pass
+
+    def run(self):
+        self.write_dist_data('MAFE-T')
+        NSISCommand.run(self)
 
 
 CMD_CLASSES['dist_colombia'] = ColombiaDistribution
