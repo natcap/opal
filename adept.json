@@ -1,12 +1,12 @@
 {
     "label": {
         "en": "Permitting", 
-        "es": "Permiso"
+        "es": "Licenciamiento"
     }, 
     "id": "adept_window",
     "modelName": {
-        "en": "permitting", 
-        "es": null
+        "en": "Permitting", 
+        "es": "Licenciamiento"
     }, 
     "targetScript": "adept", 
     "height": 700, 
@@ -21,11 +21,11 @@
             "required": true, 
             "label": {
                 "en": "Workspace", 
-                "es": "Espacio de trabajo"
+                "es": "Carpeta de trabajo"
             }, 
             "helpText": {
                 "en": "Select a folder to be used as your workspace.  If the folder you select does not exist, it will be created for you.<br/><br/>This folder will contain the rasters produced by this model.  <b>If datasets already exist in this folder, they will be overwritten</b>.", 
-                "es": null
+                "es": "Seleccione una carpeta que será usada como su espacio de trabajo. Si la carpeta no existe, el programa la creará por usted.<br/><br/>Esta carpeta contendrá los raster producidos por este modelo.  <b>Si ya existen archivos de previas corridas en esta carpeta, serán sobreescritos.</b>"
             }, 
             "validateAs": {
                 "type": "folder", 
@@ -39,14 +39,14 @@
             "defaultValue": "./data/colombia_sample_data/Cedrela Norte/proyecto/Proyecto_split.shp", 
             "label": {
                 "en": "Project Footprint", 
-                "es": "Huella del Proyecto"
+                "es": "Área de impacto del proyecto"
             },
             "validateAs": {
                 "type": "OGR"
             },
             "helpText": {
                 "en": "The project footprint must be a polygon shapefile of the area of development.",
-                "es": null
+                "es": "El ‘Área de impacto del proyecto’ debe ser un shapefile de polígono del área de desarrollo del proyecto."
             }
         }, 
         {
@@ -65,7 +65,7 @@
             ],
             "helpText": {
                 "en": "Select the impact type of the proposed development.",
-                "es": null
+                "es": "Seleccione el tipo de impacto del desarrollo propuesto."
             }
         }, 
         {
@@ -83,7 +83,7 @@
             },
             "helpText": {
                 "en": "The area of influence is a polygon shapefile. If no input is provided, the tool defaults to using the project footprint's hydrological subzone. The tool tracks which potential offset parcels are located within the area of influence so that they can be prioritized for selection in the offset portfolio.",
-                "es": null
+                "es": "El área de influencia es un shapefile de polígono. Si no se provee ningún archivo, la herramienta asignará por defecto la subzona hidrológica del área de influencia del proyecto. La herramienta rastrea qué parches potenciales para compensación se localizan dentro del área de influencia para priorizarlas en la selección del portafolio de compensación."
             }
         }, 
         {
@@ -93,7 +93,7 @@
             "type": "file", 
             "label": {
                 "en": "Use custom natural ecosystems map", 
-                "es": "Utilice ecosistemas personalizados mapa"
+                "es": "Usar un mapa propio de ecosistemas naturales"
             }, 
             "validateAs": {
                 "type": "OGR",
@@ -123,7 +123,7 @@
             },
             "helpText": {
                 "en": "A polygon shapefile of natural ecosystems. The amount and type of biodiversity offset needed is calculated based on the overlap between natural ecosystems and the project footprint, and potential offset patches are also selected from natural ecosystems provided here. <br/><br/> <b>Format:</b> Each row should be a polygon or multi-polygon of a particular ecosystem type. Each column contains information about the ecosystem, and two columns must be named as follows: <ol><li> <em>ecos_dis</em>: string value with the name of the ecosystem type </li><li> <em>factor_de</em>: the numeric compensation factor/mitigation ratio for that ecosystem</li></ol>",
-                "es": null
+                "es": "Shapefile de polígono de ecosistemas naturales. La cantidad y tipo de compensación necesaria es calculada por la superposición entre ecosistemas naturales y el área de influencia del proyecto, y los parches potenciales para la compensación también son seleccionados del mapa de ecosistemas naturales provisto aquí. <br/><br/> <b>Format</b> Cada fila debe ser un polígono o un multipolígono de un tipo particular de ecosistema. Deben ser creadas dos columnas denominadas de la siguiente forma <ol><li> <em>ecos_dis</em> valor en texto con el nombre del tipo de ecosistema </li><li> <em>factor_de</em> la tasa numérica de compensación para ese ecosistema. </li></ol>"
             }
         }, 
         {
@@ -133,7 +133,7 @@
             "type": "file", 
             "label": {
                 "en": "Use custom servicesheds", 
-                "es": null
+                "es": "Usar un mapa propio de 'servicesheds'"
             }, 
             "validateAs": {
                 "type": "OGR",
@@ -163,7 +163,7 @@
             },
             "helpText": {
             "en": "A polygon shapefile of the servicesheds for hydrological services, which are the watersheds upstream of drinking water intake points. Impacts for hydrological services will be summed by serviceshed. <br/><br/><b>Format:</b><br/> Each row should be a polygon or multi-polygon of the serviceshed for a particular population center. Each column contains information about the serviceshed, and two columns must be named as follows: <ol><li><em>Pop_center:</em> string value with the name of the population center or beneficiary group linked to the serviceshed</li><li><em>pop_cent_5:</em> the number of people within the population center or beneficiary group</li></ol>",
-                "es": null
+                "es": "Un shapefile de polígono de las 'servicesheds' para servicios hidrológicos. Las ‘servicesheds’ son las áreas aguas arriba que drenan hacia un punto de toma de agua potable. Los impactos para servicios hidrológicos serán sumarizados por 'serviceshed'. <br/><br/><b>Format</b><br/> Cada fila debe ser un polígono o multipolígono de la 'serviceshed' para un centro poblado particular. Cada columna contiene información sobre la ‘serviceshed’ y se deben crear dos columnas y nombrarlas como se indica a continuación<ol><li><em>Pop_center</em> valor en texto con el nombre del centro poblado</li><li><em>pop_cent_5</em> el número de personas del centro poblado o el grupo de beneficiarios</li></ol>" 
             }
         }, 
         {
@@ -173,7 +173,7 @@
             "type": "file", 
             "label": {
                 "en": "Use custom search areas", 
-                "es": null
+                "es": "Usar áreas de búsqueda propias"
             }, 
             "validateAs": {
                 "type": "OGR",
@@ -197,7 +197,7 @@
             },
             "helpText": {
                 "en": "A polygon shapefile. Within Colombia, this represents hydrological zones and subzones. Potential offset patches are restricted to the same hydrozone as the project footprint, and the results report indicates which offset patches are located within the same hydrosubzone as the project footprint so that they can be prioritized. Outside of Colombia, this input can be used to restrict the area within which offsets can be located and to prioritize potential offset patches.<br/><br/><b>Format:</b><br/> Each row should be a hydrosubzone. Each column contains information about the hydro subzone and hydrozone, and two columns must be named as follows: <ol><li><em>hydrosubzone:</em> string value with a unique name of the hydrosubzone</li><li><em>hydrozone:</em> string value with the name of the hydrozone to which the hydrozone belongs</li></ol>",
-                "es": null
+                "es": "Shapefile de polígono. En Colombia esto representa las zonas y subzonas hidrológicas. Los parches potenciales de compensación se restringen a la misma zona hidrológica del área de influencia y el reporte de resultados indica qué parches se localizan dentro de la misma subzona hidrológica que el área de influencia de forma que puedan ser priorizados. Fuera de Colombia, este dato de entrada puede ser usado para restringir el área dentro de la cual las compensaciones pueden ser ubicadas para priorizar parches potenciales de compensación.<br/><br/><b>Format</b><br/> Cada fila debe ser una subzona hidrológica .Cada columna contiene información sobre la zona o subzona hidrológica y deben crearse dos columnas para nombrarlas como a continuación <ol><li><em>hydrosubzone</em> valor de texto con un valor único de la subzona hidrológica</li><li><em>hydrozone</em> valor de texto con el nombre de la zona hidrológica a la cual pertenece la zona hidrológica </li></ol>"
             }
         }, 
         {
@@ -207,14 +207,14 @@
             "hideable": true, 
             "label": {
                 "en": "Use custom municipalities", 
-                "es": null
+                "es": "Usar capa propia de municipios"
             }, 
             "validateAs": {
                 "type": "OGR"
             },
             "helpText": {
                 "en": "A polygon shapefile. Within Colombia, each polygon should represent municipality borders. The results report indicates which offset patches are located within the same municipality as the project footprint so they can be prioritized. Outside of Colombia, this input can be used to indicate any areas within which offsets should be prioritized.",
-                "es": null
+                "es": "Shapefile de polígono. Dentro de Colombia cada polígono debe representar los límites de un municipio. El reporte de resultados indica qué parches de compensación están localizados dentro del mismo municipio que el área de influencia del proyecto de forma que sean priorizadas. Fuera de Colombia esta entrada puede ser usada para indicar áreas dentro de las cuáles las compensaciones deben ser priorizadas."
             }
         }, 
         {
@@ -230,7 +230,7 @@
             },
             "helpText": {
                 "en": "A raster file. In Colombia, values should indicate the level of threat from anthropogenic influences at a particular point. Threat is considered an indicator of patch quality for biodiversity. If included, offset patches will be restricted to those with average threat values less than or equal to that of ecosystem patches intersecting the impact site (project footprint). This ensures that offset patches are of equal or greater quality to the impacted patches. Outside of Colombia, any raster indicating quality can be substituted, as long as lower values indicate greater quality",
-                "es": null
+                "es": "Archivo raster. En Colombia los valores deben indicar el nivel de amenaza antropogénica en un punto particular. La amenaza es considerada un indicador de la calidad del parche en biodiversidad. Si se incluye esta opción, los parches para compensación serán restringidos a aquellos con valores promedio de amenaza menores o iguales a parches que intersectan con el sitio de impacto (área de influencia). Esto asegura que los parches de compensación sean de igual o mayor calidad que los parches impactados. Fuera de Colombia, cualquier raster indicando calidad de hábitat puede ser sustituido siempre y cuando los valores menores indiquen mayor calidad."
             }
         }, 
         {
@@ -239,14 +239,14 @@
             "args_id": "species_richness_map", 
             "label": {
                 "en": "Species richness map (optional)", 
-                "es": "Especies mapa riqueza (opcional)"
+                "es": "Mapa de riqueza de especies (opcional)"
             },
             "validateAs": {
                 "type": "GDAL"
             },
             "helpText": {
                 "en": "A raster file. In Colombia, values should indicate the level of species richness at a particular site. Species richness is considered an indicator of patch quality for biodiversity. If included, offset patches will be restricted to those with average species richness values greater than or equal to that of ecosystem patches intersecting the impact site (project footprint). This ensures that offset patches are contain an equal or greater amount of species richness relative to the impacted patches. Outside of Colombia, any raster indicating quality can be substituted, as long as greater values indicate higher quality.",
-                "es": null
+                "es": "Archivo raster. En Colombia los valores deberían indicar la riqueza de especies en un sitio particular. La riqueza de especies es considerada como un indicador de la calidad del parche. Si se incluye esta opción, los parches para compensación serán restringidos a aquellos con valores promedio de riqueza mayores o iguales a parches que intersectan con el sitio de impacto (área de influencia). Esto asegura que los parches de compensación son de igual o mayor calidad que los parches impactados. Fuera de Colombia, cualquier raster indicando calidad puede ser sustituido siempre y cuando los valores mayores indiquen mayor calidad."
             }
         }, 
         {
@@ -255,7 +255,7 @@
             "args_id": "avoidance_areas", 
             "label": {
                 "en": "Avoidance areas (optional)", 
-                "es": "Áreas de evitación (opcional)"
+                "es": "Áreas a evitar (opcional)"
             },
             "validateAs": {
                 "layers": [
@@ -270,7 +270,7 @@
             },
             "helpText": {
                 "en": "A polygon shapefile indicating designated areas where development impacts should be avoided. In Colombia, these are also termed “areas of exclusion.” This might include protected areas, RAMSAR wetland sites or other areas where development impacts are discouraged or prevented by law. If the project footprint intersects with an avoidance area, the tool will issue a warning. Such projects are unlikely to be allowed or may face additional mitigation requirements beyond those calculated by the tool due to their special conditions.",
-                "es": null
+                "es": "Shapefile de polígono indicando áreas designadas en las que deberían ser evitadas actividades de desarrollo. En Colombia, estas también se denominan \"Áreas de exclusión\". Esto puede incluir áreas protegidas, sitios RAMSAR u otras áreas en dónde las actividades de desarrollo sean prohibidas por la ley. Si el proyecto se superpone con un área a evitar, la herramienta arrojará una alerta. Tales proyectos son improbables de ser permitidos o pueden enfrentar requerimientos adicionales de mitigación más allá que los calculados por la herramienta dadas sus condiciones especiales."
             }
         }, 
         {
@@ -279,7 +279,7 @@
             "args_id": "conservation_portfolio", 
             "label": {
                 "en": "Conservation portfolio (optional)", 
-                "es": "Cartera de la Naturaleza (opcional)"
+                "es": "Portafolio de conservación (opcional)"
             },
             "validateas": {
                 "layers": [
@@ -294,7 +294,7 @@
             },
             "helpText": {
                 "en": "A polygon shapefile indicating priority areas for locating offsets. This map could be based on landscape-level conservation planning exercises, policy or other source of prioritization. If included, the results will indicate which potential offset patches fall within the conservation portfolio so that they can be preferentially selected for the offset portfolio.",
-                "es": null
+                "es": "Shapefile de polígono indicando las áreas prioritarias para ubicar áreas de compensación. Este mapa puede estar basado en una planificación de conservación de paisaje, políticas u otra fuente de priorización. Si se incluye esta opción, los resultados indicarían que parches potenciales de compensación caerían dentro de qué portafolio de conservación de forma que puedan ser priorizados por el portafolio de compensación."
             }
         }, 
         {
@@ -303,14 +303,14 @@
             "args_id": "previously_granted_impacts", 
             "label": {
                 "en": "Previously granted impacts (optional)", 
-                "es": "Impactos previamente otorgados (opcional)"
+                "es": "Licencias previamente otorgadas (opcional)"
             },
             "validateas": {
                 "type": "OGR"
             },
             "helpText": {
                 "en": "A polygon shapefile of project footprints of impact sites that have been granted but are not yet represented as developed land in the land use/land cover map. If included, portions of natural vegetation patches that intersect previously granted impacts will be removed from potential offset patches so that they cannot be counted towards offsets.",
-                "es": null
+                "es": "Shapefile de polígono de áreas de influencia previamente licenciadas pero que no están representadas como áreas de desarrollo en el mapa de usos del suelo. Si se incluye esta opción, parches de vegetación natural que intersectan áreas de influencia previamente licenciadas serán eliminados de los parches potenciales de compensación para que no queden contabilizados dentro de las opciones."
             }
         }, 
         {
@@ -319,14 +319,14 @@
             "args_id": "previously_selected_offsets", 
             "label": {
                 "en": "Previously selected offsets (optional)", 
-                "es": "Compensaciones Previamente seleccionados (opcional)"
+                "es": "Parches de compensación previamente seleccionados (opcional)"
             },
             "validateas": {
                 "type": "OGR"
             },
             "helpText": {
                 "en": "A polygon shapefile of areas that cannot be selected as offsets, either because they have already designated as offsets for other projects, <b>they are not at risk of degradation and so protection would not provide additional benefits beyond baseline conditions (e.g., protected areas), or because their use as offsets is not feasible for political, social, economic or other reasons.</b> If included, vegetation patches within this shapefile will be excluded from potential offset sites in the results.",
-                "es": null
+                "es": "Shapefile de polígono de áreas que no pueden ser seleccionadas como compensación bien porque ya han sido designadas como compensación por otros proyectos, <b>porque no están en riesgo de degradación de manera que su protección no traería ningún beneficio adicional más allá de las condiciones de línea base (e.g áreas protegidas) o porque su uso para compensación no es viable por razones políticas, económicas o sociales.</b> Si se incluye esta opción, los parches de vegetación dentro de este shapefile serán excluídos de áreas potenciales de compensación."
             }
         }, 
         {
@@ -336,11 +336,11 @@
             "defaultValue": true,
             "label": {
                 "en": "Calculate impacts/offsets to carbon",
-                "es": null
+                "es": "Calcular impactos/compensación por carbono"
             },
             "helpText": {
                 "en": "Select whether the tool should include Carbon storage in impact and offset analysis.",
-                "es": null
+                "es": "Seleccionar si la herramienta debe incluir almacenamiento de carbono en el análisis de impacto y compensación."
             }
         },
         {
@@ -350,11 +350,11 @@
             "defaultValue": true,
             "label": {
                 "en": "Calculate impacts/offsets to sediment",
-                "es": null
+                "es": "Calcular impactos/compensación por sedimentos"
             },
             "helpText": {
                 "en": "Select whether the tool should include Sediment retention in impact and offset analysis.",
-                "es": null
+                "es": "Seleccionar si la herramienta debe incluir retención de sedimentos en el análisis de impacto y compensación."
             }
         },
         {
@@ -364,11 +364,11 @@
             "defaultValue": true,
             "label": {
                 "en": "Calculate impacts/offsets to nitrogen",
-                "es": null
+                "es": "Calcular impactos/compensación por nitrógeno"
             },
             "helpText": {
                 "en": "Select whether the tool should include Nitrogen retention in impact and offset analysis.",
-                "es": null
+                "es": "Seleccionar si la herramienta debe incluir retención de nitrógeno en el análisis de impacto y compensación."
             }
         },
         {
@@ -380,11 +380,11 @@
             "hideable": true,
             "label": {
                 "en": "Use Custom Carbon Static Maps", 
-                "es": null
+                "es": "Usar mapas propios de carbono almacenado"
             }, 
             "helpText": {
                 "en": "A folder with carbon static maps. These maps can be created using the tool's carbon static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_protection_static_map.tif</li></ul>", 
-                "es": null
+                "es": "Carpeta con mapas de carbono almacenado. Estos mapas pueden ser creados usando el generador de mapas de carbono almacenado de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_protection_static_map.tif</li></ul>"
             }, 
             "validateAs": {
                 "type": "folder", 
@@ -404,11 +404,11 @@
             "hideable": true,
             "label": {
                 "en": "Use Custom Nutrient Static Maps", 
-                "es": null
+                "es": "Usar mapas propios de nutrientes"
             }, 
             "helpText": {
                 "en": "A folder with nitrogen static maps. These maps can be created using the tool's nutrient static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_protection_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_protection_pts.tif</li></ul>", 
-                "es": null
+                "es": "Carpeta con mapas de nitrógeno. Estos mapas pueden ser creados usando el generador de mapas de nitrógeno de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_protection_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_protection_pts.tif</li></ul>"
             }, 
             "validateAs": {
                 "type": "folder", 
@@ -431,11 +431,11 @@
             "hideable": true,
             "label": {
                 "en": "Use Custom Sediment Static Maps", 
-                "es": null
+                "es": "Usar mapas propios de sedimentos"
             }, 
             "helpText": {
                 "en": "A folder with sediment static maps. These maps can be created using the tool's sediment static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_protection_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_protection_pts.tif</li></ul>", 
-                "es": null
+                "es": "Carpeta con mapas de sedimentos. Estos mapas pueden ser creados usando el generador de mapas de sedimentos de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_protection_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_protection_pts.tif</li></ul>"
             }, 
             "validateAs": {
                 "type": "folder", 
@@ -458,11 +458,11 @@
             "hideable": true,
             "label": {
                 "en": "Use Custom Ecosystem Service Static Maps", 
-                "es": null
+                "es": "Usar mapas propios de otros servicios ecosistémicos"
             }, 
             "helpText": {
                 "en": "A folder with custom static maps. These maps can be created using the tool's custom static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_protection_static_map.tif</li></ul><br/><br/>If these custom static rasters account for a hydrological service, the following rasters must also be in this folder:<ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_protection_pts.tif</li></ul>", 
-                "es": null
+                "es": "Carpeta con mapas de servicios ecosistémicos. Estos mapas pueden ser creados usando el generador de mapas de servicios ecosistémicos de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_protection_static_map.tif</li></ul><br/><br/> Si estos raster corresponden a un servicio ecosistémico hidrológico, los siguientes raster también deben estar en esta carpeta <ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_protection_pts.tif</li></ul>" 
             }, 
             "validateAs": {
                 "type": "folder", 
@@ -485,11 +485,11 @@
             "returns": {"type": "strings"},
             "label": {
                 "en": "Type of custom service",
-                "es": null
+                "es": "Tipo de servicio"
             },
             "helpText": {
                 "en": "Indicates whether the custom ecosystem service input is a hydrological or global service.",
-                "es": null
+                "es": "Indica si el servicio ecosistémico es hidrológico o global."
             }
         },
         {
