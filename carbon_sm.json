@@ -2,11 +2,11 @@
     "id": "window", 
     "label": {
         "en": "InVEST Carbon Model (Biophysical and Valuation)", 
-        "es": null
+        "es": "Modelo de carbono de InVEST (Biofísico y valoración)"
     }, 
     "modelName": {
         "en": "carbon_static_map", 
-        "es": null
+        "es": "carbon_static_map_es"
     }, 
     "targetScript": "adept.static_maps", 
     "height": 800, 
@@ -17,12 +17,12 @@
             "defaultValue": "~/custom_static_maps", 
             "helpText": {
                 "en": "A directory that will contain the intermediate and output files for this run.", 
-                "es": null
+                "es": "Directorio que contendrá los archivos intermedios y finales para esta corrida."
             }, 
             "id": "workspace", 
             "label": {
                 "en": "Workspace", 
-                "es": null
+                "es": "Carpeta de trabajo"
             }, 
             "required": true, 
             "type": "folder",
@@ -35,12 +35,12 @@
             "args_id": "landuse_uri", 
             "helpText": {
                 "en": "Location of the landcover map for the current scenario.", 
-                "es": null
+                "es": "Ubicación del mapa de uso del suelo para el escenario actual"
             }, 
             "id": "cur_lulc_raster", 
             "label": {
                 "en": "Land Use/Land Cover raster", 
-                "es": null
+                "es": "Raster de uso/cobertura del suelo"
             }, 
             "required": true, 
             "type": "file", 
@@ -52,12 +52,12 @@
             "args_id": "fut_landuse_uri", 
             "helpText": {
                 "en": "Location of the landcover map for the future (protection) scenario.", 
-                "es": null
+                "es": "Ubicación del mapa de uso del suelo para el escenario futuro (protección)"
             }, 
             "id": "cur_lulc_raster", 
             "label": {
                 "en": "Future Land Use/Land Cover raster", 
-                "es": null
+                "es": "Raster de uso/cobertura del suelo futuro"
             }, 
             "hideable": true,
             "type": "file", 
@@ -69,11 +69,14 @@
             "args_id": "paved_landcover_code",
             "helpText": {
                 "en": "The numeric land cover class for your LULC that represents pavement.",
-                "es": null
+                "es": "La clase numérica de uso del suelo en su mapa que representa ‘pavimento’"
             },
             "defaultValue": "",
             "required": true,
-            "label": "Paved landcover code",
+            "label": {
+                "en": "Paved landcover code",
+                "es": null
+            },
             "type": "text",
             "validateAs": {
                 "type": "number"
@@ -83,11 +86,14 @@
             "args_id": "bare_landcover_code",
             "helpText": {
                 "en": "The numeric land cover class for your LULC that represents bare ground.",
-                "es": null
+                "es": "La clase numérica de uso del suelo en su mapa que representa ‘suelo desnudo’"
             },
             "defaultValue": "",
             "required": true,
-            "label": "Bare landcover code",
+            "label": {
+                "en": "Bare landcover code",
+                "es": null
+            },
             "type": "text",
             "validateAs": {
                 "type": "number"
@@ -97,13 +103,13 @@
             "args_id": "carbon_pools_uri", 
             "helpText": {
                 "en": "A table that maps the land cover ids to carbon pools.  The table must contain columns of 'LULC', 'C_above', 'C_Below', 'C_Soil', 'C_Dead' as described in the user's guide.  The values in LULC must at least include the LULC ids in the land cover maps.", 
-                "es": null
+                "es": "Tabla que conecta los ‘id’ del mapa de usos del suelo con la tabla de contenidos de  carbono. La tabla debe contener las siguientes columnas: ‘LULC’, C_above’, C_below’, C_soil’, ‘C_dead’ tal como se describe en la guía de usuario.  Los valores en la columna ‘LULC’ deben al menos incluir los ID del mapa de usos del suelo."
             }, 
             "hideable": true,
             "id": "carbon_pools", 
             "label": {
                 "en": "Carbon pools", 
-                "es": null
+                "es": "Contenidos de carbono"
             }, 
             "required": false, 
             "type": "file", 
