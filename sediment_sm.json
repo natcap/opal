@@ -2,11 +2,11 @@
     "id": "window", 
     "label": {
         "en": "Sediment", 
-        "es": null
+        "es": "Sedimentos"
     }, 
     "modelName": {
         "en": "sediment_static_map", 
-        "es": null
+        "es": "sediment_static_map_es"
     }, 
     "targetScript": "adept.static_maps", 
     "height": 700, 
@@ -17,12 +17,12 @@
             "defaultValue": "~/static_maps", 
             "helpText": {
                 "en": "This is the directory in which the output and intermediate files will be saved.", 
-                "es": null
+                "es": "Este es el directorio donde se guardarán los archivos intermedios y finales"
             }, 
             "id": "workspace", 
             "label": {
                 "en": "Workspace", 
-                "es": null
+                "es": "Carpeta de trabajo"
             }, 
             "required": true, 
             "type": "folder",
@@ -35,11 +35,11 @@
             "args_id": "landuse_uri", 
             "helpText": {
                 "en": "A GIS raster dataset, with an integer LULC code for each cell.", 
-                "es": null
+                "es": "Un raster con un código de uso del suelo para cada celda"
             }, 
             "label": {
                 "en": "LULC Raster", 
-                "es": null
+                "es": "Raster de uso del suelo"
             }, 
             "required": true, 
             "type": "file", 
@@ -51,12 +51,12 @@
             "args_id": "fut_landuse_uri", 
             "helpText": {
                 "en": "Location of the landcover map for the future (protection) scenario.", 
-                "es": null
+                "es": "Ubicación del mapa de uso del suelo para el escenario futuro (protección)"
             }, 
             "id": "cur_lulc_raster", 
             "label": {
                 "en": "Future Land Use/Land Cover raster", 
-                "es": null
+                "es": "Raster de uso/cobertura del suelo futuro"
             }, 
             "hideable": true,
             "type": "file", 
@@ -73,11 +73,14 @@
             "args_id": "paved_landcover_code",
             "helpText": {
                 "en": "The numeric land cover class for your LULC that represents pavement.",
-                "es": null
+                "es": "La clase numérica de uso del suelo en su mapa que representa ‘pavimento’"
             },
             "defaultValue": "",
             "required": true,
-            "label": "Paved landcover code",
+            "label": {
+                "en": "Paved landcover code",
+                "es": null
+            },
             "type": "text",
             "validateAs": {
                 "type": "number"
@@ -87,11 +90,14 @@
             "args_id": "bare_landcover_code",
             "helpText": {
                 "en": "The numeric land cover class for your LULC that represents bare ground.",
-                "es": null
+                "es": "La clase numérica de uso del suelo en su mapa que representa ‘suelo desnudo’"
             },
             "defaultValue": "",
             "required": true,
-            "label": "Bare landcover code",
+            "label": {
+                "en": "Bare landcover code",
+                "es": null
+            },
             "type": "text",
             "validateAs": {
                 "type": "number"
@@ -101,13 +107,13 @@
             "args_id": "dem_uri", 
             "helpText": {
                 "en": "A GIS raster dataset with an elevation value for each cell. Make sure the DEM is corrected by filling in sinks, and if necessary burning hydrographic features into the elevation model (recommended when you see unusual streams.) See the Working with the DEM section of the InVEST user's guide for more information.", 
-                "es": null
+                "es": "Raster con un valor de elevación  para cada celda. Asegúrese de que al DEM se le ha hecho un proceso correcto de ‘fill sinks’ y, de ser necesario, aplicar un ‘burning’ de las características hidrográficas en el modelo de elevación (recomendado para cuando hay flujos inusuales). Vea el capítulo “Working with the DEM section” del manual de usuario de InVEST."
             }, 
             "hideable": true, 
             "id": "dem_uri", 
             "label": {
                 "en": "DEM Raster", 
-                "es": null
+                "es": "Raster DEM"
             }, 
             "type": "file", 
             "validateAs": {
@@ -118,13 +124,13 @@
             "args_id": "erosivity_uri", 
             "helpText": {
                 "en": "A GIS raster dataset, with an erosivity index value for each cell. This variable depends on the intensity and duration of rainfall in the area of interest. The greater the intensity and duration of the rain storm, the higher the erosion potential. The erosivity index is widely used, but in case of its absence, there are methods and equations to help generate a grid using climatic data. The units are MJ*mm/(ha*h*yr).", 
-                "es": null
+                "es": "Raster con un valor del índice de erosividad para cada celda. Esta variable depende de la intensidad y la duración de la precipitación en el área de interés. A mayor la intensidad y duración de una tormenta, mayor será la erosión potencial. El índice de erosividad se usa ampliamente pero en el caso de su ausencia, hay métodos y ecuaciones para ayudar a generar un raster usando datos climáticos. Sus unidades son MJ*mm/(ha*h*yr)."
             }, 
             "hideable": true, 
             "id": "erosivity_uri", 
             "label": {
                 "en": "Erosivity Raster", 
-                "es": null
+                "es": "Raster de erosividad"
             }, 
             "type": "file", 
             "validateAs": {
@@ -135,13 +141,13 @@
             "args_id": "erodibility_uri", 
             "helpText": {
                 "en": "This is a GIS raster dataset, with a soil erodibility value for each cell which is a measure of the susceptibility of soil particles to detachment and transport by rainfall and runoff.  Units are in T*ha*h/(ha*MJ*mm).", 
-                "es": null
+                "es": "Raster con un valor de erodabilidad del suelo para cada celda. Es una medida de la susceptibilidad de las partículas de suelo de desprenderse y ser transportadas por la lluvia y la escorrentía. Sus unidades son T*ha*h/(ha*MJ*mm)"
             }, 
             "hideable": true, 
             "id": "erodibility_uri", 
             "label": {
                 "en": "Erodibility Raster", 
-                "es": null
+                "es": "Raster de erodabilidad"
             }, 
             "type": "file", 
             "validateAs": {
@@ -152,13 +158,13 @@
             "args_id": "watersheds_uri", 
             "helpText": {
                 "en": "This is a layer of watersheds such that each watershed contributes to a point of interest where water quality will be analyzed.  It must have the integer field 'ws_id' where the values uniquely identify each watershed.", 
-                "es": null
+                "es": "Capa de cuencas tal que cada cuenca contribuya a un punto de interés en donde la calidad de agua será analizada. Debe tener un campo llamado ‘ws_id’ donde se le asigne un identificador único a cada cuenca."
             }, 
             "hideable": true, 
             "id": "watersheds_uri", 
             "label": {
                 "en": "Watershed Polygons", 
-                "es": null
+                "es": "Polígonos de cuencas"
             }, 
             "type": "file", 
             "validateAs": {
@@ -183,13 +189,13 @@
             "args_id": "biophysical_table_uri", 
             "helpText": {
                 "en": "A table containing model information corresponding to each of the land use classes in the LULC raster input. It must contain the fields 'lucode', 'usle_c', 'usle_p', and 'sedret_eff'.  See the InVEST sediment user's guide for more information about these fields.", 
-                "es": null
+                "es": "Tabla con información correspondiente a cada clase de uso del suelo del mapa de usos del suelo. Debe contener los campos 'lucode' 'usle_c' 'usle_p' and 'sedret_eff'. Vea más información sobre estos campos en el manual de usuario de InVEST."
             }, 
             "hideable": true, 
             "id": "biophysical_table_uri", 
             "label": {
                 "en": "Biophysical Table", 
-                "es": null
+                "es": "Tabla Biofísica"
             }, 
             "type": "file", 
             "validateAs": {
@@ -207,13 +213,13 @@
             "deafaultValue": 4000, 
             "helpText": {
                 "en": "The number of upstream cells that must flow into a cell before it's considered part of a stream such that retention stops and the remaining export is exported to the stream. Used to define streams from the DEM.", 
-                "es": null
+                "es": "El número de celdas aguas arriba que deben fluir en una celda antes de que esta sea considerada parte de un curso de agua, de forma que no haya más retención y la exportación de sedimentos remanente sea exportada al curso de agua. Se utiliza para delinear cursos de agua sobre el DEM."
             }, 
             "hideable": true, 
             "id": "threshold_flow_accumulation", 
             "label": {
                 "en": "Threshold Flow Accumluation", 
-                "es": null
+                "es": "Umbral de acumulación de flujo"
             }, 
             "type": "text", 
             "validText": "^[0-9]+$"
@@ -222,13 +228,13 @@
             "args_id": "sediment_threshold_table_uri", 
             "helpText": {
                 "en": "A table containing annual sediment load threshold information for each of the watersheds. There must be one row for each watershed in the Watersheds layer and have the fields 'ws_id', 'dr_time', 'dr_deadvol', and 'wq_annload'.  See the user's guide for the meaning of these fields.", 
-                "es": null
+                "es": "Una table que contenga información sobre el umbral de carga annual de sedimentos para cada cuenca. Debe haber una fila para cada cuenca del mapa de Cuencas y tener los campos 'ws_id' 'dr_time' 'dr_deadvol' and 'wq_annload'. Vea la guía de usuario para el significado de estos campos."
             }, 
             "hideable": true, 
             "id": "sediment_threshold_table_uri", 
             "label": {
                 "en": "Sediment threshold table", 
-                "es": null
+                "es": "Tabla de umbral de sedimentos"
             }, 
             "type": "file", 
             "validateAs": {
