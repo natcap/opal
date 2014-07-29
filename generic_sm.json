@@ -2,11 +2,11 @@
     "id": "window", 
     "label": {
         "en": "Static Map Raster Calculator", 
-        "es": null
+        "es": "Calculadora de mapas estáticos"
     }, 
     "modelName": {
         "en": "generic_static_map", 
-        "es": null
+        "es": "generic_static_map_es"
     }, 
     "targetScript": "adept.static_maps", 
     "targetFunction": "raster_math",
@@ -18,12 +18,12 @@
             "defaultValue": "~/custom_static_maps", 
             "helpText": {
                 "en": "A directory that will contain the output files for this run.", 
-                "es": null
+                "es": "Un directorio que contendrá los archivos finales para esta corrida"
             }, 
             "id": "workspace", 
             "label": {
                 "en": "Workspace", 
-                "es": null
+                "es": "Carpeta de trabajo"
             }, 
             "required": true, 
             "type": "folder",
@@ -36,14 +36,14 @@
             "args_id": "name",
             "helpText": {
                 "en": "This text will be used to correctly name the output static maps.",
-                "es": null
+                "es": "Este texto será usado para nombrar correctamente los mapas estáticos finales"
             },
             "width": 60,
             "defaultValue": "custom",
             "required": true,
             "label": {
                 "en": "Name",
-                "es": null
+                "es": "Nombre"
             },
             "type": "text",
             "validateAs": {
@@ -54,12 +54,12 @@
             "args_id": "base_uri", 
             "helpText": {
                 "en": "Location of the raster for the base scenario's service values.", 
-                "es": null
+                "es": "Ubicación del raster con los valores de servicios del scenario base"
             }, 
             "id": "base_uri", 
             "label": {
                 "en": "Base raster", 
-                "es": null
+                "es": "Raster base"
             }, 
             "required": true, 
             "type": "file", 
@@ -71,12 +71,12 @@
             "args_id": "paved_uri", 
             "helpText": {
                 "en": "Location of the raster for the paved scenario's service values.", 
-                "es": null
+                "es": "Ubicación del raster con los valores de servicios del escenario de pavimento"
             }, 
             "id": "paved_uri", 
             "label": {
                 "en": "Paved raster", 
-                "es": null
+                "es": "Raster de pavimento"
             }, 
             "required": true, 
             "type": "file", 
@@ -88,12 +88,12 @@
             "args_id": "bare_uri", 
             "helpText": {
                 "en": "Location of the raster for the bare scenario's service values.", 
-                "es": null
+                "es": "Ubicación del raster con los valores de servicios del escenario de suelo desnudo"
             }, 
             "id": "bare_uri", 
             "label": {
                 "en": "Bare raster", 
-                "es": null
+                "es": "Raster de suelo desnudo"
             }, 
             "required": true, 
             "type": "file", 
@@ -105,12 +105,12 @@
             "args_id": "protection_uri", 
             "helpText": {
                 "en": "Location of the raster for the protection scenario's service values.", 
-                "es": null
+                "es": "Ubicación del raster con los valores de servicios del escenario de pavimento"
             }, 
             "id": "protection_uri", 
             "label": {
                 "en": "Protection raster", 
-                "es": null
+                "es": "Raster de protección"
             }, 
             "required": true, 
             "type": "file", 
