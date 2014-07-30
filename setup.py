@@ -410,7 +410,7 @@ class ColombiaDistribution(NSISCommand):
         self.nsis_dir = os.path.abspath('dist/total_coll')
 
         mafe_name_src = os.path.join(os.getcwd(), 'windows_build',
-            'MAFE-T_NAME.txt')
+            'MAFE', 'MAFE-T_NAME.txt')
         mafe_name_dest = os.path.join(self.nsis_dir, 'ASCII_NAME.txt')
         shutil.copyfile(mafe_name_src, mafe_name_dest)
 
@@ -428,6 +428,12 @@ class ColombiaDistribution(NSISCommand):
         target_dir = os.path.join(self.build_dir, os.path.basename(self.nsis_dir))
         if not os.path.exists(target_dir):
             os.makedirs(target_dir)
+
+        # copy the distribution UI config file to the pyinstaller dist folder.
+        source_file = os.path.join('windows_build', 'MAFE', 'dist_config.json')
+        dest_file = os.path.join(self.nsis_dir, 'dist_config.json')
+        print 'Copying %s -> %s' % (source_file, dest_file)
+        shutil.copyfile(source_file, dest_file)
 
         for filename in ['tool_data.zip']:
             source_file = os.path.join('dist', filename)
