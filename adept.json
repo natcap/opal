@@ -76,7 +76,7 @@
             "validateAs": {
                 "type": "file"
             }, 
-            "required": true,
+            "required": false,
             "label": {
                 "en": "Area of Influence", 
                 "es": "Área de influencia"
