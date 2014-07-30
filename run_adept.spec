@@ -7,6 +7,9 @@
 import matplotlib
 print matplotlib._get_data_path()
 import platform
+import json
+
+from adept import versioning
 
 common_kwargs = {
     'hookspath': ['./hooks'],
@@ -85,8 +88,15 @@ for analysis, json_file in exe_files:
     for item in [analysis.binaries, analysis.zipfiles, analysis.datas]:
         analysis_items.append(item)
 
+# dump the correct version information to the dist_version file.
+dist_data = versioning.build_data()
+dist_data['dist_name'] = 'OPAL'
+dist_version_uri = 'build/dist_version.json'
+json.dump(dist_data, open(dist_version_uri, 'w+'))
+
 total_coll = COLLECT(
     [('adept.json', 'adept.json', 'DATA')],
+    [('dist_version.json', dist_version_uri, 'DATA')],
     [(json_name, json_name, 'DATA') for (_, json_name) in exe_files],
     adept_analysis.binaries,
     adept_analysis.zipfiles,
