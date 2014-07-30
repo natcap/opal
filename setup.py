@@ -89,7 +89,7 @@ DATA_FILES.append(('src/adept/report_data',
 tool_data = glob.glob('data/colombia_tool_data/*.csv')
 vectors = ['Hydrographic_subzones',
     'Municipalities', 'ecosys_dis_nat_comp_fac', 'hydrozones',
-    'sample_aoi', 'watersheds_cuencas']
+    'sample_aoi', 'watersheds_cuencas', 'Servicesheds_Col']
 for vector_base in vectors:
     glob_pattern = 'data/colombia_tool_data/%s.*' % vector_base
     tool_data += glob.glob(glob_pattern)
