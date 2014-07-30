@@ -32,7 +32,7 @@ cd ..
 ::
 :: CD to the palisades directory to install it to the virtual environment
 cd src/palisades
-::rmdir /S /Q build :: commenting out to try to eliminate a nasty access collision
+rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..\..
 
