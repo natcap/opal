@@ -77,7 +77,10 @@
             },
             "defaultValue": "",
             "required": true,
-            "label": "Paved landcover code",
+            "label": {
+                "en": "Paved landcover code",
+                "es": "Código de uso del suelo pavimentado"
+            },
             "type": "text",
             "validateAs": {
                 "type": "number"
@@ -93,7 +96,7 @@
             "required": true,
             "label": {
                 "en": "Bare landcover code",
-                "es": null
+                "es": "Código de uso de suelo desnudo"
             },
             "type": "text",
             "validateAs": {
@@ -302,7 +305,7 @@
             "type": "container",
             "label": {
                 "en": "Calculate generated static map quality",
-                "es": null
+                "es": "Calcular calidad del mapa estático generado"
             },
             "collapsible": true,
             "defaultValue": false,
@@ -314,7 +317,7 @@
                     "args_id": "num_simulations",
                     "helpText": {
                         "en": "The number of impact simulations per watershed",
-                        "es": null
+                        "es": "El número de simulaciones de impacto por cuenca"
                     }
                 }
             ]

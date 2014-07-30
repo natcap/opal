@@ -75,7 +75,7 @@
             "required": true,
             "label": {
                 "en": "Paved landcover code",
-                "es": null
+                "es": "Código de uso del suelo pavimentado"
             },
             "type": "text",
             "validateAs": {
@@ -92,7 +92,7 @@
             "required": true,
             "label": {
                 "en": "Bare landcover code",
-                "es": null
+                "es": "Código de uso de suelo desnudo"
             },
             "type": "text",
             "validateAs": {
