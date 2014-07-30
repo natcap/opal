@@ -229,10 +229,11 @@ class SampleDataCommand(Command):
             os.makedirs(service_out_dir)
             for scenario in ['bare', 'paved', 'protection']:
                 map_name = '%s_%s_static_map_lzw.tif' % (service, scenario)
+                new_map_name = map_name.replace('_lzw', '')
                 src_static_map = os.path.join(static_maps_dir, map_name)
-                dst_static_map = os.path.join(service_out_dir, map_name)
+                dst_static_map = os.path.join(service_out_dir, new_map_name)
 
-                print 'Clipping %s' % map_name
+                print 'Clipping %s' % new_map_name 
                 static_maps.clip_static_map(src_static_map, active_hydrozone,
                     dst_static_map)
 
