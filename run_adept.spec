@@ -36,7 +36,8 @@ pyz = PYZ(adept_analysis.pure)
 
 if platform.system() == 'Windows':
     exe_name = 'opal_exe.exe'
-    debug_program = False
+    #debug_program = False
+    debug_program = True
 else:
     exe_name = 'opal_exe'
     debug_program = True
@@ -46,7 +47,6 @@ adept_exe = EXE(pyz,
           name=exe_name,
           debug=debug_program,
           exclude_binaries=True,  # makes all files located in same dir
-          debug=True,
           strip=None,
           upx=False,  # says UPX is not available
           append_pkg=True,
