@@ -36,8 +36,7 @@ pyz = PYZ(adept_analysis.pure)
 
 if platform.system() == 'Windows':
     exe_name = 'opal_exe.exe'
-    #debug_program = False
-    debug_program = True
+    debug_program = False
 else:
     exe_name = 'opal_exe'
     debug_program = True
@@ -50,7 +49,8 @@ adept_exe = EXE(pyz,
           strip=None,
           upx=False,  # says UPX is not available
           append_pkg=True,
-          console=False)
+          #console=False)
+          console=True)
 
 exe_files = [
     (carbon_analysis, 'carbon_sm.json'),
