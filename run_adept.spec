@@ -46,6 +46,7 @@ adept_exe = EXE(pyz,
           name=exe_name,
           debug=debug_program,
           exclude_binaries=True,  # makes all files located in same dir
+          debug=True,
           strip=None,
           upx=False,  # says UPX is not available
           append_pkg=True,
