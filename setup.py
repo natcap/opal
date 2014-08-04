@@ -19,6 +19,11 @@ from adept import versioning
 print 'Adept package version: %s' % adept.__version__
 print 'Palisades package version: %s' % palisades.__version__
 
+# Raising an exception in some cases when the palisades HEAD can get detached
+# from a branch.
+if palisades.__version__ == 'remotes/origin/HEAD':
+    raise Exception('palisades version is invalid: %s' % palisades.__version__)
+
 py2exe_options = {}
 
 CMD_CLASSES = {}
