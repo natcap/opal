@@ -4,10 +4,15 @@
 #  * tweak shapely.geos to work on a mac via pyinstaller .. currently not supported.
 #  * Copy the matplotlib data folder mpl_data to the execution folder (in dist)
 
+
+from PyInstaller.compat import is_win
+from PyInstaller.hooks.hookutils import get_package_paths
+import os
 import matplotlib
 print matplotlib._get_data_path()
 import platform
 import json
+import shutil
 
 from adept import versioning
 
@@ -108,3 +113,13 @@ total_coll = COLLECT(
     exclude_binaries=True,
     name='total_coll'
 )
+
+# FORCE the usage of the osgeo version of geos_c.dll.
+if is_win:
+    files = [
+        'geos_c.dll',
+    ]
+    pkg_base, pkg_dir = get_package_paths('osgeo')
+    source_file = os.path.join(pkg_dir, 'geos_c.dll')
+    dest_file = os.path.join('dist', 'total_coll', 'geos_c.dll')
+    shutil.copyfile(source_file, dest_file)
