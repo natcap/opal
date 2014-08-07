@@ -442,9 +442,9 @@ class ColombiaDistribution(NSISCommand):
 
         # copy the distribution UI config file to the pyinstaller dist folder.
         source_file = os.path.join('windows_build', 'MAFE', 'dist_config.json')
-        dest_file = os.path.join(self.nsis_dir, 'dist_config.json')
-        print 'Copying %s -> %s' % (source_file, dest_file)
-        shutil.copyfile(source_file, dest_file)
+        dest_dist_config_file = os.path.join(self.nsis_dir, 'dist_config.json')
+        print 'Copying %s -> %s' % (source_file, dest_dist_config_file)
+        shutil.copyfile(source_file, dest_dist_config_file)
 
         for filename in ['tool_data.zip']:
             source_file = os.path.join('dist', filename)
@@ -454,6 +454,7 @@ class ColombiaDistribution(NSISCommand):
 
         NSISCommand.run(self)
         self.remove_dist_data()
+        os.remove(dest_dist_config_file)  # remove MAFE dist_config file.
 
 
 class GlobalDistribution(NSISCommand):
