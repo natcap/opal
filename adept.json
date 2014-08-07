@@ -344,20 +344,6 @@
             }
         },
         {
-            "id": "do_sediment",
-            "args_id": "do_sediment",
-            "type": "checkbox",
-            "defaultValue": true,
-            "label": {
-                "en": "Calculate impacts/offsets to sediment",
-                "es": "Calcular impactos/compensación por sedimentos"
-            },
-            "helpText": {
-                "en": "Select whether the tool should include Sediment retention in impact and offset analysis.",
-                "es": "Seleccionar si la herramienta debe incluir retención de sedimentos en el análisis de impacto y compensación."
-            }
-        },
-        {
             "id": "do_nutrient",
             "args_id": "do_nutrient",
             "type": "checkbox",
@@ -369,6 +355,20 @@
             "helpText": {
                 "en": "Select whether the tool should include Nitrogen retention in impact and offset analysis.",
                 "es": "Seleccionar si la herramienta debe incluir retención de nitrógeno en el análisis de impacto y compensación."
+            }
+        },
+        {
+            "id": "do_sediment",
+            "args_id": "do_sediment",
+            "type": "checkbox",
+            "defaultValue": true,
+            "label": {
+                "en": "Calculate impacts/offsets to sediment",
+                "es": "Calcular impactos/compensación por sedimentos"
+            },
+            "helpText": {
+                "en": "Select whether the tool should include Sediment retention in impact and offset analysis.",
+                "es": "Seleccionar si la herramienta debe incluir retención de sedimentos en el análisis de impacto y compensación."
             }
         },
         {
