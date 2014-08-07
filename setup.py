@@ -311,6 +311,11 @@ class NSISCommand(Command):
         data_file = os.path.join(self.nsis_dir, 'dist_version.json')
         json.dump(dist_data, open(data_file, 'w+'))
 
+    def remove_dist_data(self):
+        dist_file = os.path.join(self.nsis_dir, 'dist_version.json')
+        if os.path.exists(dist_file):
+            os.remove(dist_file)
+
     def run(self):
         print ''
         print 'Starting NSIS installer build'
@@ -448,6 +453,7 @@ class ColombiaDistribution(NSISCommand):
             shutil.copyfile(source_file, dest_file)
 
         NSISCommand.run(self)
+        self.remove_dist_data()
 
 
 class GlobalDistribution(NSISCommand):
