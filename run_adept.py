@@ -11,5 +11,6 @@ if getattr(sys, 'frozen', False):
     splash = os.path.join(os.path.dirname(sys.executable), 'splash.jpg')
 else:
     splash = os.path.join('windows_build', 'OPAL.jpg')
+print 'splash image: %s' % splash
 
 palisades.launch('adept.json', splash)
