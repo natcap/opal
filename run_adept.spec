@@ -116,9 +116,6 @@ total_coll = COLLECT(
 
 # FORCE the usage of the osgeo version of geos_c.dll.
 if is_win:
-    files = [
-        'geos_c.dll',
-    ]
     pkg_base, pkg_dir = get_package_paths('osgeo')
     source_file = os.path.join(pkg_dir, 'geos_c.dll')
     dest_file = os.path.join('dist', 'total_coll', 'geos_c.dll')
