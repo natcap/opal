@@ -54,8 +54,8 @@ adept_exe = EXE(pyz,
           strip=None,
           upx=False,  # says UPX is not available
           append_pkg=True,
-          #console=False)
-          console=True)
+          console=False)
+        #console=True)
 
 exe_files = [
     (carbon_analysis, 'carbon_sm.json'),
@@ -89,6 +89,7 @@ for analysis, json_file in exe_files:
         exclude_binaries=True,  # makes all files located in same dir
         strip=False,
         upx=False,
+        console=False
     )
     analysis_items.append(exe)
     for item in [analysis.binaries, analysis.zipfiles, analysis.datas]:
