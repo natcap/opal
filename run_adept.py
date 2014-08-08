@@ -8,9 +8,9 @@ for attr in palisades.build_data:
 
 if getattr(sys, 'frozen', False):
     # If we're in a pyinstaller build
-    splash = os.path.join(os.path.dirname(sys.executable), 'splash.jpg')
+    splash = os.path.join(os.path.dirname(sys.executable), 'splash.png')
 else:
-    splash = os.path.join('windows_build', 'OPAL.jpg')
+    splash = os.path.join(os.getcwd(), 'windows_build', 'OPAL.png')
 print 'splash image: %s' % splash
 
 palisades.launch('adept.json', splash)
