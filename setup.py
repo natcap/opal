@@ -446,6 +446,12 @@ class ColombiaDistribution(NSISCommand):
         print 'Copying %s -> %s' % (source_file, dest_dist_config_file)
         shutil.copyfile(source_file, dest_dist_config_file)
 
+        mafe_splash_src = os.path.join(os.getcwd(), 'windows_build',
+            'MAFE', 'MAFE-T.jpg')
+        mafe_splash_dest = os.path.join(self.nsis_dir, 'splash.jpg')
+        print 'Copying %s -> %s' % (mafe_splash_src, mafe_splash_dest)
+        shutil.copyfile(mafe_splash_src, mafe_splash_dest)
+
         for filename in ['tool_data.zip']:
             source_file = os.path.join('dist', filename)
             dest_file = os.path.join(target_dir, filename)
@@ -477,6 +483,12 @@ class GlobalDistribution(NSISCommand):
             'OPAL_NAME.txt')
         opal_name_dest = os.path.join(self.nsis_dir, 'ASCII_NAME.txt')
         shutil.copyfile(opal_name_src, opal_name_dest)
+
+        opal_splash_src = os.path.join(os.getcwd(), 'windows_build',
+            'OPAL.jpg')
+        opal_splash_dest = os.path.join(self.nsis_dir, 'splash.jpg')
+        print 'Copying %s -> %s' % (opal_splash_src, opal_splash_dest)
+        shutil.copyfile(opal_splash_src, opal_splash_dest)
 
         NSISCommand.initialize_options(self)
 
