@@ -262,6 +262,9 @@ def section(options):
                 'CreateDirectory \"%s\"' % options['action']['target_dir'],
                 'SetOutPath \"%s\"' % options['action']['target_dir'],
                 'nsisunz::UnzipToLog \"%s\" \".\"' % zipfile_uri,
+                'StrCpy $0 "$INSTDIR\\%s.log' % zipfile_uri,
+                'Push $0',
+                'Call DumpLog',
             ]
     else:
         strings.append('AddSize \"%s\"' % file_size)
