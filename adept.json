@@ -38,8 +38,8 @@
             "type": "file", 
             "defaultValue": "./data/colombia_sample_data/Cedrela Norte/proyecto/Proyecto_split.shp", 
             "label": {
-                "en": "Project Footprint", 
-                "es": "Área de impacto del proyecto"
+                "en": "Project Footprint (optional)", 
+                "es": "Área de impacto del proyecto (opcional)"
             },
             "validateAs": {
                 "type": "OGR"
