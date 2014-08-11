@@ -17,7 +17,7 @@
             "id": "workspace", 
             "args_id": "workspace_dir",
             "type": "folder", 
-            "defaultValue": "./adept_workspace", 
+            "defaultValue": "~/adept_workspace", 
             "required": true, 
             "label": {
                 "en": "Workspace", 
@@ -36,7 +36,7 @@
             "id": "project_footprint", 
             "args_id": "project_footprint_uri", 
             "type": "file", 
-            "defaultValue": "./data/colombia_sample_data/Cedrela Norte/proyecto/Proyecto_split.shp", 
+            "defaultValue": "", 
             "label": {
                 "en": "Project Footprint", 
                 "es": "Área de impacto del proyecto"
