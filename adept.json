@@ -38,8 +38,8 @@
             "type": "file", 
             "defaultValue": "", 
             "label": {
-                "en": "Project Footprint", 
-                "es": "Área de impacto del proyecto"
+                "en": "Project Footprint (optional)", 
+                "es": "Área de impacto del proyecto (opcional)"
             },
             "validateAs": {
                 "type": "OGR"
