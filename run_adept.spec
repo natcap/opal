@@ -82,7 +82,7 @@ for analysis, json_file in exe_files:
         analysis.binaries,
 #        analysis.datas,
         name=name,
-        debug=True,
+        debug=False,
         onefile=False,
 #        strip=None,
         exclude_binaries=True,  # makes all files located in same dir
