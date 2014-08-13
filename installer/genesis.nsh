@@ -1,5 +1,18 @@
 !include "nsDialogs.nsh"
 
+!macro LANG_LOAD LANGLOAD
+    !insertmacro MUI_LANGUAGE "${LANGLOAD}"
+    !include "${LANGLOAD}.nsh"
+!macroend
+
+!macro LANG_STRING NAME VALUE
+    LangString "${NAME}" "${LANG_${LANG}}" "${VALUE}"
+!macroend
+
+!macro LANG_UNSTRING NAME VALUE
+    !insertmacro LANG_STRING "un.${NAME}" "${VALUE}"
+!macroend
+
 !macro locateDataZip Title Label
     Page custom CarbonSMDataPageNSD1
 
@@ -93,18 +106,18 @@ var DataLocal
     pop $FileLabel
 ;    strcpy $FileLabel $0
 
-    ${NSD_CreateRadioButton} 5 50 100% 12u "Download during install"
+    ${NSD_CreateRadioButton} 5 50 100% 12u "${DATAPAGE_DL_IN_INSTALL}"
     pop $DataDownload
 ;    strcpy $DataDownload $0
     ${NSD_OnClick} $DataDownload CheckRadioButtonState
 
-    ${NSD_CreateRadioButton} 5 70 100% 12u "Use a local file"
+    ${NSD_CreateRadioButton} 5 70 100% 12u "${DATAPAGE_USE_LOCAL_FILE}"
     pop $DataLocal
 ;    strcpy $DataLocal $0
     ${NSD_OnClick} $DataLocal CheckRadioButtonState
     ${NSD_SetState} $DataLocal 1
 
-    ${NSD_CreateLabel} 5 120 15% 12u "Select Zipfile"
+    ${NSD_CreateLabel} 5 120 15% 12u "${DATAPAGE_SELECT_ZIPFILE}"
     pop $FileLabel
 ;    strcpy $FileLabel $0
 ;    EnableWindow $FileLabel 0
@@ -114,7 +127,7 @@ var DataLocal
 ;    strcpy $FileField $0
 ;    EnableWindow $FileField 0
 
-    ${NSD_CreateBrowseButton} 400 120 10% 12u "file"
+    ${NSD_CreateBrowseButton} 400 120 10% 12u "${DATAPAGE_FILE_BTN}"
     pop $FileButton
 ;    strcpy $FileButton $0
     ${NSD_OnClick} $FileButton GetZipFile
@@ -128,7 +141,7 @@ Function GetZipFile
     pop $0
     ${GetFileExt} $0 $1
     ${If} "$1" != "zip"
-        MessageBox MB_OK "File must be a zipfile"
+        MessageBox MB_OK "${DATAPAGE_FILE_ERROR_MSG}"
         Abort
     ${EndIf}
     ${NSD_SetText} $FileField $0

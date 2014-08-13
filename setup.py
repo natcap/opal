@@ -433,8 +433,8 @@ class ColombiaDistribution(NSISCommand):
         pass
 
     def run(self):
-        self.run_command('sample_data')
-        self.run_command('tool_data_colombia')
+#        self.run_command('sample_data')
+#        self.run_command('tool_data_colombia')
         self.write_dist_data('MAFE-T')
 
         # copy the zipfiles we need into the right place.

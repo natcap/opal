@@ -137,6 +137,7 @@ def languages(lang_list):
         lang_list.append("English")
 
     for language in lang_list:
+        #language_string += "!insertmacro LANG_LOAD \"%s\"\n" % language
         language_string += "!insertmacro MUI_LANGUAGE \"%s\"\n" % language
 
     language_string += "\n\n"
@@ -146,6 +147,7 @@ def installer_init(lang_list):
     init_string = "Function .onInit\n"
     if len(lang_list) > 1:
         init_string += "!insertmacro MUI_LANGDLL_DISPLAY\n"
+
     init_string += "FunctionEnd\n"
     return init_string
 
