@@ -36,16 +36,16 @@
                 "leave_funcname": "SedimentStaticDataFunctionLeave"
             },
             {
-                "enter_funcname": "SedimentPTSStaticDataFunction",
-                "leave_funcname": "SedimentPTSStaticDataFunctionLeave"
+                "enter_funcname": "SedimentStaticPercentToStreamDataFunction",
+                "leave_funcname": "SedimentStaticPercentToStreamDataFunctionLeave"
             },
             {
                 "enter_funcname": "NutrientStaticDataFunction",
                 "leave_funcname": "NutrientStaticDataFunctionLeave"
             },
             {
-                "enter_funcname": "NutrientPTSStaticDataFunction",
-                "leave_funcname": "NutrientPTSStaticDataFunctionLeave"
+                "enter_funcname": "NutrientStaticPercentToStreamDataFunction",
+                "leave_funcname": "NutrientStaticPercentToStreamDataFunctionLeave"
             }
         ],
         "icon": "installer_icon.png",
@@ -106,7 +106,7 @@
                 }
             },
             {
-                "name": "Sediment Static Percent-to-Stream Data",
+                "name": "Sediment Static Percent-To-Stream Data",
                 "size": "7400000",
                 "label": "Select an option to download sediment static percent-to-stream data",
                 "action": {
@@ -128,7 +128,7 @@
                 }
             },
             {
-                "name": "Nutrient Static Percent-to-Stream Data",
+                "name": "Nutrient Static Percent-To-Stream Data",
                 "size": "7400000",
                 "label": "Select an option to download nutrient static percent-to-stream data.",
                 "action": {
