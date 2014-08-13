@@ -36,8 +36,16 @@
                 "leave_funcname": "SedimentStaticDataFunctionLeave"
             },
             {
+                "enter_funcname": "SedimentPTSStaticDataFunction",
+                "leave_funcname": "SedimentPTSStaticDataFunctionLeave"
+            },
+            {
                 "enter_funcname": "NutrientStaticDataFunction",
                 "leave_funcname": "NutrientStaticDataFunctionLeave"
+            },
+            {
+                "enter_funcname": "NutrientPTSStaticDataFunction",
+                "leave_funcname": "NutrientPTSStaticDataFunctionLeave"
             }
         ],
         "icon": "installer_icon.png",
