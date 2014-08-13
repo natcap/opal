@@ -173,8 +173,10 @@ class ZipColombiaData(Command):
 
         static_files = [
             ('carbon', glob.glob('data/colombia_static_data/carbon*.tif')),
-            ('nutrient', glob.glob('data/colombia_static_data/nutrient*.tif')),
-            ('sediment', glob.glob('data/colombia_static_data/sediment*.tif'))
+            ('nutrient', glob.glob('data/colombia_static_data/nutrient*lzw.tif')),
+            ('nutrient_pts', glob.glob('data/colombia_static_data/nutrient*pts.tif')),
+            ('sediment', glob.glob('data/colombia_static_data/sediment*lzw.tif')),
+            ('sediment_pts', glob.glob('data/colombia_static_data/sediment*pts.tif')),
         ]
         for sm_name, static_rasters in static_files:
             print '\nCopying %s data' % sm_name
