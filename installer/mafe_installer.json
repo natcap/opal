@@ -98,6 +98,17 @@
                 }
             },
             {
+                "name": "Sediment Static Percent-to-Stream Data",
+                "size": "7400000",
+                "label": "Select an option to download sediment static percent-to-stream data",
+                "action": {
+                    "type": "unzipSelect",
+                    "zipfile": "..\\dist\\sediment_pts.zip",
+                    "target_dir": "$INSTDIR\\data\\colombia_static_data",
+                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/sediment_pts.zip"
+                }
+            },
+            {
                 "name": "Nutrient Static Data",
                 "size": "7400000",
                 "label": "Select an option to download nutrient static data.",
@@ -106,6 +117,17 @@
                     "zipfile": "..\\dist\\nutrient.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
                     "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/nutrient.zip"
+                }
+            },
+            {
+                "name": "Nutrient Static Percent-to-Stream Data",
+                "size": "7400000",
+                "label": "Select an option to download nutrient static percent-to-stream data.",
+                "action": {
+                    "type": "unzipSelect",
+                    "zipfile": "..\\dist\\nutrient_pts.zip",
+                    "target_dir": "$INSTDIR\\data\\colombia_static_data",
+                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/nutrient_pts.zip"
                 }
             }
         ]
