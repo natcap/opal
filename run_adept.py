@@ -1,6 +1,20 @@
-import palisades
 import sys
 import os
+
+import palisades
+import palisades.i18n
+from palisades import execution
+import adept.i18n
+
+class MultilingualRunner(execution.PythonRunner):
+    def start(self):
+        """Start the execution.
+        Overridden here to take the language of the palisades UI and set the
+        adept package language to the same language code."""
+        palisades_lang = palisades.i18n.current_lang()
+        print 'setting adept lang to %s' % palisades_lang
+        adept.i18n.language.set(palisades_lang)
+        execution.PythonRunner.start(self)
 
 print "Build data"
 for attr in palisades.build_data:
@@ -13,4 +27,4 @@ else:
     splash = os.path.join(os.getcwd(), 'windows_build', 'OPAL.png')
 print 'splash image: %s' % splash
 
-palisades.launch('adept.json', splash)
+palisades.launch('adept.json', splash, MultilingualRunner)
