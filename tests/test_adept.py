@@ -5,6 +5,7 @@ import json
 
 from invest_natcap.testing import GISTest
 
+import adept.i18n
 from adept import adept_core
 from adept import analysis
 
@@ -16,6 +17,31 @@ class AdeptTest(GISTest):
         self.workspace = os.path.join(os.getcwd(), 'adept_smoke')
 
     def test_smoke(self):
+        if os.path.exists(self.workspace):
+            shutil.rmtree(self.workspace)
+
+        args = {
+            'workspace_dir': self.workspace,
+            'project_footprint_uri': os.path.join(DATA, ('Example permitting'
+                ' footprints'), 'Example_mining_projects.shp'),
+            'impact_type': 'Road/Paved',
+#            'area_of_influence_uri': os.path.join(DATA, 'sample_aoi.shp'),
+            'ecosystems_map_uri': os.path.join(DATA,
+                'ecosys_dis_nat_comp_fac.shp'),
+            'custom_static_map_uri': os.path.join(DATA,
+                'DEM.tif'),
+            'search_areas_uri': os.path.join(DATA, 'Hydrographic_subzones.shp'),
+            'threat_map': os.path.join(DATA, 'DEM.tif'),
+#            'avoidance_areas': os.path.join(DATA, 'sample_aoi.shp'),
+            'data_dir': '..',
+#            'custom_static_maps': os.path.join(os.getcwd(), '..',
+#                'custom_static_maps'),
+#            'custom_servicesheds': 'global'
+        }
+        adept_core.execute(args)
+
+    def test_smoke_es(self):
+        adept.i18n.language.set('es')
         if os.path.exists(self.workspace):
             shutil.rmtree(self.workspace)
 
