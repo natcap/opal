@@ -106,13 +106,18 @@ class AdeptTest(GISTest):
         analysis.percent_overlap(offset_sites, municipalities, temp_file)
 
     def test_reporting(self):
-        municipalities = os.path.join(TEST_DATA, 'limited_servicesheds_2.shp')
+        adept.i18n.language.set('es')
+#        municipalities = os.path.join(TEST_DATA, 'limited_servicesheds_2.shp')
+        municipalities = os.path.join(self.workspace, 'Medio Magdalena',
+            'servicesheds.shp')
         biodiversity_impact = json.load(open(os.path.join(self.workspace,
             'Medio Magdalena', 'bio_impacts.json')))
         selected_parcels = os.path.join(self.workspace, 'Medio Magdalena',
             'selected_offsets.shp')
-        natural_parcels = os.path.join(TEST_DATA,
-            'medio_magdalena_avail_offsets.shp')
+#        natural_parcels = os.path.join(TEST_DATA,
+#            'medio_magdalena_avail_offsets.shp')
+        natural_parcels = os.path.join(self.workspace, 'Medio Magdalena',
+            'all_offsets.shp')
 
         # create a hacky temp object here so I can pass something in with the
         # correct attribute.
@@ -120,16 +125,15 @@ class AdeptTest(GISTest):
             def __init__(self):
                 self.total = None
 
-        custom = Custom()
-        custom.total = {1: 1, 2: 2}
-        custom_static_values_flat = custom
+#        custom = Custom()
+#        custom.total = {1: 1, 2: 2}
+#        custom_static_values_flat = custom
         project_footprint = os.path.join(self.workspace, 'intermediate',
             'impact_sites', 'impact_Medio Magdalena.shp')
         sediment_total_impact = {
             'sediment': 1234567,
             'nutrient': 1234567,
             'carbon': 1234567,
-            'custom': 9999999,
         }
         impact_type = 'An impact type!'
         output_workspace = self.workspace
@@ -154,7 +158,7 @@ class AdeptTest(GISTest):
             report_name='report.html',
             natural_parcels=natural_parcels,
             impacts_error=True,
-            suggested_parcels=[],
-            custom_es_servicesheds='global',
+            suggested_parcels=[]
+#            custom_es_servicesheds='global',
         )
 
