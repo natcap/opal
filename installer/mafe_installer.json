@@ -88,7 +88,7 @@
                 "size": "3700000",
                 "label": {
                     "english": "Select an option to download Carbon static data",
-                    "spanish": "Carbon static data PLACEHOLDER"
+                    "spanish": "Seleccione una opción para descargar los datos estáticos de carbono"
                 },
                 "action": {
                     "type": "unzipSelect",
@@ -102,7 +102,7 @@
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download sediment static data",
-                    "spanish": "Sediment static data PLACEHOLDER"
+                    "spanish": "Seleccione una opción para descargar los datos estáticos de sedimentos"
                 },
                 "action": {
                     "type": "unzipSelect",
@@ -116,7 +116,7 @@
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download sediment static percent-to-stream data",
-                    "spanish": "Sediment pts PLACEHOLDER"
+                    "spanish": "Seleccione una opción para descargar los datos estáticos de porcentaje de sedimentos en el río."
                 },
                 "action": {
                     "type": "unzipSelect",
@@ -130,7 +130,7 @@
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download nutrient static data.",
-                    "spanish": "Nutrient static data PLACEHOLDER"
+                    "spanish": "Seleccione una opción para descargar los datos estáticos de nutrientes."
                 },
                 "action": {
                     "type": "unzipSelect",
@@ -144,7 +144,7 @@
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download nutrient static percent-to-stream data.",
-                    "spanish": "Nutrient pts PLACEHOLDER"
+                    "spanish": "Seleccione una opción para descargar los datos estáticos de porcentaje de nutrientes en el río."
                 },
                 "action": {
                     "type": "unzipSelect",
