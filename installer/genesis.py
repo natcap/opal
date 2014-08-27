@@ -271,14 +271,27 @@ def section(options):
 
     strings.append('SectionEnd\n')
 
+    def _lang_strings(varname, language_config):
+        """language config should look like:
+            {
+                "english": "some en string",
+                "spanish": "some es string"
+            }"""
+        lang_strings = []
+        for lang_name, lang_string in language_config.iteritems():
+            lang_string = 'LangString %s ${LANG_%s} "%s"' % (varname,
+                lang_name.upper(), lang_string)
+            lang_strings.append(lang_string)
+        return '\n'.join(lang_strings)
+
     if unzip_page_funcs:
         label_name = options['name'].replace(' ', '_').replace('-', '_').upper()
         func_name = options['name'].replace(' ', '').replace('-', '') + 'Function'
         strings += [
             '',
-            '!define %s_LABEL "%s"' % (label_name, options['label']),
+            _lang_strings(label_name + '_LABEL', options['label']),
             'Function %s' % func_name,
-            '    !insertmacro DataPage ${%s} "" "${%s}"' %
+            '    !insertmacro DataPage ${%s} "" "$(%s)"' %
                 (compact_section_name, label_name + '_LABEL'),
             'FunctionEnd',
             ''
