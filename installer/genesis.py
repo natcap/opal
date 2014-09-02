@@ -5,6 +5,7 @@ import sys
 import argparse
 import os
 import codecs
+from types import DictType
 
 LOG_FILE_SCRIPT = """
 ; This function (and these couple variables) allow us to dump the NSIS
@@ -368,11 +369,15 @@ def start_menu_links(options):
     formatted_string += "CreateDirectory \"${START_MENU_FOLDER}\"\n"
     # print them verbatim for now.
     for link_data in options:
+        if type(link_data['name']) is DictType:
+            varname = link_data['name']['english'].replace(' ', '').upper() + '_LANG'
+            languages += _lang_strings(varname, link_data['name']) + '\n'
+            link_name = '$(%s)' % varname
+        else:
+            # no language dictionary provided, assume string.
+            link_name = link_data['name']
 
-        varname = link_data['name']['english'].replace(' ', '').upper() + '_LANG'
-        languages += _lang_strings(varname, link_data['name']) + '\n'
-
-        link_path = "${START_MENU_FOLDER}\\$(%s).lnk" % varname
+        link_path = "${START_MENU_FOLDER}\\%s.lnk" % link_name
         link_target = "$INSTDIR\\%s" % link_data['target']
         try:
             link_icon = link_data['icon']
