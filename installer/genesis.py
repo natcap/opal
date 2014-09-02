@@ -4,6 +4,7 @@ import json
 import sys
 import argparse
 import os
+import codecs
 
 LOG_FILE_SCRIPT = """
 ; This function (and these couple variables) allow us to dump the NSIS
@@ -95,7 +96,7 @@ UNINSTALLER_REG_KEYS = """
     """
 
 def build_installer_script(config_file_uri, out_file_uri):
-    new_file = open(out_file_uri, 'w')
+    new_file = codecs.open(out_file_uri, 'w', 'utf-8')
     config_dict = json.loads(open(config_file_uri).read())
 
     # check for default values before writing the script.
@@ -348,14 +349,31 @@ def local_variables(options):
     formatted_string += '\n'.join(strings)
     return formatted_string
 
+def _lang_strings(varname, language_config):
+    """language config should look like:
+        {
+            "english": "some en string",
+            "spanish": "some es string"
+        }"""
+    lang_strings = []
+    for lang_name, lang_string in language_config.iteritems():
+        lang_string = 'LangString %s ${LANG_%s} "%s"' % (varname,
+            lang_name.upper(), lang_string)
+        lang_strings.append(lang_string)
+    return '\n'.join(lang_strings)
+
 def start_menu_links(options):
     formatted_string = ''
+    languages = ''
     formatted_string += "CreateDirectory \"${START_MENU_FOLDER}\"\n"
     # print them verbatim for now.
     for link_data in options:
-        link_path = "${START_MENU_FOLDER}\\%s.lnk" % link_data['name']
-        link_target = "$INSTDIR\\%s" % link_data['target']
 
+        varname = link_data['name']['english'].replace(' ', '').upper() + '_LANG'
+        languages += _lang_strings(varname, link_data['name']) + '\n'
+
+        link_path = "${START_MENU_FOLDER}\\$(%s).lnk" % varname
+        link_target = "$INSTDIR\\%s" % link_data['target']
         try:
             link_icon = link_data['icon']
         except KeyError:
@@ -364,7 +382,7 @@ def start_menu_links(options):
         formatted_string += "CreateShortCut \"%s\" \"%s\" \"%s\"\n" % (link_path,
                 link_target, link_icon)
 
-    return formatted_string
+    return (formatted_string, languages)
 
 def installer(installer_options):
     formatted_string = """
@@ -388,7 +406,9 @@ Section \"Core scripts and data\" SEC01\n
     except KeyError:
         pass
 
-    formatted_string += start_menu_links(installer_options['start_menu'])
+    links, languages = start_menu_links(installer_options['start_menu'])
+    formatted_string += links
+    formatted_string = languages + formatted_string  # prepend section with langs
     formatted_string += UNINSTALLER_REG_KEYS
 
     if 'extra_files' in installer_options:
