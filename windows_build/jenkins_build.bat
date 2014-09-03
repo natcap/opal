@@ -41,7 +41,7 @@ cd ..\..
 :: problems when I try to import it for pyinstaller, despite that EGG is supposed to be fully supported).
 cd src/faulthandler
 rmdir /S /Q build
-..\..\%ENVDIR%\Scripts\python setup.py sdist || goto :error
+..\..\%ENVDIR%\Scripts\python setup.py sdist --format=gztar || goto :error
 ..\..\%ENVDIR%\Scripts\pip install dist\faulthandler-2.3.tar.gz || goto :error
 cd ..\..
 
