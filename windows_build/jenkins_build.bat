@@ -36,6 +36,12 @@ rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..\..
 
+:: CD to the faulthandler directory to install it to the virtual env
+cd src/faulthandler
+rmdir /S /Q build
+..\..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
+cd ..\..
+
 :: CD to the Adept directory to install adept to the virtual environment
 cd src/adept
 rmdir /S /Q build

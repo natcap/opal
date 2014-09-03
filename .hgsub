@@ -3,4 +3,5 @@ data = [svn]http://ncp-yamato.stanford.edu/svn/permitting-data
 src/adept = https://code.google.com/p/invest-natcap.adept
 src/pyinstaller = [git]https://github.com/pyinstaller/pyinstaller.git
 src/palisades = [git]https://github.com/phargogh/palisades.git
+src/faulthandler = [git]https://github.com/haypo/faulthandler.git
 
