@@ -1,6 +1,7 @@
 import sys
 import os
 
+import faulthandler
 import palisades
 import palisades.i18n
 from palisades import execution
