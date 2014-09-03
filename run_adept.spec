@@ -16,6 +16,8 @@ import shutil
 
 from adept import versioning
 
+CONSOLE = True
+
 common_kwargs = {
     'hookspath': ['./hooks'],
     'runtime_hooks': ['./hooks/rthook.py'],
@@ -54,7 +56,7 @@ adept_exe = EXE(pyz,
           strip=None,
           upx=False,  # says UPX is not available
           append_pkg=True,
-          console=False)
+          console=CONSOLE)
 
 exe_files = [
     (carbon_analysis, 'carbon_sm.json'),
@@ -88,7 +90,7 @@ for analysis, json_file in exe_files:
         exclude_binaries=True,  # makes all files located in same dir
         strip=False,
         upx=False,
-        console=False
+        console=CONSOLE
     )
     analysis_items.append(exe)
     for item in [analysis.binaries, analysis.zipfiles, analysis.datas]:
