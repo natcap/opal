@@ -158,7 +158,7 @@ class AdeptTest(GISTest):
             report_name='report.html',
             natural_parcels=natural_parcels,
             impacts_error=True,
-            suggested_parcels=[]
+            suggested_parcels=[4, 62, 8]
 #            custom_es_servicesheds='global',
         )
 
