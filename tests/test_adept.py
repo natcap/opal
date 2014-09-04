@@ -131,9 +131,9 @@ class AdeptTest(GISTest):
         project_footprint = os.path.join(self.workspace, 'intermediate',
             'impact_sites', 'impact_Medio Magdalena.shp')
         sediment_total_impact = {
-            'sediment': 1234567,
-            'nutrient': 1234567,
-            'carbon': 1234567,
+            'sediment': -1234567,
+            'nutrient': -1234567,
+            'carbon': -1234567,
         }
         impact_type = 'An impact type!'
         output_workspace = self.workspace
