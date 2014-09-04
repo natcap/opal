@@ -1,5 +1,11 @@
 !include "nsDialogs.nsh"
 
+LangString DOWNLOAD_DURING_INSTALL ${LANG_ENGLISH} "Download during install"
+LangString DOWNLOAD_DURING_INSTALL ${LANG_SPANISH} "Descargar durante la instalación"
+LangString USE_LOCAL_FILE ${LANG_ENGLISH} "Use a local file"
+LangString USE_LOCAL_FILE ${LANG_SPANISH} "Utilice un archivo local"
+LangString SELECT_ZIPFILE ${LANG_ENGLISH} "Select zipfile"
+LangString SELECT_ZIPFILE ${LANG_SPANISH} "Seleccionar archivo de zip"
 !macro locateDataZip Title Label
     Page custom CarbonSMDataPageNSD1
 
@@ -23,15 +29,15 @@
         ${NSD_CreateLabel} 5 5 100% 24u "Select a zipfile containing default carbon static data.  This can be downloaded from http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/carbon.zip."
         pop $CarbonLabel
 
-        ${NSD_CreateRadioButton} 5 50 100% 12u "Download during install"
+        ${NSD_CreateRadioButton} 5 50 100% 12u "$(DOWNLOAD_DURING_INSTALL)"
         pop $CarbonDataDownload
         ${NSD_OnClick} $CarbonDataDownload CheckRadioButtonState
 
-        ${NSD_CreateRadioButton} 5 70 100% 12u "Use a local file"
+        ${NSD_CreateRadioButton} 5 70 100% 12u "$(USE_LOCAL_FILE)"
         pop $CarbonDataLocal
         ${NSD_OnClick} $CarbonDataLocal CheckRadioButtonState
 
-        ${NSD_CreateLabel} 5 120 15% 12u "Select Zipfile"
+        ${NSD_CreateLabel} 5 120 15% 12u "$(SELECT_ZIPFILE)"
         pop $CarbonFileLabel
         EnableWindow $CarbonFileLabel 0
 
