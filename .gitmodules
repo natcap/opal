@@ -1,3 +1,6 @@
+[submodule "src/faulthandler"]
+	path = src/faulthandler
+	url = https://github.com/haypo/faulthandler.git
 [submodule "src/palisades"]
 	path = src/palisades
 	url = https://github.com/phargogh/palisades.git

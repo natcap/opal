@@ -36,6 +36,15 @@ rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..\..
 
+:: CD to the faulthandler directory to install it to the virtual env
+:: Building from an sdist is the best way to avoid installing as an EGG (installing as EGG causes
+:: problems when I try to import it for pyinstaller, despite that EGG is supposed to be fully supported).
+cd src/faulthandler
+rmdir /S /Q build
+..\..\%ENVDIR%\Scripts\python setup.py sdist --format=gztar || goto :error
+..\..\%ENVDIR%\Scripts\pip install dist\faulthandler-2.3.tar.gz || goto :error
+cd ..\..
+
 :: CD to the Adept directory to install adept to the virtual environment
 cd src/adept
 rmdir /S /Q build

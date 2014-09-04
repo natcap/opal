@@ -52,32 +52,50 @@
         "extra_files": ["..\\dist\\tool_data.zip", "..\\dist\\sample_data.zip"],
         "start_menu": [
             {
-                "name": "${APP_NAME}",
+                "name": {
+                    "english": "${APP_NAME}",
+                    "spanish": "${APP_NAME}"
+                },
                 "target": "opal_exe.exe",
                 "icon": "${icon}"
             },
             {
-                "name": "${APP_NAME} Carbon Static Map Generator",
+                "name": {
+                    "english": "${APP_NAME} Carbon Static Map Generator",
+                    "spanish": "Generador del mapa estático de carbon de ${APP_NAME}"
+                },
                 "target": "carbon_sm.exe",
                 "icon": "${icon}"
             },
             {
-                "name": "${APP_NAME} Sediment Static Map Generator",
+                "name": {
+                    "english": "${APP_NAME} Sediment Static Map Generator",
+                    "spanish": "Generador del mapa estático de sedimentos de ${APP_NAME}"
+                },
                 "target": "sediment_sm.exe",
                 "icon": "${icon}"
             },
             {
-                "name": "${APP_NAME} Nutrient Static Map Generator",
+                "name": {
+                    "english": "${APP_NAME} Nutrient Static Map Generator",
+                    "spanish": "Generador del mapa estático de nutrientes de ${APP_NAME}"
+                },
                 "target": "nutrient_sm.exe",
                 "icon": "${icon}"
             },
             {
-                "name": "${APP_NAME} Custom Static Map Calculator",
+                "name": {
+                    "english": "${APP_NAME} Custom Static Map Calculator",
+                    "spanish": "Generador del mapa estático de SE propio de ${APP_NAME}"
+                },
                 "target": "generic_sm.exe",
                 "icon": "${icon}"
             },
             {
-                "name": "${APP_NAME} Documentation",
+                "name": {
+                    "english": "${APP_NAME} Documentation",
+                    "spanish": "Documentación de ${APP_NAME}"
+                },
                 "target": "MAFE_documentation.docx"
             }
         ],

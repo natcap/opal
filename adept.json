@@ -38,8 +38,8 @@
             "type": "file", 
             "defaultValue": "", 
             "label": {
-                "en": "Project Footprint (optional)", 
-                "es": "Área de impacto del proyecto (opcional)"
+                "en": "Project Footprint",
+                "es": "Área de impacto del proyecto"
             },
             "validateAs": {
                 "type": "OGR"
@@ -78,8 +78,8 @@
             }, 
             "required": false,
             "label": {
-                "en": "Area of Influence", 
-                "es": "Área de influencia"
+                "en": "Area of Influence (optional)",
+                "es": "Área de influencia (opcional)"
             },
             "helpText": {
                 "en": "The area of influence is a polygon shapefile. If no input is provided, the tool defaults to using the project footprint's hydrological subzone. The tool tracks which potential offset parcels are located within the area of influence so that they can be prioritized for selection in the offset portfolio.",
