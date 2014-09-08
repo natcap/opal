@@ -98,7 +98,7 @@ UNINSTALLER_REG_KEYS = """
 
 def build_installer_script(config_file_uri, out_file_uri):
     new_file = codecs.open(out_file_uri, 'w', 'utf-8')
-    config_dict = json.loads(open(config_file_uri).read())
+    config_dict = json.load(open(config_file_uri), 'utf-8')
 
     # check for default values before writing the script.
     sanitized_config = check_defaults(config_dict)
