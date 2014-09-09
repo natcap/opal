@@ -191,16 +191,17 @@ if __name__ == '__main__':
     invest_data = 'invest-natcap.invest-3/test/invest-data'
     base_data = os.path.join(invest_data, 'Base_Data')
     sediment_data = os.path.join(invest_data, 'Sedimentation', 'input')
-    prepare_dir = 'sdr_prepare'
 
     # Construct the arguments to be used as a base set for all of the
     # simulations.
+    workspace = 'willamette_sdr'
+    base_landuse_uri = os.path.join(base_data, 'Terrestrial', 'lulc_samp_cur')
     config = {
-        'workspace_dir': 'willammette_run_sdr',
+        'workspace_dir': os.path.join(workspace, 'base_run'),
         'dem_uri': os.path.join(base_data, 'Freshwater', 'dem'),
         'erosivity_uri': os.path.join(base_data, 'Freshwater', 'erosivity'),
         'erodibility_uri': os.path.join(base_data, 'Freshwater', 'erodibility'),
-        'landuse_uri': os.path.join(base_data, 'Terrestrial', 'lulc_samp_cur'),
+        'landuse_uri': base_landuse_uri,
         'watersheds_uri': os.path.join(base_data, 'Freshwater',
             'watersheds.shp'),
         'biophysical_table_uri': os.path.join(base_data, 'Freshwater',
@@ -208,11 +209,53 @@ if __name__ == '__main__':
         'threshold_flow_accumulation': 1000,
         'k_param': 2,
         'sdr_max': 0.8,
+        'ic_0_param': 0.5,
     }
+
+    # prepare inputs
+    config['_prepare'] = sdr._prepare(**config)
 
     # run the SDR model on the base scenario (which is the current state of the
     # config dictionary)
     sdr.execute(config)
 
+    # get the SDR raster from the intermediate folder.  This is our base run.
+    base_run = os.path.join(config['workspace_dir'], 'intermediate',
+        'sdr_factor.tif')
+
+    # now, create a static map.
+    # First off, convert the landcover to the target impact type
+    paved_workspace = os.path.join(workspace, 'paved')
+    if not os.path.exists(paved_workspace):
+        os.makedirs(paved_workspace)
+
+    new_lulc_code = 111  # lulc code of the target impact type on this lulc
+    new_lulc_uri = os.path.join(paved_workspace, 'paved_lulc.tif')
+    static_maps.convert_lulc(config['landuse_uri'], new_lulc_code,
+        new_lulc_uri)
+
+    # now, run the model on this (should already have preprocessed inputs)
+    config['workspace_dir'] = os.path.join(paved_workspace, 'paved_run')
+    sdr.execute(config)
+
+    # get the paved SDR raster.  This is our converted run.
+    converted_run = os.path.join(config['workspace_dir'], 'intermediate',
+        'sdr_factor.tif')
+
+    # subtract the two rasters.  This yields the static map, which we'll test.
+    static_map_uri = os.path.join(workspace, 'paved_static_map.tif')
+    static_maps.subtract_rasters(base_run, converted_run, static_map_uri)
+
+    # now, run the simulations!
+    # Currently running 5 iterations per watershed.
+    test_static_map_quality(
+        base_run=base_run,
+        base_static_map=static_map_uri,
+        landuse_uri=base_landuse_uri,
+        impact_lucode=new_lulc_code,
+        watersheds_uri=config['watersheds_uri'],
+        workspace=os.path.join(workspace, 'simulations'),
+        config=config,
+        num_iterations=5)
 
 
