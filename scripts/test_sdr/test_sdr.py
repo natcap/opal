@@ -193,6 +193,8 @@ if __name__ == '__main__':
     sediment_data = os.path.join(invest_data, 'Sedimentation', 'input')
     prepare_dir = 'sdr_prepare'
 
+    # Construct the arguments to be used as a base set for all of the
+    # simulations.
     config = {
         'workspace_dir': 'willammette_run_sdr',
         'dem_uri': os.path.join(base_data, 'Freshwater', 'dem'),
@@ -207,6 +209,10 @@ if __name__ == '__main__':
         'k_param': 2,
         'sdr_max': 0.8,
     }
+
+    # run the SDR model on the base scenario (which is the current state of the
+    # config dictionary)
+    sdr.execute(config)
 
 
 
