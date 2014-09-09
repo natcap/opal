@@ -14,8 +14,8 @@
 from invest_natcap import raster_utils
 
 def test_static_map_quality(base_run, base_static_map, landuse_uri,
-    impact_lucode, watersheds_uri, model_name, workspace, config, num_iterations=5,
-    clean_workspaces=False, start_ws=0, start_impact=0):
+    impact_lucode, watersheds_uri, workspace, config, num_iterations=5,
+    start_ws=0, start_impact=0):
 # base_run = sed_exp.tif, in the case of the sediment model, run on the base LULC
 # base_static_map = the static map generated from the base_run and the whole
 #   landscape converted to the target impact type
@@ -25,7 +25,6 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
 #   column.
 # num_iterations = the number of iterations to run within each watershed.
 # workspace = the workspace in which all of this should run
-# clean_workspaces = boolean, whether to remove workspaces as we go
 # start_ws = int id of which watershed in which to start the simulations.
 # start_impact = int id of which impact site to start on.  This only applies to
 # the starting watershed, all others will start at 0.
@@ -173,4 +172,27 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
 
 
 if __name__ == '__main__':
-    pass
+# Start with willammette sample data for SDR
+
+    invest_data = 'invest-natcap.invest-3/test/invest-data'
+    base_data = os.path.join(invest_data, 'Base_Data')
+    sediment_data = os.path.join(invest_data, 'Sedimentation', 'input')
+    prepare_dir = 'sdr_prepare'
+
+    config = {
+        'workspace_dir': 'willammette_run_sdr',
+        'dem_uri': os.path.join(base_data, 'Freshwater', 'dem'),
+        'erosivity_uri': os.path.join(base_data, 'Freshwater', 'erosivity'),
+        'erodibility_uri': os.path.join(base_data, 'Freshwater', 'erodibility'),
+        'landuse_uri': os.path.join(base_data, 'Terrestrial', 'lulc_samp_cur'),
+        'watersheds_uri': os.path.join(base_data, 'Freshwater',
+            'watersheds.shp'),
+        'biophysical_table_uri': os.path.join(base_data, 'Freshwater',
+            'biophysical_table.csv'),
+        'threshold_flow_accumulation': 1000,
+        'k_param': 2,
+        'sdr_max': 0.8,
+    }
+
+
+
