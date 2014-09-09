@@ -159,7 +159,8 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
             sdr.execute(config)
 
             # get the SDR raster
-            sdr_uri = os.path.join(impact_workspace, 'intermediate', 'sdr.tif')
+            sdr_uri = os.path.join(impact_workspace, 'intermediate',
+                'sdr_factor.tif')
 
             # Aggregate the sediment export from this impact simulation over
             # the target watershed
@@ -212,8 +213,8 @@ if __name__ == '__main__':
         'ic_0_param': 0.5,
     }
 
-    # prepare inputs
-    config['_prepare'] = sdr._prepare(**config)
+#    # prepare inputs
+#    config['_prepare'] = sdr._prepare(**config)
 
     # run the SDR model on the base scenario (which is the current state of the
     # config dictionary)
