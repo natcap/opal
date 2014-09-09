@@ -11,7 +11,20 @@
 # adept
 # InVEST dev environment
 
+import os
+import tempfile
+import logging
+import random
+import shutil
+
+from osgeo import ogr
+from osgeo import gdal
 from invest_natcap import raster_utils
+from invest_natcap.sdr import sdr
+from adept import static_maps
+from adept import preprocessing
+
+LOGGER = logging.getLogger('sdr_simulations')
 
 def test_static_map_quality(base_run, base_static_map, landuse_uri,
     impact_lucode, watersheds_uri, workspace, config, num_iterations=5,
@@ -64,7 +77,7 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
     # split the watersheds so I can use each watershed as an AOI for the
     # correct model later on.
     watersheds_dir = os.path.join(workspace, 'watershed_vectors')
-    split_watersheds = split_datasource(current_watersheds, watersheds_dir, ['ws_id'])
+    split_watersheds = static_maps.split_datasource(current_watersheds, watersheds_dir, ['ws_id'])
 
     for ws_index, watershed_uri in enumerate(split_watersheds):
         if ws_index < start_ws:
@@ -92,7 +105,7 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
         LOGGER.debug('This watershed\'s ws_id: %s', watershed_id)
 
         # We only want to run the model using the ONE current watershed.
-        config[watersheds_key] = watershed_uri
+        config['watersheds_uri'] = watershed_uri
 
         # If we're not in the starting watershed, then reset the starting index
         # of the impact site.
@@ -161,6 +174,7 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
             static_estimate = raster_utils.aggregate_raster_values_uri(
                 base_static_map, impact_site, 'id').total[1]
 
+            invest_estimate = base_ws_export - impact_ws_export
             export_ratio = static_estimate / invest_estimate
 
             # Now that we've completed the simulation, write these values to
