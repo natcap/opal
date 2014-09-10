@@ -287,40 +287,45 @@ if __name__ == '__main__':
     base_run = os.path.join(config['workspace_dir'], 'intermediate',
         'sdr_factor.tif')
 
-    # now, create a static map.
-    # First off, convert the landcover to the target impact type
-    paved_workspace = os.path.join(workspace, 'paved')
-    if not os.path.exists(paved_workspace):
-        os.makedirs(paved_workspace)
+    scenarios = [
+        ('paved', 19),
+        ('bare', 42),
+    ]
+    for scenario_name, impact_lucode in scenarios:
+        # First off, convert the landcover to the target impact type
+        scenario_workspace = os.path.join(workspace, scenario_name)
+        if not os.path.exists(scenario_workspace):
+            os.makedirs(scenario_workspace)
 
-    new_lulc_code = 19 # lulc code of the target impact type on this lulc
-    new_lulc_uri = os.path.join(paved_workspace, 'paved_lulc.tif')
-    static_maps.convert_lulc(config['landuse_uri'], new_lulc_code,
-        new_lulc_uri)
-    config['landuse_uri'] = new_lulc_uri
+        new_lulc_uri = os.path.join(scenario_workspace,
+            '%s_lulc.tif' % scenario_name)
+        static_maps.convert_lulc(base_landuse_uri, impact_lucode,
+            new_lulc_uri)
+        config['landuse_uri'] = new_lulc_uri
 
-    # now, run the model on this (should already have preprocessed inputs)
-    config['workspace_dir'] = os.path.join(paved_workspace, 'paved_run')
-    sdr.execute(config)
+        # now, run the model on this (should already have preprocessed inputs)
+        config['workspace_dir'] = os.path.join(scenario_workspace,
+            '%s_converted' % scenario_name)
+        sdr.execute(config)
 
-    # get the paved SDR raster.  This is our converted run.
-    converted_run = os.path.join(config['workspace_dir'], 'intermediate',
-        'sdr_factor.tif')
+        # get the paved SDR raster.  This is our converted run.
+        converted_run = os.path.join(config['workspace_dir'], 'intermediate',
+            'sdr_factor.tif')
 
-    # subtract the two rasters.  This yields the static map, which we'll test.
-    static_map_uri = os.path.join(workspace, 'paved_static_map.tif')
-    static_maps.subtract_rasters(base_run, converted_run, static_map_uri)
+        # subtract the two rasters.  This yields the static map, which we'll test.
+        static_map_uri = os.path.join(workspace, 'paved_static_map.tif')
+        static_maps.subtract_rasters(base_run, converted_run, static_map_uri)
 
-    # now, run the simulations!
-    # Currently running 5 iterations per watershed.
-    test_static_map_quality(
-        base_run=base_run,
-        base_static_map=static_map_uri,
-        landuse_uri=base_landuse_uri,
-        impact_lucode=new_lulc_code,
-        watersheds_uri=config['watersheds_uri'],
-        workspace=os.path.join(workspace, 'simulations'),
-        config=config,
-        num_iterations=5)
+        # now, run the simulations!
+        # Currently running 5 iterations per watershed.
+        test_static_map_quality(
+            base_run=base_run,
+            base_static_map=static_map_uri,
+            landuse_uri=base_landuse_uri,
+            impact_lucode=impact_lucode,
+            watersheds_uri=config['watersheds_uri'],
+            workspace=os.path.join(scenario_workspace, 'simulations'),
+            config=config,
+            num_iterations=5)
 
 
