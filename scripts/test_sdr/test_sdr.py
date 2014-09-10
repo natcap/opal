@@ -55,7 +55,7 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
 
     # Open a logfile so we can incrementally write model data we care about
     logfile_uri = os.path.join(workspace, 'impact_site_simulation.csv')
-    logfile = open(logfile_uri, 'a')
+    logfile = open(logfile_uri, 'a' if start_ws > 0 else 'w')
     labels = ['ws_id', 'Impact ID', 'Impact Area', 'Static Estimate',
         'InVEST Estimate', 'Estimate Ratio']
     logfile.write("%s\n" % ','.join(labels))
@@ -184,6 +184,10 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
                 static_estimate, invest_estimate, export_ratio]
             logfile.write("%s\n" % ','.join(map(str, values_to_write)))
     logfile.close()
+
+    # create preliminary chart for this set of simulations
+    out_png = os.path.join(workspace, 'simulations.png')
+    static_maps.graph_it(logfile_uri, out_png)
 
 
 if __name__ == '__main__':
