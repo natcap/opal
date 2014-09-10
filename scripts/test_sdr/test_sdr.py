@@ -19,6 +19,11 @@ import shutil
 
 from osgeo import ogr
 from osgeo import gdal
+import matplotlib
+matplotlib.use('Agg')  # for rendering plots without $DISPLAY set.
+import matplotlib.pyplot as plt
+import numpy
+import scipy
 from invest_natcap import raster_utils
 from invest_natcap.sdr import sdr
 from adept import static_maps
@@ -57,7 +62,9 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
     logfile_uri = os.path.join(workspace, 'impact_site_simulation.csv')
     logfile = open(logfile_uri, 'a' if start_ws > 0 else 'w')
     labels = ['ws_id', 'Impact ID', 'Impact Area', 'Static Estimate',
-        'InVEST Estimate', 'Estimate Ratio']
+        'InVEST Estimate', 'Estimate Ratio', 'Mean current SDR under impact',
+        'Mean converted SDR under impact', 'Mean flow accumulation under impact',
+        'Max flow accumulation under impact']
     logfile.write("%s\n" % ','.join(labels))
 
     lulc_nodata = raster_utils.get_nodata_from_uri(landuse_uri)
@@ -175,20 +182,75 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
             static_estimate = raster_utils.aggregate_raster_values_uri(
                 base_static_map, impact_site, 'id').total[1]
 
+            mean_sdr_current_impact = raster_utils.aggregate_raster_values_uri(
+                landuse_uri, impact_site, 'id').pixel_mean[1]
+
+            mean_sdr_converted_impact = raster_utils.aggregate_raster_values_uri(
+                converted_landcover, impact_site, 'id').pixel_mean[1]
+
+            flow_accumulation = os.path.join(impact_workspace,
+                'prepared_data', 'flow_accumulation.tif')
+            f_a_stats = raster_utils.aggregate_raster_values_uri(
+                flow_accumulation, impact_site, 'id')
+            mean_f_a = f_a_stats.pixel_mean[1]
+            max_f_a = f_a_stats.pixel_max[1]
+
             invest_estimate = base_ws_export - impact_ws_export
             export_ratio = static_estimate / invest_estimate
 
             # Now that we've completed the simulation, write these values to
             # the CSV file we've started.
             values_to_write = [watershed_id, run_number, impact_site_area,
-                static_estimate, invest_estimate, export_ratio]
+                static_estimate, invest_estimate, export_ratio,
+                mean_sdr_current_impact, mean_sdr_converted_impact, mean_f_a,
+                max_f_a]
             logfile.write("%s\n" % ','.join(map(str, values_to_write)))
     logfile.close()
 
     # create preliminary chart for this set of simulations
     out_png = os.path.join(workspace, 'simulations.png')
-    static_maps.graph_it(logfile_uri, out_png)
+    graph_it(logfile_uri, out_png)
 
+def graph_it(log_file, out_file):
+    all_rows = []
+    out_of_bounds = []
+    opened_log_file = open(log_file)
+    opened_log_file.next()  # skip the column headers.
+    for line in opened_log_file:
+        values = map(float, line.split(','))
+        ws_id, run_num, impact_area, static_est, invest_est, ratio,\
+        _mean_cur_sdr, _mean_imp_sdr, _mean_f_a, _max_f_a = values
+
+#        if ratio > 3 or ratio < -3:
+#            out_of_bounds.append(ratio)
+#        else:
+#            all_rows.append((impact_area, ratio))
+        all_rows.append((impact_area, ratio))
+
+    # smoother with 95 % confidence intervals
+    all_rows = sorted(all_rows, key=lambda x: x[0])
+    areas = [r[0] for r in all_rows]
+    ratios = [r[1] for r in all_rows]
+
+#    LOGGER.debug('These values were outliers: %s', out_of_bounds)
+    plt.plot(areas, ratios, 'ro')
+    plt.xlabel('Impact Site Area (m^2)')
+    plt.ylabel('(Static Est. / InVEST Est)')
+
+    areas_np = numpy.array(areas)
+    ratios_np = numpy.array(ratios)
+
+    n = len(ratios_np)
+    t = scipy.linspace(0,max(areas), n)
+
+    #Linear regressison -polyfit - polyfit can be used other orders polys
+    (ar,br) = scipy.polyfit(areas_np , ratios_np, 1)
+    xr = scipy.polyval([ar,br],t)
+
+    plt.ticklabel_format(style='sci',axis='x',scilimits=(0,0))
+
+    plt.plot(t, xr,'g--')  # plot the linear regression line.
+    plt.savefig(out_file)
 
 if __name__ == '__main__':
 # Start with willammette sample data for SDR
