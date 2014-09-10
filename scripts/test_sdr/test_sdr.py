@@ -234,10 +234,11 @@ if __name__ == '__main__':
     if not os.path.exists(paved_workspace):
         os.makedirs(paved_workspace)
 
-    new_lulc_code = 111  # lulc code of the target impact type on this lulc
+    new_lulc_code = 19 # lulc code of the target impact type on this lulc
     new_lulc_uri = os.path.join(paved_workspace, 'paved_lulc.tif')
     static_maps.convert_lulc(config['landuse_uri'], new_lulc_code,
         new_lulc_uri)
+    config['landuse_uri'] = new_lulc_uri
 
     # now, run the model on this (should already have preprocessed inputs)
     config['workspace_dir'] = os.path.join(paved_workspace, 'paved_run')
