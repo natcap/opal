@@ -217,9 +217,6 @@ if __name__ == '__main__':
         'ic_0_param': 0.5,
     }
 
-#    # prepare inputs
-#    config['_prepare'] = sdr._prepare(**config)
-
     # run the SDR model on the base scenario (which is the current state of the
     # config dictionary)
     sdr.execute(config)
