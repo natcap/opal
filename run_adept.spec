@@ -47,6 +47,7 @@ if platform.system() == 'Windows':
 else:
     exe_name = 'opal_exe'
     debug_program = True
+
 adept_exe = EXE(pyz,
           adept_analysis.scripts,
           adept_analysis.dependencies,
