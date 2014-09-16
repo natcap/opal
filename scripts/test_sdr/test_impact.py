@@ -191,24 +191,24 @@ STARTING_WATERSHEDS = ('invest-natcap.invest-3/test/invest-data/'
     'Base_Data/Freshwater/watersheds.shp')
 LULC_URI = ('invest-natcap.invest-3/test/invest-data/Base_Data/'
     'Terrestrial/lulc_samp_cur')
+LULC_PIXEL_SIZE = raster_utils.get_cell_size_from_uri(LULC_URI)
+LULC_NODATA = raster_utils.get_nodata_from_uri(LULC_URI)
 
-lambda split_watersheds(dirname): split_datasource(STARTING_WATERSHEDS,
+_split_watersheds = lambda dirname: split_datasource(STARTING_WATERSHEDS,
         dirname, ['ws_id'])
 
 def initial_procedure():
-    lulc_pixel_size = raster_utils.get_cell_size_from_uri(LULC_URI)
-    lulc_nodata = raster_utils.get_nodata_from_uri(LULC_URI)
 
     workspace_dir = 'test_fragmentation'
     if os.path.exists(workspace_dir):
         shutil.rmtree(workspace_dir)
 
-    split_watersheds(os.path.join(workspace_dir, 'split_watersheds'))
+    split_watersheds = _split_watersheds(os.path.join(workspace_dir, 'split_watersheds'))
 
     # write an lulc for watershed_2
     watershed_lulc = os.path.join(workspace_dir, 'watershed_lulc.tif')
     raster_utils.vectorize_datasets([LULC_URI], lambda x: x,
-        watershed_lulc, gdal.GDT_Float32, lulc_nodata, lulc_pixel_size,
+        watershed_lulc, gdal.GDT_Float32, LULC_NODATA, LULC_PIXEL_SIZE,
         'intersection', dataset_to_align_index=0, aoi_uri=split_watersheds[2])
 
     impact_site = os.path.join(workspace_dir, 'impact_site.shp')
@@ -220,12 +220,12 @@ def initial_procedure():
     # Create a raster mask for the randomized impact site.
     # Any non-nodata pixels underneath the impact site are marked by 1.
     def mask_op(value):
-        if value == lulc_nodata:
-            return lulc_nodata
+        if value == LULC_NODATA:
+            return LULC_NODATA
         return 1.0
     impact_mask = os.path.join(workspace_dir, 'impact_mask.tif')
     raster_utils.vectorize_datasets([watershed_lulc], mask_op, impact_mask,
-        gdal.GDT_Float32, lulc_nodata, lulc_pixel_size, 'intersection',
+        gdal.GDT_Float32, LULC_NODATA, LULC_PIXEL_SIZE, 'intersection',
         dataset_to_align_index=0, aoi_uri=impact_site)
 
     converted_landcover = os.path.join(workspace_dir, 'converted_lulc.tif')
@@ -234,18 +234,42 @@ def initial_procedure():
             return impact_lucode
         return lulc_value
     raster_utils.vectorize_datasets([impact_mask, watershed_lulc],
-        convert_impact, converted_landcover, gdal.GDT_Float32, lulc_nodata,
-        lulc_pixel_size, 'union', dataset_to_align_index=0)
+        convert_impact, converted_landcover, gdal.GDT_Float32, LULC_NODATA,
+        LULC_PIXEL_SIZE, 'union', dataset_to_align_index=0)
 
 def all_watersheds():
     workspace_dir = 'test_fragmentation_all_watersheds'
     if os.path.exists(workspace_dir):
         shutil.rmtree(workspace_dir)
 
-    split_watersheds(os.path.join(workspace_dir, 'watersheds'))
+    split_watersheds = _split_watersheds(os.path.join(workspace_dir, 'watersheds'))
 
+    impact_site = os.path.join(workspace_dir, 'impact_site.shp')
+    make_random_impact_vector(impact_site, split_watersheds[2],
+        random.uniform(500, 3000))
 
+    # create a mask
+    def mask_op(value):
+        if value == LULC_NODATA:
+            return LULC_NODATA
+        return 1.0
+    impact_mask = os.path.join(workspace_dir, 'impact_mask.tif')
+    raster_utils.vectorize_datasets([LULC_URI], mask_op, impact_mask,
+        gdal.GDT_Float32, LULC_NODATA, LULC_PIXEL_SIZE, 'intersection',
+        dataset_to_align_index=0, aoi_uri=impact_site)
+
+    impact_lucode = 19
+    converted_landcover = os.path.join(workspace_dir, 'converted_lulc.tif')
+    def convert_impact(mask_value, lulc_value):
+        if mask_value == 1:
+            return impact_lucode
+        return lulc_value
+    raster_utils.vectorize_datasets([impact_mask, LULC_URI],
+        convert_impact, converted_landcover, gdal.GDT_Float32, LULC_NODATA,
+        LULC_PIXEL_SIZE, 'union', dataset_to_align_index=0,
+        aoi_uri=STARTING_WATERSHEDS)
 
 if __name__ == '__main__':
-    initial_procedure()
+    initial_procedure()  # this one causes striations
+    #all_watersheds()  # this one does not
 
