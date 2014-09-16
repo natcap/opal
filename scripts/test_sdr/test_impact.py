@@ -192,6 +192,9 @@ STARTING_WATERSHEDS = ('invest-natcap.invest-3/test/invest-data/'
 LULC_URI = ('invest-natcap.invest-3/test/invest-data/Base_Data/'
     'Terrestrial/lulc_samp_cur')
 
+lambda split_watersheds(dirname): split_datasource(STARTING_WATERSHEDS,
+        dirname, ['ws_id'])
+
 def initial_procedure():
     lulc_pixel_size = raster_utils.get_cell_size_from_uri(LULC_URI)
     lulc_nodata = raster_utils.get_nodata_from_uri(LULC_URI)
@@ -200,9 +203,7 @@ def initial_procedure():
     if os.path.exists(workspace_dir):
         shutil.rmtree(workspace_dir)
 
-    split_watersheds_dir = os.path.join(workspace_dir, 'split_watersheds')
-    split_watersheds = split_datasource(STARTING_WATERSHEDS,
-        split_watersheds_dir, ['ws_id'])
+    split_watersheds(os.path.join(workspace_dir, 'split_watersheds'))
 
     # write an lulc for watershed_2
     watershed_lulc = os.path.join(workspace_dir, 'watershed_lulc.tif')
@@ -235,6 +236,14 @@ def initial_procedure():
     raster_utils.vectorize_datasets([impact_mask, watershed_lulc],
         convert_impact, converted_landcover, gdal.GDT_Float32, lulc_nodata,
         lulc_pixel_size, 'union', dataset_to_align_index=0)
+
+def all_watersheds():
+    workspace_dir = 'test_fragmentation_all_watersheds'
+    if os.path.exists(workspace_dir):
+        shutil.rmtree(workspace_dir)
+
+    split_watersheds(os.path.join(workspace_dir, 'watersheds'))
+
 
 
 if __name__ == '__main__':
