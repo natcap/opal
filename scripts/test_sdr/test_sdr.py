@@ -254,49 +254,49 @@ def graph_it(log_file, out_file):
 
 if __name__ == '__main__':
     # WILLAMETTE SAMPLE DATA
-#    invest_data = 'invest-natcap.invest-3/test/invest-data'
-#    base_data = os.path.join(invest_data, 'Base_Data')
-#
-#    # Construct the arguments to be used as a base set for all of the
-#    # simulations.
-#    workspace = 'willamette_sdr'
-#    base_landuse_uri = os.path.join(base_data, 'Terrestrial', 'lulc_samp_cur')
-#    config = {
-#        'workspace_dir': os.path.join(workspace, 'base_run'),
-#        'dem_uri': os.path.join(base_data, 'Freshwater', 'dem'),
-#        'erosivity_uri': os.path.join(base_data, 'Freshwater', 'erosivity'),
-#        'erodibility_uri': os.path.join(base_data, 'Freshwater', 'erodibility'),
-#        'landuse_uri': base_landuse_uri,
-#        'watersheds_uri': os.path.join(base_data, 'Freshwater',
-#            'watersheds.shp'),
-#        'biophysical_table_uri': os.path.join(base_data, 'Freshwater',
-#            'biophysical_table.csv'),
-#        'threshold_flow_accumulation': 1000,
-#        'k_param': 2,
-#        'sdr_max': 0.8,
-#        'ic_0_param': 0.5,
-#    }
+    invest_data = 'invest-natcap.invest-3/test/invest-data'
+    base_data = os.path.join(invest_data, 'Base_Data')
 
-    # COLOMBIA SAMPLE DATA
-    # Assume that everything is in a folder called 'tool_data' in the current
-    # folder that contains all of our data for testing.
-    workspace = 'colombia_sdr'
-    tool_data = 'tool_data'
-    base_landuse_uri = os.path.join(tool_data, 'ecosystems.tif')
+    # Construct the arguments to be used as a base set for all of the
+    # simulations.
+    workspace = 'willamette_sdr'
+    base_landuse_uri = os.path.join(base_data, 'Terrestrial', 'lulc_samp_cur')
     config = {
         'workspace_dir': os.path.join(workspace, 'base_run'),
-        'dem_uri': os.path.join(tool_data, 'DEM.tif'),
-        'erosivity_uri': os.path.join(tool_data, 'Erosivity.tif'),
-        'erodibility_uri': os.path.join(tool_data, 'Erodibility.tif'),
+        'dem_uri': os.path.join(base_data, 'Freshwater', 'dem'),
+        'erosivity_uri': os.path.join(base_data, 'Freshwater', 'erosivity'),
+        'erodibility_uri': os.path.join(base_data, 'Freshwater', 'erodibility'),
         'landuse_uri': base_landuse_uri,
-        'watersheds_uri': os.path.join(tool_data, 'watersheds_cuencas.shp'),
-        'biophysical_table_uri': os.path.join(tool_data,
-            'Biophysical_Colombia.csv'),
+        'watersheds_uri': os.path.join(base_data, 'Freshwater',
+            'watersheds.shp'),
+        'biophysical_table_uri': os.path.join(base_data, 'Freshwater',
+            'biophysical_table.csv'),
         'threshold_flow_accumulation': 1000,
         'k_param': 2,
         'sdr_max': 0.8,
         'ic_0_param': 0.5,
     }
+
+#    # COLOMBIA SAMPLE DATA
+#    # Assume that everything is in a folder called 'tool_data' in the current
+#    # folder that contains all of our data for testing.
+#    workspace = '/colossus/colombia_sdr'
+#    tool_data = 'data/colombia_tool_data'
+#    base_landuse_uri = os.path.join(tool_data, 'ecosystems.tif')
+#    config = {
+#        'workspace_dir': os.path.join(workspace, 'base_run'),
+#        'dem_uri': os.path.join(tool_data, 'DEM.tif'),
+#        'erosivity_uri': os.path.join(tool_data, 'Erosivity.tif'),
+#        'erodibility_uri': os.path.join(tool_data, 'Erodability.tif'),
+#        'landuse_uri': base_landuse_uri,
+#        'watersheds_uri': os.path.join(tool_data, 'watersheds_cuencas.shp'),
+#        'biophysical_table_uri': os.path.join(tool_data,
+#            'Biophysical_Colombia.csv'),
+#        'threshold_flow_accumulation': 1000,
+#        'k_param': 2,
+#        'sdr_max': 0.8,
+#        'ic_0_param': 0.5,
+#    }
 
     # run the SDR model on the base scenario (which is the current state of the
     # config dictionary)
