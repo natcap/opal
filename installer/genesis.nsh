@@ -5,7 +5,7 @@ LangString DOWNLOAD_DURING_INSTALL ${LANG_SPANISH} "Descargar durante la instala
 LangString USE_LOCAL_FILE ${LANG_ENGLISH} "Use a local file"
 LangString USE_LOCAL_FILE ${LANG_SPANISH} "Utilice un archivo local"
 LangString SELECT_ZIPFILE ${LANG_ENGLISH} "Select zipfile"
-LangString SELECT_ZIPFILE ${LANG_SPANISH} "Seleccionar archivo" ; archivo de zip
+LangString SELECT_ZIPFILE ${LANG_SPANISH} "Seleccionar archivo de zip"
 !macro locateDataZip Title Label
     Page custom CarbonSMDataPageNSD1
 
@@ -110,7 +110,7 @@ var DataLocal
     ${NSD_OnClick} $DataLocal CheckRadioButtonState
     ${NSD_SetState} $DataLocal 1
 
-    ${NSD_CreateLabel} 5 120 15% 12u "$(SELECT_ZIPFILE)"
+    ${NSD_CreateLabel} 5 120 25% 12u "$(SELECT_ZIPFILE)"
     pop $FileLabel
 ;    strcpy $FileLabel $0
 ;    EnableWindow $FileLabel 0
