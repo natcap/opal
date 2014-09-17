@@ -164,6 +164,7 @@ def installer_init(lang_list):
         init_string += "!insertmacro MUI_LANGDLL_DISPLAY\n"
 
     init_string += "FunctionEnd\n"
+    init_string += '!include "genesis.nsh"\n'
     return init_string
 
 def uninstaller_init():
@@ -213,7 +214,6 @@ SetCompressorDictSize 64
 !include "LogicLib.nsh"
 !include "x64.nsh"
 !include "FileFunc.nsh"
-!include "genesis.nsh"
 """
 
     general_settings += installer_pages(custom_pages)
