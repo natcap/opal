@@ -402,8 +402,11 @@ class NSISCommand(Command):
                    '/DARCHITECTURE=%s' % architecture,
                    installer_path]
 
-        print 'Executing command: %s' % command
-        subprocess.call(program_path + [makensis_path] + command)
+        print 'Program path', program_path
+        print 'Makensis path', makensis_path
+        print 'Executing with arguments: %s' % command
+        subprocess.call(program_path + [makensis_path] + command,
+            stdout=sys.stdout)
         os.chdir(cwd)
 
 class ColombiaDistribution(NSISCommand):
