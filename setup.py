@@ -325,9 +325,9 @@ class NSISCommand(Command):
         if not os.path.abspath(self.genesis_config):
             self.genesis_config = os.path.abspath(self.genesis_config)
 
-        print self.genesis_config
-        print self.dist_name
-        print self.build_dir
+        print 'Genesis configuration', self.genesis_config
+        print 'Distribution name', self.dist_name
+        print 'Build dir', self.build_dir
 
         target_dir = os.path.join(self.build_dir, os.path.basename(self.nsis_dir))
         if os.path.exists(target_dir):
