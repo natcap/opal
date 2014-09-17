@@ -1,7 +1,7 @@
 !include "nsDialogs.nsh"
 
 LangString DOWNLOAD_DURING_INSTALL ${LANG_ENGLISH} "Download during install"
-LangString DOWNLOAD_DURING_INSTALL ${LANG_SPANISH} "Descargar durante la instalaciÃ³n"
+LangString DOWNLOAD_DURING_INSTALL ${LANG_SPANISH} "Descargar durante la instalación"
 LangString USE_LOCAL_FILE ${LANG_ENGLISH} "Use a local file"
 LangString USE_LOCAL_FILE ${LANG_SPANISH} "Utilice un archivo local"
 LangString SELECT_ZIPFILE ${LANG_ENGLISH} "Select zipfile"
