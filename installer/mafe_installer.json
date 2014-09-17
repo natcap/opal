@@ -62,7 +62,7 @@
             {
                 "name": {
                     "english": "${APP_NAME} Carbon Static Map Generator",
-                    "spanish": "Generador del mapa estÃ¡tico de carbon de ${APP_NAME}"
+                    "spanish": "Generador del mapa estático de carbon de ${APP_NAME}"
                 },
                 "target": "carbon_sm.exe",
                 "icon": "${icon}"
@@ -70,7 +70,7 @@
             {
                 "name": {
                     "english": "${APP_NAME} Sediment Static Map Generator",
-                    "spanish": "Generador del mapa estÃ¡tico de sedimentos de ${APP_NAME}"
+                    "spanish": "Generador del mapa estático de sedimentos de ${APP_NAME}"
                 },
                 "target": "sediment_sm.exe",
                 "icon": "${icon}"
@@ -78,7 +78,7 @@
             {
                 "name": {
                     "english": "${APP_NAME} Nutrient Static Map Generator",
-                    "spanish": "Generador del mapa estÃ¡tico de nutrientes de ${APP_NAME}"
+                    "spanish": "Generador del mapa estático de nutrientes de ${APP_NAME}"
                 },
                 "target": "nutrient_sm.exe",
                 "icon": "${icon}"
@@ -86,7 +86,7 @@
             {
                 "name": {
                     "english": "${APP_NAME} Custom Static Map Calculator",
-                    "spanish": "Generador del mapa estÃ¡tico de SE propio de ${APP_NAME}"
+                    "spanish": "Generador del mapa estático de SE propio de ${APP_NAME}"
                 },
                 "target": "generic_sm.exe",
                 "icon": "${icon}"
@@ -94,7 +94,7 @@
             {
                 "name": {
                     "english": "${APP_NAME} Documentation",
-                    "spanish": "DocumentaciÃ³n de ${APP_NAME}"
+                    "spanish": "Documentación de ${APP_NAME}"
                 },
                 "target": "MAFE_documentation.docx"
             }
@@ -106,7 +106,7 @@
                 "size": "3700000",
                 "label": {
                     "english": "Select an option to download Carbon static data",
-                    "spanish": "Seleccione una opciÃ³n para descargar los datos estÃ¡ticos de carbono"
+                    "spanish": "Seleccione una opción para descargar los datos estáticos de carbono"
                 },
                 "action": {
                     "type": "unzipSelect",
@@ -120,7 +120,7 @@
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download sediment static data",
-                    "spanish": "Seleccione una opciÃ³n para descargar los datos estÃ¡ticos de sedimentos"
+                    "spanish": "Seleccione una opción para descargar los datos estáticos de sedimentos"
                 },
                 "action": {
                     "type": "unzipSelect",
@@ -134,7 +134,7 @@
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download sediment static percent-to-stream data",
-                    "spanish": "Seleccione una opciÃ³n para descargar los datos estÃ¡ticos de porcentaje de sedimentos en el rÃ­o."
+                    "spanish": "Seleccione una opción para descargar los datos estáticos de porcentaje de sedimentos en el río."
                 },
                 "action": {
                     "type": "unzipSelect",
@@ -148,7 +148,7 @@
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download nutrient static data.",
-                    "spanish": "Seleccione una opciÃ³n para descargar los datos estÃ¡ticos de nutrientes."
+                    "spanish": "Seleccione una opción para descargar los datos estáticos de nutrientes."
                 },
                 "action": {
                     "type": "unzipSelect",
@@ -162,7 +162,7 @@
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download nutrient static percent-to-stream data.",
-                    "spanish": "Seleccione una opciÃ³n para descargar los datos estÃ¡ticos de porcentaje de nutrientes en el rÃ­o."
+                    "spanish": "Seleccione una opción para descargar los datos estáticos de porcentaje de nutrientes en el río."
                 },
                 "action": {
                     "type": "unzipSelect",
