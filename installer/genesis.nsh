@@ -110,7 +110,7 @@ var DataLocal
     ${NSD_OnClick} $DataLocal CheckRadioButtonState
     ${NSD_SetState} $DataLocal 1
 
-    ${NSD_CreateLabel} 5 120 25% 12u "$(SELECT_ZIPFILE)"
+    ${NSD_CreateLabel} 5 120 20% 24u "$(SELECT_ZIPFILE)"
     pop $FileLabel
 ;    strcpy $FileLabel $0
 ;    EnableWindow $FileLabel 0
