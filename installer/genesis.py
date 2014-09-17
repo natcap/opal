@@ -96,15 +96,20 @@ UNINSTALLER_REG_KEYS = """
     WriteRegDWORD HKLM "${REGISTRY_PATH}" "NoRepair" 1
     """
 
+class EncodingFound(Exception): pass
+
 def build_installer_script(config_file_uri, out_file_uri):
     config_dict = None
-    for encoding in ['utf-8', 'latin-1']:
-        try:
-            new_file = codecs.open(out_file_uri, 'w', encoding)
-            config_dict = json.load(open(config_file_uri), encoding)
-            break  # if this succeeds, break out of the loop.
-        except UnicodeDecodeError:
-            print 'Encoding %s failed.  Skipping.' % encoding
+    try:
+        for encoding in ['utf-8', 'latin-1']:
+            try:
+                new_file = codecs.open(out_file_uri, 'w', encoding)
+                config_dict = json.load(open(config_file_uri), encoding)
+                raise EncodingFound  # if this succeeds, break out of the loop.
+            except UnicodeDecodeError:
+                print 'Encoding %s failed.  Skipping.' % encoding
+    except EncodingFound:
+        print 'Found an encoding: %s' % encoding
 
     if config_dict is None:
         raise RuntimeError("Can't understand the encoding!")
