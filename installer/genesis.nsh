@@ -5,7 +5,7 @@ LangString DOWNLOAD_DURING_INSTALL ${LANG_SPANISH} "Descargar durante la instala
 LangString USE_LOCAL_FILE ${LANG_ENGLISH} "Use a local file"
 LangString USE_LOCAL_FILE ${LANG_SPANISH} "Utilice un archivo local"
 LangString SELECT_ZIPFILE ${LANG_ENGLISH} "Select zipfile"
-LangString SELECT_ZIPFILE ${LANG_SPANISH} "Seleccionar archivo de zip"
+LangString SELECT_ZIPFILE ${LANG_SPANISH} "Seleccionar archivo" ; archivo de zip
 !macro locateDataZip Title Label
     Page custom CarbonSMDataPageNSD1
 
