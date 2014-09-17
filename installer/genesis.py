@@ -97,8 +97,17 @@ UNINSTALLER_REG_KEYS = """
     """
 
 def build_installer_script(config_file_uri, out_file_uri):
-    new_file = codecs.open(out_file_uri, 'w', 'utf-8')
-    config_dict = json.load(open(config_file_uri), 'utf-8')
+    config_dict = None
+    for encoding in ['utf-8', 'latin-1']:
+        try:
+            new_file = codecs.open(out_file_uri, 'w', encoding)
+            config_dict = json.load(open(config_file_uri), encoding)
+            break  # if this succeeds, break out of the loop.
+        except UnicodeDecodeError:
+            print 'Encoding %s failed.  Skipping.' % encoding
+
+    if config_dict is None:
+        raise RuntimeError("Can't understand the encoding!")
 
     # check for default values before writing the script.
     sanitized_config = check_defaults(config_dict)
