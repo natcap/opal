@@ -163,7 +163,6 @@ def installer_init(lang_list):
     if len(lang_list) > 1:
         init_string += "!insertmacro MUI_LANGDLL_DISPLAY\n"
 
-    init_string += 'MessageBox MB_OK "${LANG_ENGLISH} ${LANG_SPANISH}"\n'
     init_string += "FunctionEnd\n"
     return init_string
 
