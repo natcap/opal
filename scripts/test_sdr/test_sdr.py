@@ -321,7 +321,7 @@ if __name__ == '__main__':
 
     # run the SDR model on the base scenario (which is the current state of the
     # config dictionary)
-    config['_prepare'] = sdr._prepare(**config)
+#    config['_prepare'] = sdr._prepare(**config)
     sdr.execute(config)
 
     # get the SDR raster from the intermediate folder.  This is our base run.
