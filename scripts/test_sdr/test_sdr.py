@@ -188,8 +188,11 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
             mean_sdr_converted_impact = raster_utils.aggregate_raster_values_uri(
                 converted_landcover, impact_site, 'id').pixel_mean[1]
 
-            flow_accumulation = os.path.join(impact_workspace,
-                'prepared_data', 'flow_accumulation.tif')
+            if '_prepare' in config:
+                flow_accumulation = config['_prepare']['flow_accumulation_uri']
+            else:
+                flow_accumulation = os.path.join(impact_workspace,
+                    'prepared_data', 'flow_accumulation.tif')
             f_a_stats = raster_utils.aggregate_raster_values_uri(
                 flow_accumulation, impact_site, 'id')
             mean_f_a = f_a_stats.pixel_mean[1]
@@ -300,6 +303,7 @@ if __name__ == '__main__':
 
     # run the SDR model on the base scenario (which is the current state of the
     # config dictionary)
+    config['_prepare'] = sdr._prepare(**config)
     sdr.execute(config)
 
     # get the SDR raster from the intermediate folder.  This is our base run.
