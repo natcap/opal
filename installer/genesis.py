@@ -413,7 +413,9 @@ def start_menu_links(options):
 
 def installer(installer_options):
     formatted_string = """
-Section \"Core scripts and data\" SEC01\n
+LangString MAINSECTIONTITLE ${LANG_ENGLISH} "Core Scripts and Data"
+LangString MAINSECTIONTITLE ${LANG_SPANISH} "Programas y datos básicos"
+Section \"$(MAINSECTIONTITLE)\" SEC01\n
   SetShellVarContext all
   SetOutPath "$INSTDIR"
   writeUninstaller "$INSTDIR\${UNINSTALLER_FILENAME}.exe"
