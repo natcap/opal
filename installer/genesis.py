@@ -1,4 +1,5 @@
 """Genesis - NSIS generator"""
+# -*- coding: utf-8 -*-
 
 import json
 import sys
