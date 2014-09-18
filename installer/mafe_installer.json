@@ -102,7 +102,10 @@
         "post_install": "install_data_zips.nsi",
         "sections": [
             {
-                "name": "Carbon Static Data",
+                "name": {
+                    "english": "Carbon Static Data",
+                    "spanish": "Datos estáticos de carbono"
+                },
                 "size": "3700000",
                 "label": {
                     "english": "Select an option to download Carbon static data",
@@ -116,7 +119,10 @@
                 }
             },
             {
-                "name": "Sediment Static Data",
+                "name": {
+                    "english": "Sediment Static Data",
+                    "spanish": "Datos estáticos de sedimentos"
+                },
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download sediment static data",
@@ -130,7 +136,10 @@
                 }
             },
             {
-                "name": "Sediment Static Percent-To-Stream Data",
+                "name": {
+                    "english": "Sediment Static Percent-To-Stream Data",
+                    "spanish": "Datos estáticos de porcentaje de sedimentos en el río"
+                },
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download sediment static percent-to-stream data",
@@ -144,7 +153,10 @@
                 }
             },
             {
-                "name": "Nutrient Static Data",
+                "name": {
+                    "english": "Nutrient Static Data",
+                    "spanish": "Datos estáticos de nutrientes"
+                },
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download nutrient static data.",
@@ -158,7 +170,10 @@
                 }
             },
             {
-                "name": "Nutrient Static Percent-To-Stream Data",
+                "name": {
+                    "english": "Nutrient Static Percent-To-Stream Data",
+                    "spanish": "Datos estáticos de porcentaje de nutrientes en el río"
+                },
                 "size": "7400000",
                 "label": {
                     "english": "Select an option to download nutrient static percent-to-stream data.",
