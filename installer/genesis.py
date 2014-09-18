@@ -229,7 +229,22 @@ ShowInstDetails show
 
 def section(options):
     # ASSUMING ONLY ONE LEVEL OF OPTIONS
-    compact_section_name = options['name'].replace(' ', '')
+
+    def _lang_strings(varname, language_config):
+        """language config should look like:
+            {
+                "english": "some en string",
+                "spanish": "some es string"
+            }"""
+        lang_strings = []
+        for lang_name, lang_string in language_config.iteritems():
+            lang_string = 'LangString %s ${LANG_%s} "%s"' % (varname,
+                lang_name.upper(), lang_string)
+            lang_strings.append(lang_string)
+        return '\n'.join(lang_strings)
+
+    compact_section_name = options['name']['english'].replace(' ', '')
+
     section_type = options['action']['type']
     if section_type.startswith('unzip'):
         file_varname = "%sFile" % os.path.splitext(
@@ -238,8 +253,13 @@ def section(options):
     else:
         strings = []
 
+    # translate the section title
+    section_varname = options['name']['english'].replace(' ', '_').upper()
+    section_label = _lang_strings(section_varname, options['name'])
+
     strings += [
-        'Section \"%s\" %s' % (options['name'], compact_section_name)
+        section_label,
+        'Section \"$(%s)\" %s' % (options['name'], compact_section_name)
     ]
 
     unzip_page_funcs = False
@@ -288,22 +308,9 @@ def section(options):
 
     strings.append('SectionEnd\n')
 
-    def _lang_strings(varname, language_config):
-        """language config should look like:
-            {
-                "english": "some en string",
-                "spanish": "some es string"
-            }"""
-        lang_strings = []
-        for lang_name, lang_string in language_config.iteritems():
-            lang_string = 'LangString %s ${LANG_%s} "%s"' % (varname,
-                lang_name.upper(), lang_string)
-            lang_strings.append(lang_string)
-        return '\n'.join(lang_strings)
-
     if unzip_page_funcs:
-        label_name = options['name'].replace(' ', '_').replace('-', '_').upper()
-        func_name = options['name'].replace(' ', '').replace('-', '') + 'Function'
+        label_name = options['name']['english'].replace(' ', '_').replace('-', '_').upper()
+        func_name = options['name']['english'].replace(' ', '').replace('-', '') + 'Function'
         strings += [
             '',
             _lang_strings(label_name + '_LABEL', options['label']),
