@@ -259,7 +259,7 @@ def section(options):
 
     strings += [
         section_label,
-        'Section \"$(%s)\" %s' % (options['name'], compact_section_name)
+        'Section \"$(%s)\" %s' % (section_varname, compact_section_name)
     ]
 
     unzip_page_funcs = False
