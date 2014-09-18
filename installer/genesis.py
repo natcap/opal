@@ -413,7 +413,7 @@ def start_menu_links(options):
     return (formatted_string, languages)
 
 def installer(installer_options):
-    formatted_string = """
+    formatted_string = unicode("""
 LangString MAINSECTIONTITLE ${LANG_ENGLISH} "Core Scripts and Data"
 LangString MAINSECTIONTITLE ${LANG_SPANISH} "Programas y datos básicos"
 Section \"$(MAINSECTIONTITLE)\" SEC01\n
@@ -423,7 +423,7 @@ Section \"$(MAINSECTIONTITLE)\" SEC01\n
 
   ; Desired files are up one directory and in the given build folder.
   File /r "${BUILD_FOLDER}\*"
-    """
+    """, 'utf-8')
 
     try:
         if installer_options['required']:
