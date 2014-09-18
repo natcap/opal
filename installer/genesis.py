@@ -309,8 +309,8 @@ def section(options):
     strings.append('SectionEnd\n')
 
     if unzip_page_funcs:
-        label_name = options['name'].replace(' ', '_').replace('-', '_').upper()
-        func_name = options['name'].replace(' ', '').replace('-', '') + 'Function'
+        label_name = options['name']['english'].replace(' ', '_').replace('-', '_').upper()
+        func_name = options['name']['english'].replace(' ', '').replace('-', '') + 'Function'
         strings += [
             '',
             _lang_strings(label_name + '_LABEL', options['label']),
