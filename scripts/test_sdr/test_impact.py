@@ -237,6 +237,32 @@ def initial_procedure():
         convert_impact, converted_landcover, gdal.GDT_Float32, LULC_NODATA,
         LULC_PIXEL_SIZE, 'union', dataset_to_align_index=0)
 
+def simplest_possible():
+    workspace_dir = 'test_fragmentation_simple'
+    if os.path.exists(workspace_dir):
+        shutil.rmtree(workspace_dir)
+
+    split_watersheds = _split_watersheds(os.path.join(workspace_dir, 'split_watersheds'))
+
+    # Setting vectorize_op to either True or False does not change output for
+    # either vectorize call.
+    # changing 'intersection' to 'union' changes nothing in either vectorize
+    # call
+
+    # write an lulc for watershed_2
+    watershed_lulc = os.path.join(workspace_dir, 'watershed_lulc.tif')
+    raster_utils.vectorize_datasets([LULC_URI], lambda x: x,
+        watershed_lulc, gdal.GDT_Float32, LULC_NODATA, LULC_PIXEL_SIZE,
+        'intersection', dataset_to_align_index=0, aoi_uri=split_watersheds[2],
+        vectorize_op=False)
+
+    # union OR intersection causes the error.
+    converted_landcover = os.path.join(workspace_dir, 'converted_lulc.tif')
+    raster_utils.vectorize_datasets([watershed_lulc],
+        lambda x: x, converted_landcover, gdal.GDT_Float32, LULC_NODATA,
+        LULC_PIXEL_SIZE, 'intersection', dataset_to_align_index=0,
+        vectorize_op=False)
+
 def all_watersheds():
     workspace_dir = 'test_fragmentation_all_watersheds'
     if os.path.exists(workspace_dir):
@@ -272,4 +298,5 @@ def all_watersheds():
 if __name__ == '__main__':
     initial_procedure()  # this one causes striations
     #all_watersheds()  # this one does not
+    simplest_possible()  # this also causes striations
 
