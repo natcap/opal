@@ -16,6 +16,7 @@ import tempfile
 import logging
 import random
 import shutil
+import multiprocessing
 
 from osgeo import ogr
 from osgeo import gdal
@@ -255,6 +256,23 @@ def graph_it(log_file, out_file):
     plt.plot(t, xr,'g--')  # plot the linear regression line.
     plt.savefig(out_file)
 
+def prepare_scenario(scenario_name, impact_lucode, scenario_workspace,
+        config_dict):
+    config = config_dict.copy()
+
+    # return the converted SDR run.
+    new_lulc_uri = os.path.join(scenario_workspace,
+        '%s_lulc.tif' % scenario_name)
+    static_maps.convert_lulc(base_landuse_uri, impact_lucode,
+        new_lulc_uri)
+    config['landuse_uri'] = new_lulc_uri
+
+    # now, run the model on this (should already have preprocessed inputs)
+    config['workspace_dir'] = os.path.join(scenario_workspace,
+        '%s_converted' % scenario_name)
+    sdr.execute(config)
+
+
 if __name__ == '__main__':
     # WILLAMETTE SAMPLE DATA
     invest_data = 'invest-natcap.invest-3/test/invest-data'
@@ -314,41 +332,69 @@ if __name__ == '__main__':
         ('paved', 19),
         ('bare', 42),
     ]
+    scenario_processes = []
     for scenario_name, impact_lucode in scenarios:
-        # First off, convert the landcover to the target impact type
         scenario_workspace = os.path.join(workspace, scenario_name)
+        # First off, convert the landcover to the target impact type
         if not os.path.exists(scenario_workspace):
             os.makedirs(scenario_workspace)
 
-        new_lulc_uri = os.path.join(scenario_workspace,
-            '%s_lulc.tif' % scenario_name)
-        static_maps.convert_lulc(base_landuse_uri, impact_lucode,
-            new_lulc_uri)
-        config['landuse_uri'] = new_lulc_uri
-
-        # now, run the model on this (should already have preprocessed inputs)
-        config['workspace_dir'] = os.path.join(scenario_workspace,
-            '%s_converted' % scenario_name)
-        sdr.execute(config)
-
         # get the paved SDR raster.  This is our converted run.
-        converted_run = os.path.join(config['workspace_dir'], 'intermediate',
-            'sdr_factor.tif')
+        converted_run = os.path.join(scenario_workspace,
+            '%s_converted' % scenario_name, 'intermediate', 'sdr_factor.tif')
 
+        prepare_scenario(scenario_name, impact_lucode, scenario_workspace,
+            config)
+
+        scenario_process = multiprocessing.Process(target=prepare_scenario,
+            args=(scenario_name, impact_lucode, scenario_workspace, config))
+        scenario_processes.append(scenario_process)
+        scenario_process.start()
+
+    # join on the two executing processes
+    for scenario_p in scenario_processes:
+        scenario_p.join()
+
+    scenario_processes = []
+    static_map_uris = {}
+    for scenario_name, impact_lucode in scenarios:
+        print 'SCENARIO'
         # subtract the two rasters.  This yields the static map, which we'll test.
-        static_map_uri = os.path.join(workspace, 'paved_static_map.tif')
-        static_maps.subtract_rasters(base_run, converted_run, static_map_uri)
+        static_map_uri = os.path.join(workspace,
+            '%s_static_map.tif' % scenario_name)
+        static_map_uris[scenario_name] = static_map_uri
 
+        process = multiprocessing.Process(target=static_maps.subtract_rasters,
+            args=(base_run, converted_run, static_map_uri))
+        scenario_processes.append(process)
+        process.start()
+
+    # join the executing subtraction processes
+    for scenario_p in scenario_processes:
+        scenario_p.join()
+
+    scenario_processes = []
+    for scenario_name, impact_lucode in scenarios:
         # now, run the simulations!
         # Currently running 5 iterations per watershed.
-        test_static_map_quality(
-            base_run=base_run,
-            base_static_map=static_map_uri,
-            landuse_uri=base_landuse_uri,
-            impact_lucode=impact_lucode,
-            watersheds_uri=config['watersheds_uri'],
-            workspace=os.path.join(scenario_workspace, 'simulations'),
-            config=config,
-            num_iterations=5)
+        scenario_workspace = os.path.join(workspace, scenario_name)
+        keyword_args = {
+            'base_run': base_run,
+            'base_static_map': static_map_uris[scenario_name],
+            'landuse_uri': base_landuse_uri,
+            'impact_lucode': impact_lucode,
+            'watersheds_uri': config['watersheds_uri'],
+            'workspace': os.path.join(scenario_workspace, 'simulations'),
+            'config': config,
+            'num_iterations': 5
+        }
+        test_static_map_quality
+        process = multiprocessing.Process(target=test_static_map_quality,
+            kwargs=keyword_args)
+        scenario_processes.append(process)
+        process.start()
 
+    # join the executing subtraction processes
+    for scenario_p in scenario_processes:
+        scenario_p.join()
 
