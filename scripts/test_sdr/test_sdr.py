@@ -17,6 +17,7 @@ import logging
 import random
 import shutil
 import multiprocessing
+import json
 
 from osgeo import ogr
 from osgeo import gdal
@@ -25,8 +26,10 @@ matplotlib.use('Agg')  # for rendering plots without $DISPLAY set.
 import matplotlib.pyplot as plt
 import numpy
 import scipy
+import invest_natcap
 from invest_natcap import raster_utils
 from invest_natcap.sdr import sdr
+import adept
 from adept import static_maps
 from adept import preprocessing
 
@@ -272,6 +275,28 @@ def prepare_scenario(scenario_name, impact_lucode, scenario_workspace,
         '%s_converted' % scenario_name)
     sdr.execute(config)
 
+def write_version_data(workspace, file_uri='pkg_versions.json'):
+    file_uri = os.path.join(workspace, file_uri)
+    version_data = {
+        'invest_natcap': invest_natcap.__version__,
+        'adept': adept.__version__,
+    }
+    json.dump(version_data, open(file_uri, 'w'), sort_keys=True, indent=4)
+
+def _get_version_data(file_uri):
+    return json.load(open(file_uri))
+
+def invest_changed(workspace):
+    """Check if the InVEST version of the target workspace is different from
+    the one currently installed.  Returns a boolean."""
+    invest_version_uri = os.path.join(workspace, 'pkg_versions.json')
+    if not os.path.exists(invest_version_uri):
+        return True  # if no version file, assume InVEST has changed.
+
+    pkg_versions = _get_version_data(invest_version_uri)
+    if pkg_versions['invest_natcap'] == invest_natcap.__version__:
+        return False
+    return True
 
 if __name__ == '__main__':
     # WILLAMETTE SAMPLE DATA
@@ -319,10 +344,12 @@ if __name__ == '__main__':
 #        'ic_0_param': 0.5,
 #    }
 
-    # run the SDR model on the base scenario (which is the current state of the
-    # config dictionary)
-#    config['_prepare'] = sdr._prepare(**config)
-    sdr.execute(config)
+    if invest_changed(config['workspace_dir']):
+        # run the SDR model on the base scenario (which is the current state of the
+        # config dictionary)
+        #config['_prepare'] = sdr._prepare(**config)
+        sdr.execute(config)
+        write_version_data(config['workspace_dir'])
 
     PARALLELIZE = False
 
@@ -346,14 +373,16 @@ if __name__ == '__main__':
             '%s_converted' % scenario_name, 'intermediate', 'sdr_factor.tif')
 
 
-        converted_args = (scenario_name, impact_lucode, scenario_workspace, config)
-        if PARALLELIZE:
-            scenario_process = multiprocessing.Process(target=prepare_scenario,
-                args=converted_args)
-            scenario_processes.append(scenario_process)
-            scenario_process.start()
-        else:
-            prepare_scenario(*converted_args)
+        if invest_changed(scenario_workspace):
+            converted_args = (scenario_name, impact_lucode, scenario_workspace, config)
+            if PARALLELIZE:
+                scenario_process = multiprocessing.Process(target=prepare_scenario,
+                    args=converted_args)
+                scenario_processes.append(scenario_process)
+                scenario_process.start()
+            else:
+                prepare_scenario(*converted_args)
+            write_version_data(scenario_workspace)
 
     # join on the two executing processes
     for scenario_p in scenario_processes:
