@@ -33,6 +33,12 @@ import adept
 from adept import static_maps
 from adept import preprocessing
 
+RASTER_CY_LOGGER = logging.getLogger('raster_cython_utils')
+RASTER_CY_LOGGER.setLevel(logging.WARNING)
+
+RASTER_UTILS_LOGGER = logging.getLogger('raster_utils')
+RASTER_UTILS_LOGGER.setLevel(logging.WARNING)
+
 LOGGER = logging.getLogger('sdr_simulations')
 
 def test_static_map_quality(base_run, base_static_map, landuse_uri,
