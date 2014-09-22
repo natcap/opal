@@ -313,7 +313,7 @@ if __name__ == '__main__':
 #        'watersheds_uri': os.path.join(tool_data, 'watersheds_cuencas.shp'),
 #        'biophysical_table_uri': os.path.join(tool_data,
 #            'Biophysical_Colombia.csv'),
-#        'threshold_flow_accumulation': 1000,
+#        'threshold_flow_accumulation': 100,  # yes, 100!
 #        'k_param': 2,
 #        'sdr_max': 0.8,
 #        'ic_0_param': 0.5,
@@ -323,6 +323,8 @@ if __name__ == '__main__':
     # config dictionary)
 #    config['_prepare'] = sdr._prepare(**config)
     sdr.execute(config)
+
+    PARALLELIZE = False
 
     # get the SDR raster from the intermediate folder.  This is our base run.
     base_run = os.path.join(config['workspace_dir'], 'intermediate',
@@ -343,13 +345,15 @@ if __name__ == '__main__':
         converted_run = os.path.join(scenario_workspace,
             '%s_converted' % scenario_name, 'intermediate', 'sdr_factor.tif')
 
-        prepare_scenario(scenario_name, impact_lucode, scenario_workspace,
-            config)
 
-        scenario_process = multiprocessing.Process(target=prepare_scenario,
-            args=(scenario_name, impact_lucode, scenario_workspace, config))
-        scenario_processes.append(scenario_process)
-        scenario_process.start()
+        converted_args = (scenario_name, impact_lucode, scenario_workspace, config)
+        if PARALLELIZE:
+            scenario_process = multiprocessing.Process(target=prepare_scenario,
+                args=converted_args)
+            scenario_processes.append(scenario_process)
+            scenario_process.start()
+        else:
+            prepare_scenario(*converted_args)
 
     # join on the two executing processes
     for scenario_p in scenario_processes:
@@ -364,10 +368,14 @@ if __name__ == '__main__':
             '%s_static_map.tif' % scenario_name)
         static_map_uris[scenario_name] = static_map_uri
 
-        process = multiprocessing.Process(target=static_maps.subtract_rasters,
-            args=(base_run, converted_run, static_map_uri))
-        scenario_processes.append(process)
-        process.start()
+        subtract_args = (base_run, converted_run, static_map_uri)
+        if PARALLELIZE:
+            process = multiprocessing.Process(target=static_maps.subtract_rasters,
+                args=subtract_args)
+            scenario_processes.append(process)
+            process.start()
+        else:
+            static_maps.subtract_rasters(*subtract_args)
 
     # join the executing subtraction processes
     for scenario_p in scenario_processes:
@@ -388,11 +396,13 @@ if __name__ == '__main__':
             'config': config,
             'num_iterations': 5
         }
-        test_static_map_quality
-        process = multiprocessing.Process(target=test_static_map_quality,
-            kwargs=keyword_args)
-        scenario_processes.append(process)
-        process.start()
+        if PARALLELIZE:
+            process = multiprocessing.Process(target=test_static_map_quality,
+                kwargs=keyword_args)
+            scenario_processes.append(process)
+            process.start()
+        else:
+            test_static_map_quality(**keyword_args)
 
     # join the executing subtraction processes
     for scenario_p in scenario_processes:
