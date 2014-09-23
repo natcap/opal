@@ -18,6 +18,7 @@ import random
 import shutil
 import multiprocessing
 import json
+import tempfile
 
 from osgeo import ogr
 from osgeo import gdal
@@ -349,6 +350,10 @@ if __name__ == '__main__':
 #        'sdr_max': 0.8,
 #        'ic_0_param': 0.5,
 #    }
+
+    # set the tempdir to be within the workspace
+    temp_dir = os.path.join(config['workspace_dir'], 'tmp')
+    tempfile.tempdir = temp_dir
 
     if invest_changed(config['workspace_dir']):
         # run the SDR model on the base scenario (which is the current state of the
