@@ -354,6 +354,8 @@ if __name__ == '__main__':
     # set the tempdir to be within the workspace
     temp_dir = os.path.join(config['workspace_dir'], 'tmp')
     tempfile.tempdir = temp_dir
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
 
     if invest_changed(config['workspace_dir']):
         # run the SDR model on the base scenario (which is the current state of the
