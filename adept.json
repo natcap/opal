@@ -97,7 +97,7 @@
             }, 
             "validateAs": {
                 "type": "OGR",
-                "fieldsExist": ["Ecos_dis", "FACTOR_DE"],
+                "fieldsExist": ["ecosystem", "mit_ratio"],
                 "layers": [
                     {
                         "type": "polygons", 
@@ -108,13 +108,13 @@
                 ],
                 "restrictions": [
                     {
-                        "field": "Ecos_dis",
+                        "field": "ecosystem",
                         "validateAs": {
                             "type": "string"
                         }
                     },
                     {
-                        "field": "FACTOR_DE",
+                        "field": "mit_ratio",
                         "validateAs": {
                             "type": "number"
                         }
@@ -137,7 +137,7 @@
             }, 
             "validateAs": {
                 "type": "OGR",
-                "fieldsExist": ["Pop_center", "pop_cent_5"],
+                "fieldsExist": ["pop_center", "pop_size"],
                 "layers": [
                     {
                         "type": "polygons", 
@@ -148,13 +148,13 @@
                 ],
                 "restrictions": [
                     {
-                        "field": "Pop_center",
+                        "field": "pop_center",
                         "validateAs": {
                             "type": "string"
                         }
                     },
                     {
-                        "field": "pop_cent_5",
+                        "field": "pop_size",
                         "validateAs": {
                             "type": "number"
                         }
@@ -177,7 +177,7 @@
             }, 
             "validateAs": {
                 "type": "OGR",
-                "fieldsExist": ["NOMZH"],
+                "fieldsExist": ["zone"],
                 "layers": [
                     {
                         "type": "polygons", 
@@ -188,7 +188,7 @@
                 ],
                 "restrictions": [
                     {
-                        "field": "NOMZH",
+                        "field": "zone",
                         "validateAs": {
                             "type": "string"
                         }
