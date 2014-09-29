@@ -224,3 +224,13 @@ class PreprocessingTest(GISTest):
 
         preprocessing.split_impacts(impacts, hydrozones, workspace)
 
+    def test_raster_extents_to_vector(self):
+        sample_raster = os.path.join(DATA, 'ecosystems.tif')
+        workspace = os.path.join(os.getcwd(), 'raster_extents_vector')
+        out_vector_uri = os.path.join(workspace, 'raster_extents.shp')
+
+        if os.path.exists(workspace):
+            shutil.rmtree(workspace)
+        os.makedirs(workspace)
+
+        preprocessing.raster_extents_to_vector(sample_raster, out_vector_uri)
