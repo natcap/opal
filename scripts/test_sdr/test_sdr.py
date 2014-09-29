@@ -363,6 +363,28 @@ if __name__ == '__main__':
         config['_prepare'] = sdr._prepare(**config)
         sdr.execute(config)
         write_version_data(config['workspace_dir'])
+    else:
+        _intermediate_dir = os.path.join(config['workspace_dir'],
+            'prepared_data')
+        config['_prepare'] = {
+            'aligned_dem_uri': os.path.join(_intermediate_dir,
+                'aligned_dem.tif'),
+            'aligned_lulc_uri': os.path.join(_intermediate_dir,
+                'aligned_lulc.tif'),
+            'aligned_erosivity_uri': os.path.join(_intermediate_dir,
+                'aligned_erosivity.tif'),
+            'aligned_erodibility_uri': os.path.join(_intermediate_dir,
+                'aligned_erodibility.tif'),
+            'dem_offset_uri': os.path.join(_intermediate_dir,
+                'dem_offset.tif'),
+            'threshold_slope_uri': os.path.join(_intermediate_dir,
+                'threshold_slope.tif'),
+            'flow_accomulation_uri': os.path.join(_intermediate_dir,
+                'flow_accumulation.tif'),
+            'flow_direction_uri': os.path.join(_intermediate_dir,
+                'flow_direction.tif'),
+            'ls_uri': os.path.join(_intermediate_dir, 'ls.tif'),
+        }
 
     PARALLELIZE = False
 
