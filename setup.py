@@ -101,7 +101,7 @@ for vector_base in vectors:
 
 tif_rasters = ['DEM', 'Erodability', 'Erosivity',
     'Plant_available_water_content', 'Precipitation',
-    'Ref_evapotranspiration', 'Soil_depth', 'es_comp_rd',
+    'Ref_evapotranspiration', 'Soil_depth', 'converted_veg_deforest',
     'ecosystems']
 for raster in tif_rasters:
     tool_data.append('data/colombia_tool_data/%s.tif' % raster)
