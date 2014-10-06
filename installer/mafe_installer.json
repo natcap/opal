@@ -96,7 +96,7 @@
                     "english": "${APP_NAME} Documentation",
                     "spanish": "Documentación de ${APP_NAME}"
                 },
-                "target": "MAFE_documentation.docx"
+                "target": "MAFE-T-user-guide.pdf"
             }
         ],
         "post_install": "install_data_zips.nsi",
