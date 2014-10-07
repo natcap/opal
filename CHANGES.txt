@@ -1,0 +1,7 @@
+Changes
+=======
+
+0.5.0 (2013-10-8)
+-----------------
+- Initial public release of MAFE-T distribution.
+
