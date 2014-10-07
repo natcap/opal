@@ -42,6 +42,18 @@ RASTER_UTILS_LOGGER.setLevel(logging.WARNING)
 
 LOGGER = logging.getLogger('sdr_simulations')
 
+def get_last_impact(logfile_uri):
+    """Open the target logfile and take the first two integers of the last
+    line.  Returns a tuple of (watershed_id, impact_number) of the last run of
+    the tool."""
+    logfile = open(logfile_uri, 'r')
+    for line in logfile:
+        pass
+
+    watershed, impact_num = line.split(',')[0:2]
+    logfile.close()
+    return (int(watershed), int(impact_num))
+
 def test_static_map_quality(base_run, base_static_map, landuse_uri,
     impact_lucode, watersheds_uri, workspace, config, num_iterations=5,
     start_ws=0, start_impact=0):
@@ -72,11 +84,14 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
     # Open a logfile so we can incrementally write model data we care about
     logfile_uri = os.path.join(workspace, 'impact_site_simulation.csv')
     logfile = open(logfile_uri, 'a' if start_ws > 0 else 'w')
-    labels = ['ws_id', 'Impact ID', 'Impact Area', 'Static Estimate',
-        'InVEST Estimate', 'Estimate Ratio', 'Mean current SDR under impact',
-        'Mean converted SDR under impact', 'Mean flow accumulation under impact',
-        'Max flow accumulation under impact']
-    logfile.write("%s\n" % ','.join(labels))
+
+    # only write label headers if this is the top row.
+    if start_ws == 0 and start_impact == 0:
+        labels = ['ws_id', 'Impact ID', 'Impact Area', 'Static Estimate',
+            'InVEST Estimate', 'Estimate Ratio', 'Mean current SDR under impact',
+            'Mean converted SDR under impact', 'Mean flow accumulation under impact',
+            'Max flow accumulation under impact']
+        logfile.write("%s\n" % ','.join(labels))
 
     lulc_nodata = raster_utils.get_nodata_from_uri(landuse_uri)
     lulc_pixel_size = raster_utils.get_cell_size_from_uri(landuse_uri)
@@ -377,9 +392,9 @@ if __name__ == '__main__':
                 'aligned_erodibility.tif'),
             'dem_offset_uri': os.path.join(_intermediate_dir,
                 'dem_offset.tif'),
-            'threshold_slope_uri': os.path.join(_intermediate_dir,
-                'threshold_slope.tif'),
-            'flow_accomulation_uri': os.path.join(_intermediate_dir,
+            'thresholded_slope_uri': os.path.join(_intermediate_dir,
+                'thresholded_slope.tif'),
+            'flow_accumulation_uri': os.path.join(_intermediate_dir,
                 'flow_accumulation.tif'),
             'flow_direction_uri': os.path.join(_intermediate_dir,
                 'flow_direction.tif'),
@@ -408,7 +423,7 @@ if __name__ == '__main__':
             '%s_converted' % scenario_name, 'intermediate', 'sdr_factor.tif')
 
 
-        if invest_changed(scenario_workspace):
+        if invest_changed(scenario_workspace) or not os.path.exists(converted_run):
             converted_args = (scenario_name, impact_lucode, scenario_workspace, config)
             if PARALLELIZE:
                 scenario_process = multiprocessing.Process(target=prepare_scenario,
@@ -460,6 +475,22 @@ if __name__ == '__main__':
             'config': config,
             'num_iterations': 20
         }
+
+        simulations_csv = os.path.join(keyword_args['workspace'],
+            'impact_site_simulation.csv')
+        if os.path.exists(simulations_csv):
+            start_ws, start_impact = get_last_impact(simulations_csv)
+            start_ws -= 1
+        else:
+            start_ws = 0
+            start_impact = 0
+        keyword_args['start_ws'] = start_ws
+        keyword_args['start_impact'] = start_impact
+
+        print start_ws
+        print start_impact
+        #raise Exception
+
         if PARALLELIZE:
             process = multiprocessing.Process(target=test_static_map_quality,
                 kwargs=keyword_args)
