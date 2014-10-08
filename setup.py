@@ -446,6 +446,12 @@ class ColombiaDistribution(NSISCommand):
         dest_file = os.path.join(self.nsis_dir, 'MAFE-T-user-guide.pdf')
         shutil.copyfile(source_file, dest_file)
 
+        # copy the natcap icon/logo to the nsis_dir
+        _icon_name = 'natcap_logo.ico'
+        source_file = os.path.join(os.getcwd(), 'windows_build', _icon_name)
+        dest_file = os.path.join(self.nsis_dir, _icon_name)
+        shutil.copyfile(source_file, dest_file)
+
         # copy the zipfiles we need into the right place.
         target_dir = os.path.join(self.build_dir, os.path.basename(self.nsis_dir))
         if not os.path.exists(target_dir):
