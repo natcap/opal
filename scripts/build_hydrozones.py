@@ -27,8 +27,8 @@ def group_by_attribute(in_vector_uri, out_vector_uri):
     out_layer = out_vector.CreateLayer(in_defn.GetName(),
         in_layer.GetSpatialRef(), in_defn.GetGeomType())
 
-    # Create the ZH, NOMZH columns in the output shapefile.
-    for field_name in ['ZH', 'NOMZH']:
+    # Create the ZH, zone columns in the output shapefile.
+    for field_name in ['ZH', 'zone']:
         source_field_index = in_defn.GetFieldIndex(field_name)
         source_field = in_defn.GetFieldDefn(source_field_index)
         new_field = ogr.FieldDefn(source_field.GetName(),
@@ -44,7 +44,7 @@ def group_by_attribute(in_vector_uri, out_vector_uri):
         # get the ZH value
         feature = in_layer.GetFeature(feature_index)
         zh_value = feature.GetField('ZH')
-        nomzh_value = feature.GetField('NOMZH')
+        nomzh_value = feature.GetField('zone')
 
         # if the ZH value is not in hydrozones, add the key and create a new
         # list of geometries.
@@ -71,7 +71,7 @@ def group_by_attribute(in_vector_uri, out_vector_uri):
         # make a new OGR feature for the union polygon.
         feature = ogr.Feature(out_defn)
         feature.SetField('ZH', key)
-        feature.SetField('NOMZH', hydrozone_names[key])
+        feature.SetField('zone', hydrozone_names[key])
 
         # write the new polygon to the new shapefile.
         geom = ogr.CreateGeometryFromWkb(union_polygon.wkb)
