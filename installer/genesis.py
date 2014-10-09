@@ -407,7 +407,7 @@ def start_menu_links(options):
         except KeyError:
             link_icon = ''
 
-        formatted_string += "CreateShortCut \"%s\" \"%s\" \"%s\"\n" % (link_path,
+        formatted_string += "CreateShortCut \"%s\" \"%s\" \"\" \"%s\"\n" % (link_path,
                 link_target, link_icon)
 
     return (formatted_string, languages)
