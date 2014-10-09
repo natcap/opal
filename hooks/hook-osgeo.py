@@ -9,7 +9,9 @@ if is_win:
     # If shapely is present, use that version of GEOS_C.dll
     try:
         import shapely
-        pkg_base, pkg_dir = get_package_paths('Shapely')
-    except ImportError:
+        pkg_base, pkg_dir = get_package_paths('shapely')
+    except ImportError, AssertionError:
+        # ImportError is raised when we can't import shapely
+        # AssertionError is raised when the package path can't be found.
         pkg_base, pkg_dir = get_package_paths('osgeo')
     datas = [(os.path.join(pkg_dir, filename), '') for filename in files]
