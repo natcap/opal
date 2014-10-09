@@ -5,7 +5,7 @@
         "APP_NAME": "MAFE-T",
         "TITLE": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}",
         "SAFE_VERSION": "${APP_NAME}_${VERSION}",
-        "ICON": "natcap_logo.ico",
+        "ICON": "natcap_logo.ico"
     },
     "general": {
         "name": "${APP_NAME}",
