@@ -322,6 +322,12 @@ class NSISCommand(Command):
         print ''
         print 'Starting NSIS installer build'
 
+        # copy the natcap icon/logo to the nsis_dir
+        _icon_name = 'natcap_logo.ico'
+        source_file = os.path.join(os.getcwd(), 'windows_build', _icon_name)
+        dest_file = os.path.join(self.nsis_dir, _icon_name)
+        shutil.copyfile(source_file, dest_file)
+
         if not os.path.abspath(self.genesis_config):
             self.genesis_config = os.path.abspath(self.genesis_config)
 
@@ -444,12 +450,6 @@ class ColombiaDistribution(NSISCommand):
         source_file = os.path.join(os.getcwd(), 'windows_build', 'MAFE',
             'MAFE-T User\'s Guide 2014-10-3 DRAFT.pdf')
         dest_file = os.path.join(self.nsis_dir, 'MAFE-T-user-guide.pdf')
-        shutil.copyfile(source_file, dest_file)
-
-        # copy the natcap icon/logo to the nsis_dir
-        _icon_name = 'natcap_logo.ico'
-        source_file = os.path.join(os.getcwd(), 'windows_build', _icon_name)
-        dest_file = os.path.join(self.nsis_dir, _icon_name)
         shutil.copyfile(source_file, dest_file)
 
         # copy the zipfiles we need into the right place.
