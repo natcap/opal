@@ -117,9 +117,9 @@ total_coll = COLLECT(
     name='total_coll'
 )
 
-# FORCE the usage of the osgeo version of geos_c.dll.
+# FORCE the usage of the shapely version of geos_c.dll.
 if is_win:
-    pkg_base, pkg_dir = get_package_paths('osgeo')
+    pkg_base, pkg_dir = get_package_paths('shapely')
     source_file = os.path.join(pkg_dir, 'geos_c.dll')
     dest_file = os.path.join('dist', 'total_coll', 'geos_c.dll')
     shutil.copyfile(source_file, dest_file)
