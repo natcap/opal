@@ -89,7 +89,7 @@ UNINSTALLER_REG_KEYS = """
     WriteRegStr HKLM "${REGISTRY_PATH}" "UninstallString"      "$INSTDIR\\${UNINSTALLER_FILENAME}.exe"
     WriteRegStr HKLM "${REGISTRY_PATH}" "QuietUninstallString" "$INSTDIR\\${UNINSTALLER_FILENAME}.exe /S"
     WriteRegStr HKLM "${REGISTRY_PATH}" "InstallLocation"      "$INSTDIR"
-    WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayIcon"          "$INSTDIR\\${ICON}"
+    WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayIcon"          "${ICON}"
     WriteRegStr HKLM "${REGISTRY_PATH}" "Publisher"            "${PUBLISHER}"
     WriteRegStr HKLM "${REGISTRY_PATH}" "URLInfoAbout"         "${WEBSITE}"
     WriteRegStr HKLM "${REGISTRY_PATH}" "DisplayVersion"       "${APP_VERSION}"
@@ -407,7 +407,7 @@ def start_menu_links(options):
         except KeyError:
             link_icon = ''
 
-        formatted_string += "CreateShortCut \"%s\" \"%s\" \"%s\"\n" % (link_path,
+        formatted_string += "CreateShortCut \"%s\" \"%s\" \"\" \"%s\"\n" % (link_path,
                 link_target, link_icon)
 
     return (formatted_string, languages)
