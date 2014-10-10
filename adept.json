@@ -37,6 +37,7 @@
             "args_id": "project_footprint_uri", 
             "type": "file", 
             "defaultValue": "", 
+            "required": true,
             "label": {
                 "en": "Project Footprint",
                 "es": "Área de impacto del proyecto"
