@@ -78,6 +78,75 @@ LangString SELECT_ZIPFILE ${LANG_SPANISH} "Seleccionar archivo de zip"
     FunctionEnd
 !macroend
 
+; Taken from http://nsis.sourceforge.net/StrRep
+!define StrRep "!insertmacro StrRep"
+!macro StrRep output string old new
+    Push `${string}`
+    Push `${old}`
+    Push `${new}`
+    !ifdef __UNINSTALL__
+        Call un.StrRep
+    !else
+        Call StrRep
+    !endif
+    Pop ${output}
+!macroend
+ 
+!macro Func_StrRep un
+    Function ${un}StrRep
+        Exch $R2 ;new
+        Exch 1
+        Exch $R1 ;old
+        Exch 2
+        Exch $R0 ;string
+        Push $R3
+        Push $R4
+        Push $R5
+        Push $R6
+        Push $R7
+        Push $R8
+        Push $R9
+ 
+        StrCpy $R3 0
+        StrLen $R4 $R1
+        StrLen $R6 $R0
+        StrLen $R9 $R2
+        loop:
+            StrCpy $R5 $R0 $R4 $R3
+            StrCmp $R5 $R1 found
+            StrCmp $R3 $R6 done
+            IntOp $R3 $R3 + 1 ;move offset by 1 to check the next character
+            Goto loop
+        found:
+            StrCpy $R5 $R0 $R3
+            IntOp $R8 $R3 + $R4
+            StrCpy $R7 $R0 "" $R8
+            StrCpy $R0 $R5$R2$R7
+            StrLen $R6 $R0
+            IntOp $R3 $R3 + $R9 ;move offset by length of the replacement string
+            Goto loop
+        done:
+ 
+        Pop $R9
+        Pop $R8
+        Pop $R7
+        Pop $R6
+        Pop $R5
+        Pop $R4
+        Pop $R3
+        Push $R0
+        Push $R1
+        Pop $R0
+        Pop $R1
+        Pop $R0
+        Pop $R2
+        Exch $R1
+    FunctionEnd
+!macroend
+!insertmacro Func_StrRep ""
+!insertmacro Func_StrRep "un."
+
+
 var Dialog
 var FileField
 var FileLabel
@@ -137,6 +206,7 @@ Function GetZipFile
         MessageBox MB_OK "File must be a zipfile"
         Abort
     ${EndIf}
+
     ${NSD_SetText} $FileField $0
 FunctionEnd
 
@@ -153,8 +223,33 @@ Function CheckRadioButtonState
     EnableWindow $FileField $1
 FunctionEnd
 
+LangString MUST_PROVIDE_ZIPFILE ${LANG_ENGLISH} "You must provide a zipfile"
+LangString MUST_PROVIDE_ZIPFILE ${LANG_SPANISH} "Usted debe proporcionar un archivo zip"
+LangString SELECT_DIFFERENT_FILE ${LANG_ENGLISH} "Could not find the file '__FILE__'.  Please select a different file"
+LangString SELECT_DIFFERENT_FILE ${LANG_SPANISH} "No se pudo encontrar el archivo '__FILE__'.  Por favor, seleccione un archivo diferente"
+LangString MUST_BE_ZIPFILE ${LANG_ENGLISH} "File must be a zipfile (*.zip)"
+LangString MUST_BE_ZIPFILE ${LANG_SPANISH} "El archivo debe ser un archivo zip (*.zip)"
 !macro DataPageLeave FileVar
     ${NSD_GetText} $FileField ${FileVar}
+
+    ; get the enabled state of the local download radio button to determine
+    ; If we need to validate the filename of the archive provided.
+    ${NSD_GetState} $DataLocal $0
+    ${If} $0 == 1
+        ${If} "${FileVar}" == "" 
+            MessageBox MB_OK "$(MUST_PROVIDE_ZIPFILE)"
+            Abort
+        ${ElseIfNot} ${FileExists} ${FileVar}
+            ${StrRep} $0 "$(SELECT_DIFFERENT_FILE)" "__FILE__" "${FileVar}"
+            MessageBox MB_OK "$0"
+        ${Else}
+            ${GetFileExt} ${FileVar} $1
+            ${If} "$1" != "zip"
+                MessageBox MB_OK "$(MUST_BE_ZIPFILE)"
+            ${EndIf}
+        ${EndIf}
+    ${EndIf}
+
 !macroend
 
 !macro DownloadIfEmpty Path DestDir DownloadURL LocalFileName
