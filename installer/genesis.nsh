@@ -153,7 +153,7 @@ var FileLabel
 var FileButton
 var DataDownload
 var DataLocal
-!macro DataPage SectionHandle Title Label
+!macro DataPage SectionHandle Title Label FileVar UseLocalVar
     SectionGetFlags ${SectionHandle} $R0
     IntOp $R0 $R0 & ${SF_SELECTED}
     IntCmp $R0 ${SF_SELECTED} show
@@ -177,7 +177,6 @@ var DataLocal
     pop $DataLocal
 ;    strcpy $DataLocal $0
     ${NSD_OnClick} $DataLocal CheckRadioButtonState
-    ${NSD_SetState} $DataLocal 1
 
     ${NSD_CreateLabel} 5 120 20% 24u "$(SELECT_ZIPFILE)"
     pop $FileLabel
@@ -186,6 +185,7 @@ var DataLocal
 
     ${NSD_CreateFileRequest} 100 120 60% 12u ""
     pop $FileField
+    ${NSD_SetText} $FileField ${FileVar}
 ;    strcpy $FileField $0
 ;    EnableWindow $FileField 0
 
@@ -194,6 +194,19 @@ var DataLocal
 ;    strcpy $FileButton $0
     ${NSD_OnClick} $FileButton GetZipFile
 ;    EnableWindow $FileButton 0
+
+
+    ; Set the default enable state based on the previous radio button state,
+    ; if it exists.
+    ; NOTE: if $UseLocalVar has not yet been used, its value is ""
+    ${If} ${UseLocalVar} == 0
+        ${NSD_SetState} $DataLocal 0
+        ${NSD_SetState} $DataDownload 1
+    ${Else}
+        ${NSD_SetState} $DataLocal 1
+        ${NSD_SetState} $DataDownload 0
+    ${EndIf}
+    call CheckRadioButtonState  ; set the enabled state
 
     nsDialogs::Show
 !macroEnd        
@@ -229,8 +242,9 @@ LangString SELECT_DIFFERENT_FILE ${LANG_ENGLISH} "Could not find the file '__FIL
 LangString SELECT_DIFFERENT_FILE ${LANG_SPANISH} "No se pudo encontrar el archivo '__FILE__'.  Por favor, seleccione un archivo diferente"
 LangString MUST_BE_ZIPFILE ${LANG_ENGLISH} "File must be a zipfile (*.zip)"
 LangString MUST_BE_ZIPFILE ${LANG_SPANISH} "El archivo debe ser un archivo zip (*.zip)"
-!macro DataPageLeave FileVar
+!macro DataPageLeave FileVar UseLocal
     ${NSD_GetText} $FileField ${FileVar}
+    ${NSD_GetState} $DataLocal ${UseLocal}
 
     ; get the enabled state of the local download radio button to determine
     ; If we need to validate the filename of the archive provided.

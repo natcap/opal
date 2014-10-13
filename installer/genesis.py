@@ -248,9 +248,12 @@ def section(options):
 
     section_type = options['action']['type']
     if section_type.startswith('unzip'):
-        file_varname = "%sFile" % os.path.splitext(
+        file_varname = "%s" % os.path.splitext(
             os.path.basename(options['action']['zipfile'].replace('\\', '/')))[0]
-        strings = ['var %s' % file_varname]
+        strings = [
+            'var %sFile' % file_varname,
+            'var %sFromLocal' % file_varname,
+        ]
     else:
         strings = []
 
@@ -316,12 +319,14 @@ def section(options):
             '',
             _lang_strings(label_name + '_LABEL', options['label']),
             'Function %s' % func_name,
-            '    !insertmacro DataPage ${%s} "" "$(%s)"' %
-                (compact_section_name, label_name + '_LABEL'),
+            '    !insertmacro DataPage ${%s} "" "$(%s)" $%sFile $%sFromLocal' %
+                (compact_section_name, label_name + '_LABEL', file_varname,
+                file_varname),
             'FunctionEnd',
             ''
             'Function %s' % func_name + 'Leave',
-            '    !insertmacro DataPageLeave $%s' % file_varname,
+            '    !insertmacro DataPageLeave $%sFile $%sFromLocal' %
+                (file_varname, file_varname),
             'FunctionEnd\n\n'
             ''
         ]
