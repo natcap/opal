@@ -1,6 +1,12 @@
 Changes
 =======
 
+0.5.1 (2013-10-13)
+------------------
+- Added zipfile validation to the MAFE-T installer (Issue 3148)
+- MAFE-T installer now remembers selections when switching pages (Issue 3153)
+- Added validation to MAFE-T UI for the impacts vector (Issue 3149)
+
 0.5.0 (2013-10-8)
 -----------------
 - Initial public release of MAFE-T distribution.
