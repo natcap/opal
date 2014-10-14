@@ -92,6 +92,7 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
             'Mean converted SDR under impact', 'Mean flow accumulation under impact',
             'Max flow accumulation under impact']
         logfile.write("%s\n" % ','.join(labels))
+    logfile.close()
 
     lulc_nodata = raster_utils.get_nodata_from_uri(landuse_uri)
     lulc_pixel_size = raster_utils.get_cell_size_from_uri(landuse_uri)
@@ -187,7 +188,7 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
                 lulc_pixel_size, 'union', dataset_to_align_index=0)
 
             # run the target model on the converted landcover.
-            config['lulc_uri'] = converted_landcover
+            config['landuse_uri'] = converted_landcover
             config['workspace_dir'] = impact_workspace
             sdr.execute(config)
 
@@ -233,8 +234,13 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
                 static_estimate, invest_estimate, export_ratio,
                 mean_sdr_current_impact, mean_sdr_converted_impact, mean_f_a,
                 max_f_a]
+
+            # reopen the file just to write the line, then close the file.
+            # This prevents a situation when the file is accidentally closed in
+            # a long-running process.
+            logfile = open(logfile_uri, 'a')
             logfile.write("%s\n" % ','.join(map(str, values_to_write)))
-    logfile.close()
+            logfile.close()
 
     # create preliminary chart for this set of simulations
     out_png = os.path.join(workspace, 'simulations.png')
