@@ -210,10 +210,10 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
                 base_static_map, impact_site, 'id').total[1]
 
             mean_sdr_current_impact = raster_utils.aggregate_raster_values_uri(
-                landuse_uri, impact_site, 'id').pixel_mean[1]
+                base_run, impact_site, 'id').pixel_mean[1]
 
             mean_sdr_converted_impact = raster_utils.aggregate_raster_values_uri(
-                converted_landcover, impact_site, 'id').pixel_mean[1]
+                sdr_uri, impact_site, 'id').pixel_mean[1]
 
             if '_prepare' in config:
                 flow_accumulation = config['_prepare']['flow_accumulation_uri']
