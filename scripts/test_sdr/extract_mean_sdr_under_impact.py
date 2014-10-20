@@ -12,7 +12,7 @@ def main(simulations_dir, csv_uri, base_sdr_raster):
 
         impacts_glob = os.path.join(ws_dirname, 'random_impact_[0-9]*')
         for impact_dirname in glob.glob(impacts_glob):
-            impact_number = os.path.basename(impact_dirname).split('_')[-1]
+            impact_number = int(os.path.basename(impact_dirname).split('_')[-1])
             impact_shp = os.path.join(impact_dirname, 'impact_%s.shp' %
                 impact_number)
             converted_sdr = os.path.join(impact_dirname, 'intermediate',
@@ -44,7 +44,7 @@ def main(simulations_dir, csv_uri, base_sdr_raster):
             line_data = [ws_id + 1, impact_id,
                 impact_data['mean_current_sdr'],
                 impact_data['mean_converted_sdr']]
-            csv_file.write("%s\n" % ','.join(line_data))
+            csv_file.write("%s\n" % ','.join(map(str, line_data)))
     csv_file.close()
     print 'done!'
 
