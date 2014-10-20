@@ -190,6 +190,8 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
             # run the target model on the converted landcover.
             config['landuse_uri'] = converted_landcover
             config['workspace_dir'] = impact_workspace
+            if '_prepare' in config:
+                del config['_prepare']
             sdr.execute(config)
 
             # get the SDR raster
@@ -210,10 +212,10 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
                 base_static_map, impact_site, 'id').total[1]
 
             mean_sdr_current_impact = raster_utils.aggregate_raster_values_uri(
-                landuse_uri, impact_site, 'id').pixel_mean[1]
+                base_run, impact_site, 'id').pixel_mean[1]
 
             mean_sdr_converted_impact = raster_utils.aggregate_raster_values_uri(
-                converted_landcover, impact_site, 'id').pixel_mean[1]
+                sdr_uri, impact_site, 'id').pixel_mean[1]
 
             if '_prepare' in config:
                 flow_accumulation = config['_prepare']['flow_accumulation_uri']
@@ -326,7 +328,90 @@ def invest_changed(workspace):
         return False
     return True
 
+def test_one_watershed_paved():
+    """Test a single watershed, if possible."""
+    old_workspace = '/colossus/colombia_sdr'
+    base_run = os.path.join(old_workspace, 'base_run', 'intermediate',
+        'sdr_factor.tif')
+    base_static_map = os.path.join(old_workspace, 'paved_static_map.tif')
+    landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
+        'ecosystems.tif')
+    impact_lucode = 19
+    tool_data = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
+    watersheds_uri = os.path.join(tool_data, 'watersheds_cuencas.shp')
+    output_workspace = '/colossus/colombia_sdr_noprepare'
+    config = {
+        'dem_uri': os.path.join(tool_data, 'DEM.tif'),
+        'erosivity_uri': os.path.join(tool_data, 'Erosivity.tif'),
+        'erodibility_uri': os.path.join(tool_data, 'Erodability.tif'),
+        'landuse_uri': landuse_uri,
+        'watersheds_uri': watersheds_uri,
+        'biophysical_table_uri': os.path.join(tool_data,
+            'Biophysical_Colombia.csv'),
+        'threshold_flow_accumulation': 100,  # yes, 100!
+        'k_param': 2,
+        'sdr_max': 0.8,
+        'ic_0_param': 0.5,
+    }
+    num_iterations = 20
+
+    kwargs = {
+        'base_run': base_run,
+        'base_static_map': base_static_map,
+        'landuse_uri': landuse_uri,
+        'impact_lucode': impact_lucode,
+        'watersheds_uri': watersheds_uri,
+        'workspace': output_workspace,
+        'config': config,
+        'num_iterations': num_iterations
+    }
+
+    test_static_map_quality(**kwargs)
+
+def test_one_watershed_bare():
+    """Test a single watershed, if possible."""
+    old_workspace = '/colossus/colombia_sdr'
+    base_run = os.path.join(old_workspace, 'base_run', 'intermediate',
+        'sdr_factor.tif')
+    base_static_map = os.path.join(old_workspace, 'bare_static_map.tif')
+    landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
+        'ecosystems.tif')
+    impact_lucode = 42
+    tool_data = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
+    watersheds_uri = os.path.join(tool_data, 'watersheds_cuencas.shp')
+    output_workspace = '/colossus/colombia_sdr_noprepare_bare'
+    config = {
+        'dem_uri': os.path.join(tool_data, 'DEM.tif'),
+        'erosivity_uri': os.path.join(tool_data, 'Erosivity.tif'),
+        'erodibility_uri': os.path.join(tool_data, 'Erodability.tif'),
+        'landuse_uri': landuse_uri,
+        'watersheds_uri': watersheds_uri,
+        'biophysical_table_uri': os.path.join(tool_data,
+            'Biophysical_Colombia.csv'),
+        'threshold_flow_accumulation': 100,  # yes, 100!
+        'k_param': 2,
+        'sdr_max': 0.8,
+        'ic_0_param': 0.5,
+    }
+    num_iterations = 20
+
+    kwargs = {
+        'base_run': base_run,
+        'base_static_map': base_static_map,
+        'landuse_uri': landuse_uri,
+        'impact_lucode': impact_lucode,
+        'watersheds_uri': watersheds_uri,
+        'workspace': output_workspace,
+        'config': config,
+        'num_iterations': num_iterations
+    }
+
+    test_static_map_quality(**kwargs)
+
 if __name__ == '__main__':
+    test_one_watershed_bare()
+    sys.exit(0)
+
 #    # WILLAMETTE SAMPLE DATA
 #    invest_data = 'invest-natcap.invest-3/test/invest-data'
 #    base_data = os.path.join(invest_data, 'Base_Data')
