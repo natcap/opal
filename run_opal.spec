@@ -56,7 +56,7 @@ json.dump(dist_data, open(dist_version_uri, 'w+'))
 
 total_coll = COLLECT(
     [('dist_version.json', dist_version_uri, 'DATA')],
-    [(json_name, json_name, 'DATA') for (_, json_name) in extra_data_files],
+    [(json_name, json_name, 'DATA') for json_name in extra_data_files],
     opal_analysis.binaries,
     opal_analysis.zipfiles,
     opal_analysis.datas,
