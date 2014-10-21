@@ -48,9 +48,6 @@ opal_exe = EXE(pyz,
 extra_data_files = ['carbon_sm.json', 'sediment_sm.json', 'nutrient_sm.json',
     'generic_sm.json', 'opal.json']
 
-exe_objects = []
-analysis_items = [adept_exe]
-
 # dump the correct version information to the dist_version file.
 dist_data = versioning.build_data()
 dist_data['dist_name'] = 'OPAL'
