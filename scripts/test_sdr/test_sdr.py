@@ -54,7 +54,7 @@ def get_last_impact(logfile_uri):
     logfile.close()
     return (int(watershed), int(impact_num))
 
-def test_static_map_quality(base_run, base_static_map, landuse_uri,
+def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_uri,
     impact_lucode, watersheds_uri, workspace, config, num_iterations=5,
     start_ws=0, start_impact=0):
 # base_run = sed_exp.tif, in the case of the sediment model, run on the base LULC
@@ -90,7 +90,7 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
         labels = ['ws_id', 'Impact ID', 'Impact Area', 'Static Estimate',
             'InVEST Estimate', 'Estimate Ratio', 'Mean current SDR under impact',
             'Mean converted SDR under impact', 'Mean flow accumulation under impact',
-            'Max flow accumulation under impact']
+            'Max flow accumulation under impact', 'Sum (USLE ...)*SDR under impact']
         logfile.write("%s\n" % ','.join(labels))
     logfile.close()
 
@@ -195,8 +195,8 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
             sdr.execute(config)
 
             # get the SDR raster
-            sdr_uri = os.path.join(impact_workspace, 'intermediate',
-                'sdr_factor.tif')
+            sdr_uri = os.path.join(impact_workspace, 'output',
+                'sed_export.tif')
 
             # Aggregate the sediment export from this impact simulation over
             # the target watershed
@@ -217,6 +217,9 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
             mean_sdr_converted_impact = raster_utils.aggregate_raster_values_uri(
                 sdr_uri, impact_site, 'id').pixel_mean[1]
 
+            usle_sum_impact = raster_utils.aggregate_raster_values_uri(
+                usle_static_map, impact_site, 'id').pixel_mean[1]
+
             if '_prepare' in config:
                 flow_accumulation = config['_prepare']['flow_accumulation_uri']
             else:
@@ -235,7 +238,7 @@ def test_static_map_quality(base_run, base_static_map, landuse_uri,
             values_to_write = [watershed_id, run_number, impact_site_area,
                 static_estimate, invest_estimate, export_ratio,
                 mean_sdr_current_impact, mean_sdr_converted_impact, mean_f_a,
-                max_f_a]
+                max_f_a, usle_sum_impact]
 
             # reopen the file just to write the line, then close the file.
             # This prevents a situation when the file is accidentally closed in
@@ -331,8 +334,8 @@ def invest_changed(workspace):
 def test_one_watershed_paved():
     """Test a single watershed, if possible."""
     old_workspace = '/colossus/colombia_sdr'
-    base_run = os.path.join(old_workspace, 'base_run', 'intermediate',
-        'sdr_factor.tif')
+    base_run = os.path.join(old_workspace, 'base_run', 'output',
+        'sed_export.tif')
     base_static_map = os.path.join(old_workspace, 'paved_static_map.tif')
     landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
         'ecosystems.tif')
@@ -371,8 +374,8 @@ def test_one_watershed_paved():
 def test_one_watershed_bare():
     """Test a single watershed, if possible."""
     old_workspace = '/colossus/colombia_sdr'
-    base_run = os.path.join(old_workspace, 'base_run', 'intermediate',
-        'sdr_factor.tif')
+    base_run = os.path.join(old_workspace, 'base_run', 'output',
+        'sed_export.tif')
     base_static_map = os.path.join(old_workspace, 'bare_static_map.tif')
     landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
         'ecosystems.tif')
@@ -408,9 +411,22 @@ def test_one_watershed_bare():
 
     test_static_map_quality(**kwargs)
 
+def create_usle_static_map(usle_current, usle_bare, sdr_current, out_uri):
+    usle_nodata = raster_utils.get_nodata_from_uri(usle_current)
+    usle_pixel_size = raster_utils.get_cell_size_from_uri(usle_current)
+
+    def _calculate(usle_cur, usle_bare, sdr_cur):
+        return numpy.where(usle_cur == usle_nodata, usle_nodata,
+            numpy.multiply(numpy.subtract(usle_bare, usle_current), sdr_cur))
+
+    raster_utils.vectorize_datasets([usle_current, usle_bare, sdr_current],
+        _calculate, dataset_out_uri=out_uri, datatype_out=gdal.GDT_Float32,
+        nodata_out=usle_nodata, pixel_size_out=usle_pixel_size,
+        bounding_box_mode='intersection', vectorize_op=False)
+
 if __name__ == '__main__':
-    test_one_watershed_bare()
-    sys.exit(0)
+#    test_one_watershed_bare()
+#    sys.exit(0)
 
 #    # WILLAMETTE SAMPLE DATA
 #    invest_data = 'invest-natcap.invest-3/test/invest-data'
@@ -495,12 +511,16 @@ if __name__ == '__main__':
     PARALLELIZE = False
 
     # get the SDR raster from the intermediate folder.  This is our base run.
-    base_run = os.path.join(config['workspace_dir'], 'intermediate',
+    base_run = os.path.join(config['workspace_dir'], 'output',
+        'sed_export.tif')
+    base_usle = os.path.join(config['workspace_dir'], 'output',
+        'usle.tif')
+    base_sdr = os.path.join(config['workspace_dir'], 'intermediate',
         'sdr_factor.tif')
 
     scenarios = [
-        ('paved', 19),
-        ('bare', 42),
+        ('paved', 89),
+        ('bare', 301),
     ]
     scenario_processes = []
     for scenario_name, impact_lucode in scenarios:
@@ -511,11 +531,11 @@ if __name__ == '__main__':
 
         # get the paved SDR raster.  This is our converted run.
         converted_run = os.path.join(scenario_workspace,
-            '%s_converted' % scenario_name, 'intermediate', 'sdr_factor.tif')
-
+            '%s_converted' % scenario_name, 'output', 'sed_export.tif')
 
         if invest_changed(scenario_workspace) or not os.path.exists(converted_run):
             converted_args = (scenario_name, impact_lucode, scenario_workspace, config)
+            usle_args = (scenario_name, impact_lucode, scenario_workspace, config)
             if PARALLELIZE:
                 scenario_process = multiprocessing.Process(target=prepare_scenario,
                     args=converted_args)
@@ -536,16 +556,33 @@ if __name__ == '__main__':
         # subtract the two rasters.  This yields the static map, which we'll test.
         static_map_uri = os.path.join(workspace,
             '%s_static_map.tif' % scenario_name)
-        static_map_uris[scenario_name] = static_map_uri
+        usle_map_uri = os.path.join(workspace,
+            '%s_usle_static_map.tif' % scenario_name)
+
+        static_map_uris[scenario_name] = {}
+        static_map_uris[scenario_name]['sed'] = static_map_uri
+        static_map_uris[scenario_name]['usle'] = usle_map_uri
+
+        converted_run = os.path.join(scenario_workspace,
+            '%s_converted' % scenario_name, 'output', 'sed_export.tif')
+        converted_usle_run = os.path.join(scenario_workspace,
+            '%s_converted' % scenario_name, 'output', 'usle.tif')
 
         subtract_args = (base_run, converted_run, static_map_uri)
+        create_usle_args = (base_usle, converted_usle_run, base_sdr, usle_map_uri)
         if PARALLELIZE:
             process = multiprocessing.Process(target=static_maps.subtract_rasters,
                 args=subtract_args)
             scenario_processes.append(process)
             process.start()
+
+            process_2 = multiprocessing.Process(target=create_usle_static_map,
+                args=create_usle_args)
+            scenario_processes.append(process_2)
+            process_2.start()
         else:
             static_maps.subtract_rasters(*subtract_args)
+            static_maps.subtract_rasters(*subtract_usle_args)
 
     # join the executing subtraction processes
     for scenario_p in scenario_processes:
@@ -558,7 +595,8 @@ if __name__ == '__main__':
         scenario_workspace = os.path.join(workspace, scenario_name)
         keyword_args = {
             'base_run': base_run,
-            'base_static_map': static_map_uris[scenario_name],
+            'base_static_map': static_map_uris[scenario_name]['sed'],
+            'usle_static_map': static_map_uris[scenario_name]['usle'],
             'landuse_uri': base_landuse_uri,
             'impact_lucode': impact_lucode,
             'watersheds_uri': config['watersheds_uri'],
