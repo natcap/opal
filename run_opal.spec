@@ -60,7 +60,6 @@ total_coll = COLLECT(
     opal_analysis.binaries,
     opal_analysis.zipfiles,
     opal_analysis.datas,
-    *analysis_items,
     strip=None,
     upx=False,
     exclude_binaries=True,
