@@ -582,7 +582,7 @@ if __name__ == '__main__':
             process_2.start()
         else:
             static_maps.subtract_rasters(*subtract_args)
-            static_maps.subtract_rasters(*subtract_usle_args)
+            static_maps.subtract_rasters(*create_usle_args)
 
     # join the executing subtraction processes
     for scenario_p in scenario_processes:
