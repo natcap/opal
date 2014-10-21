@@ -31,27 +31,27 @@
         "start_menu": [
             {
                 "name": "${APP_NAME}",
-                "target": "opal_exe.exe",
+                "target": "run_opal.bat",
                 "icon": "${icon}"
             },
             {
                 "name": "${APP_NAME} Carbon Static Map Generator",
-                "target": "carbon_sm.exe",
+                "target": "run_carbon_sm.bat",
                 "icon": "${icon}"
             },
             {
                 "name": "${APP_NAME} Sediment Static Map Generator",
-                "target": "sediment_sm.exe",
+                "target": "run_sediment_sm.bat",
                 "icon": "${icon}"
             },
             {
                 "name": "${APP_NAME} Nutrient Static Map Generator",
-                "target": "nutrient_sm.exe",
+                "target": "run_nutrient_sm.bat",
                 "icon": "${icon}"
             },
             {
                 "name": "${APP_NAME} Custom Static Map Calculator",
-                "target": "generic_sm.exe",
+                "target": "run_generic_sm.bat",
                 "icon": "${icon}"
             },
             {
