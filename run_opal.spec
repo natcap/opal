@@ -85,7 +85,7 @@ if is_win:
 
         # write the contents of the launch batfile.
         batfile = open(batfile_name, 'w')
-        batfile.write('run_opal.exe %s\n' % json_filename)
+        batfile.write('opal_exe.exe %s\n' % json_filename)
         batfile.close()
 
 
