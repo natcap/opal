@@ -508,7 +508,7 @@ if __name__ == '__main__':
             'ls_uri': os.path.join(_intermediate_dir, 'ls.tif'),
         }
 
-    PARALLELIZE = False
+    PARALLELIZE = True
 
     # get the SDR raster from the intermediate folder.  This is our base run.
     base_run = os.path.join(config['workspace_dir'], 'output',
@@ -552,6 +552,7 @@ if __name__ == '__main__':
     scenario_processes = []
     static_map_uris = {}
     for scenario_name, impact_lucode in scenarios:
+        scenario_workspace = os.path.join(workspace, scenario_name)
         print 'SCENARIO'
         # subtract the two rasters.  This yields the static map, which we'll test.
         static_map_uri = os.path.join(workspace,
