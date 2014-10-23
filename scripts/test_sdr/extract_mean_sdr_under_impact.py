@@ -49,7 +49,10 @@ def main(simulations_dir, csv_uri, base_sdr_raster):
     print 'done!'
 
 if __name__ == '__main__':
-    sdr_raster = '/colossus/colombia_sdr/paved/paved_converted/intermediate/sdr_factor.tif'
-    simulations_dir = '/colossus/colombia_sdr/paved/simulations'
-    csv_file = os.path.join(os.getcwd(), 'extracted_sdr_values.csv')
-    main(simulations_dir, csv_file, sdr_raster)
+    for simulation in ['paved', 'bare']:
+        sdr_raster = '/colossus/colombia_sdr/%s/%s_converted/intermediate/sdr_factor.tif' % (simulation, simulation)
+        simulations_dir = '/colossus/colombia_sdr/%s/simulations' % simulation
+        csv_file = os.path.join(os.getcwd(), '%s_extracted_sdr_values.csv') % simulation
+        main(simulations_dir, csv_file, sdr_raster)
+
+
