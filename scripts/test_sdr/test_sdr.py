@@ -47,8 +47,14 @@ def get_last_impact(logfile_uri):
     line.  Returns a tuple of (watershed_id, impact_number) of the last run of
     the tool."""
     logfile = open(logfile_uri, 'r')
+    lines_in_logfile = 0
     for line in logfile:
-        pass
+        lines_in_logfile += 1
+
+    # if we only have the title row, don't analyze for the ws, impact
+    if lines_in_logfile == 1:
+        logfile.close()
+        return (1, 0)
 
     watershed, impact_num = line.split(',')[0:2]
     logfile.close()
@@ -417,7 +423,7 @@ def create_usle_static_map(usle_current, usle_bare, sdr_current, out_uri):
 
     def _calculate(usle_cur, usle_bare, sdr_cur):
         return numpy.where(usle_cur == usle_nodata, usle_nodata,
-            numpy.multiply(numpy.subtract(usle_bare, usle_current), sdr_cur))
+            numpy.multiply(numpy.subtract(usle_bare, usle_cur), sdr_cur))
 
     raster_utils.vectorize_datasets([usle_current, usle_bare, sdr_current],
         _calculate, dataset_out_uri=out_uri, datatype_out=gdal.GDT_Float32,
