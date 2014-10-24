@@ -201,8 +201,8 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
             sdr.execute(config)
 
             # get the SDR raster
-            sdr_uri = os.path.join(impact_workspace, 'output',
-                'sed_export.tif')
+            sdr_uri = os.path.join(impact_workspace, 'intermediate',
+                'sdr_factor.tif')
 
             # Aggregate the sediment export from this impact simulation over
             # the target watershed
@@ -601,7 +601,7 @@ if __name__ == '__main__':
         # Currently running 5 iterations per watershed.
         scenario_workspace = os.path.join(workspace, scenario_name)
         keyword_args = {
-            'base_run': base_run,
+            'base_run': base_sdr,
             'base_static_map': static_map_uris[scenario_name]['sed'],
             'usle_static_map': static_map_uris[scenario_name]['usle'],
             'landuse_uri': base_landuse_uri,
