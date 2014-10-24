@@ -224,7 +224,7 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
                 sdr_uri, impact_site, 'id').pixel_mean[1]
 
             usle_sum_impact = raster_utils.aggregate_raster_values_uri(
-                usle_static_map, impact_site, 'id').pixel_mean[1]
+                usle_static_map, impact_site, 'id').total[1]
 
             if '_prepare' in config:
                 flow_accumulation = config['_prepare']['flow_accumulation_uri']
