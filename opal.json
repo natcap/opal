@@ -333,16 +333,49 @@
         {
             "id": "do_carbon",
             "args_id": "do_carbon",
-            "type": "checkbox",
-            "defaultValue": true,
+            "type": "container",
+            "collapsible": true,
+            "defaultValue": false,
             "label": {
                 "en": "Calculate impacts/offsets to carbon",
                 "es": "Calcular impactos/compensación por carbono"
             },
-            "helpText": {
-                "en": "Select whether the tool should include Carbon storage in impact and offset analysis.",
-                "es": "Seleccionar si la herramienta debe incluir almacenamiento de carbono en el análisis de impacto y compensación."
-            }
+            "elements": [
+                {
+                    "id": "carbon_mitigation_ratio",
+                    "args_id": "carbon_mitigation_ratio",
+                    "label": {
+                        "en": "Carbon mitigation ratio",
+                        "es": "DEFINE"
+                    },
+                    "type": "text",
+                    "defaultValue": 1.0
+                },
+                {
+                    "id": "carbon_static_maps", 
+                    "args_id": "carbon_static_maps",
+                    "type": "folder", 
+                    "defaultValue": "", 
+                    "required": false,
+                    "hideable": true,
+                    "label": {
+                        "en": "Use Custom Carbon Static Maps", 
+                        "es": "Usar mapas propios de carbono almacenado"
+                    }, 
+                    "helpText": {
+                        "en": "A folder with carbon static maps. These maps can be created using the tool's carbon static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_protection_static_map.tif</li></ul>", 
+                        "es": "Carpeta con mapas de carbono almacenado. Estos mapas pueden ser creados usando el generador de mapas de carbono almacenado de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_protection_static_map.tif</li></ul>"
+                    }, 
+                    "validateAs": {
+                        "type": "folder", 
+                        "contains": [
+                            "carbon_bare_static_map.tif",
+                            "carbon_paved_static_map.tif",
+                            "carbon_protection_static_map.tif"
+                        ]
+                    }
+                }
+            ]
         },
         {
             "id": "do_nutrient",
