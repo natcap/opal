@@ -8,6 +8,7 @@ from invest_natcap.testing import GISTest
 import adept.i18n
 from adept import adept_core
 from adept import analysis
+from adept import offsets
 
 DATA = os.path.join(os.getcwd(), '..', 'data', 'colombia_tool_data')
 TEST_DATA = os.path.join(os.getcwd(), '..', 'data', 'colombia_testing')
@@ -57,11 +58,14 @@ class AdeptTest(GISTest):
             'ecosystems_map_uri': os.path.join(DATA,
                 'ecosys_dis_nat_comp_fac.shp'),
             'search_areas_uri': os.path.join(DATA, 'Hydrographic_subzones.shp'),
-            'threat_map': os.path.join(DATA, 'DEM.tif'),
-            'avoidance_areas': os.path.join(DATA, 'sample_aoi.shp'),
+#            'threat_map': os.path.join(DATA, 'DEM.tif'),
+#            'avoidance_areas': os.path.join(DATA, 'sample_aoi.shp'),
             'data_dir': '..',
             'custom_servicesheds': 'global',
-            'offset_scheme': 2,
+            'offset_scheme': offsets.OFFSET_SCHEME_BIODIV,  # replicate MAFE
+            'carbon_mitigation_ratio': 1.5,
+            'nutrient_mitigation_ratio': 2.0,
+            'sediment_mitigation_ratio': 3.0,
         }
         adept_core.execute(args)
 
