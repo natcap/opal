@@ -130,7 +130,6 @@
         {
             "id": "servicesheds_map", 
             "args_id": "servicesheds_uri",
-            "hideable": true, 
             "type": "file", 
             "label": {
                 "en": "Use custom servicesheds", 
