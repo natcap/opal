@@ -22,6 +22,42 @@ class MultilingualRunner(execution.PythonRunner):
         adept.i18n.language.set(palisades_lang)
         execution.PythonRunner.start(self)
 
+def setup_opal_callbacks(ui_obj):
+    servicesheds_elem = ui_obj.find_element('servicesheds_map')
+    sediment_cb_elem = ui_obj.find_element('do_sediment')
+    nutrient_cb_elem = ui_obj.find_element('do_nutrient')
+    custom_cb_elem = ui_obj.find_element('do_custom')
+    custom_ssheds_elem = ui_obj.find_element('custom_es_input_type')
+
+    # callback should be called when the collapsible container's collapsed
+    # signal is triggered.
+    def _require_servicesheds(value=None):
+        print 'require_servicesheds value=%s' % value
+        sed_is_checked = sediment_cb_elem.value()
+        nut_is_checked = nutrient_cb_elem.value()
+        custom_is_checked = custom_cb_elem.value()
+
+        require_ssheds = False
+        if sed_is_checked or nut_is_checked:
+            require_ssheds = True
+        elif custom_is_checked:
+            ssheds_type = custom_ssheds_elem.value()
+            require_ssheds = ssheds_type == 'hydrological'
+
+        servicesheds_elem.set_conditionally_required(require_ssheds)
+        servicesheds_elem.validate()
+
+        print 'is required: %s' % servicesheds_elem.is_required()
+        print 'is cond. required: %s' % servicesheds_elem._conditionally_required
+        print 'sheds value: %s' % custom_ssheds_elem.value()
+
+    sediment_cb_elem.toggled.register(_require_servicesheds)
+    nutrient_cb_elem.toggled.register(_require_servicesheds)
+    custom_cb_elem.toggled.register(_require_servicesheds)
+    custom_ssheds_elem.value_changed.register(_require_servicesheds)
+    _require_servicesheds()  # initialize the requirement state
+    servicesheds_elem.validate()
+
 if __name__ == '__main__':
     args_parser = argparse.ArgumentParser(
         description='Fire up the OPAL (or derivative) UI.')
@@ -52,6 +88,9 @@ if __name__ == '__main__':
     # for callbacks.
     ui = elements.Application(args.json_config,
         palisades.locate_dist_config()['lang'])
+    if os.path.basename(args.json_config) == 'opal.json':
+        setup_opal_callbacks(ui._window)
+
     ui._window.set_runner(MultilingualRunner)
     gui_app.set_splash_message(palisades.SPLASH_MSG_GUI)
     gui_app.add_window(ui._window)
