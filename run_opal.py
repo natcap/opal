@@ -1,12 +1,16 @@
 import sys
 import os
 import argparse
+import logging
 
 import palisades
 import palisades.i18n
 from palisades import execution
 from palisades import elements
 import adept.i18n
+
+PALISADES_LOGGER = logging.getLogger('palisades')
+PALISADES_LOGGER.setLevel(logging.INFO)
 
 class MultilingualRunner(execution.PythonRunner):
     def start(self):
