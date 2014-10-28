@@ -5,6 +5,7 @@ import argparse
 import palisades
 import palisades.i18n
 from palisades import execution
+from palisades import elements
 import adept.i18n
 
 class MultilingualRunner(execution.PythonRunner):
@@ -35,4 +36,22 @@ if __name__ == '__main__':
         splash = os.path.join(os.getcwd(), 'windows_build', 'OPAL.png')
     print 'splash image: %s' % splash
 
-    palisades.launch(args.json_config, splash, MultilingualRunner)
+    # use palisades function to locate the config in a couple of places.
+    found_json = palisades.locate_config(args.json_config)
+
+    # set up the palisades gui object and initialize the splash screen
+    gui_app = palisades.gui.get_application()
+    gui_app.show_splash(splash)
+    gui_app.set_splash_message(palisades.SPLASH_MSG_CORE_APP)
+
+    # create the core Application instance so that I can access its elements
+    # for callbacks.
+    ui = elements.Application(args.json_config,
+        palisades.locate_dist_config()['lang'])
+    ui._window.set_runner(MultilingualRunner)
+    gui_app.set_splash_message(palisades.SPLASH_MSG_GUI)
+    gui_app.add_window(ui._window)
+
+    # start the interactive application
+    gui_app.execute()
+
