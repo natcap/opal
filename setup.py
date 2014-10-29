@@ -27,8 +27,7 @@ if palisades.__version__ == 'remotes/origin/HEAD':
 py2exe_options = {}
 
 CMD_CLASSES = {}
-DATA_FILES = [('.', ['adept.json',
-                        'msvcp90.dll'])]
+DATA_FILES = [('.', ['adept.json', 'opal.json', 'msvcp90.dll'])]
 
 # Use the determined virtualenv site-packages path to add all files in the
 # IUI resources directory to our setup.py data files.
@@ -468,6 +467,10 @@ class ColombiaDistribution(NSISCommand):
         mafe_splash_dest = os.path.join(self.nsis_dir, 'splash.png')
         print 'Copying %s -> %s' % (mafe_splash_src, mafe_splash_dest)
         shutil.copyfile(mafe_splash_src, mafe_splash_dest)
+
+        mafe_json_src = os.path.join(os.getcwd(), 'adept.json')
+        mafe_json_dest = os.path.join(self.nsis_dir, 'opal.json')
+        shutil.copyfile(mafe_json_src, mafe_json_dest)
 
         for filename in ['tool_data.zip']:
             source_file = os.path.join('dist', filename)

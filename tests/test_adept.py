@@ -43,6 +43,28 @@ class AdeptTest(GISTest):
         }
         adept_core.execute(args)
 
+    def test_smoke_opal(self):
+        self.workspace += 'opal'
+        if os.path.exists(self.workspace):
+            shutil.rmtree(self.workspace)
+
+        args = {
+            'workspace_dir': self.workspace,
+            'project_footprint_uri': os.path.join(DATA, ('Example permitting'
+                ' footprints'), 'Example_mining_projects.shp'),
+            'impact_type': 'Road/Paved',
+            'area_of_influence_uri': os.path.join(DATA, 'sample_aoi.shp'),
+            'ecosystems_map_uri': os.path.join(DATA,
+                'ecosys_dis_nat_comp_fac.shp'),
+            'search_areas_uri': os.path.join(DATA, 'Hydrographic_subzones.shp'),
+            'threat_map': os.path.join(DATA, 'DEM.tif'),
+            'avoidance_areas': os.path.join(DATA, 'sample_aoi.shp'),
+            'data_dir': '..',
+            'custom_servicesheds': 'global',
+            'offset_scheme': 2,
+        }
+        adept_core.execute(args)
+
     def test_smoke_es(self):
         adept.i18n.language.set('es')
         if os.path.exists(self.workspace):
