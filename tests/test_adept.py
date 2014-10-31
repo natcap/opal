@@ -66,7 +66,7 @@ class AdeptTest(GISTest):
             'carbon_mitigation_ratio': 1.5,
             'nutrient_mitigation_ratio': 2.0,
             'sediment_mitigation_ratio': 3.0,
-            'include_lci': True,
+            'include_lci': False,
         }
         adept_core.execute(args)
 
