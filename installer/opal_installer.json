@@ -5,7 +5,12 @@
         "APP_NAME": "OPAL",
         "TITLE": "${APP_NAME} ${VERSION} ${APP_ARCHITECTURE}",
         "SAFE_VERSION": "${APP_NAME}_${VERSION}",
-        "ICON": "$INSTDIR\\natcap_logo.ico"
+        "ICON": "$INSTDIR\\natcap_logo.ico",
+        "MUI_WELCOMEFINISHPAGE_BITMAP": "opal_images\\OPAL-vertical.bmp",
+        "MUI_UNWELCOMEFINISHPAGE_BITMAP": "opal_images\\OPAL-vertical.bmp",
+        "MUI_HEADERIMAGE_BITMAP": "opal_images\\OPAL-header-banner.bmp",
+        "MUI_UNHEADERIMAGE_BITMAP": "opal_images\\OPAL-header-banner.bmp",
+        "MUI_UNICON": "${NSISDIR}\\Contrib\\Graphics\\Icons\\orange-uninstall.ico"
     },
     "general": {
         "name": "${APP_NAME}",
