@@ -211,7 +211,7 @@ SetCompressorDictSize 64
 
 ; MUI 1.67 compatible macro settings------
 ; Installer settings.
-!include "MUI.nsh"
+!include "MUI2.nsh"
 !include "LogicLib.nsh"
 !include "x64.nsh"
 !include "FileFunc.nsh"
