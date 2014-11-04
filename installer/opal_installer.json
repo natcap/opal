@@ -11,6 +11,7 @@
         "MUI_HEADERIMAGE": "",
         "MUI_HEADERIMAGE_BITMAP": "opal_images\\OPAL-header-banner.bmp",
         "MUI_UNHEADERIMAGE_BITMAP": "opal_images\\OPAL-header-banner.bmp",
+        "MUI_ICON": "opal_images\\opal-logo.ico",
         "MUI_UNICON": "${NSISDIR}\\Contrib\\Graphics\\Icons\\orange-uninstall.ico"
     },
     "general": {
@@ -33,7 +34,7 @@
         "assert_arch_is_compatible": true,
         "install_log": "install_log.txt",
         "license": "..\\LICENSE.TXT",
-        "icon": "installer_icon.png",
+        "icon": "opal_images\\opal-logo.ico",
         "start_menu": [
             {
                 "name": "${APP_NAME}",
