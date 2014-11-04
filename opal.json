@@ -90,7 +90,6 @@
         {
             "id": "ecosystems_map", 
             "args_id": "ecosystems_map_uri",
-            "hideable": true, 
             "type": "file", 
             "label": {
                 "en": "Use custom natural ecosystems map", 
@@ -169,7 +168,6 @@
         {
             "id": "search_areas_map", 
             "args_id": "search_areas_uri",
-            "hideable": true, 
             "type": "file", 
             "label": {
                 "en": "Use custom search areas", 
@@ -355,11 +353,10 @@
                     "args_id": "carbon_static_maps",
                     "type": "folder", 
                     "defaultValue": "", 
-                    "required": false,
-                    "hideable": true,
+                    "required": true,
                     "label": {
-                        "en": "Use Custom Carbon Static Maps", 
-                        "es": "Usar mapas propios de carbono almacenado"
+                        "en": "Carbon Static Maps", 
+                        "es": "Mapas propios de carbono almacenado"
                     }, 
                     "helpText": {
                         "en": "A folder with carbon static maps. These maps can be created using the tool's carbon static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_future_static_map.tif</li></ul>", 
@@ -402,10 +399,9 @@
                     "args_id": "nutrient_static_maps",
                     "type": "folder", 
                     "defaultValue": "", 
-                    "required": false,
-                    "hideable": true,
+                    "required": true,
                     "label": {
-                        "en": "Use Custom Nutrient Static Maps", 
+                        "en": "Nutrient Static Maps", 
                         "es": "Usar mapas propios de nutrientes"
                     }, 
                     "helpText": {
@@ -452,10 +448,9 @@
                     "args_id": "sediment_static_maps",
                     "type": "folder", 
                     "defaultValue": "", 
-                    "required": false,
-                    "hideable": true,
+                    "required": true,
                     "label": {
-                        "en": "Use Custom Sediment Static Maps", 
+                        "en": "Sediment Static Maps", 
                         "es": "Usar mapas propios de sedimentos"
                     }, 
                     "helpText": {
@@ -502,10 +497,9 @@
                     "args_id": "custom_static_maps",
                     "type": "folder", 
                     "defaultValue": "", 
-                    "required": false,
-                    "hideable": true,
+                    "required": true,
                     "label": {
-                        "en": "Use Custom Ecosystem Service Static Maps", 
+                        "en": "Custom Ecosystem Service Static Maps", 
                         "es": "Usar mapas propios de otros servicios ecosistémicos"
                     }, 
                     "helpText": {
