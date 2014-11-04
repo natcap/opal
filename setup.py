@@ -128,7 +128,13 @@ class ToolDataColombia(Command):
         for tool_data_file in tool_data:
             new_uri = os.path.join(tool_data_dir,
                     os.path.basename(tool_data_file))
+
             if tool_data_file.endswith('.tif'):
+                tif_basename = os.path.basename(tool_data_file)
+                if 'protection' in tif_basename:
+                    tif_basename = tif_basename.replace('protection', 'future')
+                    new_uri = os.path.join(tool_data_dir, tif_basename)
+
                 print 'Uncompressing %s -> %s' % (tool_data_file, new_uri)
                 preprocessing.recompress_gtiff(tool_data_file, new_uri, 'NONE')
             else:
@@ -237,6 +243,10 @@ class SampleDataCommand(Command):
                 map_name = '%s_%s_static_map_lzw.tif' % (service, scenario)
                 new_map_name = map_name.replace('_lzw', '')
                 src_static_map = os.path.join(static_maps_dir, map_name)
+
+                # rename the sample protection static maps to 'future'
+                if scenario == 'protection':
+                    new_map_name = new_map_name.replace(scenario, 'future')
                 dst_static_map = os.path.join(service_out_dir, new_map_name)
 
                 print 'Clipping %s' % new_map_name 
