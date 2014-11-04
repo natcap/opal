@@ -125,6 +125,25 @@
             }
         },
         {
+            "args_id": "future_type", 
+            "id": "future_type",
+            "returns": {"type": "strings"}, 
+            "defaultValue": 0, 
+            "label": {
+                "en": "Future scenario type", 
+                "es": "FILL IN"
+            }, 
+            "type": "dropdown", 
+            "options": [
+                "protection",
+                "restoration"
+            ],
+            "helpText": {
+                "en": "Select the type of future landcover scenario you are using.",
+                "es": "FILL IN"
+            }
+        }, 
+        {
             "args_id": "do_biophysical",
             "returns": true,
             "type": "hidden"
