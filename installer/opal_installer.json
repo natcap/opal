@@ -8,6 +8,7 @@
         "ICON": "$INSTDIR\\natcap_logo.ico",
         "MUI_WELCOMEFINISHPAGE_BITMAP": "opal_images\\OPAL-vertical.bmp",
         "MUI_UNWELCOMEFINISHPAGE_BITMAP": "opal_images\\OPAL-vertical.bmp",
+        "MUI_HEADERIMAGE": "",
         "MUI_HEADERIMAGE_BITMAP": "opal_images\\OPAL-header-banner.bmp",
         "MUI_UNHEADERIMAGE_BITMAP": "opal_images\\OPAL-header-banner.bmp",
         "MUI_UNICON": "${NSISDIR}\\Contrib\\Graphics\\Icons\\orange-uninstall.ico"
