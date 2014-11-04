@@ -51,8 +51,8 @@
         {
             "args_id": "fut_landuse_uri", 
             "helpText": {
-                "en": "Location of the landcover map for the future (protection) scenario.", 
-                "es": "Ubicación del mapa de uso del suelo para el escenario futuro (protección)"
+                "en": "Location of the landcover map for the future (protection/restoration) scenario.", 
+                "es": "Ubicación del mapa de uso del suelo para el escenario futuro (protección o restauración)"
             }, 
             "id": "cur_lulc_raster", 
             "label": {

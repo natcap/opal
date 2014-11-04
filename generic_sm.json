@@ -102,12 +102,12 @@
             }
         }, 
         {
-            "args_id": "protection_uri", 
+            "args_id": "future_uri", 
             "helpText": {
-                "en": "Location of the raster for the protection scenario's service values.", 
+                "en": "Location of the raster for the future scenario's service values.", 
                 "es": "Ubicación del raster con los valores de servicios del escenario de pavimento"
             }, 
-            "id": "protection_uri", 
+            "id": "future_uri", 
             "label": {
                 "en": "Protection raster", 
                 "es": "Raster de protección"
