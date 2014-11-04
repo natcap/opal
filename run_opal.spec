@@ -28,6 +28,7 @@ pyz = PYZ(opal_analysis.pure)
 # produce one application per operation mode: a console application and a
 # non-console application. The non-console application should be called from
 # the start menu.
+OPAL_EXES = []
 for console in [True, False]:
     if console is True:
         console_str = '_debug'
@@ -51,6 +52,7 @@ for console in [True, False]:
               upx=False,  # says UPX is not available
               append_pkg=True,
               console=console)
+    OPAL_EXES.append(opal_exe)
 
 extra_data_files = ['carbon_sm.json', 'sediment_sm.json', 'nutrient_sm.json',
     'generic_sm.json', 'opal.json']
@@ -67,7 +69,7 @@ total_coll = COLLECT(
     opal_analysis.binaries,
     opal_analysis.zipfiles,
     opal_analysis.datas,
-    opal_exe,
+    *OPAL_EXES,
     strip=None,
     upx=False,
     exclude_binaries=True,
