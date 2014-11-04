@@ -63,10 +63,12 @@ class AdeptTest(GISTest):
             'data_dir': '..',
             'custom_servicesheds': 'global',
             'offset_scheme': offsets.OFFSET_SCHEME_BIODIV,  # replicate MAFE
+#            'offset_scheme': offsets.OFFSET_SCHEME_BIO_ES,
             'carbon_mitigation_ratio': 1.5,
             'nutrient_mitigation_ratio': 2.0,
             'sediment_mitigation_ratio': 3.0,
             'include_lci': False,
+            'prop_offset': 1000,
         }
         adept_core.execute(args)
 
