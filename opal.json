@@ -571,6 +571,16 @@
             }
         },
         {
+            "id": "prop_offset",
+            "args_id": "prop_offset",
+            "label": {
+                "en": "Proportion of (impacts * mitigation ratio) to offset",
+                "es": "DEFINE"
+            },
+            "type": "text",
+            "defaultValue": 1.0
+        },
+        {
             "type": "hidden",
             "defaultValue": ".",
             "args_id": "data_dir"
