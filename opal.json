@@ -91,8 +91,9 @@
             "id": "ecosystems_map", 
             "args_id": "ecosystems_map_uri",
             "type": "file", 
+            "required": true,
             "label": {
-                "en": "Use custom natural ecosystems map", 
+                "en": "Natural ecosystems map", 
                 "es": "Usar un mapa propio de ecosistemas naturales"
             }, 
             "validateAs": {
@@ -130,8 +131,9 @@
             "id": "servicesheds_map", 
             "args_id": "servicesheds_uri",
             "type": "file", 
+            "required": true,
             "label": {
-                "en": "Use custom servicesheds", 
+                "en": "Custom servicesheds", 
                 "es": "Usar un mapa propio de 'servicesheds'"
             }, 
             "validateAs": {
@@ -169,8 +171,9 @@
             "id": "search_areas_map", 
             "args_id": "search_areas_uri",
             "type": "file", 
+            "required": true,
             "label": {
-                "en": "Use custom search areas", 
+                "en": "Search areas", 
                 "es": "Usar áreas de búsqueda propias"
             }, 
             "validateAs": {
@@ -202,9 +205,9 @@
             "id": "municipalities_map", 
             "args_id": "municipalities_uri",
             "type": "file", 
-            "hideable": true, 
+            "required": true,
             "label": {
-                "en": "Use custom municipalities", 
+                "en": "Municipalities", 
                 "es": "Usar capa propia de municipios"
             }, 
             "validateAs": {
