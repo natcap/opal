@@ -16,8 +16,6 @@ import shutil
 
 from adept import versioning
 
-CONSOLE = True
-
 common_kwargs = {
     'hookspath': ['./hooks'],
     'runtime_hooks': ['./hooks/rthook.py'],
@@ -27,23 +25,32 @@ common_kwargs = {
 opal_analysis = Analysis(['run_opal.py'], ** common_kwargs)
 pyz = PYZ(opal_analysis.pure)
 
-if platform.system() == 'Windows':
-    exe_name = 'opal_exe.exe'
-    debug_program = False
-else:
-    exe_name = 'opal_exe'
-    debug_program = True
+# produce one application per operation mode: a console application and a
+# non-console application. The non-console application should be called from
+# the start menu.
+for console in [True, False]:
+    if console is True:
+        console_str = '_debug'
+    else:
+        console_str = ''
 
-opal_exe = EXE(pyz,
-          opal_analysis.scripts,
-          opal_analysis.dependencies,
-          name=exe_name,
-          debug=debug_program,
-          exclude_binaries=True,  # makes all files located in same dir
-          strip=None,
-          upx=False,  # says UPX is not available
-          append_pkg=True,
-          console=CONSOLE)
+    if platform.system() == 'Windows':
+        exe_name = 'opal_exe%s.exe' % console_str
+        debug_program = False
+    else:
+        exe_name = 'opal_exe%s' % console_str
+        debug_program = True
+
+    opal_exe = EXE(pyz,
+              opal_analysis.scripts,
+              opal_analysis.dependencies,
+              name=exe_name,
+              debug=debug_program,
+              exclude_binaries=True,  # makes all files located in same dir
+              strip=None,
+              upx=False,  # says UPX is not available
+              append_pkg=True,
+              console=console)
 
 extra_data_files = ['carbon_sm.json', 'sediment_sm.json', 'nutrient_sm.json',
     'generic_sm.json', 'opal.json']
@@ -81,6 +88,7 @@ if is_win:
         batfile_uri = os.path.join(os.getcwd(), 'dist', 'total_coll', batfile_name)
 
         # write the contents of the launch batfile.
+        # use the GUI version of the EXE.
         batfile = open(batfile_uri, 'w')
         batfile.write('opal_exe.exe %s\n' % json_filename)
         batfile.close()
