@@ -66,7 +66,7 @@ if __name__ == '__main__':
     if getattr(sys, 'frozen', False):
         # If we're in a pyinstaller build
         splash = os.path.join(os.path.dirname(sys.executable), 'splash.png')
-        json_config = sys.argv[0]
+        json_config = sys.argv[1]  # the first program argument
     else:
         splash = os.path.join(os.getcwd(), 'windows_build', 'OPAL.png')
         args_parser = argparse.ArgumentParser(
