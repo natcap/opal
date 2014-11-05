@@ -78,12 +78,13 @@ if __name__ == '__main__':
     print 'splash image: %s' % splash
 
     # write this information, just in case.
-    debug_file = open('debug.txt', 'w')
+    debug_file = open(os.path.expanduser('~/debug.txt'), 'w')
     debug_file.write(json_config)
     debug_file.close()
 
     # use palisades function to locate the config in a couple of places.
     found_json = palisades.locate_config(json_config)
+    print 'JSON URI: %s' % found_json
 
     # set up the palisades gui object and initialize the splash screen
     gui_app = palisades.gui.get_application()
