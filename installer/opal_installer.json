@@ -35,6 +35,7 @@
         "install_log": "install_log.txt",
         "license": "..\\LICENSE.TXT",
         "icon": "opal_images\\opal-logo.ico",
+        "extra_files": ["opal_images\\opal-logo.ico"],
         "start_menu": [
             {
                 "name": "${APP_NAME}",
