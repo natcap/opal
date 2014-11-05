@@ -520,6 +520,12 @@ class GlobalDistribution(NSISCommand):
         print 'Copying %s -> %s' % (opal_splash_src, opal_splash_dest)
         shutil.copyfile(opal_splash_src, opal_splash_dest)
 
+        opal_logo_src = os.path.join(os.getcwd(), 'windows_build',
+            'opal-logo-alone.png')
+        opal_logo_dst = os.path.join(self.nsis_dir, 'app-window-logo.png')
+        print 'Copying %s -> %s' % (opal_logo_src, opal_logo_dst)
+        shutil.copyfile(opal_logo_src, opal_logo_dst)
+
         NSISCommand.initialize_options(self)
 
     def finalize_options(self):
