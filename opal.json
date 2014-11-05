@@ -1,11 +1,11 @@
 {
     "label": {
-        "en": "Permitting", 
+        "en": "OPAL", 
         "es": "Licenciamiento"
     }, 
     "id": "adept_window",
     "modelName": {
-        "en": "Permitting", 
+        "en": "OPAL", 
         "es": "Licenciamiento"
     }, 
     "targetScript": "adept", 
