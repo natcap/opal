@@ -24,6 +24,16 @@ class MultilingualRunner(execution.PythonRunner):
         adept.i18n.language.set(palisades_lang)
         execution.PythonRunner.start(self)
 
+class OPALInfoDialog(QtGui.QDialog):
+    def __init__(self):
+        QtGui.QDialog.__init__(self)
+
+        self.setLayout(QtGui.QVBoxLayout())
+        self.opal_version = QtGui.QLabel(adept.__version__)
+        self.palisades_version = QtGui.QLabel(palisades.__version__)
+        self.layout().addWidget(self.opal_version)
+        self.layout().addWidget(self.palisades_version)
+
 def setup_opal_callbacks(ui_obj):
     servicesheds_elem = ui_obj.find_element('servicesheds_map')
     sediment_cb_elem = ui_obj.find_element('do_sediment')
@@ -71,6 +81,7 @@ if __name__ == '__main__':
         splash = os.path.join(exe_dir, 'splash.png')
         json_config = sys.argv[1]  # the first program argument
         app_icon = os.path.join(exe_dir, 'app-window-logo.png')
+        opal_logo = os.path.join(exe_dir, 'opal-logo-small.png')
     else:
         splash = os.path.join(os.getcwd(), 'windows_build', 'OPAL.png')
         args_parser = argparse.ArgumentParser(
@@ -81,6 +92,8 @@ if __name__ == '__main__':
         json_config = args.json_config
         app_icon = os.path.join(os.getcwd(), 'windows_build',
             'opal-logo-alone.png')
+        opal_logo = os.path.join(os.getcwd(), 'installer', 'opal_images',
+            'opal-logo-small.png')
     print 'splash image: %s' % splash
 
     # write this information, just in case.
@@ -110,7 +123,16 @@ if __name__ == '__main__':
 
     # set the application icon
     # TODO: make an easier way to set the window icon.
-    gui_app.windows[0].window.setWindowIcon(QtGui.QIcon(app_icon))
+    form_window = gui_app.windows[0].window
+    form_window.setWindowIcon(QtGui.QIcon(app_icon))
+
+    # set the stuff of the infoDialog.
+    form_window.app_info_dialog.set_title('About OPAL')
+    form_window.app_info_dialog.set_messages = 'Version!'
+    form_window.app_info_dialog.set_icon(opal_logo, scale=True)
+
+    #form_window.menu_bar.addMenu(help_menu)
+    form_window.layout().setMenuBar(form_window.menu_bar)
 
     # start the interactive application
     gui_app.execute()
