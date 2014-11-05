@@ -90,9 +90,9 @@ if is_win:
         batfile_uri = os.path.join(os.getcwd(), 'dist', 'total_coll', batfile_name)
 
         # write the contents of the launch batfile.
-        # use the GUI version of the EXE.
+        # use the CLI ('debug') version of the EXE.
         batfile = open(batfile_uri, 'w')
-        batfile.write('opal_exe.exe %s\n' % json_filename)
+        batfile.write('opal_exe_debug.exe %s\n' % json_filename)
         batfile.close()
 
 
