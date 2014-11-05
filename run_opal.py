@@ -59,11 +59,6 @@ def setup_opal_callbacks(ui_obj):
     servicesheds_elem.validate()
 
 if __name__ == '__main__':
-    args_parser = argparse.ArgumentParser(
-        description='Fire up the OPAL (or derivative) UI.')
-    args_parser.add_argument('json_config',  metavar='json_config',
-        help='JSON configuration file')
-    args = args_parser.parse_args()
 
     print "Build data"
     for attr in palisades.build_data:
@@ -72,12 +67,19 @@ if __name__ == '__main__':
     if getattr(sys, 'frozen', False):
         # If we're in a pyinstaller build
         splash = os.path.join(os.path.dirname(sys.executable), 'splash.png')
+        json_config = sys.argv[0]
     else:
         splash = os.path.join(os.getcwd(), 'windows_build', 'OPAL.png')
+        args_parser = argparse.ArgumentParser(
+            description='Fire up the OPAL (or derivative) UI.')
+        args_parser.add_argument('json_config',  metavar='json_config',
+            help='JSON configuration file')
+        args = args_parser.parse_args()
+        json_config = args.json_config
     print 'splash image: %s' % splash
 
     # use palisades function to locate the config in a couple of places.
-    found_json = palisades.locate_config(args.json_config)
+    found_json = palisades.locate_config(json_config)
 
     # set up the palisades gui object and initialize the splash screen
     gui_app = palisades.gui.get_application()
@@ -86,9 +88,9 @@ if __name__ == '__main__':
 
     # create the core Application instance so that I can access its elements
     # for callbacks.
-    ui = elements.Application(args.json_config,
+    ui = elements.Application(found_json,
         palisades.locate_dist_config()['lang'])
-    if os.path.basename(args.json_config) == 'opal.json':
+    if os.path.basename(found_json) == 'opal.json':
         setup_opal_callbacks(ui._window)
 
     ui._window.set_runner(MultilingualRunner)
