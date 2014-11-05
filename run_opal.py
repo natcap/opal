@@ -59,7 +59,6 @@ def setup_opal_callbacks(ui_obj):
     servicesheds_elem.validate()
 
 if __name__ == '__main__':
-
     print "Build data"
     for attr in palisades.build_data:
         print "%s: %s" % (attr, getattr(palisades, attr, False))
@@ -77,6 +76,11 @@ if __name__ == '__main__':
         args = args_parser.parse_args()
         json_config = args.json_config
     print 'splash image: %s' % splash
+
+    # write this information, just in case.
+    debug_file = open('debug.txt', 'w')
+    debug_file.write(json_config)
+    debug_file.close()
 
     # use palisades function to locate the config in a couple of places.
     found_json = palisades.locate_config(json_config)
