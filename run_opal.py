@@ -3,6 +3,8 @@ import os
 import argparse
 import logging
 
+from PyQt4 import QtGui
+
 import palisades
 import palisades.i18n
 from palisades import execution
@@ -65,8 +67,10 @@ if __name__ == '__main__':
 
     if getattr(sys, 'frozen', False):
         # If we're in a pyinstaller build
-        splash = os.path.join(os.path.dirname(sys.executable), 'splash.png')
+        exe_dir = os.path.dirname(sys.executable)
+        splash = os.path.join(exe_dir, 'splash.png')
         json_config = sys.argv[1]  # the first program argument
+        app_icon = os.path.join(exe_dir, 'app-window-logo.png')
     else:
         splash = os.path.join(os.getcwd(), 'windows_build', 'OPAL.png')
         args_parser = argparse.ArgumentParser(
@@ -75,6 +79,8 @@ if __name__ == '__main__':
             help='JSON configuration file')
         args = args_parser.parse_args()
         json_config = args.json_config
+        app_icon = os.path.join(os.getcwd(), 'windows_build',
+            'opal-logo-alone.png')
     print 'splash image: %s' % splash
 
     # write this information, just in case.
@@ -101,6 +107,10 @@ if __name__ == '__main__':
     ui._window.set_runner(MultilingualRunner)
     gui_app.set_splash_message(palisades.SPLASH_MSG_GUI)
     gui_app.add_window(ui._window)
+
+    # set the application icon
+    # TODO: make an easier way to set the window icon.
+    gui_app.windows[0].window.setWindowIcon(QtGui.QIcon(app_icon))
 
     # start the interactive application
     gui_app.execute()
