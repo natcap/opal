@@ -70,7 +70,7 @@ def setup_opal_callbacks(ui_obj):
     _require_servicesheds()  # initialize the requirement state
     servicesheds_elem.validate()
 
-if __name__ == '__main__':
+def main(json_config=None):
     print "Build data"
     for attr in palisades.build_data:
         print "%s: %s" % (attr, getattr(palisades, attr, False))
@@ -79,7 +79,8 @@ if __name__ == '__main__':
         # If we're in a pyinstaller build
         exe_dir = os.path.dirname(sys.executable)
         splash = os.path.join(exe_dir, 'splash.png')
-        json_config = sys.argv[1]  # the first program argument
+        if json_config is None:
+            json_config = sys.argv[1]  # the first program argument
         app_icon = os.path.join(exe_dir, 'app-window-logo.png')
         opal_logo = os.path.join(exe_dir, 'opal-logo-small.png')
     else:
@@ -89,7 +90,8 @@ if __name__ == '__main__':
         args_parser.add_argument('json_config',  metavar='json_config',
             help='JSON configuration file')
         args = args_parser.parse_args()
-        json_config = args.json_config
+        if json_config is None:
+            json_config = args.json_config
         app_icon = os.path.join(os.getcwd(), 'windows_build',
             'opal-logo-alone.png')
         opal_logo = os.path.join(os.getcwd(), 'installer', 'opal_images',
@@ -136,4 +138,7 @@ if __name__ == '__main__':
 
     # start the interactive application
     gui_app.execute()
+
+if __name__ == '__main__':
+    main()
 
