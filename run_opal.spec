@@ -127,7 +127,7 @@ if is_win:
     shutil.copyfile(source_file, dest_file)
 
     # write the bat files to launch the proper ui.
-    for json_filename in extra_data_files:
+    for json_filename in static_json_files:
         batfile_name = 'run_%s.bat' % os.path.splitext(json_filename)[0]
         batfile_uri = os.path.join(os.getcwd(), 'dist', 'total_coll', batfile_name)
 
