@@ -22,14 +22,38 @@ common_kwargs = {
     'hiddenimports': ['adept', 'adept.static_maps'],
 }
 
+# write the static map analysis objects and analyze them.
+static_json_files = ['carbon_sm.json', 'generic_sm.json', 'nutrient_sm.json',
+    'opal.json', 'sediment_sm.json']
+analysis_objects = []
+consoles = []
+for json_file in static_json_files:
+    json_base = json_file.replace('.json', '')
+    console_filename = 'gui_%s.py' % json_base
+    if os.path.exists(console_filename):
+        raise Exception('File %s exists ... aborting' % console_filename)
+
+    console_file = open(console_filename, 'w')
+    console_file.write("import run_opal\nrun_opal.main('%s')" % json_file)
+    console_file.close()
+    console_analysis = Analysis([console_filename], **common_kwargs)
+    analysis_objects.append((console_analysis, json_base, json_base))
+    consoles.append((console_analysis, json_file))
+
+# analyze opal, append to the analysis objects
 opal_analysis = Analysis(['run_opal.py'], ** common_kwargs)
+analysis_objects.append((opal_analysis, 'run_opal', 'run_opal'))
+
+# merge all of the builds together
+MERGE(*analysis_objects)
+
 pyz = PYZ(opal_analysis.pure)
 
 # produce one application per operation mode: a console application and a
 # non-console application. The non-console application should be called from
 # the start menu.
 OPAL_EXES = []
-for console in [True, False]:
+for console in [True]:  # only create a console application for core OPAL
     if console is True:
         console_str = '_debug'
     else:
@@ -54,8 +78,26 @@ for console in [True, False]:
               console=console)
     OPAL_EXES.append(opal_exe)
 
-extra_data_files = ['carbon_sm.json', 'sediment_sm.json', 'nutrient_sm.json',
-    'generic_sm.json', 'opal.json']
+for console_analysis, json_file in consoles:
+    app_name = 'gui_%s' % json_file.replace('.json', '')
+    if platform.system() == 'Windows':
+        app_name += '.exe'
+
+    pyz = PYZ(console_analysis.pure)
+    exe = EXE(
+        pyz,
+        console_analysis.scripts,
+        console_analysis.zipfiles,
+        console_analysis.binaries,
+        name=app_name,
+        debug=False,
+        onefile=False,
+        exclude_binaries=True,  # make all files located in same dir
+        strip=False,
+        upx=False,
+        console=False  # Force a GUI application
+    )
+    OPAL_EXES.append(exe)
 
 # dump the correct version information to the dist_version file.
 dist_data = versioning.build_data()
@@ -65,7 +107,7 @@ json.dump(dist_data, open(dist_version_uri, 'w+'))
 
 total_coll = COLLECT(
     [('dist_version.json', dist_version_uri, 'DATA')],
-    [(json_name, json_name, 'DATA') for json_name in extra_data_files],
+    [(json_name, json_name, 'DATA') for json_name in static_json_files],
     opal_analysis.binaries,
     opal_analysis.zipfiles,
     opal_analysis.datas,
