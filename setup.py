@@ -528,7 +528,7 @@ class GlobalDistribution(NSISCommand):
 
         full_opal_logo_src = os.path.join(os.getcwd(), 'installer',
             'opal_images', 'opal-logo-small.png')
-        full_opal_logo_dst = os.path.join(self.nsis_dir, 'app-window-logo.png')
+        full_opal_logo_dst = os.path.join(self.nsis_dir, 'opal-logo-small.png')
         print 'Copying %s -> %s' % (full_opal_logo_src, full_opal_logo_dst)
         shutil.copyfile(full_opal_logo_src, full_opal_logo_dst)
 
