@@ -104,7 +104,7 @@ for console_analysis, json_file in consoles:
         console_analysis.zipfiles,
         console_analysis.binaries,
         name=app_name,
-        debug=False,
+        debug=True,
         onefile=False,
         exclude_binaries=True,  # make all files located in same dir
         strip=False,
