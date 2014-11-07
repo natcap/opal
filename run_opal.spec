@@ -40,7 +40,7 @@ for json_file in static_json_files:
 
     console_file = open(console_filename, 'w')
     console_file.write("import os\n")
-    console_file.write("if __name__ == '__main__':\n"
+    console_file.write("if __name__ == '__main__':\n")
     console_file.write("    try:\n")
     console_file.write("        import run_opal\n")
     console_file.write("        run_opal.main('%s')\n" % json_file)
