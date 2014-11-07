@@ -34,14 +34,14 @@ for json_file in static_json_files:
         raise Exception('File %s exists ... aborting' % console_filename)
 
     console_file = open(console_filename, 'w')
-    console_file.write("import run_opal\nrun_opal.main('%s')" % json_file)
+    console_file.write("import run_opal\nrun_opal.main('%s')\n" % json_file)
     console_file.close()
     console_analysis = Analysis([console_filename], **common_kwargs)
     analysis_objects.append((console_analysis, json_base, json_base))
     consoles.append((console_analysis, json_file))
 
 # analyze opal, append to the analysis objects
-opal_analysis = Analysis(['run_opal.py'], ** common_kwargs)
+opal_analysis = Analysis(['run_opal.py'], **common_kwargs)
 analysis_objects.append((opal_analysis, 'run_opal', 'run_opal'))
 
 # merge all of the builds together
@@ -98,6 +98,9 @@ for console_analysis, json_file in consoles:
         console=False  # Force a GUI application
     )
     OPAL_EXES.append(exe)
+    OPAL_EXES.append(console_analysis.binaries)
+    OPAL_EXES.append(console_analysis.zipfiles)
+    OPAL_EXES.append(console_analysis.datas)
 
 # dump the correct version information to the dist_version file.
 dist_data = versioning.build_data()
