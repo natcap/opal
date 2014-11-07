@@ -44,7 +44,7 @@ for json_file in static_json_files:
     console_file.write("    import run_opal\n")
     console_file.write("    run_opal.main('%s')\n" % json_file)
     console_file.write("except Exception as error:\n")
-    console_file.write("    df = os.path.expanduser('~/opal-%s-dbg.txt')\n" % json_base)
+    console_file.write("    df = os.path.expanduser('~\\opal-%s-dbg.txt')\n" % json_base)
     console_file.write("    dfile = open(df, 'w')\n")
     console_file.write("    dfile.write(error + '\\n')\n")
     console_file.write("    import traceback\n")
