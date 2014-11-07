@@ -26,6 +26,11 @@ common_kwargs = {
 static_json_files = ['carbon_sm.json', 'generic_sm.json', 'nutrient_sm.json',
     'opal.json', 'sediment_sm.json']
 analysis_objects = []
+
+# analyze opal, append to the analysis objects
+opal_analysis = Analysis(['run_opal.py'], **common_kwargs)
+analysis_objects.append((opal_analysis, 'run_opal', 'run_opal'))
+
 consoles = []
 for json_file in static_json_files:
     json_base = json_file.replace('.json', '')
@@ -39,10 +44,6 @@ for json_file in static_json_files:
     console_analysis = Analysis([console_filename], **common_kwargs)
     analysis_objects.append((console_analysis, json_base, json_base))
     consoles.append((console_analysis, json_file))
-
-# analyze opal, append to the analysis objects
-opal_analysis = Analysis(['run_opal.py'], **common_kwargs)
-analysis_objects.append((opal_analysis, 'run_opal', 'run_opal'))
 
 # merge all of the builds together
 MERGE(*analysis_objects)
