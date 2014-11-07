@@ -19,7 +19,8 @@ from adept import versioning
 common_kwargs = {
     'hookspath': ['./hooks'],
     'runtime_hooks': ['./hooks/rthook.py'],
-    'hiddenimports': ['adept', 'adept.static_maps'],
+    'hiddenimports': ['adept', 'adept.static_maps', 'os', 'traceback',
+        'run_opal'],
 }
 
 # write the static map analysis objects and analyze them.
