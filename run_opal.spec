@@ -39,21 +39,16 @@ for json_file in static_json_files:
     if os.path.exists(console_filename):
         raise Exception('File %s exists ... aborting' % console_filename)
 
+    # Writing the GUI console file as a clone of run_opal python file.
     console_file = open(console_filename, 'w')
-    console_file.write("import os\n")
-    console_file.write("if __name__ == '__main__':\n")
-    console_file.write("    try:\n")
-    console_file.write("        import run_opal\n")
-    console_file.write("        run_opal.main('%s')\n" % json_file)
-    console_file.write("    except Exception as error:\n")
-    console_file.write("        df = os.path.expanduser('C:\\\\opal-%s-dbg.txt')\n" % json_base)
-    console_file.write("        dfile = open(df, 'w')\n")
-    console_file.write("        dfile.write(error + '\\n')\n")
-    console_file.write("        import traceback\n")
-    console_file.write("        dfile.write(traceback.format_exc() + '\\n')\n")
-    console_file.write("        dfile.close()\n")
-
+    run_opal_file = open('run_opal.py', 'r')
+    for line in run_opal_file:
+        if line.startswith() == '    main()':
+            line = "    main('%s')" % json_file
+        console_file.write(line)
     console_file.close()
+    run_opal_file.close()
+
     console_analysis = Analysis([console_filename], **common_kwargs)
     analysis_objects.append((console_analysis, json_base, json_base))
     consoles.append((console_analysis, json_file))
