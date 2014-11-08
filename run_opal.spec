@@ -43,8 +43,8 @@ for json_file in static_json_files:
     console_file = open(console_filename, 'w')
     run_opal_file = open('run_opal.py', 'r')
     for line in run_opal_file:
-        if line.startswith() == '    main()':
-            line = "    main('%s')" % json_file
+        if line.startswith('    main()'):
+            line = "    main('%s')\n" % json_file
         console_file.write(line)
     console_file.close()
     run_opal_file.close()
