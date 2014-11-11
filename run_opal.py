@@ -96,7 +96,7 @@ def main(json_config=None):
         splash = os.path.join(exe_dir, 'splash.png')
         if json_config is None:
             json_config = sys.argv[1]  # the first program argument
-        app_icon = os.path.join(exe_dir, 'app-window-logo.png')
+        app_icon = os.path.join(exe_dir, 'opal-logo-small.png')
         opal_logo = os.path.join(exe_dir, 'opal-logo-small.png')
     else:
         splash = os.path.join(os.getcwd(), 'windows_build', 'OPAL.png')
@@ -108,7 +108,7 @@ def main(json_config=None):
         if json_config is None:
             json_config = args.json_config
         app_icon = os.path.join(os.getcwd(), 'windows_build',
-            'opal-logo-alone.png')
+            'opal-logo-small.png')
         opal_logo = os.path.join(os.getcwd(), 'installer', 'opal_images',
             'opal-logo-small.png')
     LOGGER.debug('splash image: %s', splash)
