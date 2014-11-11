@@ -11,8 +11,11 @@ from palisades import execution
 from palisades import elements
 import adept.i18n
 
+# capture palisades logging and only display INFO or higher
 PALISADES_LOGGER = logging.getLogger('palisades')
 PALISADES_LOGGER.setLevel(logging.INFO)
+
+LOGGER = logging.getLogger('_opal_launch')
 
 class MultilingualRunner(execution.PythonRunner):
     def start(self):
@@ -71,9 +74,20 @@ def setup_opal_callbacks(ui_obj):
     servicesheds_elem.validate()
 
 def main(json_config=None):
-    print "Build data"
+    # add logging handler so this stuff is written to disk
+    if json_config is None:
+        logfile_filename = 'debug_unknown'
+    else:
+        logfile_filename = 'debug_%s' % json_config.replace('.json', '')
+    logfile_path = os.path.join(os.path.expanduser('~'), logfile_filename +
+        '.txt')
+    debug_handler = logging.FileHandler(logfile_path, 'w', encoding='utf-8')
+    LOGGER.addHandler(debug_handler)
+    PALISADES_LOGGER.addHandler(debug_handler)
+
+    LOGGER.debug("Palisads build data")
     for attr in palisades.build_data:
-        print "%s: %s" % (attr, getattr(palisades, attr, False))
+        LOGGER.debug("%s: %s", attr, getattr(palisades, attr, False))
 
     if getattr(sys, 'frozen', False):
         # If we're in a pyinstaller build
@@ -96,16 +110,11 @@ def main(json_config=None):
             'opal-logo-alone.png')
         opal_logo = os.path.join(os.getcwd(), 'installer', 'opal_images',
             'opal-logo-small.png')
-    print 'splash image: %s' % splash
-
-    # write this information, just in case.
-    debug_file = open(os.path.expanduser('~/debug.txt'), 'w')
-    debug_file.write(os.path.abspath(json_config))
-    debug_file.close()
+    LOGGER.debug('splash image: %s', splash)
 
     # use palisades function to locate the config in a couple of places.
     found_json = palisades.locate_config(json_config)
-    print 'JSON URI: %s' % found_json
+    LOGGER.debug('JSON URI: %s', found_json)
 
     # set up the palisades gui object and initialize the splash screen
     gui_app = palisades.gui.get_application()
