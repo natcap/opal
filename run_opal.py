@@ -79,6 +79,7 @@ def main(json_config=None):
         logfile_filename = 'debug_unknown'
     else:
         logfile_filename = 'debug_%s' % json_config.replace('.json', '')
+    logfile_filename = os.path.basename(logfile_filename)
     logfile_dirname = os.path.join('C:', 'Users', 'jadoug06')
     logfile_path = os.path.join(logfile_dirname, logfile_filename +
         '.txt')
