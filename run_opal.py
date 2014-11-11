@@ -100,7 +100,7 @@ def main(json_config=None):
 
     # write this information, just in case.
     debug_file = open(os.path.expanduser('~/debug.txt'), 'w')
-    debug_file.write(json_config)
+    debug_file.write(os.path.abspath(json_config))
     debug_file.close()
 
     # use palisades function to locate the config in a couple of places.
