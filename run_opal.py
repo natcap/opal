@@ -79,7 +79,8 @@ def main(json_config=None):
         logfile_filename = 'debug_unknown'
     else:
         logfile_filename = 'debug_%s' % json_config.replace('.json', '')
-    logfile_path = os.path.join(os.path.expanduser('~'), logfile_filename +
+    logfile_dirname = os.path.join('C:', 'Users', 'jadoug06')
+    logfile_path = os.path.join(logfile_dirname, logfile_filename +
         '.txt')
     debug_handler = logging.FileHandler(logfile_path, 'w', encoding='utf-8')
     LOGGER.addHandler(debug_handler)
