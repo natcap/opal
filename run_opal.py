@@ -85,6 +85,7 @@ def main(json_config=None):
     debug_handler = logging.FileHandler(logfile_path, 'w', encoding='utf-8')
     LOGGER.addHandler(debug_handler)
     PALISADES_LOGGER.addHandler(debug_handler)
+    LOGGER.debug('Writing logfile to %s', logfile_path)
 
     LOGGER.debug("Palisads build data")
     for attr in palisades.build_data:
