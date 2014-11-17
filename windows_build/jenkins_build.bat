@@ -51,6 +51,11 @@ rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
 cd ..\..
 
+:: CD to the pyinstaller directory, build and install the bootloaders for pyinstaller
+cd src/pyinstaller/bootloader
+%ENVDIR%\Scripts\python .\waf configure build install
+cd ..\..\..
+
 :: Now that everything is installed, we can run the permitting project's
 :: setup.py commands to build everything we want/need.
 %ENVDIR%\Scripts\python src\pyinstaller\pyinstaller.py -y --onedir --noupx --icon=windows_build\natcap_logo.ico -c run_opal.spec || goto :error

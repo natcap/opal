@@ -532,6 +532,10 @@ class GlobalDistribution(NSISCommand):
         print 'Copying %s -> %s' % (full_opal_logo_src, full_opal_logo_dst)
         shutil.copyfile(full_opal_logo_src, full_opal_logo_dst)
 
+        mafe_json_src = os.path.join(os.getcwd(), 'opal.json')
+        mafe_json_dest = os.path.join(self.nsis_dir, 'opal.json')
+        shutil.copyfile(mafe_json_src, mafe_json_dest)
+
         NSISCommand.initialize_options(self)
 
     def finalize_options(self):

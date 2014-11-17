@@ -43,8 +43,10 @@ for json_file in static_json_files:
     console_file = open(console_filename, 'w')
     run_opal_file = open('run_opal.py', 'r')
     for line in run_opal_file:
+        if line.startswith('if __name__ '):
+            continue  # totally skip the if__name__ == __main__ line
         if line.startswith('    main()'):
-            line = "    main('%s')\n" % json_file
+            line = "main('%s')\n" % json_file
         console_file.write(line)
     console_file.close()
     run_opal_file.close()
@@ -64,7 +66,7 @@ pyz = PYZ(opal_analysis.pure)
 OPAL_EXES = []
 for console in [True]:  # only create a console application for core OPAL
     if console is True:
-        console_str = '_debug'
+        console_str = '_cli'
     else:
         console_str = ''
 
@@ -99,7 +101,7 @@ for console_analysis, json_file in consoles:
         console_analysis.zipfiles,
         console_analysis.binaries,
         name=app_name,
-        debug=True,
+        debug=False,
         onefile=False,
         exclude_binaries=True,  # make all files located in same dir
         strip=False,
@@ -146,7 +148,7 @@ if is_win:
         # write the contents of the launch batfile.
         # use the CLI ('debug') version of the EXE.
         batfile = open(batfile_uri, 'w')
-        batfile.write('opal_exe_debug.exe %s\n' % json_filename)
+        batfile.write('opal_exe_cli.exe %s\n' % json_filename)
         batfile.close()
 
 
