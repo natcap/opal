@@ -80,7 +80,7 @@ def main(json_config=None):
     else:
         logfile_filename = 'debug_%s' % json_config.replace('.json', '')
     logfile_filename = os.path.basename(logfile_filename)
-    logfile_path = os.path.join(os.getcwd(), logfile_filename +
+    logfile_path = os.path.join(os.getcwd(), '..', logfile_filename +
         '.txt')
     debug_handler = logging.FileHandler(logfile_path, 'w', encoding='utf-8')
     LOGGER.addHandler(debug_handler)
