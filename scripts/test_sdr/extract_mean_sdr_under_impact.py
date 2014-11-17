@@ -10,6 +10,8 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
     watershed_glob = os.path.join(simulations_dir, 'watershed_[0-9]*')
     for ws_dirname in glob.glob(watershed_glob):
         watershed_number = int(os.path.basename(ws_dirname).split('_')[-1])
+        watershed_vector = os.path.join(ws_dirname, 'watershed_vectors',
+            'feature_%s.shp' % watershed_number)
         watershed_data[watershed_number] = {}
 
         impacts_glob = os.path.join(ws_dirname, 'random_impact_[0-9]*')
@@ -44,9 +46,9 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
                 scenario_static_map_uri, impact_shp, 'id').total[1]
 
             base_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                base_sed_export, impact_shp, 'id').pixel_mean[1]
+                base_sed_export, watershed_vector, 'ws_id').total[1]
             impact_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                impact_sed_export, impact_shp, 'id').pixel_mean[1]
+                impact_sed_export, watershed_vector, 'ws_id').total[1]
             invest_estimate = base_sed_exp_estimate - impact_sed_exp_estimate
 
             max_f_a_impact = raster_utils.aggregate_raster_values_uri(
