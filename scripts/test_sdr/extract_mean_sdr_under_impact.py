@@ -105,7 +105,7 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
                 impact_data['mean_current_sed_exp'],
                 impact_data['mean_converted_sed_exp'],
                 impact_data['mean_current_sdr'],
-                impact_data['mean_converted_sdr']
+                impact_data['mean_converted_sdr'],
                 impact_data['mean_flow_accumulation'],
                 impact_data['max_flow_accumulation'],
             ]
