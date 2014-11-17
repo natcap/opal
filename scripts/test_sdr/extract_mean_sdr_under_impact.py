@@ -35,8 +35,8 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
 
             # get the impact site area
             impact_vector = ogr.Open(impact_shp)
-            impact_layer = impact_vector.getLayer()
-            impact_feature = impact_layer.getFeature(0)
+            impact_layer = impact_vector.GetLayer()
+            impact_feature = impact_layer.GetFeature(0)
             impact_geom = impact_feature.GetGeometryRef()
             impact_area = impact_geom.Area()
 
@@ -57,11 +57,11 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
             extracted_data = {
                 'disk_ws_id': watershed_number - 1,
                 'impact_area': impact_area,
-                'mean_current_sdr': current_sdr,
-                'mean_converted_sdr': converted_sdr,
                 'static_estimate': static_estimate,
                 'invest_estimate': invest_estimate,
                 'estimate_ratio': static_estimate / invest_estimate,
+                'mean_current_sdr': current_sdr,
+                'mean_converted_sdr': converted_sdr,
                 'mean_current_sed_exp': base_sed_exp_estimate,
                 'mean_converted_sed_exp': impact_sed_exp_estimate,
                 'max_flow_accumulation': max_f_a_impact,
@@ -76,8 +76,18 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
             watershed_data[watershed_number][impact_number] = extracted_data
 
     csv_file = open(csv_uri, 'w')
-    labels = ['ws_id', 'Impact ID', 'Mean current SDR under impact',
-        'Mean converted SDR under impact']
+    labels = ['ws_id',
+        'Impact ID',
+        'Impact Area',
+        'Static Estimate',
+        'InVEST Estimate',
+        'Estimate Ratio',
+        'Sed_exp under impact current',
+        'Sed_exp under impact converted',
+        'Mean current SDR under impact',
+        'Mean converted SDR under impact',
+        'Mean flow accumulation under impact',
+        'Max flow accumulation under impact']
 
     if scenario_usle_sm is not None:
         labels.append('Total delta-USLE*sdr')
@@ -86,11 +96,19 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
     csv_file.write("%s\n" % ','.join(labels))
     for ws_id, impacts_dict in sorted(watershed_data.iteritems(), key=first_elem):
         for impact_id, impact_data in sorted(impacts_dict.iteritems(), key=first_elem):
-            line_data = [
-                ws_id + 1,
+            line_data = [ws_id + 1,
                 impact_id,
+                impact_data['impact_area'],
+                impact_data['static_estimate'],
+                impact_data['invest_estimate'],
+                impact_data['estimate_ratio'],
+                impact_data['mean_current_sed_exp'],
+                impact_data['mean_converted_sed_exp'],
                 impact_data['mean_current_sdr'],
-                impact_data['mean_converted_sdr']]
+                impact_data['mean_converted_sdr']
+                impact_data['mean_flow_accumulation'],
+                impact_data['max_flow_accumulation'],
+            ]
 
             if scenario_usle_sm is not None:
                 line_data.append(impact_data['usle_sum'])
