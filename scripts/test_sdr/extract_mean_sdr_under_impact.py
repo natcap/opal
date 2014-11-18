@@ -1,5 +1,6 @@
 import glob
 import os
+import sys
 
 from osgeo import ogr
 
@@ -135,15 +136,39 @@ def align_impact_rasters(raster_list, output_dir):
         return os.path.join(output_dir, 'aligned_%s' % tif_name)
 
     output_raster_list = map(_output_raster, raster_list)
-    resample_mathod_list = ['nearest'] * len(output_raster_list)
+    resample_method_list = ['nearest'] * len(output_raster_list)
     out_pixel_size = raster_utils.get_cell_size_from_uri(raster_list[0])
     dataset_to_align_index=0
 
     raster_utils.align_dataset_list(raster_list, output_raster_list,
         resample_method_list, out_pixel_size, 'intersection',
         dataset_to_align_index)
+    return output_raster_list
+
+def extract_mean():
+    watershed_workspace = '/colossus/colombia_sdr/bare/simulations/watershed_7'
+    impact_workspace = watershed_workspace + '/random_impact_2/'
+    impact_convert_sdr = impact_workspace + 'intermediate/sdr_factor.tif'
+    impact_sed_export = impact_workspace + 'output/sed_export.tif'
+
+    clipped_workspace = '/home/jadoug06/ws7/'
+    base_sdr = clipped_workspace + 'ws7_base_sdr_factor.tif'
+    bare_sdr = clipped_workspace + 'ws7_bare_sdr_factor.tif'
+
+    impact_shp = impact_workspace + 'impact_2.shp'
+    _mean = lambda r: raster_utils.aggregate_raster_values_uri(r, impact_shp,
+        'id').pixel_mean[1]
+
+    print _mean(base_sdr), _mean(bare_sdr), _mean(impact_convert_sdr), _mean(impact_sed_export)
+
+    aligned_dir = os.path.join(os.getcwd(), 'ws7_im2_aligned')
+    aligned = align_impact_rasters([base_sdr, bare_sdr, impact_convert_sdr, impact_sed_export], aligned_dir)
+    print _mean(aligned[0]), _mean(aligned[1]), _mean(aligned[2]), _mean(aligned[3])
 
 if __name__ == '__main__':
+    extract_mean()
+    sys.exit(0)
+
     for simulation in ['bare']:  # skipping 'paved' for now
         #sdr_raster = '/colossus/colombia_sdr/%s/%s_converted/intermediate/sdr_factor.tif' % (simulation, simulation)
         col_sdr = '/colossus/colombia_sdr/'
@@ -154,6 +179,10 @@ if __name__ == '__main__':
         _base_sed_export = col_sdr + 'base_run/output/sed_export.tif'
         _flow_accumulation = col_sdr + 'base_run/prepared_data/flow_accumulation.tif'
         _csv_file = os.path.join(os.getcwd(), '%s_extracted_sdr_values.csv') % simulation
+
+        # TODO: ensure that the global sed_export and sdr_factor rasters are
+        # aligned.
+
         main(simulations_dir=_simulations_dir,
             csv_uri=_csv_file,
             base_sdr_raster=_current_sdr,
