@@ -10,9 +10,12 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
     watershed_glob = os.path.join(simulations_dir, 'watershed_[0-9]*')
     for ws_dirname in glob.glob(watershed_glob):
         watershed_number = int(os.path.basename(ws_dirname).split('_')[-1])
-        watershed_vector = os.path.join(ws_dirname, 'watershed_vectors',
+        watershed_vector = os.path.join(simulations_dir, 'watershed_vectors',
             'feature_%s.shp' % watershed_number)
+        ws_id = watershed_number + 1
         watershed_data[watershed_number] = {}
+        base_sed_exp_estimate_ws = raster_utils.aggregate_raster_values_uri(
+            base_sed_export, watershed_vector, 'ws_id').total[ws_id]
 
         impacts_glob = os.path.join(ws_dirname, 'random_impact_[0-9]*')
         for impact_dirname in glob.glob(impacts_glob):
@@ -45,11 +48,14 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
             static_estimate = raster_utils.aggregate_raster_values_uri(
                 scenario_static_map_uri, impact_shp, 'id').total[1]
 
+            impact_sed_exp_estimate_ws = raster_utils.aggregate_raster_values_uri(
+                impact_sed_export, watershed_vector, 'ws_id').total[ws_id]
+            invest_estimate = base_sed_exp_estimate_ws - impact_sed_exp_estimate_ws
+
             base_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                base_sed_export, watershed_vector, 'ws_id').total[1]
+                base_sed_export, impact_shp, 'id').total[ws_id]
             impact_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                impact_sed_export, watershed_vector, 'ws_id').total[1]
-            invest_estimate = base_sed_exp_estimate - impact_sed_exp_estimate
+                impact_sed_export, impact_shp, 'id').total[ws_id]
 
             max_f_a_impact = raster_utils.aggregate_raster_values_uri(
                 flow_accumulation, impact_shp, 'id').pixel_max[1]
@@ -57,7 +63,7 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
                 flow_accumulation, impact_shp, 'id').pixel_mean[1]
 
             extracted_data = {
-                'disk_ws_id': watershed_number - 1,
+                'disk_ws_id': watershed_number,
                 'impact_area': impact_area,
                 'static_estimate': static_estimate,
                 'invest_estimate': invest_estimate,
