@@ -8,7 +8,9 @@ from invest_natcap import raster_utils
 def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_static_map_uri, flow_accumulation, scenario_usle_sm=None):
     watershed_data = {}  # map watershed IDs to dictionaries of impact data
     watershed_glob = os.path.join(simulations_dir, 'watershed_[0-9]*')
-    for ws_dirname in glob.glob(watershed_glob):
+    watersheds = glob.glob(watershed_glob)
+    loop_index = 0
+    for ws_dirname in watersheds:
         watershed_number = int(os.path.basename(ws_dirname).split('_')[-1])
         watershed_vector = os.path.join(simulations_dir, 'watershed_vectors',
             'feature_%s.shp' % watershed_number)
@@ -27,7 +29,8 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
             impact_sed_export = os.path.join(impact_dirname, 'output',
                 'sed_export.tif')
 
-            print watershed_number, impact_number
+            print watershed_number, impact_number, '%s of %s' % (loop_index,
+                len(watersheds))
             current_sdr = raster_utils.aggregate_raster_values_uri(
                 base_sdr_raster, impact_shp, 'id').pixel_mean[1]
             try:
@@ -53,9 +56,9 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
             invest_estimate = base_sed_exp_estimate_ws - impact_sed_exp_estimate_ws
 
             base_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                base_sed_export, impact_shp, 'id').total[ws_id]
+                base_sed_export, impact_shp, 'id').total[1]
             impact_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                impact_sed_export, impact_shp, 'id').total[ws_id]
+                impact_sed_export, impact_shp, 'id').total[1]
 
             max_f_a_impact = raster_utils.aggregate_raster_values_uri(
                 flow_accumulation, impact_shp, 'id').pixel_max[1]
@@ -82,6 +85,7 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
                 extracted_data['usle_sum'] = usle_sum
 
             watershed_data[watershed_number][impact_number] = extracted_data
+        loop_index += 1
 
     csv_file = open(csv_uri, 'w')
     labels = ['ws_id',
