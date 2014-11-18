@@ -144,7 +144,7 @@ def align_impact_rasters(raster_list, output_dir):
         dataset_to_align_index)
 
 if __name__ == '__main__':
-    for simulation in ['paved', 'bare']:
+    for simulation in ['bare']:  # skipping 'paved' for now
         #sdr_raster = '/colossus/colombia_sdr/%s/%s_converted/intermediate/sdr_factor.tif' % (simulation, simulation)
         col_sdr = '/colossus/colombia_sdr/'
         _current_sdr = col_sdr + 'base_run/intermediate/sdr_factor.tif'
