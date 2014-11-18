@@ -129,6 +129,20 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
     csv_file.close()
     print 'done!'
 
+def align_impact_rasters(raster_list, output_dir):
+    def _output_raster(in_raster):
+        tif_name = os.path.basename(in_raster)
+        return os.path.join(output_dir, 'aligned_%s' % tif_name)
+
+    output_raster_list = map(_output_raster, raster_list)
+    resample_mathod_list = ['nearest'] * len(output_raster_list)
+    out_pixel_size = raster_utils.get_cell_size_from_uri(raster_list[0])
+    dataset_to_align_index=0
+
+    raster_utils.align_dataset_list(raster_list, output_raster_list,
+        resample_method_list, out_pixel_size, 'intersection',
+        dataset_to_align_index)
+
 if __name__ == '__main__':
     for simulation in ['paved', 'bare']:
         #sdr_raster = '/colossus/colombia_sdr/%s/%s_converted/intermediate/sdr_factor.tif' % (simulation, simulation)
