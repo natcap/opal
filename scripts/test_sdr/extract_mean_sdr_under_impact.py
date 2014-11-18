@@ -56,9 +56,9 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
             invest_estimate = base_sed_exp_estimate_ws - impact_sed_exp_estimate_ws
 
             base_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                base_sed_export, impact_shp, 'id').total[1]
+                base_sed_export, impact_shp, 'id').pixel_mean[1]
             impact_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                impact_sed_export, impact_shp, 'id').total[1]
+                impact_sed_export, impact_shp, 'id').pixel_mean[1]
 
             max_f_a_impact = raster_utils.aggregate_raster_values_uri(
                 flow_accumulation, impact_shp, 'id').pixel_max[1]
@@ -94,8 +94,8 @@ def main(simulations_dir, csv_uri, base_sdr_raster, base_sed_export, scenario_st
         'Static Estimate',
         'InVEST Estimate',
         'Estimate Ratio',
-        'Sed_exp under impact current',
-        'Sed_exp under impact converted',
+        'Mean sed_exp under impact current',
+        'Mean sed_exp under impact converted',
         'Mean current SDR under impact',
         'Mean converted SDR under impact',
         'Mean flow accumulation under impact',
