@@ -291,7 +291,7 @@ def section(options):
 
         if section_type == 'unzipSelect':
             strings.append('!insertmacro DownloadIfEmpty "$%s" "%s" "%s" "%s"' % (
-                file_varname, options['action']['target_dir'],
+                file_varname + 'File', options['action']['target_dir'],
                 options['action']['downloadURL'],
                 os.path.basename(options['action']['zipfile'].replace('\\',
                     '/'))))
