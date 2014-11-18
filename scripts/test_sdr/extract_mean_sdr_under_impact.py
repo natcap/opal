@@ -154,16 +154,39 @@ def extract_mean():
     clipped_workspace = '/home/jadoug06/ws7/'
     base_sdr = clipped_workspace + 'ws7_base_sdr_factor.tif'
     bare_sdr = clipped_workspace + 'ws7_bare_sdr_factor.tif'
+    base_usle = clipped_workspace + 'ws7_base_usle.tif'
+    bare_usle = clipped_workspace + 'ws7_bare_usle.tif'
+
+
+    watershed_vector = '/colossus/colombia_sdr/bare/simulations/watershed_vectors/feature_7.shp'
+    ws_id = 8
+    def _print_mean(raster):
+        print os.path.basename(raster), raster_utils.aggregate_raster_values_uri(
+            raster, watershed_vector, 'ws_id').pixel_mean[ws_id]
+
+    _print_mean(base_sdr)
+    _print_mean(bare_sdr)
+    _print_mean(base_usle)
+    _print_mean(bare_usle)
 
     impact_shp = impact_workspace + 'impact_2.shp'
     _mean = lambda r: raster_utils.aggregate_raster_values_uri(r, impact_shp,
         'id').pixel_mean[1]
+    _sum = lambda r: raster_utils.aggregate_raster_values_uri(r, impact_shp,
+        'id').total[1]
 
-    print _mean(base_sdr), _mean(bare_sdr), _mean(impact_convert_sdr), _mean(impact_sed_export)
+    print _mean(base_sdr), _mean(bare_sdr), _mean(impact_convert_sdr), _mean(impact_sed_export), _mean(base_usle), _mean(bare_usle)
 
+    print _sum(base_sdr), _sum(bare_sdr), _sum(impact_convert_sdr), _sum(impact_sed_export), _sum(base_usle), _sum(bare_usle)
     aligned_dir = os.path.join(os.getcwd(), 'ws7_im2_aligned')
-    aligned = align_impact_rasters([base_sdr, bare_sdr, impact_convert_sdr, impact_sed_export], aligned_dir)
-    print _mean(aligned[0]), _mean(aligned[1]), _mean(aligned[2]), _mean(aligned[3])
+    aligned = align_impact_rasters([base_sdr, bare_sdr, impact_convert_sdr, impact_sed_export, base_usle, bare_usle], aligned_dir)
+
+    print _mean(aligned[0]), _mean(aligned[1]), _mean(aligned[2]), _mean(aligned[3]), _mean(aligned[4]), _mean(aligned[5])
+    print _sum(aligned[0]), _sum(aligned[1]), _sum(aligned[2]), _sum(aligned[3]), _sum(aligned[4]), _sum(aligned[5])
+    _print_mean(aligned[0])
+    _print_mean(aligned[1])
+    _print_mean(aligned[4])
+    _print_mean(aligned[5])
 
 if __name__ == '__main__':
     extract_mean()
