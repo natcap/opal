@@ -109,10 +109,19 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
 
     # only write label headers if this is the top row.
     if start_ws == 0 and start_impact == 0:
-        labels = ['ws_id', 'Impact ID', 'Impact Area', 'Static Estimate',
-            'InVEST Estimate', 'Estimate Ratio', 'Mean current SDR under impact',
-            'Mean converted SDR under impact', 'Mean flow accumulation under impact',
-            'Max flow accumulation under impact', 'Sum (USLE ...)*SDR under impact']
+        labels = ['ws_id',
+            'Impact ID',
+            'Impact Area',
+            'Static Estimate',
+            'InVEST Estimate',
+            'Estimate Ratio',
+            'Mean sed_exp under impact current',
+            'Mean sed_exp under impact converted',
+            'Mean current SDR under impact',
+            'Mean converted SDR under impact',
+            'Mean flow accumulation under impact',
+            'Max flow accumulation under impact',
+            'Total delta-USLE*sdr under impact']
         logfile.write("%s\n" % ','.join(labels))
     logfile.close()
 
@@ -126,6 +135,7 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
 
     # get the sediment export from the base raster, passed in from the user.
     # calculate for each watershed, so I can access these later.
+    #TODO: remove.
     base_export = raster_utils.aggregate_raster_values_uri(
         base_run, current_watersheds, 'ws_id', 'sum').total
     LOGGER.debug('All watershed ids: %s', base_export.keys())
@@ -276,10 +286,19 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
 
             # Now that we've completed the simulation, write these values to
             # the CSV file we've started.
-            values_to_write = [watershed_id, run_number, impact_site_area,
-                static_estimate, invest_estimate, export_ratio,
-                mean_sdr_current_impact, mean_sdr_converted_impact, mean_f_a,
-                max_f_a, usle_sum_impact]
+            values_to_write = [
+                watershed_id,
+                run_number,
+                impact_site_area,
+                static_estimate,
+                invest_estimate,
+                export_ratio,
+                mean_sdr_current_impact,
+                mean_sdr_converted_impact,
+                mean_f_a,
+                max_f_a,
+                usle_sum_impact
+            ]
 
             # reopen the file just to write the line, then close the file.
             # This prevents a situation when the file is accidentally closed in
