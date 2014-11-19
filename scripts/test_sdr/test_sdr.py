@@ -18,7 +18,6 @@ import random
 import shutil
 import multiprocessing
 import json
-import tempfile
 
 from osgeo import ogr
 from osgeo import gdal
@@ -133,13 +132,6 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
     preprocessing.filter_by_raster(landuse_uri, watersheds_uri,
         current_watersheds, clip=True)
 
-    # get the sediment export from the base raster, passed in from the user.
-    # calculate for each watershed, so I can access these later.
-    #TODO: remove.
-    base_export = raster_utils.aggregate_raster_values_uri(
-        base_run, current_watersheds, 'ws_id', 'sum').total
-    LOGGER.debug('All watershed ids: %s', base_export.keys())
-
     # split the watersheds so I can use each watershed as an AOI for the
     # correct model later on.
     watersheds_dir = os.path.join(workspace, 'watershed_vectors')
@@ -174,6 +166,8 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
         ws_base_run = os.path.join(watershed_workspace,
             'watershed_base_run.tif')
         clip_raster_to_watershed(base_run, watershed_uri, ws_base_run)
+        ws_base_export = raster_utils.aggregate_raster_values_uri(
+            ws_base_run, watershed_uri, 'ws_id').total[ws_index]
 
         ws_static_map = os.path.join(watershed_workspace,
             'watershed_static_map.tif')
@@ -254,8 +248,6 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
             impact_ws_export = raster_utils.aggregate_raster_values_uri(
                 sdr_uri, watershed_uri, 'ws_id').total[watershed_id]
 
-            base_ws_export = base_export[watershed_id]
-
             # Get the export from the static map under the impacted area.
             # only 1 feature in the impactd area, so we access that number with
             # index 1.
@@ -281,7 +273,7 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
             mean_f_a = f_a_stats.pixel_mean[1]
             max_f_a = f_a_stats.pixel_max[1]
 
-            invest_estimate = base_ws_export - impact_ws_export
+            invest_estimate = ws_base_export - impact_ws_export
             export_ratio = static_estimate / invest_estimate
 
             # Now that we've completed the simulation, write these values to
