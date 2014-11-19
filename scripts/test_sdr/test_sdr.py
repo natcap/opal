@@ -75,7 +75,7 @@ def clip_raster_to_watershed(in_raster, ws_vector, out_uri):
         dataset_to_align_index=0, aoi_uri=ws_vector)
 
 
-def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_uri,
+def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static_map, landuse_uri,
     impact_lucode, watersheds_uri, workspace, config, num_iterations=5,
     start_ws=0, start_impact=0, end_ws=None):
 # base_run = sed_exp.tif, in the case of the sediment model, run on the base LULC
@@ -163,11 +163,15 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
 
         # Create rasters of only those base_run and base static_map pixels
         # that are in the watershed.
-        ws_base_run = os.path.join(watershed_workspace,
-            'watershed_base_run.tif')
-        clip_raster_to_watershed(base_run, watershed_uri, ws_base_run)
+        ws_base_sed_exp = os.path.join(watershed_workspace,
+            'watershed_base_sed_exp.tif')
+        clip_raster_to_watershed(base_sed_exp, watershed_uri, ws_base_sed_exp)
         ws_base_export = raster_utils.aggregate_raster_values_uri(
-            ws_base_run, watershed_uri, 'ws_id').total[ws_index]
+            ws_base_sed_exp, watershed_uri, 'ws_id').total[ws_index]
+
+        ws_base_sdr = os.path.join(watershed_workspace,
+            'watershed_base_sdr.tif')
+        clip_raster_to_watershed(base_sdr, watershed_uri, ws_base_sdr)
 
         ws_static_map = os.path.join(watershed_workspace,
             'watershed_static_map.tif')
@@ -240,13 +244,13 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
             sdr.execute(config)
 
             # get the SDR raster
-            sdr_uri = os.path.join(impact_workspace, 'intermediate',
+            impact_sdr_uri = os.path.join(impact_workspace, 'intermediate',
                 'sdr_factor.tif')
 
             # Aggregate the sediment export from this impact simulation over
             # the target watershed
             impact_ws_export = raster_utils.aggregate_raster_values_uri(
-                sdr_uri, watershed_uri, 'ws_id').total[watershed_id]
+                impact_sdr_uri, watershed_uri, 'ws_id').total[watershed_id]
 
             # Get the export from the static map under the impacted area.
             # only 1 feature in the impactd area, so we access that number with
@@ -255,10 +259,10 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
                 base_static_map, impact_site, 'id').total[1]
 
             mean_sdr_current_impact = raster_utils.aggregate_raster_values_uri(
-                base_run, impact_site, 'id').pixel_mean[1]
+                base_sdr, impact_site, 'id').pixel_mean[1]
 
             mean_sdr_converted_impact = raster_utils.aggregate_raster_values_uri(
-                sdr_uri, impact_site, 'id').pixel_mean[1]
+                impact_sdr_uri, impact_site, 'id').pixel_mean[1]
 
             usle_sum_impact = raster_utils.aggregate_raster_values_uri(
                 usle_static_map, impact_site, 'id').total[1]
@@ -285,6 +289,8 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
                 static_estimate,
                 invest_estimate,
                 export_ratio,
+                base_sed_exp_estimate,
+                impact_sed_exp_estimate,
                 mean_sdr_current_impact,
                 mean_sdr_converted_impact,
                 mean_f_a,
@@ -563,7 +569,7 @@ if __name__ == '__main__':
     PARALLELIZE = True
 
     # get the SDR raster from the intermediate folder.  This is our base run.
-    base_run = os.path.join(config['workspace_dir'], 'output',
+    base_sed_export = os.path.join(config['workspace_dir'], 'output',
         'sed_export.tif')
     base_usle = os.path.join(config['workspace_dir'], 'output',
         'usle.tif')
@@ -621,7 +627,7 @@ if __name__ == '__main__':
         converted_usle_run = os.path.join(scenario_workspace,
             '%s_converted' % scenario_name, 'output', 'usle.tif')
 
-        subtract_args = (base_run, converted_run, static_map_uri)
+        subtract_args = (base_sed_export, converted_run, static_map_uri)
         create_usle_args = (base_usle, converted_usle_run, base_sdr, usle_map_uri)
         if PARALLELIZE:
             process = multiprocessing.Process(target=static_maps.subtract_rasters,
@@ -647,7 +653,8 @@ if __name__ == '__main__':
         # Currently running 5 iterations per watershed.
         scenario_workspace = os.path.join(workspace, scenario_name)
         keyword_args = {
-            'base_run': base_sdr,
+            'base_sed_exp': base_sed_export,
+            'base_sdr': base_sdr,
             'base_static_map': static_map_uris[scenario_name]['sed'],
             'usle_static_map': static_map_uris[scenario_name]['usle'],
             'landuse_uri': base_landuse_uri,
