@@ -60,6 +60,22 @@ def get_last_impact(logfile_uri):
     logfile.close()
     return (int(watershed), int(impact_num))
 
+def clip_raster_to_watershed(in_raster, ws_vector, out_uri):
+    """Clip the input raster to ws_vector, saving the output raster to out_uri.
+        in_raster - a URI to an input GDAL raster.
+        ws_vector - a URI to an OGR vector that contains a single polygon of a
+            watershed.
+        out_uri - a URI to where the output raster should be saved.
+    """
+    datatype = raster_utils.get_datatype_from_uri(in_raster)
+    nodata = raster_utils.get_nodata_from_uri(in_raster)
+    pixel_size = raster_utils.get_pixel_size_from_uri(in_raster)
+
+    raster_utils.vectorize_datasets([in_raster], lambda x: x,
+        out_uri, datatype, nodata, pixel_size, 'intersection',
+        dataset_to_align_index=0, aoi_uri=ws_vector)
+
+
 def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_uri,
     impact_lucode, watersheds_uri, workspace, config, num_iterations=5,
     start_ws=0, start_impact=0, end_ws=None):
@@ -141,9 +157,20 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
         # create an LULC just for this watershed.
         watershed_lulc = os.path.join(watershed_workspace,
             'watershed_lulc.tif')
-        raster_utils.vectorize_datasets([landuse_uri], lambda x: x,
-            watershed_lulc, gdal.GDT_Float32, lulc_nodata, lulc_pixel_size,
-            'intersection', dataset_to_align_index=0, aoi_uri=watershed_uri)
+        clip_raster_to_watershed(landuse_uri, watershed_uri, watershed_lulc)
+
+        # Create rasters of only those base_run and base static_map pixels
+        # that are in the watershed.
+        ws_base_run = os.path.join(watershed_workspace,
+            'watershed_base_run.tif')
+        clip_raster_to_watershed(base_run, watershed_uri, ws_base_run)
+
+        ws_static_map = os.path.join(watershed_workspace,
+            'watershed_static_map.tif')
+        clip_raster_to_watershed(base_static_map, watershed_uri, ws_static_map)
+
+        ws_usle = os.path.join(watershed_workspace, 'watershed_usle.tif')
+        clip_raster_to_watershed(usle_static_map, watershed_uri, ws_usle)
 
         # get this watershed's ws_id
         watershed_vector = ogr.Open(watershed_uri)
