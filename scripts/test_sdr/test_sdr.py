@@ -62,7 +62,7 @@ def get_last_impact(logfile_uri):
 
 def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_uri,
     impact_lucode, watersheds_uri, workspace, config, num_iterations=5,
-    start_ws=0, start_impact=0):
+    start_ws=0, start_impact=0, end_ws=None):
 # base_run = sed_exp.tif, in the case of the sediment model, run on the base LULC
 # base_static_map = the static map generated from the base_run and the whole
 #   landscape converted to the target impact type
@@ -119,10 +119,18 @@ def test_static_map_quality(base_run, base_static_map, usle_static_map, landuse_
     watersheds_dir = os.path.join(workspace, 'watershed_vectors')
     split_watersheds = static_maps.split_datasource(current_watersheds, watersheds_dir, ['ws_id'])
 
+    if end_ws is None:
+        end_ws = len(split_watersheds)
+
     for ws_index, watershed_uri in enumerate(split_watersheds):
         if ws_index < start_ws:
             LOGGER.debug('Watershed %s is less than start index %s. skipping',
                 ws_index, start_ws)
+            continue
+
+        if ws_index > end_ws:
+            LOGGER.debug('Watershed %s > end_ws %s. Skipping.', ws_index,
+                end_ws)
             continue
 
         watershed_workspace = os.path.join(workspace, 'watershed_%s' %
