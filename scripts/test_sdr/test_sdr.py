@@ -243,9 +243,10 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static
                 del config['_prepare']
             sdr.execute(config)
 
-            # get the SDR raster
             impact_sdr_uri = os.path.join(impact_workspace, 'intermediate',
                 'sdr_factor.tif')
+            impact_sed_exp = os.path.join(impact_workspace, 'output',
+                'sed_export.tif')
 
             # Aggregate the sediment export from this impact simulation over
             # the target watershed
@@ -271,7 +272,7 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static
                 ws_base_sed_exp, impact_site, 'id').pixel_mean[1]
 
             impact_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                ws_base_sdr, impact_site, 'id').pixel_mean[1]
+                impact_sed_exp, impact_site, 'id').pixel_mean[1]
 
             if '_prepare' in config:
                 flow_accumulation = config['_prepare']['flow_accumulation_uri']
