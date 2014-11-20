@@ -477,8 +477,8 @@ def test_one_watershed_bare():
         'workspace': output_workspace,
         'config': config,
         'num_iterations': num_iterations,
-        'start_ws': 8,
-        'end_ws': 8,
+        'start_ws': 7,
+        'end_ws': 7,
         'write_headers': True,
     }
 
