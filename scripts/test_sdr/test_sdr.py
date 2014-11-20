@@ -77,7 +77,7 @@ def clip_raster_to_watershed(in_raster, ws_vector, out_uri):
 
 def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static_map, landuse_uri,
     impact_lucode, watersheds_uri, workspace, config, num_iterations=5,
-    start_ws=0, start_impact=0, end_ws=None):
+    start_ws=0, start_impact=0, end_ws=None, write_headers=True):
 # base_run = sed_exp.tif, in the case of the sediment model, run on the base LULC
 # base_static_map = the static map generated from the base_run and the whole
 #   landscape converted to the target impact type
@@ -104,10 +104,10 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static
 
     # Open a logfile so we can incrementally write model data we care about
     logfile_uri = os.path.join(workspace, 'impact_site_simulation.csv')
-    logfile = open(logfile_uri, 'a' if start_ws > 0 else 'w')
+    logfile = open(logfile_uri, 'a' if write_headers is False else 'w')
 
     # only write label headers if this is the top row.
-    if start_ws == 0 and start_impact == 0:
+    if write_headers is True:
         labels = ['ws_id',
             'Impact ID',
             'Impact Area',
@@ -167,7 +167,7 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static
             'watershed_base_sed_exp.tif')
         clip_raster_to_watershed(base_sed_exp, watershed_uri, ws_base_sed_exp)
         ws_base_export = raster_utils.aggregate_raster_values_uri(
-            ws_base_sed_exp, watershed_uri, 'ws_id').total[ws_index]
+            ws_base_sed_exp, watershed_uri, 'ws_id').total[ws_index + 1]
 
         ws_base_sdr = os.path.join(watershed_workspace,
             'watershed_base_sdr.tif')
@@ -479,6 +479,7 @@ def test_one_watershed_bare():
         'num_iterations': num_iterations,
         'start_ws': 8,
         'end_ws': 8,
+        'write_headers': True,
     }
 
     test_static_map_quality(**kwargs)
@@ -497,8 +498,8 @@ def create_usle_static_map(usle_current, usle_bare, sdr_current, out_uri):
         bounding_box_mode='intersection', vectorize_op=False)
 
 if __name__ == '__main__':
-#    test_one_watershed_bare()
-#    sys.exit(0)
+    test_one_watershed_bare()
+    sys.exit(0)
 
 #    # WILLAMETTE SAMPLE DATA
 #    invest_data = 'invest-natcap.invest-3/test/invest-data'
