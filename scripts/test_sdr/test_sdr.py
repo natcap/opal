@@ -68,11 +68,11 @@ def clip_raster_to_watershed(in_raster, ws_vector, out_uri):
     """
     datatype = raster_utils.get_datatype_from_uri(in_raster)
     nodata = raster_utils.get_nodata_from_uri(in_raster)
-    pixel_size = raster_utils.get_pixel_size_from_uri(in_raster)
+    pixel_size = raster_utils.get_cell_size_from_uri(in_raster)
 
     raster_utils.vectorize_datasets([in_raster], lambda x: x,
         out_uri, datatype, nodata, pixel_size, 'intersection',
-        dataset_to_align_index=0, aoi_uri=ws_vector)
+        dataset_to_align_index=0, aoi_uri=ws_vector, vectorize_op=False)
 
 
 def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static_map, landuse_uri,
