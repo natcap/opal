@@ -251,7 +251,7 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static
             # Aggregate the sediment export from this impact simulation over
             # the target watershed
             impact_ws_export = raster_utils.aggregate_raster_values_uri(
-                impact_sdr_uri, watershed_uri, 'ws_id').total[watershed_id]
+                impact_sed_exp, watershed_uri, 'ws_id').total[watershed_id]
 
             # Get the export from the static map under the impacted area.
             # only 1 feature in the impactd area, so we access that number with
