@@ -438,7 +438,7 @@ class ColombiaDistribution(NSISCommand):
     def initialize_options(self):
         self.genesis_config = os.path.abspath('installer/mafe_installer.json')
         self.dist_name = 'colombia'
-        self.nsis_dir = os.path.abspath('dist/total_coll')
+        self.nsis_dir = os.path.abspath('dist/total_coll_mafe')
 
         mafe_name_src = os.path.join(os.getcwd(), 'windows_build',
             'MAFE', 'MAFE-T_NAME.txt')
