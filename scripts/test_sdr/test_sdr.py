@@ -439,9 +439,12 @@ def test_one_watershed_paved():
 def test_one_watershed_bare():
     """Test a single watershed, if possible."""
     old_workspace = '/colossus/colombia_sdr'
-    base_run = os.path.join(old_workspace, 'base_run', 'output',
+    base_run = os.path.join(old_workspace, 'base_run', 'intermediate',
+        'sdr_factor.tif')
+    base_sed_exp = os.path.join(old_workspace, 'base_run', 'output',
         'sed_export.tif')
     base_static_map = os.path.join(old_workspace, 'bare_static_map.tif')
+    usle_static_map = os.path.join(old_workspace, 'bare_usle_static_map.tif')
     landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
         'ecosystems.tif')
     impact_lucode = 42
@@ -464,14 +467,18 @@ def test_one_watershed_bare():
     num_iterations = 20
 
     kwargs = {
-        'base_run': base_run,
+        'base_sdr': base_run,
+        'base_sed_exp': base_sed_exp,
         'base_static_map': base_static_map,
+        'usle_static_map': usle_static_map,
         'landuse_uri': landuse_uri,
         'impact_lucode': impact_lucode,
         'watersheds_uri': watersheds_uri,
         'workspace': output_workspace,
         'config': config,
-        'num_iterations': num_iterations
+        'num_iterations': num_iterations,
+        'start_ws': 8,
+        'end_ws': 8,
     }
 
     test_static_map_quality(**kwargs)
