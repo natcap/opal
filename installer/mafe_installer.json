@@ -11,7 +11,7 @@
         "name": "${APP_NAME}",
         "version": "${APP_VERSION}",
         "architecture": "${APP_ARCHITECTURE}",
-        "build_folder": "..\\dist\\total_coll",
+        "build_folder": "..\\dist\\total_coll_mafe",
         "publisher": "The Natural Capital Project",
         "website": "http://www.naturalcapitalproject.org",
         "languages": ["English", "Spanish"]

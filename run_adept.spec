@@ -114,7 +114,7 @@ total_coll = COLLECT(
     strip=None,
     upx=False,
     exclude_binaries=True,
-    name='total_coll'
+    name='total_coll_mafe'
 )
 
 # FORCE the usage of the shapely version of geos_c.dll.

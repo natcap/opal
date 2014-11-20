@@ -56,19 +56,22 @@ cd src/pyinstaller/bootloader
 %ENVDIR%\Scripts\python .\waf configure build install
 cd ..\..\..
 
-:: Now that everything is installed, we can run the permitting project's
-:: setup.py commands to build everything we want/need.
-%ENVDIR%\Scripts\python src\pyinstaller\pyinstaller.py -y --onedir --noupx --icon=windows_build\natcap_logo.ico -c run_opal.spec || goto :error
-
 IF NOT %BUILD_STATIC_DATA% == "true" goto :skip_big_data
 %ENVDIR%\Scripts\python setup.py static_data_colombia || goto :error
 :skip_big_data
 
 IF NOT %BUILD_MAFE% == "true" goto :skip_mafe
-%ENVDIR%\Scripts\python setup.py dist_colombia --nsis-dir=dist/total_coll || goto :error
+:: Now that everything is installed, we can run the permitting project's
+:: setup.py commands to build everything we want/need.
+%ENVDIR%\Scripts\python src\pyinstaller\pyinstaller.py -y --onedir --noupx --icon=windows_build\natcap_logo.ico -c run_adept.spec || goto :error
+%ENVDIR%\Scripts\python setup.py dist_colombia --nsis-dir=dist/total_coll_mafe || goto :error
 :skip_mafe
 
 IF NOT %BUILD_OPAL% == "true" goto :skip_opal
+:: Now that everything is installed, we can run the permitting project's
+:: setup.py commands to build everything we want/need.
+%ENVDIR%\Scripts\python src\pyinstaller\pyinstaller.py -y --onedir --noupx --icon=windows_build\natcap_logo.ico -c run_opal.spec || goto :error
+
 %ENVDIR%\Scripts\python setup.py dist_global --nsis-dir=dist/total_coll || goto :error
 :skip_opal
 
