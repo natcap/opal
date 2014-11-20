@@ -146,7 +146,8 @@ def align_impact_rasters(raster_list, output_dir):
     return output_raster_list
 
 def extract_mean():
-    watershed_workspace = '/colossus/colombia_sdr/bare/simulations/watershed_7'
+    #watershed_workspace = '/colossus/colombia_sdr/bare/simulations/watershed_7'
+    watershed_workspace = '/colossus/colombia_sdr_noprepare_bare/watershed_7'
     impact_workspace = watershed_workspace + '/random_impact_2/'
     impact_convert_sdr = impact_workspace + 'intermediate/sdr_factor.tif'
     impact_sed_export = impact_workspace + 'output/sed_export.tif'
