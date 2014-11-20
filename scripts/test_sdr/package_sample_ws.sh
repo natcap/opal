@@ -27,3 +27,5 @@ BASE_DIR=`basename $1`
 IMPACT=`basename $IMPACT_DIR | egrep -o '[0-9]+$'`
 ZIPNAME=$BASE_DIR-impact_$IMPACT.zip
 zip -r $ZIPNAME $TMPDIR
+
+echo Zipfile saved to `pwd`/$ZIPNAME
