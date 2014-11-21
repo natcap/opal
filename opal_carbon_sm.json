@@ -49,88 +49,12 @@
             }
         }, 
         {
-            "args_id": "fut_landuse_uri", 
-            "helpText": {
-                "en": "Location of the landcover map for the future (protection/restoration) scenario.", 
-                "es": "Ubicación del mapa de uso del suelo para el escenario futuro (protección o restauración)"
-            }, 
-            "id": "cur_lulc_raster", 
-            "label": {
-                "en": "Future Land Use/Land Cover raster", 
-                "es": "Raster de uso/cobertura del suelo futuro"
-            }, 
-            "hideable": true,
-            "type": "file", 
-            "validateAs": {
-                "type": "GDAL"
-            }
-        }, 
-        {
-            "args_id": "paved_landcover_code",
-            "helpText": {
-                "en": "The numeric land cover class for your LULC that represents pavement.",
-                "es": "La clase numérica de uso del suelo en su mapa que representa ‘pavimento’"
-            },
-            "defaultValue": "",
-            "required": true,
-            "label": {
-                "en": "Paved landcover code",
-                "es": "Código de uso del suelo pavimentado"
-            },
-            "type": "text",
-            "validateAs": {
-                "type": "number"
-            }
-        },
-        {
-            "args_id": "bare_landcover_code",
-            "helpText": {
-                "en": "The numeric land cover class for your LULC that represents bare ground.",
-                "es": "La clase numérica de uso del suelo en su mapa que representa ‘suelo desnudo’"
-            },
-            "defaultValue": "",
-            "required": true,
-            "label": {
-                "en": "Bare landcover code",
-                "es": "Código de uso de suelo desnudo"
-            },
-            "type": "text",
-            "validateAs": {
-                "type": "number"
-            }
-        },
-        {
-            "args_id": "carbon_pools_uri", 
-            "helpText": {
-                "en": "A table that maps the land cover ids to carbon pools.  The table must contain columns of 'LULC', 'C_above', 'C_Below', 'C_Soil', 'C_Dead' as described in the user's guide.  The values in LULC must at least include the LULC ids in the land cover maps.", 
-                "es": "Tabla que conecta los ‘id’ del mapa de usos del suelo con la tabla de contenidos de  carbono. La tabla debe contener las siguientes columnas: ‘LULC’, C_above’, C_below’, C_soil’, ‘C_dead’ tal como se describe en la guía de usuario.  Los valores en la columna ‘LULC’ deben al menos incluir los ID del mapa de usos del suelo."
-            }, 
-            "hideable": true,
-            "id": "carbon_pools", 
-            "label": {
-                "en": "Carbon pools", 
-                "es": "Contenidos de carbono"
-            }, 
-            "required": false, 
-            "type": "file", 
-            "validateAs": {
-                "fieldsExist": [
-                    "lucode", 
-                    "C_above", 
-                    "C_Below", 
-                    "C_Soil", 
-                    "C_Dead"
-                ], 
-                "type": "CSV"
-            }
-        },
-        {
             "args_id": "future_type", 
             "id": "future_type",
             "returns": {"type": "strings"}, 
             "defaultValue": 0, 
             "label": {
-                "en": "Future scenario type", 
+                "en": "Offset scenario type", 
                 "es": "FILL IN"
             }, 
             "type": "dropdown", 
@@ -143,6 +67,81 @@
                 "es": "FILL IN"
             }
         }, 
+        {
+            "args_id": "fut_landuse_uri", 
+            "helpText": {
+                "en": "Location of the landcover map for the future (protection/restoration) scenario.", 
+                "es": "Ubicación del mapa de uso del suelo para el escenario futuro (protección o restauración)"
+            }, 
+            "id": "cur_lulc_raster", 
+            "label": {
+                "en": "Offset Scenario Land Use/Land Cover raster", 
+                "es": "Raster de uso/cobertura del suelo ______"
+            }, 
+            "required": true,
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "paved_landcover_code",
+            "helpText": {
+                "en": "The numeric land cover class for your LULC that represents pavement.",
+                "es": "La clase numérica de uso del suelo en su mapa que representa ‘pavimento’"
+            },
+            "defaultValue": "",
+            "label": {
+                "en": "Paved landcover code",
+                "es": "Código de uso del suelo pavimentado"
+            },
+            "required": true,
+            "type": "text",
+            "validateAs": {
+                "type": "number"
+            }
+        },
+        {
+            "args_id": "bare_landcover_code",
+            "helpText": {
+                "en": "The numeric land cover class for your LULC that represents bare ground.",
+                "es": "La clase numérica de uso del suelo en su mapa que representa ‘suelo desnudo’"
+            },
+            "defaultValue": "",
+            "label": {
+                "en": "Bare landcover code",
+                "es": "Código de uso de suelo desnudo"
+            },
+            "required": true,
+            "type": "text",
+            "validateAs": {
+                "type": "number"
+            }
+        },
+        {
+            "args_id": "carbon_pools_uri", 
+            "helpText": {
+                "en": "A table that maps the land cover ids to carbon pools.  The table must contain columns of 'LULC', 'C_above', 'C_Below', 'C_Soil', 'C_Dead' as described in the user's guide.  The values in LULC must at least include the LULC ids in the land cover maps.", 
+                "es": "Tabla que conecta los ‘id’ del mapa de usos del suelo con la tabla de contenidos de  carbono. La tabla debe contener las siguientes columnas: ‘LULC’, C_above’, C_below’, C_soil’, ‘C_dead’ tal como se describe en la guía de usuario.  Los valores en la columna ‘LULC’ deben al menos incluir los ID del mapa de usos del suelo."
+            }, 
+            "required": true,
+            "id": "carbon_pools", 
+            "label": {
+                "en": "Carbon pools", 
+                "es": "Contenidos de carbono"
+            }, 
+            "type": "file", 
+            "validateAs": {
+                "fieldsExist": [
+                    "lucode", 
+                    "C_above", 
+                    "C_Below", 
+                    "C_Soil", 
+                    "C_Dead"
+                ], 
+                "type": "CSV"
+            }
+        },
         {
             "args_id": "do_biophysical",
             "returns": true,
