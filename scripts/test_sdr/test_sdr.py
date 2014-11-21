@@ -59,7 +59,7 @@ def get_last_impact(logfile_uri):
     logfile.close()
     return (int(watershed), int(impact_num))
 
-def clip_raster_to_watershed(in_raster, ws_vector, out_uri):
+def clip_raster_to_watershed(in_raster, ws_vector, out_uri, clip_raster=None):
     """Clip the input raster to ws_vector, saving the output raster to out_uri.
         in_raster - a URI to an input GDAL raster.
         ws_vector - a URI to an OGR vector that contains a single polygon of a
@@ -70,12 +70,22 @@ def clip_raster_to_watershed(in_raster, ws_vector, out_uri):
     nodata = raster_utils.get_nodata_from_uri(in_raster)
     pixel_size = raster_utils.get_cell_size_from_uri(in_raster)
 
-    raster_utils.vectorize_datasets([in_raster], lambda x: x,
+    if clip_raster is not None:
+        rasters = [in_raster, clip_raster]
+        clip_nodata = raster_utils.get_nodata_from_uri(clip_raster)
+        def operation(in_values, clip_values):
+            return numpy.where(clip_values == clip_nodata, clip_nodata, in_values)
+    else:
+        rasters = [in_raster]
+        operation = lambda x: x
+
+    raster_utils.vectorize_datasets(rasters, operation,
         out_uri, datatype, nodata, pixel_size, 'intersection',
         dataset_to_align_index=0, aoi_uri=ws_vector, vectorize_op=False)
 
 
-def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static_map, landuse_uri,
+def test_static_map_quality(base_sed_exp, base_sdr, base_static_map,
+    usle_static_map, base_usle, landuse_uri,
     impact_lucode, watersheds_uri, workspace, config, num_iterations=5,
     start_ws=0, start_impact=0, end_ws=None, write_headers=True):
 # base_run = sed_exp.tif, in the case of the sediment model, run on the base LULC
@@ -177,8 +187,13 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static
             'watershed_static_map.tif')
         clip_raster_to_watershed(base_static_map, watershed_uri, ws_static_map)
 
-        ws_usle = os.path.join(watershed_workspace, 'watershed_usle.tif')
-        clip_raster_to_watershed(usle_static_map, watershed_uri, ws_usle)
+        ws_usle_sm = os.path.join(watershed_workspace,
+            'watershed_usle_static_map.tif')
+        clip_raster_to_watershed(usle_static_map, watershed_uri, ws_usle_sm)
+
+        ws_usle = os.path.join(watershed_workspace,
+            'watershed_base_usle.tif')
+        clip_raster_to_watershed(base_usle, watershed_uri, ws_usle)
 
         # get this watershed's ws_id
         watershed_vector = ogr.Open(watershed_uri)
@@ -266,13 +281,21 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map, usle_static
                 impact_sdr_uri, impact_site, 'id').pixel_mean[1]
 
             usle_sum_impact = raster_utils.aggregate_raster_values_uri(
-                ws_usle, impact_site, 'id').total[1]
+                ws_usle_sm, impact_site, 'id').total[1]
 
             base_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
                 ws_base_sed_exp, impact_site, 'id').pixel_mean[1]
 
             impact_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
                 impact_sed_exp, impact_site, 'id').pixel_mean[1]
+
+            ws_base_sed_exp = os.path.join(impact_workspace,
+                'watershed_base_sed_exp.tif')
+            clip_raster_to_watershed(base_sed_exp, watershed_uri,
+                    ws_base_sed_exp, impact_sed_exp)
+            ws_base_export = raster_utils.aggregate_raster_values_uri(
+                ws_base_sed_exp, watershed_uri, 'ws_id').total[ws_index + 1]
+
 
             if '_prepare' in config:
                 flow_accumulation = config['_prepare']['flow_accumulation_uri']
@@ -404,7 +427,7 @@ def test_one_watershed_paved():
     base_static_map = os.path.join(old_workspace, 'paved_static_map.tif')
     landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
         'ecosystems.tif')
-    impact_lucode = 19
+    impact_lucode = 89
     tool_data = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
     watersheds_uri = os.path.join(tool_data, 'watersheds_cuencas.shp')
     output_workspace = '/colossus/colombia_sdr_noprepare'
@@ -447,30 +470,44 @@ def test_one_watershed_bare():
     usle_static_map = os.path.join(old_workspace, 'bare_usle_static_map.tif')
     landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
         'ecosystems.tif')
-    impact_lucode = 42
+    base_usle = os.path.join(old_workspace, 'base_run', 'output', 'usle.tif')
+    impact_lucode = 301
     tool_data = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
     watersheds_uri = os.path.join(tool_data, 'watersheds_cuencas.shp')
     output_workspace = '/colossus/colombia_sdr_noprepare_bare'
+
+
+    #TODO: run SDR just on this one watershed.
+    watershed_7 = os.path.join(old_workspace, 'bare', 'simulations',
+        'watershed_vectors', 'feature_7.shp')
+    base_workspace = os.path.join(output_workspace, 'base_run')
     config = {
         'dem_uri': os.path.join(tool_data, 'DEM.tif'),
         'erosivity_uri': os.path.join(tool_data, 'Erosivity.tif'),
         'erodibility_uri': os.path.join(tool_data, 'Erodability.tif'),
         'landuse_uri': landuse_uri,
-        'watersheds_uri': watersheds_uri,
+        'watersheds_uri': watershed_7, #watersheds_uri,
         'biophysical_table_uri': os.path.join(tool_data,
             'Biophysical_Colombia.csv'),
         'threshold_flow_accumulation': 100,  # yes, 100!
         'k_param': 2,
         'sdr_max': 0.8,
         'ic_0_param': 0.5,
+        'workspace_dir': base_workspace,
     }
-    num_iterations = 20
+    num_iterations = 3
 
+    sdr.execute(config)
+
+    base_run = os.path.join(base_workspace, 'intermediate', 'sdr_factor.tif')
+    base_sed_exp = os.path.join(base_workspace, 'output', 'sed_export.tif')
+    base_usle = os.path.join(base_workspace, 'output', 'usle.tif')
     kwargs = {
         'base_sdr': base_run,
         'base_sed_exp': base_sed_exp,
         'base_static_map': base_static_map,
         'usle_static_map': usle_static_map,
+        'base_usle': base_usle,
         'landuse_uri': landuse_uri,
         'impact_lucode': impact_lucode,
         'watersheds_uri': watersheds_uri,
