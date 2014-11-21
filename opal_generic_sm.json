@@ -1,0 +1,141 @@
+{
+    "id": "window", 
+    "label": {
+        "en": "Static Map Raster Calculator", 
+        "es": "Calculadora de mapas estáticos"
+    }, 
+    "modelName": {
+        "en": "generic_static_map", 
+        "es": "generic_static_map_es"
+    }, 
+    "targetScript": "adept.static_maps", 
+    "targetFunction": "raster_math",
+    "height": 800, 
+    "width": 700,
+    "elements": [
+        {
+            "args_id": "workspace_dir", 
+            "defaultValue": "~/custom_static_maps", 
+            "helpText": {
+                "en": "A directory that will contain the output files for this run.", 
+                "es": "Un directorio que contendrá los archivos finales para esta corrida"
+            }, 
+            "id": "workspace", 
+            "label": {
+                "en": "Workspace", 
+                "es": "Carpeta de trabajo"
+            }, 
+            "required": true, 
+            "type": "folder",
+            "validateAs": {
+                "type": "folder",
+                "mustExist": false
+            }
+        }, 
+        {
+            "args_id": "name",
+            "helpText": {
+                "en": "This text will be used to correctly name the output static maps.",
+                "es": "Este texto será usado para nombrar correctamente los mapas estáticos finales"
+            },
+            "width": 60,
+            "defaultValue": "custom",
+            "required": true,
+            "label": {
+                "en": "Name",
+                "es": "Nombre"
+            },
+            "type": "text",
+            "validateAs": {
+                "type": "string"
+            }
+        },
+        {
+            "args_id": "base_uri", 
+            "helpText": {
+                "en": "Location of the raster for the base scenario's service values.", 
+                "es": "Ubicación del raster con los valores de servicios del scenario base"
+            }, 
+            "id": "base_uri", 
+            "label": {
+                "en": "Base raster", 
+                "es": "Raster base"
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "paved_uri", 
+            "helpText": {
+                "en": "Location of the raster for the paved scenario's service values.", 
+                "es": "Ubicación del raster con los valores de servicios del escenario de pavimento"
+            }, 
+            "id": "paved_uri", 
+            "label": {
+                "en": "Paved raster", 
+                "es": "Raster de pavimento"
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "bare_uri", 
+            "helpText": {
+                "en": "Location of the raster for the bare scenario's service values.", 
+                "es": "Ubicación del raster con los valores de servicios del escenario de suelo desnudo"
+            }, 
+            "id": "bare_uri", 
+            "label": {
+                "en": "Bare raster", 
+                "es": "Raster de suelo desnudo"
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        }, 
+        {
+            "args_id": "future_uri", 
+            "helpText": {
+                "en": "Location of the raster for the future scenario's service values.", 
+                "es": "Ubicación del raster con los valores de servicios del escenario de pavimento"
+            }, 
+            "id": "future_uri", 
+            "label": {
+                "en": "Protection raster", 
+                "es": "Raster de protección"
+            }, 
+            "required": true, 
+            "type": "file", 
+            "validateAs": {
+                "type": "GDAL"
+            }
+        },
+        {
+            "args_id": "future_type", 
+            "id": "future_type",
+            "returns": {"type": "strings"}, 
+            "defaultValue": 0, 
+            "label": {
+                "en": "Future scenario type", 
+                "es": "FILL IN"
+            }, 
+            "type": "dropdown", 
+            "options": [
+                "protection",
+                "restoration"
+            ],
+            "helpText": {
+                "en": "Select the type of future landcover scenario you are using.",
+                "es": "FILL IN"
+            }
+        } 
+    ] 
+}
