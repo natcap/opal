@@ -109,7 +109,7 @@
             }, 
             "id": "future_uri", 
             "label": {
-                "en": "Protection raster", 
+                "en": "Offset scenario raster", 
                 "es": "Raster de protección"
             }, 
             "required": true, 
@@ -124,7 +124,7 @@
             "returns": {"type": "strings"}, 
             "defaultValue": 0, 
             "label": {
-                "en": "Future scenario type", 
+                "en": "Offset scenario type", 
                 "es": "FILL IN"
             }, 
             "type": "dropdown", 
