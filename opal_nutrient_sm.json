@@ -48,6 +48,25 @@
             }
         }, 
         {
+            "args_id": "future_type", 
+            "id": "future_type",
+            "returns": {"type": "strings"}, 
+            "defaultValue": 0, 
+            "label": {
+                "en": "Offset scenario type", 
+                "es": "FILL IN"
+            }, 
+            "type": "dropdown", 
+            "options": [
+                "protection",
+                "restoration"
+            ],
+            "helpText": {
+                "en": "Select the type of future landcover scenario you are using.",
+                "es": "FILL IN"
+            }
+        }, 
+        {
             "args_id": "fut_landuse_uri", 
             "helpText": {
                 "en": "Location of the landcover map for the future (protection/restoration) scenario.", 
@@ -55,10 +74,10 @@
             }, 
             "id": "cur_lulc_raster", 
             "label": {
-                "en": "Future Land Use/Land Cover raster", 
+                "en": "Offset Scenario Land Use/Land Cover raster", 
                 "es": "Raster de uso/cobertura del suelo futuro"
             }, 
-            "hideable": true,
+            "required": true,
             "type": "file", 
             "validateAs": {
                 "type": "GDAL"
@@ -109,7 +128,7 @@
                 "en": "A GIS raster dataset with an elevation value for each cell. Make sure the DEM is corrected by filling in sinks, and if necessary burning hydrographic features into the elevation model (recommended when you see unusual streams.) See the Working with the DEM section of the InVEST user's guide for more information.", 
                 "es": "Raster con un valor de elevación  para cada celda. Asegúrese de que al DEM se le ha hecho un proceso correcto de ‘fill sinks’ y, de ser necesario, aplicar un ‘burning’ de las características hidrográficas en el modelo de elevación (recomendado para cuando hay flujos inusuales). Vea el capítulo “Working with the DEM section” del manual de usuario de InVEST."
             }, 
-            "hideable": true, 
+            "required": true, 
             "id": "dem_uri", 
             "label": {
                 "en": "DEM Raster", 
@@ -126,7 +145,7 @@
                 "en": "A GIS raster dataset with a non-zero value for average annual precipitation for each cell. The precipitation units should be in millimeters.", 
                 "es": "Raster con valores de precipitación promedio annual para cada celda. Las unidades de precipitación deben estar en milímetros."
             }, 
-            "hideable": true, 
+            "required": true, 
             "id": "precipitation", 
             "label": {
                 "en": "Precipitation", 
@@ -143,7 +162,7 @@
                 "en": "A GIS raster dataset, with an annual average evapotranspiration value for each cell. Potential evapotranspiration is the potential loss of water from soil by both evaporation from the soil and transpiration by healthy Alfalfa (or grass) if sufficient water is available. The evapotranspiration values should be in millimeters.", 
                 "es": "Raster con valores de evapotranspiración anual promedio en cada celda. La evapotranspiración potencial es la pérdida potencial de pérdida de agua del suelo tanto por evaporación como por transpiración de alfalfa (o pasto) de haber suficiente agua disponible. Los valores de evapotranspiración deben estar en milímetros."
             }, 
-            "hideable": true, 
+            "required": true, 
             "id": "potential_evapotranspiration", 
             "label": {
                 "en": "Reference Evapotranspiration", 
@@ -160,7 +179,7 @@
                 "en": "GIS raster dataset with an average root restricting layer depth value for each cell. Root restricting layer depth is the soil depth at which root penetration is strongly inhibited because of physical or chemical characteristics. The root restricting layer depth values should be in millimeters.", 
                 "es": "Raster con valores de profundidad límite de raíces. Esta capa es la profundidad del suelo en que la penetración de las raíces se inhibe por efecto de características físicas o químicas. Los valores de esta capa deben estar en milímetros."
             }, 
-            "hideable": true, 
+            "required": true, 
             "id": "soil_depth", 
             "label": {
                 "en": "Depth To Root Restricting Layer", 
@@ -177,7 +196,7 @@
                 "en": "A GIS raster dataset with a plant available water content value for each cell. Plant Available Water Content fraction (PAWC) is the fraction of water that can be stored in the soil profile that is available for plants' use.", 
                 "es": "Raster con el contenido disponible de agua para plantas para cada celda. Representa la fracción de agua que puede ser almacenada por el perfil del suelo que está disponible para el uso de las plantas"
             }, 
-            "hideable": true, 
+            "required": true, 
             "id": "plant_available_water_fraction", 
             "label": {
                 "en": "Plant Available Water Fraction", 
@@ -195,7 +214,7 @@
                 "en": "Floating point value on the order of 1 to 20 corresponding to the seasonal distribution of precipitation. See the user's guide for a detailed explanation.", 
                 "es": "Valor entre 1 y 20 que corresponde a la distribución estacional de la precipitación. Vea la guía de usuario para una explicación más detallada."
             }, 
-            "hideable": true, 
+            "required": true, 
             "id": "seasonality_constant", 
             "label": {
                 "en": "Seasonality Constant", 
@@ -210,7 +229,7 @@
                 "en": "This is a layer of watersheds such that each watershed contributes to a point of interest where water quality will be analyzed.  It must have the integer field 'ws_id' where the values uniquely identify each watershed.", 
                 "es": "Capa de cuencas tal que cada cuenca contribuya a un punto de interés en donde la calidad de agua será analizada. Debe tener un campo llamado ‘ws_id’ donde se le asigne un identificador único a cada cuenca."
             }, 
-            "hideable": true, 
+            "required": true, 
             "id": "watersheds_uri", 
             "label": {
                 "en": "Watershed Polygons", 
@@ -241,7 +260,7 @@
                 "en": "A table containing model information corresponding to each of the land use classes in the LULC raster input. It must contain the fields 'lucode', 'usle_c', 'usle_p', and 'sedret_eff'.  See the InVEST sediment user's guide for more information about these fields.", 
                 "es": "Tabla con información correspondiente a cada clase de uso del suelo del mapa de usos del suelo. Debe contener los campos 'lucode' 'usle_c' 'usle_p' and 'sedret_eff'. Vea más información sobre estos campos en el manual de usuario de InVEST."
             }, 
-            "hideable": true, 
+            "required": true, 
             "id": "biophysical_table_uri", 
             "label": {
                 "en": "Biophysical Table", 
@@ -274,7 +293,7 @@
                 "en": "The number of upstream cells that must flow into a cell before it's considered part of a stream such that retention stops and the remaining export is exported to the stream. Used to define streams from the DEM.", 
                 "es": "El número de celdas aguas arriba que deben fluir en una celda antes de que esta sea considerada parte de un curso de agua, de forma que no haya más retención y la exportación de sedimentos remanente sea exportada al curso de agua. Se utiliza para delinear cursos de agua sobre el DEM."
             }, 
-            "hideable": true, 
+            "required": true, 
             "id": "threshold_flow_accumulation", 
             "label": {
                 "en": "Threshold Flow Accumluation", 
@@ -289,7 +308,6 @@
                 "en": "A table containing annual nutrient load threshold information.  Must have a ws_id index and thres_n (or p) field depending if nitrogen and/or phosphorous is simulated.", 
                 "es": "Una tabla que contenga el umbral de carga de nutrientes anual. Debe tener un identificador único denominado ‘ws_id’ y campos ‘thres_n’ o ‘thres_p’ dependiendo si se va a modelar nitrógeno o fósforo."
             }, 
-            "hideable": true, 
             "id": "water_purification_threshold_table_uri", 
             "label": {
                 "en": "Water Purification Threshold Table", 
@@ -322,25 +340,6 @@
                 }
             ]
         },
-        {
-            "args_id": "future_type", 
-            "id": "future_type",
-            "returns": {"type": "strings"}, 
-            "defaultValue": 0, 
-            "label": {
-                "en": "Future scenario type", 
-                "es": "FILL IN"
-            }, 
-            "type": "dropdown", 
-            "options": [
-                "protection",
-                "restoration"
-            ],
-            "helpText": {
-                "en": "Select the type of future landcover scenario you are using.",
-                "es": "FILL IN"
-            }
-        }, 
         {
             "args_id": "do_parallelism",
             "returnValue": true,
