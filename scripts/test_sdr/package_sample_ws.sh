@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 #
 #  Take relevant outputs from the watershed dir at arg1 and zip them up.
 #
@@ -22,6 +22,10 @@ cp $IMPACT_DIR/output/usle.tif $TMPDIR/impact_usle.tif
 cp $1/watershed_base_sdr.tif $TMPDIR/base_sdr_factor.tif
 cp $1/watershed_base_sed_exp.tif $TMPDIR/base_sed_export.tif
 cp $1/watershed_usle.tif $TMPDIR/base_usle.tif
+
+WS_OUTPUTS=$TMPDIR/impact_ws_outputs
+mkdir $WS_OUTPUTS
+cp $IMPACT_DIR/output/watershed_outputs.* $WS_OUTPUTS
 
 BASE_DIR=`basename $1`
 IMPACT=`basename $IMPACT_DIR | egrep -o '[0-9]+$'`
