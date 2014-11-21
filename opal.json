@@ -70,24 +70,6 @@
             }
         }, 
         {
-            "id": "area_of_influence", 
-            "args_id": "area_of_influence_uri", 
-            "type": "file", 
-            "defaultValue": "", 
-            "validateAs": {
-                "type": "file"
-            }, 
-            "required": false,
-            "label": {
-                "en": "Area of Influence (optional)",
-                "es": "Área de influencia (opcional)"
-            },
-            "helpText": {
-                "en": "The area of influence is a polygon shapefile. If no input is provided, the tool defaults to using the project footprint's hydrological subzone. The tool tracks which potential offset parcels are located within the area of influence so that they can be prioritized for selection in the offset portfolio.",
-                "es": "El área de influencia es un shapefile de polígono. Si no se provee ningún archivo, la herramienta asignará por defecto la subzona hidrológica del área de influencia del proyecto. La herramienta rastrea qué parches potenciales para compensación se localizan dentro del área de influencia para priorizarlas en la selección del portafolio de compensación."
-            }
-        }, 
-        {
             "id": "ecosystems_map", 
             "args_id": "ecosystems_map_uri",
             "type": "file", 
@@ -125,6 +107,73 @@
             "helpText": {
                 "en": "A polygon shapefile of natural ecosystems. The amount and type of biodiversity offset needed is calculated based on the overlap between natural ecosystems and the project footprint, and potential offset patches are also selected from natural ecosystems provided here. <br/><br/> <b>Format:</b> Each row should be a polygon or multi-polygon of a particular ecosystem type. Each column contains information about the ecosystem, and two columns must be named as follows: <ol><li> <em>ecos_dis</em>: string value with the name of the ecosystem type </li><li> <em>factor_de</em>: the numeric compensation factor/mitigation ratio for that ecosystem</li></ol>",
                 "es": "Shapefile de polígono de ecosistemas naturales. La cantidad y tipo de compensación necesaria es calculada por la superposición entre ecosistemas naturales y el área de influencia del proyecto, y los parches potenciales para la compensación también son seleccionados del mapa de ecosistemas naturales provisto aquí. <br/><br/> <b>Format</b> Cada fila debe ser un polígono o un multipolígono de un tipo particular de ecosistema. Deben ser creadas dos columnas denominadas de la siguiente forma <ol><li> <em>ecos_dis</em> valor en texto con el nombre del tipo de ecosistema </li><li> <em>factor_de</em> la tasa numérica de compensación para ese ecosistema. </li></ol>"
+            }
+        }, 
+        {
+            "args_id": "offset_type", 
+            "id": "offset_type",
+            "returns": {"type": "strings"}, 
+            "defaultValue": 0, 
+            "label": {
+                "en": "Offset type", 
+                "es": "FILL IN"
+            }, 
+            "type": "dropdown", 
+            "options": [
+                "Protection",
+                "Restoration"
+            ],
+            "helpText": {
+                "en": "Select the offset type of your future static map scenarios",
+                "es": "FILL IN"
+            }
+        }, 
+        {
+            "id": "offset_parcels_vector", 
+            "args_id": "offset_parcels",
+            "type": "file", 
+            "required": true,
+            "label": {
+                "en": "Potential offset sites", 
+                "es": "FILL IN"
+            }, 
+            "validateAs": {
+                "type": "OGR",
+                "fieldsExist": ["ecosystem"],
+                "layers": [
+                    {
+                        "type": "polygons", 
+                        "name": {
+                            "inheritFrom": "file"
+                        }
+                    }
+                ],
+                "restrictions": [
+                    {
+                        "field": "ecosystem",
+                        "validateAs": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        }, 
+        {
+            "id": "area_of_influence", 
+            "args_id": "area_of_influence_uri", 
+            "type": "file", 
+            "defaultValue": "", 
+            "validateAs": {
+                "type": "file"
+            }, 
+            "required": false,
+            "label": {
+                "en": "Area of Influence (optional)",
+                "es": "Área de influencia (opcional)"
+            },
+            "helpText": {
+                "en": "The area of influence is a polygon shapefile. If no input is provided, the tool defaults to using the project footprint's hydrological subzone. The tool tracks which potential offset parcels are located within the area of influence so that they can be prioritized for selection in the offset portfolio.",
+                "es": "El área de influencia es un shapefile de polígono. Si no se provee ningún archivo, la herramienta asignará por defecto la subzona hidrológica del área de influencia del proyecto. La herramienta rastrea qué parches potenciales para compensación se localizan dentro del área de influencia para priorizarlas en la selección del portafolio de compensación."
             }
         }, 
         {
