@@ -280,6 +280,8 @@ class SampleDataCommand(Command):
         print 'Zipping up single-hydrozone sample data'
 
         dist_dir = os.path.join(os.getcwd(), 'dist')
+        build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
+        data_dir = os.path.join(build_dir, 'sample_data')
         service_dir = os.path.join(data_dir, 'services_static_data')
 
         sample_data_zip = os.path.join(dist_dir, 'sample_data')
