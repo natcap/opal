@@ -276,6 +276,8 @@ class SampleDataCommand(Command):
 
 
     def run(self):
+        self._gather_single_hydrozone_data()
+
         print ''
         print 'Zipping up single-hydrozone sample data'
 
