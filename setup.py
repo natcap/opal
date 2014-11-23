@@ -202,6 +202,7 @@ class ZipColombiaData(Command):
 class SampleDataCommand(Command):
     description = "Prepares sample data for a single hydrozone"
     user_options = []
+    scenarios = ['bare', 'paved', 'protection']
 
     def initialize_options(self):
         pass
@@ -209,9 +210,9 @@ class SampleDataCommand(Command):
     def finalize_options(self):
         pass
 
-    def run(self):
+    def _gather_single_hydrozone_data(self):
         print ''
-        print 'Preparing single-hydrozone sample data'
+        print 'gathering single-hydrozone sample data'
 
         build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
         dist_dir = os.path.join(os.getcwd(), 'dist')
@@ -239,17 +240,17 @@ class SampleDataCommand(Command):
         for service in ['sediment', 'nutrient', 'carbon']:
             service_out_dir = os.path.join(service_dir, service)
             os.makedirs(service_out_dir)
-            for scenario in ['bare', 'paved', 'protection']:
+            for scenario in self.scenarios:
                 map_name = '%s_%s_static_map_lzw.tif' % (service, scenario)
                 new_map_name = map_name.replace('_lzw', '')
                 src_static_map = os.path.join(static_maps_dir, map_name)
 
                 # rename the sample protection static maps to 'future'
                 if scenario == 'protection':
-                    new_map_name = new_map_name.replace(scenario, 'future')
+                    new_map_name = new_map_name.replace(scenario, 'protect')
                 dst_static_map = os.path.join(service_out_dir, new_map_name)
 
-                print 'Clipping %s' % new_map_name 
+                print 'Clipping %s' % new_map_name
                 static_maps.clip_static_map(src_static_map, active_hydrozone,
                     dst_static_map)
 
@@ -263,7 +264,6 @@ class SampleDataCommand(Command):
                     static_maps.clip_static_map(src_raster, active_hydrozone,
                         dst_raster)
 
-
         print '\nCollecting sample vectors'
         vectors_to_copy = ['mine_site', 'power_line']
         for vector_base in vectors_to_copy:
@@ -273,6 +273,14 @@ class SampleDataCommand(Command):
                     os.path.basename(source_file))
                 print 'Copying %s -> %s' % (source_file, dest_file)
                 shutil.copyfile(source_file, dest_file)
+
+
+    def run(self):
+        print ''
+        print 'Zipping up single-hydrozone sample data'
+
+        dist_dir = os.path.join(os.getcwd(), 'dist')
+        service_dir = os.path.join(data_dir, 'services_static_data')
 
         sample_data_zip = os.path.join(dist_dir, 'sample_data')
         print "\nBuilding %s.zip" % sample_data_zip
