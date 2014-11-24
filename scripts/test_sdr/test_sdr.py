@@ -558,9 +558,63 @@ def create_usle_static_map(usle_current, usle_bare, sdr_current, out_uri,
         nodata_out=usle_nodata, pixel_size_out=usle_pixel_size,
         bounding_box_mode='intersection', vectorize_op=False)
 
+def create_protection_static_maps():
+    tool_data = 'data/colombia_tool_data'
+    protection_lulc = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
+        'converted_veg_deforest.tif')
+
+    workspace = '/colossus/colombia_sdr'
+    config = {
+        'workspace_dir': os.path.join(workspace, 'protection'),
+        'dem_uri': os.path.join(tool_data, 'DEM.tif'),
+        'erosivity_uri': os.path.join(tool_data, 'Erosivity.tif'),
+        'erodibility_uri': os.path.join(tool_data, 'Erodability.tif'),
+        'landuse_uri': base_landuse_uri,
+        'watersheds_uri': os.path.join(tool_data, 'watersheds_cuencas.shp'),
+        'biophysical_table_uri': os.path.join(tool_data,
+            'Biophysical_Colombia.csv'),
+        'threshold_flow_accumulation': 100,  # yes, 100!
+        'k_param': 2,
+        'sdr_max': 0.8,
+        'ic_0_param': 0.5,
+    }
+
+    # set the tempdir to be within the workspace
+    temp_dir = os.path.join(config['workspace_dir'], 'tmp')
+    tempfile.tempdir = temp_dir
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+
+    sdr.execute(config)
+
+    # get the SDR raster from the intermediate folder.  This is our base run.
+    sed_exp = lambda x: os.path.join(x, 'output', 'sed_export.tif')
+    usle = lambda x: os.path.join(x, 'output', 'usle.tif')
+    sdr = lambda x: os.path.join(x, 'intermediate', 'sdr_factor.tif')
+
+    base_workspace = os.path.join(workspace, 'base_run')
+    base_sed_export = sed_exp(base_workspace)
+    base_usle = usle(base_workspace)
+    base_sdr = sdr(base_workspace)
+
+    protection_sed_export = sed_exp(config['workspace_dir'])
+    protection_usle = usle(config['workspace_dir'])
+    protection_sdr = sdr(config['workspace_dir'])
+
+    # make the USLE and sed_export static maps.
+    usle_protection_uri = os.path.join(workspace,
+        'protection_usle_static_map.tif')
+    create_usle_static_map(base_usle, protection_usle, base_sdr,
+        usle_protection_uri, invert=True)
+
+    sed_export_sm_uri = os.path.join(workspace, 'protection_static_map.tif')
+    static_maps.subtract_rasters(protection_sed_export, base_sed_export,
+        sed_export_sm_uri)
+
 
 if __name__ == '__main__':
-    test_one_watershed('paved', 7, 8, 5)
+    create_protection_static_maps()
+#    test_one_watershed('paved', 7, 8, 5)
     sys.exit(0)
 
 #    # WILLAMETTE SAMPLE DATA
