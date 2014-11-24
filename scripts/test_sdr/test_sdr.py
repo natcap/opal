@@ -539,21 +539,28 @@ def test_one_watershed(scenario='bare', start_ws=0, end_ws=None, num_iter=20):
 
         test_static_map_quality(**kwargs)
 
-def create_usle_static_map(usle_current, usle_bare, sdr_current, out_uri):
+def create_usle_static_map(usle_current, usle_bare, sdr_current, out_uri,
+        invert=False):
     usle_nodata = raster_utils.get_nodata_from_uri(usle_current)
     usle_pixel_size = raster_utils.get_cell_size_from_uri(usle_current)
 
-    def _calculate(usle_cur, usle_bare, sdr_cur):
-        return numpy.where(usle_cur == usle_nodata, usle_nodata,
-            numpy.multiply(numpy.subtract(usle_bare, usle_cur), sdr_cur))
+    if invert is False:
+        def _calculate(usle_cur, usle_bare, sdr_cur):
+            return numpy.where(usle_cur == usle_nodata, usle_nodata,
+                numpy.multiply(numpy.subtract(usle_bare, usle_cur), sdr_cur))
+    else:
+        def _calculate(usle_cur, usle_bare, sdr_cur):
+            return numpy.where(usle_cur == usle_nodata, usle_nodata,
+                numpy.multiply(numpy.subtract(usle_cur, usle_bare), sdr_cur))
 
     raster_utils.vectorize_datasets([usle_current, usle_bare, sdr_current],
         _calculate, dataset_out_uri=out_uri, datatype_out=gdal.GDT_Float32,
         nodata_out=usle_nodata, pixel_size_out=usle_pixel_size,
         bounding_box_mode='intersection', vectorize_op=False)
 
+
 if __name__ == '__main__':
-    test_one_watershed('paved', 7, 8)
+    test_one_watershed('paved', 7, 8, 5)
     sys.exit(0)
 
 #    # WILLAMETTE SAMPLE DATA
