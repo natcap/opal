@@ -18,6 +18,9 @@ import random
 import shutil
 import multiprocessing
 import json
+import sys
+from types import IntType
+import glob
 
 from osgeo import ogr
 from osgeo import gdal
@@ -243,11 +246,20 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map,
             # TODO: convert the landcover where the mask is 1.
             converted_landcover = os.path.join(impact_workspace,
                 'converted_lulc.tif')
-            def convert_impact(mask_value, lulc_value):
-                if mask_value == 1:
-                    return impact_lucode
-                return lulc_value
-            raster_utils.vectorize_datasets([impact_mask, watershed_lulc],
+            if type(impact_lucode) is IntType:
+                def convert_impact(mask_value, lulc_value):
+                    if mask_value == 1:
+                        return impact_lucode
+                    return lulc_value
+                mask_rasters = [impact_mask, watershed_lulc]
+            else:  # assume the impact_lucode is a raster.
+                def convert_impact(mask_value, orig_lulc, fut_lulc):
+                    if mask_value == 1:
+                        return fut_lulc
+                    return orig_lulc
+                mask_rasters = [impact_mask, watershed_lulc, impact_lucode]
+
+            raster_utils.vectorize_datasets(mask_rasters,
                 convert_impact, converted_landcover, gdal.GDT_Float32, lulc_nodata,
                 lulc_pixel_size, 'union', dataset_to_align_index=0)
 
@@ -307,7 +319,13 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map,
             mean_f_a = f_a_stats.pixel_mean[1]
             max_f_a = f_a_stats.pixel_max[1]
 
-            invest_estimate = ws_base_export - impact_ws_export
+            # impact_lucode is an int when we're doing full conversion
+            # (bare/paved), a string when we're doing protection.
+            if type(impact_lucode) is IntType:
+                invest_estimate = impact_ws_export - ws_base_export
+            else:
+                invest_estimate = ws_base_export - impact_ws_export
+
             export_ratio = static_estimate / invest_estimate
 
             # Now that we've completed the simulation, write these values to
