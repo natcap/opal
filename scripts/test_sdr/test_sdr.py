@@ -494,22 +494,16 @@ def test_one_watershed(scenario='bare', start_ws=0, end_ws=None, num_iter=20):
     tool_data = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
     watersheds_uri = os.path.join(tool_data, 'watersheds_cuencas.shp')
     output_workspace = '/colossus/colombia_sdr_noprepare_%s' % scenario
+    landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
+        'ecosystems.tif')
 
     if scenario == 'paved':
         impact_lucode = static_maps.COLOMBIA_BARE_LUCODE
     elif scenario == 'bare':
         impact_lucode = static_maps.COLOMBIA_PAVED_LUCODE
     else:
-        impact_lucode = os.path.join(old_workspace, 'protection', 'output',
-            'sed_export.tif')
-
-    if scenario in ['paved', 'bare']:
-        landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
-            'ecosystems.tif')
-    else:
-        landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
+        impact_lucode = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
             'converted_veg_deforest.tif')
-
 
     if end_ws is None:
         ws_pattern = os.path.join(old_workspace, scenario, 'simulations',
@@ -634,7 +628,7 @@ def create_protection_static_maps():
 
 
 if __name__ == '__main__':
-#    create_protection_static_maps()
+    create_protection_static_maps()
 #    test_one_watershed('paved', 7, 8, 5)
     test_one_watershed('protection', 7, 7, 5)
     sys.exit(0)
