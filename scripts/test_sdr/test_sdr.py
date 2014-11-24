@@ -479,20 +479,7 @@ def test_one_watershed_paved():
 
 def test_one_watershed(scenario='bare', start_ws=0, end_ws=None, num_iter=20):
     """Test a single watershed, if possible."""
-    assert scenario in ['bare', 'paved']
-
-    if scenario == 'paved':
-        impact_lucode = static_maps.COLOMBIA_BARE_LUCODE
-    else:
-        impact_lucode = static_maps.COLOMBIA_PAVED_LUCODE
-
-    if scenario in ['paved', 'bare']:
-        landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
-            'ecosystems.tif')
-    else:
-        landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
-            'converted_veg_deforest.tif')
-
+    #assert scenario in ['bare', 'paved', 'protection']
 
     old_workspace = '/colossus/colombia_sdr'
     base_run = os.path.join(old_workspace, 'base_run', 'intermediate',
@@ -508,12 +495,28 @@ def test_one_watershed(scenario='bare', start_ws=0, end_ws=None, num_iter=20):
     watersheds_uri = os.path.join(tool_data, 'watersheds_cuencas.shp')
     output_workspace = '/colossus/colombia_sdr_noprepare_%s' % scenario
 
+    if scenario == 'paved':
+        impact_lucode = static_maps.COLOMBIA_BARE_LUCODE
+    elif scenario == 'bare':
+        impact_lucode = static_maps.COLOMBIA_PAVED_LUCODE
+    else:
+        impact_lucode = os.path.join(old_workspace, 'protection', 'output',
+            'sed_export.tif')
+
+    if scenario in ['paved', 'bare']:
+        landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
+            'ecosystems.tif')
+    else:
+        landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
+            'converted_veg_deforest.tif')
+
+
     if end_ws is None:
         ws_pattern = os.path.join(old_workspace, scenario, 'simulations',
             'watershed_vectors', 'feature_*.shp')
         end_ws = len(glob.glob(ws_pattern))
 
-    for ws_id in range(start_ws, end_ws - 1):
+    for ws_id in range(start_ws, end_ws + 1):
         watershed = os.path.join(old_workspace, 'bare', 'simulations',
             'watershed_vectors', 'feature_%s.shp' % ws_id)
         base_workspace = os.path.join(output_workspace, 'base_run')
@@ -631,8 +634,9 @@ def create_protection_static_maps():
 
 
 if __name__ == '__main__':
-    create_protection_static_maps()
+#    create_protection_static_maps()
 #    test_one_watershed('paved', 7, 8, 5)
+    test_one_watershed('protection', 7, 7, 5)
     sys.exit(0)
 
 #    # WILLAMETTE SAMPLE DATA
