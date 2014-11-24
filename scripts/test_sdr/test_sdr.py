@@ -569,7 +569,7 @@ def create_protection_static_maps():
         'dem_uri': os.path.join(tool_data, 'DEM.tif'),
         'erosivity_uri': os.path.join(tool_data, 'Erosivity.tif'),
         'erodibility_uri': os.path.join(tool_data, 'Erodability.tif'),
-        'landuse_uri': base_landuse_uri,
+        'landuse_uri': protection_lulc,
         'watersheds_uri': os.path.join(tool_data, 'watersheds_cuencas.shp'),
         'biophysical_table_uri': os.path.join(tool_data,
             'Biophysical_Colombia.csv'),
@@ -588,18 +588,18 @@ def create_protection_static_maps():
     sdr.execute(config)
 
     # get the SDR raster from the intermediate folder.  This is our base run.
-    sed_exp = lambda x: os.path.join(x, 'output', 'sed_export.tif')
-    usle = lambda x: os.path.join(x, 'output', 'usle.tif')
-    sdr = lambda x: os.path.join(x, 'intermediate', 'sdr_factor.tif')
+    _sed_exp = lambda x: os.path.join(x, 'output', 'sed_export.tif')
+    _usle = lambda x: os.path.join(x, 'output', 'usle.tif')
+    _sdr = lambda x: os.path.join(x, 'intermediate', 'sdr_factor.tif')
 
     base_workspace = os.path.join(workspace, 'base_run')
-    base_sed_export = sed_exp(base_workspace)
-    base_usle = usle(base_workspace)
-    base_sdr = sdr(base_workspace)
+    base_sed_export = _sed_exp(base_workspace)
+    base_usle = _usle(base_workspace)
+    base_sdr = _sdr(base_workspace)
 
-    protection_sed_export = sed_exp(config['workspace_dir'])
-    protection_usle = usle(config['workspace_dir'])
-    protection_sdr = sdr(config['workspace_dir'])
+    protection_sed_export = _sed_exp(config['workspace_dir'])
+    protection_usle = _usle(config['workspace_dir'])
+    protection_sdr = _sdr(config['workspace_dir'])
 
     # make the USLE and sed_export static maps.
     usle_protection_uri = os.path.join(workspace,
