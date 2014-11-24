@@ -336,8 +336,8 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map,
             logfile.close()
 
     # create preliminary chart for this set of simulations
-    out_png = os.path.join(workspace, 'simulations.png')
-    graph_it(logfile_uri, out_png)
+#    out_png = os.path.join(workspace, 'simulations.png')
+#    graph_it(logfile_uri, out_png)
 
 def graph_it(log_file, out_file):
     all_rows = []
@@ -427,7 +427,7 @@ def test_one_watershed_paved():
     base_static_map = os.path.join(old_workspace, 'paved_static_map.tif')
     landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
         'ecosystems.tif')
-    impact_lucode = 89
+    impact_lucode = static_maps.COLOMBIA_PAVED_LUCODE
     tool_data = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
     watersheds_uri = os.path.join(tool_data, 'watersheds_cuencas.shp')
     output_workspace = '/colossus/colombia_sdr_noprepare'
@@ -459,67 +459,85 @@ def test_one_watershed_paved():
 
     test_static_map_quality(**kwargs)
 
-def test_one_watershed_bare():
+def test_one_watershed(scenario='bare', start_ws=0, end_ws=None, num_iter=20):
     """Test a single watershed, if possible."""
+    assert scenario in ['bare', 'paved']
+
+    if scenario == 'paved':
+        impact_lucode = static_maps.COLOMBIA_BARE_LUCODE
+    else:
+        impact_lucode = static_maps.COLOMBIA_PAVED_LUCODE
+
+    if scenario in ['paved', 'bare']:
+        landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
+            'ecosystems.tif')
+    else:
+        landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
+            'converted_veg_deforest.tif')
+
+
     old_workspace = '/colossus/colombia_sdr'
     base_run = os.path.join(old_workspace, 'base_run', 'intermediate',
         'sdr_factor.tif')
     base_sed_exp = os.path.join(old_workspace, 'base_run', 'output',
         'sed_export.tif')
-    base_static_map = os.path.join(old_workspace, 'bare_static_map.tif')
-    usle_static_map = os.path.join(old_workspace, 'bare_usle_static_map.tif')
-    landuse_uri = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
-        'ecosystems.tif')
+    base_static_map = os.path.join(old_workspace, '%s_static_map.tif' %
+        scenario)
+    usle_static_map = os.path.join(old_workspace, '%s_usle_static_map.tif' %
+        scenario)
     base_usle = os.path.join(old_workspace, 'base_run', 'output', 'usle.tif')
-    impact_lucode = 301
     tool_data = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
     watersheds_uri = os.path.join(tool_data, 'watersheds_cuencas.shp')
-    output_workspace = '/colossus/colombia_sdr_noprepare_bare'
+    output_workspace = '/colossus/colombia_sdr_noprepare_%s' % scenario
 
+    if end_ws is None:
+        ws_pattern = os.path.join(old_workspace, scenario, 'simulations',
+            'watershed_vectors', 'feature_*.shp')
+        end_ws = len(glob.glob(ws_pattern))
 
-    #TODO: run SDR just on this one watershed.
-    watershed_7 = os.path.join(old_workspace, 'bare', 'simulations',
-        'watershed_vectors', 'feature_7.shp')
-    base_workspace = os.path.join(output_workspace, 'base_run')
-    config = {
-        'dem_uri': os.path.join(tool_data, 'DEM.tif'),
-        'erosivity_uri': os.path.join(tool_data, 'Erosivity.tif'),
-        'erodibility_uri': os.path.join(tool_data, 'Erodability.tif'),
-        'landuse_uri': landuse_uri,
-        'watersheds_uri': watershed_7, #watersheds_uri,
-        'biophysical_table_uri': os.path.join(tool_data,
-            'Biophysical_Colombia.csv'),
-        'threshold_flow_accumulation': 100,  # yes, 100!
-        'k_param': 2,
-        'sdr_max': 0.8,
-        'ic_0_param': 0.5,
-        'workspace_dir': base_workspace,
-    }
-    num_iterations = 3
+    for ws_id in range(start_ws, end_ws - 1):
+        watershed = os.path.join(old_workspace, 'bare', 'simulations',
+            'watershed_vectors', 'feature_%s.shp' % ws_id)
+        base_workspace = os.path.join(output_workspace, 'base_run')
+        config = {
+            'dem_uri': os.path.join(tool_data, 'DEM.tif'),
+            'erosivity_uri': os.path.join(tool_data, 'Erosivity.tif'),
+            'erodibility_uri': os.path.join(tool_data, 'Erodability.tif'),
+            'landuse_uri': landuse_uri,
+            'watersheds_uri': watershed, #watersheds_uri,
+            'biophysical_table_uri': os.path.join(tool_data,
+                'Biophysical_Colombia.csv'),
+            'threshold_flow_accumulation': 100,  # yes, 100!
+            'k_param': 2,
+            'sdr_max': 0.8,
+            'ic_0_param': 0.5,
+            'workspace_dir': base_workspace,
+        }
+        num_iterations = num_iter
 
-    sdr.execute(config)
+        sdr.execute(config)
 
-    base_run = os.path.join(base_workspace, 'intermediate', 'sdr_factor.tif')
-    base_sed_exp = os.path.join(base_workspace, 'output', 'sed_export.tif')
-    base_usle = os.path.join(base_workspace, 'output', 'usle.tif')
-    kwargs = {
-        'base_sdr': base_run,
-        'base_sed_exp': base_sed_exp,
-        'base_static_map': base_static_map,
-        'usle_static_map': usle_static_map,
-        'base_usle': base_usle,
-        'landuse_uri': landuse_uri,
-        'impact_lucode': impact_lucode,
-        'watersheds_uri': watersheds_uri,
-        'workspace': output_workspace,
-        'config': config,
-        'num_iterations': num_iterations,
-        'start_ws': 7,
-        'end_ws': 7,
-        'write_headers': True,
-    }
+        base_run = os.path.join(base_workspace, 'intermediate', 'sdr_factor.tif')
+        base_sed_exp = os.path.join(base_workspace, 'output', 'sed_export.tif')
+        base_usle = os.path.join(base_workspace, 'output', 'usle.tif')
+        kwargs = {
+            'base_sdr': base_run,
+            'base_sed_exp': base_sed_exp,
+            'base_static_map': base_static_map,
+            'usle_static_map': usle_static_map,
+            'base_usle': base_usle,
+            'landuse_uri': landuse_uri,
+            'impact_lucode': impact_lucode,
+            'watersheds_uri': watersheds_uri,
+            'workspace': output_workspace,
+            'config': config,
+            'num_iterations': num_iterations,
+            'start_ws': ws_id,
+            'end_ws': ws_id,
+            'write_headers': True if ws_id == 7 else False,
+        }
 
-    test_static_map_quality(**kwargs)
+        test_static_map_quality(**kwargs)
 
 def create_usle_static_map(usle_current, usle_bare, sdr_current, out_uri):
     usle_nodata = raster_utils.get_nodata_from_uri(usle_current)
@@ -535,7 +553,7 @@ def create_usle_static_map(usle_current, usle_bare, sdr_current, out_uri):
         bounding_box_mode='intersection', vectorize_op=False)
 
 if __name__ == '__main__':
-    test_one_watershed_bare()
+    test_one_watershed('paved', 7, 8)
     sys.exit(0)
 
 #    # WILLAMETTE SAMPLE DATA
