@@ -411,15 +411,14 @@
                         "es": "Mapas propios de carbono almacenado"
                     }, 
                     "helpText": {
-                        "en": "A folder with carbon static maps. These maps can be created using the tool's carbon static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_future_static_map.tif</li></ul>", 
+                        "en": "A folder with carbon static maps. These maps can be created using the tool's carbon static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_<future type>_static_map.tif</li></ul>  <future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
                         "es": "Carpeta con mapas de carbono almacenado. Estos mapas pueden ser creados usando el generador de mapas de carbono almacenado de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_future_static_map.tif</li></ul>"
                     }, 
                     "validateAs": {
                         "type": "folder", 
                         "contains": [
                             "carbon_bare_static_map.tif",
-                            "carbon_paved_static_map.tif",
-                            "carbon_future_static_map.tif"
+                            "carbon_paved_static_map.tif"
                         ]
                     }
                 }
@@ -457,7 +456,7 @@
                         "es": "Usar mapas propios de nutrientes"
                     }, 
                     "helpText": {
-                        "en": "A folder with nitrogen static maps. These maps can be created using the tool's nutrient static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_future_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_future_pts.tif</li></ul>", 
+                        "en": "A folder with nitrogen static maps. These maps can be created using the tool's nutrient static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_<future type>_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
                         "es": "Carpeta con mapas de nitrógeno. Estos mapas pueden ser creados usando el generador de mapas de nitrógeno de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_future_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_future_pts.tif</li></ul>"
                     }, 
                     "validateAs": {
@@ -465,10 +464,8 @@
                         "contains": [
                             "nutrient_bare_static_map.tif",
                             "nutrient_paved_static_map.tif",
-                            "nutrient_future_static_map.tif",
                             "nutrient_bare_pts.tif",
                             "nutrient_paved_pts.tif",
-                            "nutrient_future_pts.tif"
                         ]
                     }
                 }
@@ -506,7 +503,7 @@
                         "es": "Usar mapas propios de sedimentos"
                     }, 
                     "helpText": {
-                        "en": "A folder with sediment static maps. These maps can be created using the tool's sediment static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_future_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_future_pts.tif</li></ul>", 
+                        "en": "A folder with sediment static maps. These maps can be created using the tool's sediment static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_<future type>_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
                         "es": "Carpeta con mapas de sedimentos. Estos mapas pueden ser creados usando el generador de mapas de sedimentos de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_future_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_future_pts.tif</li></ul>"
                     }, 
                     "validateAs": {
@@ -514,10 +511,8 @@
                         "contains": [
                             "sediment_bare_static_map.tif",
                             "sediment_paved_static_map.tif",
-                            "sediment_future_static_map.tif",
                             "sediment_bare_pts.tif",
                             "sediment_paved_pts.tif",
-                            "sediment_future_pts.tif"
                         ]
                     } 
                 }
@@ -555,7 +550,7 @@
                         "es": "Usar mapas propios de otros servicios ecosistémicos"
                     }, 
                     "helpText": {
-                        "en": "A folder with custom static maps. These maps can be created using the tool's custom static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_future_static_map.tif</li></ul><br/><br/>If these custom static rasters account for a hydrological service, the following rasters must also be in this folder:<ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_future_pts.tif</li></ul>", 
+                        "en": "A folder with custom static maps. These maps can be created using the tool's custom static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_<future type>_static_map.tif</li></ul><br/><br/>If these custom static rasters account for a hydrological service, the following rasters must also be in this folder:<ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
                         "es": "Carpeta con mapas de servicios ecosistémicos. Estos mapas pueden ser creados usando el generador de mapas de servicios ecosistémicos de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_future_static_map.tif</li></ul><br/><br/> Si estos raster corresponden a un servicio ecosistémico hidrológico, los siguientes raster también deben estar en esta carpeta <ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_future_pts.tif</li></ul>" 
                     }, 
                     "validateAs": {
@@ -563,7 +558,6 @@
                         "contains": [
                             "custom_bare_static_map.tif",
                             "custom_paved_static_map.tif",
-                            "custom_future_static_map.tif"
                         ]
                     }
                 },
