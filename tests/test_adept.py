@@ -57,6 +57,8 @@ class AdeptTest(GISTest):
             'area_of_influence_uri': os.path.join(DATA, 'sample_aoi.shp'),
             'ecosystems_map_uri': os.path.join(DATA,
                 'ecosys_dis_nat_comp_fac.shp'),
+            'offset_parcels': os.path.join(DATA,
+                'Ecosystems_Colombia.shp'),
             'search_areas_uri': os.path.join(DATA, 'Hydrographic_subzones.shp'),
 #            'threat_map': os.path.join(DATA, 'DEM.tif'),
 #            'avoidance_areas': os.path.join(DATA, 'sample_aoi.shp'),
