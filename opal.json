@@ -157,25 +157,7 @@
                     }
                 ]
             }
-        }, 
-        {
-            "id": "area_of_influence", 
-            "args_id": "area_of_influence_uri", 
-            "type": "file", 
-            "defaultValue": "", 
-            "validateAs": {
-                "type": "file"
-            }, 
-            "required": false,
-            "label": {
-                "en": "Area of Influence (optional)",
-                "es": "Área de influencia (opcional)"
-            },
-            "helpText": {
-                "en": "The area of influence is a polygon shapefile. If no input is provided, the tool defaults to using the project footprint's hydrological subzone. The tool tracks which potential offset parcels are located within the area of influence so that they can be prioritized for selection in the offset portfolio.",
-                "es": "El área de influencia es un shapefile de polígono. Si no se provee ningún archivo, la herramienta asignará por defecto la subzona hidrológica del área de influencia del proyecto. La herramienta rastrea qué parches potenciales para compensación se localizan dentro del área de influencia para priorizarlas en la selección del portafolio de compensación."
-            }
-        }, 
+        },
         {
             "id": "servicesheds_map", 
             "args_id": "servicesheds_uri",
@@ -248,6 +230,24 @@
             "helpText": {
                 "en": "A polygon shapefile. Within Colombia, this represents hydrological zones and subzones. Potential offset patches are restricted to the same hydrozone as the project footprint, and the results report indicates which offset patches are located within the same hydrosubzone as the project footprint so that they can be prioritized. Outside of Colombia, this input can be used to restrict the area within which offsets can be located and to prioritize potential offset patches.<br/><br/><b>Format:</b><br/> Each row should be a hydrosubzone. Each column contains information about the hydro subzone and hydrozone, and two columns must be named as follows: <ol><li><em>hydrosubzone:</em> string value with a unique name of the hydrosubzone</li><li><em>hydrozone:</em> string value with the name of the hydrozone to which the hydrozone belongs</li></ol>",
                 "es": "Shapefile de polígono. En Colombia esto representa las zonas y subzonas hidrológicas. Los parches potenciales de compensación se restringen a la misma zona hidrológica del área de influencia y el reporte de resultados indica qué parches se localizan dentro de la misma subzona hidrológica que el área de influencia de forma que puedan ser priorizados. Fuera de Colombia, este dato de entrada puede ser usado para restringir el área dentro de la cual las compensaciones pueden ser ubicadas para priorizar parches potenciales de compensación.<br/><br/><b>Format</b><br/> Cada fila debe ser una subzona hidrológica .Cada columna contiene información sobre la zona o subzona hidrológica y deben crearse dos columnas para nombrarlas como a continuación <ol><li><em>hydrosubzone</em> valor de texto con un valor único de la subzona hidrológica</li><li><em>hydrozone</em> valor de texto con el nombre de la zona hidrológica a la cual pertenece la zona hidrológica </li></ol>"
+            }
+        }, 
+        {
+            "id": "area_of_influence", 
+            "args_id": "area_of_influence_uri", 
+            "type": "file", 
+            "defaultValue": "", 
+            "validateAs": {
+                "type": "file"
+            }, 
+            "required": false,
+            "label": {
+                "en": "Area of Influence (optional)",
+                "es": "Área de influencia (opcional)"
+            },
+            "helpText": {
+                "en": "The area of influence is a polygon shapefile. If no input is provided, the tool defaults to using the project footprint's hydrological subzone. The tool tracks which potential offset parcels are located within the area of influence so that they can be prioritized for selection in the offset portfolio.",
+                "es": "El área de influencia es un shapefile de polígono. Si no se provee ningún archivo, la herramienta asignará por defecto la subzona hidrológica del área de influencia del proyecto. La herramienta rastrea qué parches potenciales para compensación se localizan dentro del área de influencia para priorizarlas en la selección del portafolio de compensación."
             }
         }, 
         {
