@@ -182,8 +182,8 @@
             "type": "file", 
             "required": true,
             "label": {
-                "en": "Custom servicesheds", 
-                "es": "Usar un mapa propio de 'servicesheds'"
+                "en": "Servicesheds", 
+                "es": "Mapa propio de 'servicesheds'"
             }, 
             "validateAs": {
                 "type": "OGR",
@@ -599,8 +599,8 @@
             }, 
             "type": "dropdown", 
             "options": [
-                "ES only",
-                "Biodiversity only",
+                "ES priority",
+                "Biodiversity priority",
                 "ES and biodiversity"
             ],
             "helpText": {
@@ -614,7 +614,7 @@
             "type": "checkbox",
             "defaultValue": true,
             "label": {
-                "en": "Restrict parcels by LCI",
+                "en": "Restrict offset parcels by LCI",
                 "es": "FILL IN"
             },
             "helpText": {
@@ -626,7 +626,7 @@
             "id": "prop_offset",
             "args_id": "prop_offset",
             "label": {
-                "en": "Proportion of (impacts * mitigation ratio) to offset",
+                "en": "Proportion of offset needs to suggest",
                 "es": "DEFINE"
             },
             "type": "text",
