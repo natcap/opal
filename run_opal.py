@@ -73,6 +73,45 @@ def setup_opal_callbacks(ui_obj):
     _require_servicesheds()  # initialize the requirement state
     servicesheds_elem.validate()
 
+    # now, set up the OPAL future scenario validation requirements.
+    future_type_elem = ui_obj.find_element('offset_type')
+
+    def _fut_filename(model, scenario, suffix=''):
+        if suffix != '':
+            suffix = '_%s' % suffix
+
+        if scenario == 'Protection':
+            scenario = 'protect'
+        else:
+            scenario = 'restore'
+
+        return '%s_%s%s.tif' % (model, scenario, suffix)
+
+    def _remove_future_rasters(raster_list):
+        """Take a list of raster filenames and remove any rasters in it that
+        are known to represent future scenarios."""
+        new_list = []
+        for raster in raster_list:
+            if 'protect' in raster or 'restore' in raster:
+                continue
+            new_list.append(raster)
+        return new_list
+
+    # 1. validate sediment.
+    sediment_sm_elem = ui_obj.find_element('sediment_static_maps')
+    def _require_sed_future_raster(value=None):
+        future_type = future_type_elem.value()
+
+        expected_fut_raster = _fut_filename('sediment', future_type,
+            'static_map')
+        cur_raster_list = sediment_sm_elem.config['validateAs']['contains']
+
+        new_raster_list = _remove_future_rasters(cur_raster_list)
+        new_raster_list.append(expected_fut_raster)
+        sediment_sm_elem.config['validateAs']['contains'] = new_raster_list
+        sediment_sm_elem.validate()
+    future_type_elem.value_changed.register(_require_sed_future_raster)
+
 def main(json_config=None):
     # add logging handler so this stuff is written to disk
     if json_config is None:
