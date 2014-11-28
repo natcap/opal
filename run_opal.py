@@ -108,7 +108,8 @@ def setup_opal_callbacks(ui_obj):
         cur_raster_list = sediment_sm_elem.config['validateAs']['contains']
         new_raster_list = _remove_future_rasters(cur_raster_list)
 
-        new_raster_list.append(expected_fut_raster, expected_pts_raster)
+        new_raster_list.append(expected_fut_raster)
+        new_raster_list.append(expected_pts_raster)
         sediment_sm_elem.config['validateAs']['contains'] = new_raster_list
         sediment_sm_elem.validate()
     future_type_elem.value_changed.register(_require_sed_future_raster)
