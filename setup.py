@@ -258,6 +258,8 @@ class SampleDataCommand(Command):
                     # same thing for pts rasters
                     map_name = '%s_%s_pts.tif' % (service, scenario)
                     src_raster = os.path.join(static_maps_dir, map_name)
+                    if scenario == 'protection':
+                        map_name = map_name.replace('protection', 'protect')
                     dst_raster = os.path.join(service_out_dir, map_name)
 
                     print 'Clipping %s' % map_name
