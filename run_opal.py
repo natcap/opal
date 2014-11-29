@@ -97,22 +97,48 @@ def setup_opal_callbacks(ui_obj):
             new_list.append(raster)
         return new_list
 
-    # 1. validate sediment.
-    sediment_sm_elem = ui_obj.find_element('sediment_static_maps')
-    def _require_sed_future_raster(value=None):
-        future_type = future_type_elem.value()
+    def _setup_future_validation(model_name, target_elem, include_pts=True):
+        """Set up a callback function tailored to work with a particular static
+        model name and static map element.  This callback will require
+        future scenario rasters depending on the value of the future scenario
+        dropdown.
 
-        expected_fut_raster = _fut_filename('sediment', future_type,
-            'static_map')
-        expected_pts_raster = _fut_filename('sediment', future_type, 'pts')
-        cur_raster_list = sediment_sm_elem.config['validateAs']['contains']
-        new_raster_list = _remove_future_rasters(cur_raster_list)
+        Returns a function pointer that will work as a callback."""
+        def _setup_fut_validation(value=None):
+            """Callback for setting up future validation for a static map input
+            element, where future scenarios are required by validation, but the
+            required future scenario is dependent on the value of the future
+            scenario type.
 
-        new_raster_list.append(expected_fut_raster)
-        new_raster_list.append(expected_pts_raster)
-        sediment_sm_elem.config['validateAs']['contains'] = new_raster_list
-        sediment_sm_elem.validate()
-    future_type_elem.value_changed.register(_require_sed_future_raster)
+            Returns nothing, but has a side effect of affecting the target
+            static map folder element's validation dictionary."""
+            future_type = future_type_elem.value()
+            expected_fut_raster = _fut_filename(model_name, future_type,
+                'static_map')
+            cur_raster_list = target_elem.config['validateAs']['contains']
+            new_raster_list = _remove_future_rasters(cur_raster_list)
+            new_raster_list.append(expected_fut_raster)
+
+            if include_pts is True:
+                pts_raster = _fut_filename(model_name, future_type, 'pts')
+                new_raster_list.append(pts_raster)
+
+            target_elem.config['validateAs']['contains'] = new_raster_list
+            target_elem.validate()
+        return _setup_fut_validation
+
+    # Set up inter-element communication based on the dropdown menu.
+    # Items are: (target element ID, model name, whether to include PTS rasters
+    static_map_generators = [
+        ('sediment_static_maps', 'sediment', True),
+        ('nutrient_static_maps', 'nutrient', True),
+        ('carbon_static_maps', 'carbon', False),
+        ('custom_static_maps', 'custom', False),
+    ]
+    for elem_id, model_name, include_pts in static_map_generators:
+        target_element = ui_obj.find_element(elem_id)
+        future_type_elem.value_changed.register(_setup_future_validation(
+            model_name, target_element, include_pts))
 
 def main(json_config=None):
     # add logging handler so this stuff is written to disk
