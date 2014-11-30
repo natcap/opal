@@ -254,10 +254,10 @@
             "id": "municipalities_map", 
             "args_id": "municipalities_uri",
             "type": "file", 
-            "required": true,
+            "required": false,
             "label": {
-                "en": "Municipalities", 
-                "es": "Usar capa propia de municipios"
+                "en": "Municipalities (optional)", 
+                "es": "Usar capa propia de municipios (opcional)"
             }, 
             "validateAs": {
                 "type": "OGR"
@@ -630,6 +630,11 @@
             "type": "hidden",
             "defaultValue": ".",
             "args_id": "data_dir"
+        },
+        {
+            "type": "hidden",
+            "defaultValue": "opal",
+            "args_id": "distribution"
         }
     ] 
 }
