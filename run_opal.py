@@ -104,7 +104,7 @@ def setup_opal_callbacks(ui_obj):
         dropdown.
 
         Returns a function pointer that will work as a callback."""
-        def _setup_fut_validation(value=None):
+        def _setup_fut_validation(value=None, validate=True):
             """Callback for setting up future validation for a static map input
             element, where future scenarios are required by validation, but the
             required future scenario is dependent on the value of the future
@@ -124,7 +124,13 @@ def setup_opal_callbacks(ui_obj):
                 new_raster_list.append(pts_raster)
 
             target_elem.config['validateAs']['contains'] = new_raster_list
-            target_elem.validate()
+
+            if validate is True:
+                target_elem.validate()
+
+        # initialize the input element's future validation without actually
+        # triggering validation (not until user input)
+        _setup_fut_validation(validate=False)
         return _setup_fut_validation
 
     # Set up inter-element communication based on the dropdown menu.
