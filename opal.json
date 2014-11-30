@@ -611,6 +611,9 @@
                 "en": "Restrict offset parcels by LCI",
                 "es": "FILL IN"
             },
+            "returns": {
+                "ifEmpty": true
+            },
             "helpText": {
                 "en": "Select this checkbox to have the set of offset parcels restricted by the Landscape Context Index.  If this is selected, offset parcels may only be used as offsets to biodiversity if they also have at least the same LCI as the natural parcels that were impacted.",
                 "es": "FILL IN"
