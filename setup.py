@@ -590,6 +590,7 @@ class GlobalDistribution(NSISCommand):
         pass
 
     def run(self):
+        self.run_command('sample_data_global')
         self.write_dist_data('OPAL')
         NSISCommand.run(self)
 
