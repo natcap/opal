@@ -224,6 +224,7 @@ class SampleDataCommand(Command):
 
         print '\nDetermining active hydrozone'
         active_hydrozone = os.path.join(data_dir, 'active_hzone.shp')
+        self.active_hydrozone = active_hydrozone
         hydrozones = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
             'hydrozones.shp')
         impacts = os.path.join(os.getcwd(), 'data', 'colombia_sample_data',
@@ -277,8 +278,9 @@ class SampleDataCommand(Command):
                 shutil.copyfile(source_file, dest_file)
 
 
-    def run(self):
-        self._gather_single_hydrozone_data()
+    def run(self, gather_hzone_data=True):
+        if gather_hzone_data:
+            self._gather_single_hydrozone_data()
 
         print ''
         print 'Zipping up single-hydrozone sample data'
@@ -293,6 +295,38 @@ class SampleDataCommand(Command):
         shutil.make_archive(sample_data_zip, 'zip', root_dir=service_dir)
         print 'Finished %s.zip (%sMB)' % (sample_data_zip,
                 os.path.getsize(sample_data_zip + '.zip') >> 20)
+
+class SampleDataGlobalCommand(SampleDataCommand):
+    description = "Zip up required tool and static data for OPAL"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        self._gather_single_hydrozone_data()
+        # active hydrozone URI saved to self.active_hydrozone
+        dest_dir = os.path.join('build', 'permitting_data', 'sample_data',
+            'services_static_data')
+
+        opal_vectors = [
+            ('ecosys_dis_nat_comp_fac', 'natural_ecosystems'),
+            ('Servicesheds_Col', 'servicesheds'),
+            ('Hydrographic_subzones', 'hydrographic_subzones')
+        ]
+        for vector_base, new_base in opal_vectors:
+            vector_uri = os.path.join('data', 'colombia_tool_data',
+                vector_base + '.shp')
+            new_uri = os.path.join(dest_dir, new_base + '.shp')
+
+            print 'Copying %s -> %s' % (vector_uri, new_uri)
+            preprocessing.locate_intersecting_polygons(vector_uri,
+                self.active_hydrozone, new_uri, clip=True)
+
+        SampleDataCommand.run(self, False)
 
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
@@ -564,6 +598,7 @@ CMD_CLASSES['dist_colombia'] = ColombiaDistribution
 CMD_CLASSES['dist_global'] = GlobalDistribution
 CMD_CLASSES['static_data_colombia'] = ZipColombiaData
 CMD_CLASSES['sample_data'] = SampleDataCommand
+CMD_CLASSES['sample_data_global'] = SampleDataGlobalCommand
 CMD_CLASSES['tool_data_colombia'] = ToolDataColombia
 
 print 'DATA_FILES'
