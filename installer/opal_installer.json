@@ -36,8 +36,8 @@
         "license": "..\\LICENSE.TXT",
         "icon": "opal_images\\opal-logo.ico",
         "extra_files": [
-            "opal_images\\opal-logo.ico",
-            "..\\OPAL User's Guide v 1.0.pdf"
+            "\"opal_images\\opal-logo.ico\"",
+            "\"..\\OPAL User's Guide v 1.0.pdf\""
         ],
         "start_menu": [
             {
