@@ -429,7 +429,7 @@
             "args_id": "do_nutrient",
             "type": "container",
             "collapsible": true,
-            "defaultValue": true,
+            "defaultValue": false,
             "label": {
                 "en": "Calculate impacts/offsets to nitrogen",
                 "es": "Calcular impactos/compensación por nitrógeno"
@@ -476,7 +476,7 @@
             "args_id": "do_sediment",
             "type": "container",
             "collapsible": true,
-            "defaultValue": true,
+            "defaultValue": false,
             "label": {
                 "en": "Calculate impacts/offsets to sediment",
                 "es": "Calcular impactos/compensación por sedimentos"
@@ -523,7 +523,7 @@
             "args_id": "do_custom",
             "type": "container",
             "collapsible": true,
-            "defaultValue": true,
+            "defaultValue": false,
             "label": {
                 "en": "Calculate impacts/offsets to custom ecosystem service",
                 "es": "DEFINE"
