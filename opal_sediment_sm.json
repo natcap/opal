@@ -5,8 +5,8 @@
         "es": "Sedimentos"
     }, 
     "modelName": {
-        "en": "sediment_static_map", 
-        "es": "sediment_static_map_es"
+        "en": "opal_sediment_static_map", 
+        "es": "opal_sediment_static_map_es"
     }, 
     "targetScript": "adept.static_maps", 
     "height": 700, 
@@ -289,7 +289,7 @@
         },
         {
             "args_id": "do_parallelism",
-            "returnValue": true,
+            "returnValue": false,
             "type": "hidden"
         }
     ]

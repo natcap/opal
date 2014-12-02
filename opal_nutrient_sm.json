@@ -5,8 +5,8 @@
         "es": "Nutrientes"
     }, 
     "modelName": {
-        "en": "nutrient_static_map", 
-        "es": "nutrient_static_map_es"
+        "en": "opal_nutrient_static_map", 
+        "es": "opal_nutrient_static_map_es"
     }, 
     "targetScript": "adept.static_maps", 
     "height": 700, 
@@ -342,7 +342,7 @@
         },
         {
             "args_id": "do_parallelism",
-            "returnValue": true,
+            "returnValue": false,
             "type": "hidden"
         },
         {

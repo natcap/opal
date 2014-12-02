@@ -5,8 +5,8 @@
         "es": "Modelo de carbono de InVEST (Biofísico y valoración)"
     }, 
     "modelName": {
-        "en": "carbon_static_map", 
-        "es": "carbon_static_map_es"
+        "en": "opal_carbon_static_map", 
+        "es": "opal_carbon_static_map_es"
     }, 
     "targetScript": "adept.static_maps", 
     "height": 800, 
@@ -164,7 +164,7 @@
         },
         {
             "args_id": "do_parallelism",
-            "returns": true,
+            "returns": false,
             "type": "hidden"
         }
     ] 
