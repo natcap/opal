@@ -9,7 +9,7 @@
         "es": "opal_sediment_static_map_es"
     }, 
     "targetScript": "adept.static_maps", 
-    "height": 700, 
+    "height": 800, 
     "width": 700,
     "elements": [
         {
@@ -273,7 +273,7 @@
                 "es": "Calcular calidad del mapa estático generado"
             },
             "collapsible": true,
-            "defaultValue": false,
+            "defaultValue": true,
             "elements": [
                 {
                     "type": "text",
