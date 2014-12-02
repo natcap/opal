@@ -211,7 +211,7 @@ def main(json_config=None):
     form_window.app_info_dialog.setWindowTitle('About OPAL')
     opal_info_text = "OPAL %s<br/><br/>" % dist_data['version_str']
     opal_info_text += '<a href="naturalcapitalproject.org">naturalcapitalproject.org</a>'
-    form_window.app_info_dialog.set_body_text(opal_info_text)
+    form_window.app_info_dialog.body.setText(opal_info_text)
     form_window.app_info_dialog.set_icon(opal_logo, scale=True)
 
     #form_window.menu_bar.addMenu(help_menu)
