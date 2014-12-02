@@ -431,7 +431,7 @@
             "collapsible": true,
             "defaultValue": false,
             "label": {
-                "en": "Calculate impacts/offsets to nitrogen",
+                "en": "Calculate impacts/offsets to nutrient",
                 "es": "Calcular impactos/compensación por nitrógeno"
             },
             "elements": [
