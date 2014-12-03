@@ -144,27 +144,27 @@
         },
         {
             "args_id": "do_biophysical",
-            "returns": true,
+            "returnValue": true,
             "type": "hidden"
         },
         {
             "args_id": "do_valuation",
-            "returns": false,
+            "returnValue": false,
             "type": "hidden"
         },
         {
             "args_id": "do_uncertainty",
-            "returns": false,
+            "returnValue": false,
             "type": "hidden"
         },
         {
             "args_id": "model_name",
-            "returns": "carbon",
+            "returnValue": "carbon",
             "type": "hidden"
         },
         {
             "args_id": "do_parallelism",
-            "returns": false,
+            "returnValue": false,
             "type": "hidden"
         }
     ] 
