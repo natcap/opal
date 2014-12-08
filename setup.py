@@ -97,11 +97,14 @@ vectors = {
     'hydrozones': 'hydrozones',
     'sample_aoi': 'sample_aoi',
     'watersheds': 'watersheds_cuencas',
-    'servicesheds': 'ssheds_Col_new',
+    'servicesheds_old': 'Servicesheds_Col',
+    'servicesheds_new': 'ssheds_Col_new',
 }
 
 tool_data = glob.glob('data/colombia_tool_data/*.csv')
-for vector_base in vectors.values():
+for vector_key, vector_base in vectors.iteritems():
+    if vector_key in ['servicesheds_new']:
+        continue
     glob_pattern = 'data/colombia_tool_data/%s.*' % vector_base
     tool_data += glob.glob(glob_pattern)
 
@@ -321,7 +324,7 @@ class SampleDataGlobalCommand(SampleDataCommand):
 
         opal_vectors = [
             (vectors['ecosystems'], 'natural_ecosystems'),
-            (vectors['servicesheds'], 'servicesheds'),
+            (vectors['servicesheds_old'], 'servicesheds'),
             (vectors['subzones'], 'hydrographic_subzones')
         ]
         for vector_base, new_base in opal_vectors:
