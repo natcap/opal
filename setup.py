@@ -90,11 +90,18 @@ DATA_FILES.append(('src/adept/report_data',
 
 # get specific sets of data files from the tool_data.
 # first, get the vectors.
+vectors = {
+    'subzones': 'Hydrographic_subzones',
+    'municipalities': 'Municipalities',
+    'ecosystems': 'ecosys_dis_nat_comp_fac',
+    'hydrozones': 'hydrozones',
+    'sample_aoi': 'sample_aoi',
+    'watersheds': 'watersheds_cuencas',
+    'servicesheds': 'ssheds_Col_new',
+}
+
 tool_data = glob.glob('data/colombia_tool_data/*.csv')
-vectors = ['Hydrographic_subzones',
-    'Municipalities', 'ecosys_dis_nat_comp_fac', 'hydrozones',
-    'sample_aoi', 'watersheds_cuencas', 'Servicesheds_Col']
-for vector_base in vectors:
+for vector_base in vectors.values():
     glob_pattern = 'data/colombia_tool_data/%s.*' % vector_base
     tool_data += glob.glob(glob_pattern)
 
@@ -313,9 +320,9 @@ class SampleDataGlobalCommand(SampleDataCommand):
             'services_static_data')
 
         opal_vectors = [
-            ('ecosys_dis_nat_comp_fac', 'natural_ecosystems'),
-            ('Servicesheds_Col', 'servicesheds'),
-            ('Hydrographic_subzones', 'hydrographic_subzones')
+            (vectors['ecosystems'], 'natural_ecosystems'),
+            (vectors['servicesheds'], 'servicesheds'),
+            (vectors['subzones'], 'hydrographic_subzones')
         ]
         for vector_base, new_base in opal_vectors:
             vector_uri = os.path.join('data', 'colombia_tool_data',
