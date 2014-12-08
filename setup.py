@@ -511,8 +511,13 @@ class ColombiaDistribution(NSISCommand):
         self.write_dist_data('MAFE-T')
 
         # copy documentation to the nsis_dir
-        source_file = os.path.join(os.getcwd(), 'windows_build', 'MAFE',
-            'MAFE-T User\'s Guide 2014-10-3 DRAFT.pdf')
+        source_file = glob.glob(os.path.join(os.getcwd(), 'windows_build', 'MAFE',
+            '*.pdf'))
+        if len(source_file) > 1:
+            raise Exception('Which MAFE-T pdf did you want to grab?')
+        else:
+            source_file = source_file[0]
+
         dest_file = os.path.join(self.nsis_dir, 'MAFE-T-user-guide.pdf')
         shutil.copyfile(source_file, dest_file)
 
