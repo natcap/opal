@@ -9,6 +9,7 @@ Changes
 - Replaced servicesheds of MAFE-T with a more complete version.
 - Retained older version of servicesheds for use with OPAL.
 - Updated MAFE-T User's guide PDF.
+- Fixed issue with MAFE-T installer where static map zipfiles were not downloaded.
 
 1.0.0 (2014-12-3)
 -----------------
