@@ -133,7 +133,9 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map,
             'Mean converted SDR under impact',
             'Mean flow accumulation under impact',
             'Max flow accumulation under impact',
-            'Total delta-USLE*sdr under impact']
+            'Total delta-USLE*sdr under impact',
+            'Base sed_exp n_pixels under ws',
+            'Impacted sed_exp n_pixels under ws']
         logfile.write("%s\n" % ','.join(labels))
     logfile.close()
 
@@ -275,19 +277,53 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map,
             impact_sed_exp = os.path.join(impact_workspace, 'output',
                 'sed_export.tif')
 
+            # ensure that the impacted sed_export raster and the base sed_export
+            # raster have identical numbers of non-nodata pixels.  This is done
+            # via mutual masking.
+            def _mask_out_pixels(in_raster, comp_raster, out_raster):
+                comp_nodata = raster_utils.get_nodata_from_uri(comp_raster)
+                pixel_size = raster_utils.get_cell_size_from_uri(comp_raster)
+
+                def _pixel_mask(_in_values, _out_values):
+                    return numpy.where(_in_values == comp_nodata,
+                        comp_nodata, _out_values)
+
+                raster_utils.vectorize_datasets([comp_raster, in_raster],
+                    _pixel_mask, out_raster, gdal.GDT_Float32, comp_nodata,
+                    pixel_size, 'union', dataset_to_align_index=0,
+                    vectorize_op=False)
+
+            new_impact_sed_exp = os.path.join(impact_workspace, 'output',
+                'masked_sed_export.tif')
+            _mask_out_pixels(impact_sed_exp, ws_base_sed_exp,
+                new_impact_sed_exp)
+
+            new_ws_base_sed_exp = os.path.join(impact_workspace, 'output',
+                'masked_ws_sed_export.tif')
+            _mask_out_pixels(ws_base_sed_exp, impact_sed_exp,
+                new_ws_base_sed_exp)
+
+
             # Aggregate the sediment export from this impact simulation over
             # the target watershed
-            impact_ws_export = raster_utils.aggregate_raster_values_uri(
-                impact_sed_exp, watershed_uri, 'ws_id').total[watershed_id]
+            impact_sed_exp_stats = raster_utils.aggregate_raster_values_uri(
+                new_impact_sed_exp, watershed_uri, 'ws_id')
+            impact_ws_export = impact_sed_exp_stats.total[watershed_id]
+            impact_ws_export_n_pixels = impact_sed_exp_stats.n_pixels[watershed_id]
+
+            base_sed_exp_stats = raster_utils.aggregate_raster_values_uri(
+                new_ws_base_sed_exp, watershed_uri, 'ws_id')
+            ws_base_export = base_sed_exp_stats.total[watershed_id]
+            ws_base_export_n_pixels = base_sed_exp_stats.n_pixels[watershed_id]
 
             # Get the export from the static map under the impacted area.
             # only 1 feature in the impactd area, so we access that number with
             # index 1.
             static_estimate = raster_utils.aggregate_raster_values_uri(
-                base_static_map, impact_site, 'id').total[1]
+                ws_static_map, impact_site, 'id').total[1]
 
             mean_sdr_current_impact = raster_utils.aggregate_raster_values_uri(
-                base_sdr, impact_site, 'id').pixel_mean[1]
+                ws_base_sdr, impact_site, 'id').pixel_mean[1]
 
             mean_sdr_converted_impact = raster_utils.aggregate_raster_values_uri(
                 impact_sdr_uri, impact_site, 'id').pixel_mean[1]
@@ -296,17 +332,10 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map,
                 ws_usle_sm, impact_site, 'id').total[1]
 
             base_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                ws_base_sed_exp, impact_site, 'id').pixel_mean[1]
+                new_ws_base_sed_exp, impact_site, 'id').pixel_mean[1]
 
             impact_sed_exp_estimate = raster_utils.aggregate_raster_values_uri(
-                impact_sed_exp, impact_site, 'id').pixel_mean[1]
-
-            ws_base_sed_exp = os.path.join(impact_workspace,
-                'watershed_base_sed_exp.tif')
-            clip_raster_to_watershed(base_sed_exp, watershed_uri,
-                    ws_base_sed_exp, impact_sed_exp)
-            ws_base_export = raster_utils.aggregate_raster_values_uri(
-                ws_base_sed_exp, watershed_uri, 'ws_id').total[ws_index + 1]
+                new_impact_sed_exp, impact_site, 'id').pixel_mean[1]
 
 
             if '_prepare' in config:
@@ -319,12 +348,7 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map,
             mean_f_a = f_a_stats.pixel_mean[1]
             max_f_a = f_a_stats.pixel_max[1]
 
-            # impact_lucode is an int when we're doing full conversion
-            # (bare/paved), a string when we're doing protection.
-            if type(impact_lucode) is IntType:
-                invest_estimate = impact_ws_export - ws_base_export
-            else:
-                invest_estimate = ws_base_export - impact_ws_export
+            invest_estimate = impact_ws_export - ws_base_export
 
             export_ratio = static_estimate / invest_estimate
 
@@ -343,7 +367,9 @@ def test_static_map_quality(base_sed_exp, base_sdr, base_static_map,
                 mean_sdr_converted_impact,
                 mean_f_a,
                 max_f_a,
-                usle_sum_impact
+                usle_sum_impact,
+                ws_base_export_n_pixels,
+                impact_ws_export_n_pixels,
             ]
 
             # reopen the file just to write the line, then close the file.
@@ -530,11 +556,14 @@ def test_one_watershed(scenario='bare', start_ws=0, end_ws=None, num_iter=20):
         }
         num_iterations = num_iter
 
-        sdr.execute(config)
+#        sdr.execute(config)
 
-        base_run = os.path.join(base_workspace, 'intermediate', 'sdr_factor.tif')
-        base_sed_exp = os.path.join(base_workspace, 'output', 'sed_export.tif')
-        base_usle = os.path.join(base_workspace, 'output', 'usle.tif')
+        # convert the whole landscape to the target impact type.
+#        impact_workspace = os.path.join(output_workspace, 'impacted')
+
+#        base_run = os.path.join(base_workspace, 'intermediate', 'sdr_factor.tif')
+#        base_sed_exp = os.path.join(base_workspace, 'output', 'sed_export.tif')
+#        base_usle = os.path.join(base_workspace, 'output', 'usle.tif')
         kwargs = {
             'base_sdr': base_run,
             'base_sed_exp': base_sed_exp,
@@ -628,18 +657,24 @@ def create_protection_static_maps():
 
 
 if __name__ == '__main__':
-    create_protection_static_maps()
-#    test_one_watershed('paved', 7, 8, 5)
-    test_one_watershed('protection', 7, 7, 5)
-    sys.exit(0)
-
+#    create_protection_static_maps()
+#    start_ws = 7
+#    stop_ws = 7 #8 # 18
+#    num_sims = 3
+#    #for scenario in ['paved', 'bare', 'protection']:
+#    #for scenario in ['paved', 'bare']:
+#    for scenario in ['bare']:
+#        test_one_watershed(scenario, start_ws, stop_ws, num_sims)
+#
+#    sys.exit(0)
+#
 #    # WILLAMETTE SAMPLE DATA
 #    invest_data = 'invest-natcap.invest-3/test/invest-data'
 #    base_data = os.path.join(invest_data, 'Base_Data')
 #
 #    # Construct the arguments to be used as a base set for all of the
 #    # simulations.
-#    workspace = 'willamette_sdr'
+#    workspace = '/colossus/willamette_sdr'
 #    base_landuse_uri = os.path.join(base_data, 'Terrestrial', 'lulc_samp_cur')
 #    config = {
 #        'workspace_dir': os.path.join(workspace, 'base_run'),
@@ -656,6 +691,10 @@ if __name__ == '__main__':
 #        'sdr_max': 0.8,
 #        'ic_0_param': 0.5,
 #    }
+#    scenarios = [
+#        ('paved', 19),  # primary roads
+#        ('bare', 42)    # Barren.
+#    ]
 
     # COLOMBIA SAMPLE DATA
     # Assume that everything is in a folder called 'tool_data' in the current
@@ -677,6 +716,10 @@ if __name__ == '__main__':
         'sdr_max': 0.8,
         'ic_0_param': 0.5,
     }
+    scenarios = [
+        ('paved', 89),
+        ('bare', 301),
+    ]
 
     # set the tempdir to be within the workspace
     temp_dir = os.path.join(config['workspace_dir'], 'tmp')
@@ -723,10 +766,6 @@ if __name__ == '__main__':
     base_sdr = os.path.join(config['workspace_dir'], 'intermediate',
         'sdr_factor.tif')
 
-    scenarios = [
-        ('paved', 89),
-        ('bare', 301),
-    ]
     scenario_processes = []
     for scenario_name, impact_lucode in scenarios:
         scenario_workspace = os.path.join(workspace, scenario_name)
@@ -794,22 +833,25 @@ if __name__ == '__main__':
     for scenario_p in scenario_processes:
         scenario_p.join()
 
+
     scenario_processes = []
     for scenario_name, impact_lucode in scenarios:
         # now, run the simulations!
         # Currently running 5 iterations per watershed.
         scenario_workspace = os.path.join(workspace, scenario_name)
         keyword_args = {
-            'base_sed_exp': base_sed_export,
             'base_sdr': base_sdr,
+            'base_sed_exp': base_sed_export,
             'base_static_map': static_map_uris[scenario_name]['sed'],
             'usle_static_map': static_map_uris[scenario_name]['usle'],
+            'base_usle': base_usle,
             'landuse_uri': base_landuse_uri,
             'impact_lucode': impact_lucode,
             'watersheds_uri': config['watersheds_uri'],
             'workspace': os.path.join(scenario_workspace, 'simulations'),
             'config': config,
-            'num_iterations': 20
+            'num_iterations': 10,
+            'write_headers': True,
         }
 
         simulations_csv = os.path.join(keyword_args['workspace'],
@@ -818,9 +860,10 @@ if __name__ == '__main__':
             start_ws, start_impact = get_last_impact(simulations_csv)
             start_ws -= 1
         else:
-            start_ws = 0
+            start_ws = 7
             start_impact = 0
         keyword_args['start_ws'] = start_ws
+        keyword_args['end_ws'] = 8
         keyword_args['start_impact'] = start_impact
 
         print start_ws
