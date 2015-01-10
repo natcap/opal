@@ -32,5 +32,5 @@ rm -rf dist
 python setup.py install
 popd # return to adept dir to build adept.
 
-#python scripts/test_sdr/test_sdr.py
-python scripts/test_sdr/extract_mean_sdr_under_impact.py
+python scripts/test_sdr/test_sdr.py
+#python scripts/test_sdr/extract_mean_sdr_under_impact.py
