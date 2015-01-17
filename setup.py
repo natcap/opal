@@ -607,6 +607,13 @@ class GlobalDistribution(NSISCommand):
     def run(self):
         self.run_command('sample_data_global')
         self.write_dist_data('OPAL')
+
+        # copy the distribution UI config file to the pyinstaller dist folder.
+        source_file = os.path.join('windows_build', 'dist_config.json')
+        dest_dist_config_file = os.path.join(self.nsis_dir, 'dist_config.json')
+        print 'Copying %s -> %s' % (source_file, dest_dist_config_file)
+        shutil.copyfile(source_file, dest_dist_config_file)
+
         NSISCommand.run(self)
 
 
