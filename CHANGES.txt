@@ -1,6 +1,11 @@
 Changes
 =======
 
+1.0.2 (2014-1-20)
+-----------------
+- OPAL only: forcing the OPAL UI to use English.  This fixes an issue found by
+  users whose default OS language is not English.
+
 1.0.1 (2014-12-16)
 ------------------
 - Updated MAFE-T static map UIs to provide correct parameters to OPAL core
