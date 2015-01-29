@@ -103,6 +103,8 @@ vectors = {
 
 tool_data = glob.glob('data/colombia_tool_data/*.csv')
 for vector_key, vector_base in vectors.iteritems():
+    if vector_key in ['servicesheds_old']:
+        continue
     glob_pattern = 'data/colombia_tool_data/%s.*' % vector_base
     tool_data += glob.glob(glob_pattern)
 
