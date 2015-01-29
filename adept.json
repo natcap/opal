@@ -335,6 +335,9 @@
             "args_id": "do_carbon",
             "type": "checkbox",
             "defaultValue": true,
+            "returns": {
+                "ifEmpty": true
+            },
             "label": {
                 "en": "Calculate impacts/offsets to carbon",
                 "es": "Calcular impactos/compensación por carbono"
@@ -349,6 +352,9 @@
             "args_id": "do_nutrient",
             "type": "checkbox",
             "defaultValue": true,
+            "returns": {
+                "ifEmpty": true
+            },
             "label": {
                 "en": "Calculate impacts/offsets to nitrogen",
                 "es": "Calcular impactos/compensación por nitrógeno"
@@ -363,6 +369,9 @@
             "args_id": "do_sediment",
             "type": "checkbox",
             "defaultValue": true,
+            "returns": {
+                "ifEmpty": true
+            },
             "label": {
                 "en": "Calculate impacts/offsets to sediment",
                 "es": "Calcular impactos/compensación por sedimentos"
