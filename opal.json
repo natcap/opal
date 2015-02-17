@@ -17,7 +17,7 @@
             "id": "workspace", 
             "args_id": "workspace_dir",
             "type": "folder", 
-            "defaultValue": "~/adept_workspace", 
+            "defaultValue": "~/opal_workspace", 
             "required": true, 
             "label": {
                 "en": "Workspace", 
@@ -70,24 +70,6 @@
             }
         }, 
         {
-            "id": "area_of_influence", 
-            "args_id": "area_of_influence_uri", 
-            "type": "file", 
-            "defaultValue": "", 
-            "validateAs": {
-                "type": "file"
-            }, 
-            "required": false,
-            "label": {
-                "en": "Area of Influence (optional)",
-                "es": "Área de influencia (opcional)"
-            },
-            "helpText": {
-                "en": "The area of influence is a polygon shapefile. If no input is provided, the tool defaults to using the project footprint's hydrological subzone. The tool tracks which potential offset parcels are located within the area of influence so that they can be prioritized for selection in the offset portfolio.",
-                "es": "El área de influencia es un shapefile de polígono. Si no se provee ningún archivo, la herramienta asignará por defecto la subzona hidrológica del área de influencia del proyecto. La herramienta rastrea qué parches potenciales para compensación se localizan dentro del área de influencia para priorizarlas en la selección del portafolio de compensación."
-            }
-        }, 
-        {
             "id": "ecosystems_map", 
             "args_id": "ecosystems_map_uri",
             "type": "file", 
@@ -128,13 +110,62 @@
             }
         }, 
         {
+            "args_id": "offset_type", 
+            "id": "offset_type",
+            "returns": {"type": "strings"}, 
+            "defaultValue": 0, 
+            "label": {
+                "en": "Offset type", 
+                "es": "FILL IN"
+            }, 
+            "type": "dropdown", 
+            "options": [
+                "Protection",
+                "Restoration"
+            ],
+            "helpText": {
+                "en": "Select the offset type of your future static map scenarios",
+                "es": "FILL IN"
+            }
+        }, 
+        {
+            "id": "offset_parcels_vector", 
+            "args_id": "offset_parcels",
+            "type": "file", 
+            "required": true,
+            "label": {
+                "en": "Potential offset sites", 
+                "es": "FILL IN"
+            }, 
+            "validateAs": {
+                "type": "OGR",
+                "fieldsExist": ["ecosystem"],
+                "layers": [
+                    {
+                        "type": "polygons", 
+                        "name": {
+                            "inheritFrom": "file"
+                        }
+                    }
+                ],
+                "restrictions": [
+                    {
+                        "field": "ecosystem",
+                        "validateAs": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        {
             "id": "servicesheds_map", 
             "args_id": "servicesheds_uri",
             "type": "file", 
             "required": true,
             "label": {
-                "en": "Custom servicesheds", 
-                "es": "Usar un mapa propio de 'servicesheds'"
+                "en": "Servicesheds", 
+                "es": "Mapa propio de 'servicesheds'"
             }, 
             "validateAs": {
                 "type": "OGR",
@@ -202,13 +233,31 @@
             }
         }, 
         {
+            "id": "area_of_influence", 
+            "args_id": "area_of_influence_uri", 
+            "type": "file", 
+            "defaultValue": "", 
+            "validateAs": {
+                "type": "file"
+            }, 
+            "required": false,
+            "label": {
+                "en": "Area of Influence (optional)",
+                "es": "Área de influencia (opcional)"
+            },
+            "helpText": {
+                "en": "The area of influence is a polygon shapefile. If no input is provided, the tool defaults to using the project footprint's hydrological subzone. The tool tracks which potential offset parcels are located within the area of influence so that they can be prioritized for selection in the offset portfolio.",
+                "es": "El área de influencia es un shapefile de polígono. Si no se provee ningún archivo, la herramienta asignará por defecto la subzona hidrológica del área de influencia del proyecto. La herramienta rastrea qué parches potenciales para compensación se localizan dentro del área de influencia para priorizarlas en la selección del portafolio de compensación."
+            }
+        }, 
+        {
             "id": "municipalities_map", 
             "args_id": "municipalities_uri",
             "type": "file", 
-            "required": true,
+            "required": false,
             "label": {
-                "en": "Municipalities", 
-                "es": "Usar capa propia de municipios"
+                "en": "Municipalities (optional)", 
+                "es": "Usar capa propia de municipios (opcional)"
             }, 
             "validateAs": {
                 "type": "OGR"
@@ -362,15 +411,14 @@
                         "es": "Mapas propios de carbono almacenado"
                     }, 
                     "helpText": {
-                        "en": "A folder with carbon static maps. These maps can be created using the tool's carbon static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_future_static_map.tif</li></ul>", 
+                        "en": "A folder with carbon static maps. These maps can be created using the tool's carbon static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_<future type>_static_map.tif</li></ul>  <future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
                         "es": "Carpeta con mapas de carbono almacenado. Estos mapas pueden ser creados usando el generador de mapas de carbono almacenado de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_future_static_map.tif</li></ul>"
                     }, 
                     "validateAs": {
                         "type": "folder", 
                         "contains": [
                             "carbon_bare_static_map.tif",
-                            "carbon_paved_static_map.tif",
-                            "carbon_future_static_map.tif"
+                            "carbon_paved_static_map.tif"
                         ]
                     }
                 }
@@ -381,9 +429,9 @@
             "args_id": "do_nutrient",
             "type": "container",
             "collapsible": true,
-            "defaultValue": true,
+            "defaultValue": false,
             "label": {
-                "en": "Calculate impacts/offsets to nitrogen",
+                "en": "Calculate impacts/offsets to nutrient",
                 "es": "Calcular impactos/compensación por nitrógeno"
             },
             "elements": [
@@ -408,7 +456,7 @@
                         "es": "Usar mapas propios de nutrientes"
                     }, 
                     "helpText": {
-                        "en": "A folder with nitrogen static maps. These maps can be created using the tool's nutrient static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_future_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_future_pts.tif</li></ul>", 
+                        "en": "A folder with nitrogen static maps. These maps can be created using the tool's nutrient static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_<future type>_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
                         "es": "Carpeta con mapas de nitrógeno. Estos mapas pueden ser creados usando el generador de mapas de nitrógeno de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_future_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_future_pts.tif</li></ul>"
                     }, 
                     "validateAs": {
@@ -416,10 +464,8 @@
                         "contains": [
                             "nutrient_bare_static_map.tif",
                             "nutrient_paved_static_map.tif",
-                            "nutrient_future_static_map.tif",
                             "nutrient_bare_pts.tif",
-                            "nutrient_paved_pts.tif",
-                            "nutrient_future_pts.tif"
+                            "nutrient_paved_pts.tif"
                         ]
                     }
                 }
@@ -430,7 +476,7 @@
             "args_id": "do_sediment",
             "type": "container",
             "collapsible": true,
-            "defaultValue": true,
+            "defaultValue": false,
             "label": {
                 "en": "Calculate impacts/offsets to sediment",
                 "es": "Calcular impactos/compensación por sedimentos"
@@ -457,7 +503,7 @@
                         "es": "Usar mapas propios de sedimentos"
                     }, 
                     "helpText": {
-                        "en": "A folder with sediment static maps. These maps can be created using the tool's sediment static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_future_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_future_pts.tif</li></ul>", 
+                        "en": "A folder with sediment static maps. These maps can be created using the tool's sediment static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_<future type>_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
                         "es": "Carpeta con mapas de sedimentos. Estos mapas pueden ser creados usando el generador de mapas de sedimentos de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_future_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_future_pts.tif</li></ul>"
                     }, 
                     "validateAs": {
@@ -465,10 +511,8 @@
                         "contains": [
                             "sediment_bare_static_map.tif",
                             "sediment_paved_static_map.tif",
-                            "sediment_future_static_map.tif",
                             "sediment_bare_pts.tif",
-                            "sediment_paved_pts.tif",
-                            "sediment_future_pts.tif"
+                            "sediment_paved_pts.tif"
                         ]
                     } 
                 }
@@ -479,7 +523,7 @@
             "args_id": "do_custom",
             "type": "container",
             "collapsible": true,
-            "defaultValue": true,
+            "defaultValue": false,
             "label": {
                 "en": "Calculate impacts/offsets to custom ecosystem service",
                 "es": "DEFINE"
@@ -506,15 +550,14 @@
                         "es": "Usar mapas propios de otros servicios ecosistémicos"
                     }, 
                     "helpText": {
-                        "en": "A folder with custom static maps. These maps can be created using the tool's custom static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_future_static_map.tif</li></ul><br/><br/>If these custom static rasters account for a hydrological service, the following rasters must also be in this folder:<ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_future_pts.tif</li></ul>", 
+                        "en": "A folder with custom static maps. These maps can be created using the tool's custom static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_<future type>_static_map.tif</li></ul><br/><br/>If these custom static rasters account for a hydrological service, the following rasters must also be in this folder:<ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
                         "es": "Carpeta con mapas de servicios ecosistémicos. Estos mapas pueden ser creados usando el generador de mapas de servicios ecosistémicos de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_future_static_map.tif</li></ul><br/><br/> Si estos raster corresponden a un servicio ecosistémico hidrológico, los siguientes raster también deben estar en esta carpeta <ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_future_pts.tif</li></ul>" 
                     }, 
                     "validateAs": {
                         "type": "folder", 
                         "contains": [
                             "custom_bare_static_map.tif",
-                            "custom_paved_static_map.tif",
-                            "custom_future_static_map.tif"
+                            "custom_paved_static_map.tif"
                         ]
                     }
                 },
@@ -550,8 +593,8 @@
             }, 
             "type": "dropdown", 
             "options": [
-                "ES only",
-                "Biodiversity only",
+                "ES priority",
+                "Biodiversity priority",
                 "ES and biodiversity"
             ],
             "helpText": {
@@ -565,8 +608,11 @@
             "type": "checkbox",
             "defaultValue": true,
             "label": {
-                "en": "Restrict parcels by LCI",
+                "en": "Restrict offset parcels by LCI",
                 "es": "FILL IN"
+            },
+            "returns": {
+                "ifEmpty": true
             },
             "helpText": {
                 "en": "Select this checkbox to have the set of offset parcels restricted by the Landscape Context Index.  If this is selected, offset parcels may only be used as offsets to biodiversity if they also have at least the same LCI as the natural parcels that were impacted.",
@@ -577,7 +623,7 @@
             "id": "prop_offset",
             "args_id": "prop_offset",
             "label": {
-                "en": "Proportion of (impacts * mitigation ratio) to offset",
+                "en": "Proportion of offset needs to suggest",
                 "es": "DEFINE"
             },
             "type": "text",
@@ -587,6 +633,11 @@
             "type": "hidden",
             "defaultValue": ".",
             "args_id": "data_dir"
+        },
+        {
+            "type": "hidden",
+            "defaultValue": "opal",
+            "args_id": "distribution"
         }
     ] 
 }

@@ -1,13 +1,35 @@
 Changes
 =======
 
-0.5.1 (2013-10-13)
+1.0.2 (2014-1-20)
+-----------------
+- OPAL only: forcing the OPAL UI to use English.  This fixes an issue found by
+  users whose default OS language is not English.
+
+1.0.1 (2014-12-16)
+------------------
+- Updated MAFE-T static map UIs to provide correct parameters to OPAL core
+  while retaining MAFE-T's original functionality.
+- Updated MAFE-T UI input validation to reflect name changes for some static inputs.
+- Replaced servicesheds of MAFE-T with a more complete version.
+- Retained older version of servicesheds for use with OPAL.
+- Updated MAFE-T User's guide PDF.
+- Fixed issue with MAFE-T installer where static map zipfiles were not downloaded.
+
+1.0.0 (2014-12-3)
+-----------------
+- Initial public release of OPAL distribution.
+- New features for OPAL:
+  - Offset parcel recommendation that reattributes services to impacted beneficiaries
+  - Support for protection or restoration as a future scenario
+
+0.5.1 (2014-10-13)
 ------------------
 - Added zipfile validation to the MAFE-T installer (Issue 3148)
 - MAFE-T installer now remembers selections when switching pages (Issue 3153)
 - Added validation to MAFE-T UI for the impacts vector (Issue 3149)
 
-0.5.0 (2013-10-8)
+0.5.0 (2014-10-8)
 -----------------
 - Initial public release of MAFE-T distribution.
 

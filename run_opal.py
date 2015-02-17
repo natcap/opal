@@ -2,6 +2,7 @@ import sys
 import os
 import argparse
 import logging
+import json
 
 from PyQt4 import QtGui
 
@@ -10,6 +11,7 @@ import palisades.i18n
 from palisades import execution
 from palisades import elements
 import adept.i18n
+from adept import versioning
 
 # capture palisades logging and only display INFO or higher
 PALISADES_LOGGER = logging.getLogger('palisades')
@@ -26,16 +28,6 @@ class MultilingualRunner(execution.PythonRunner):
         print 'setting adept lang to %s' % palisades_lang
         adept.i18n.language.set(palisades_lang)
         execution.PythonRunner.start(self)
-
-class OPALInfoDialog(QtGui.QDialog):
-    def __init__(self):
-        QtGui.QDialog.__init__(self)
-
-        self.setLayout(QtGui.QVBoxLayout())
-        self.opal_version = QtGui.QLabel(adept.__version__)
-        self.palisades_version = QtGui.QLabel(palisades.__version__)
-        self.layout().addWidget(self.opal_version)
-        self.layout().addWidget(self.palisades_version)
 
 def setup_opal_callbacks(ui_obj):
     servicesheds_elem = ui_obj.find_element('servicesheds_map')
@@ -73,6 +65,79 @@ def setup_opal_callbacks(ui_obj):
     _require_servicesheds()  # initialize the requirement state
     servicesheds_elem.validate()
 
+    # now, set up the OPAL future scenario validation requirements.
+    future_type_elem = ui_obj.find_element('offset_type')
+
+    def _fut_filename(model, scenario, suffix=''):
+        if suffix != '':
+            suffix = '_%s' % suffix
+
+        if scenario == 'Protection':
+            scenario = 'protect'
+        else:
+            scenario = 'restore'
+
+        return '%s_%s%s.tif' % (model, scenario, suffix)
+
+    def _remove_future_rasters(raster_list):
+        """Take a list of raster filenames and remove any rasters in it that
+        are known to represent future scenarios."""
+        new_list = []
+        for raster in raster_list:
+            if 'protect' in raster or 'restore' in raster:
+                continue
+            new_list.append(raster)
+        return new_list
+
+    def _setup_future_validation(model_name, target_elem, include_pts=True):
+        """Set up a callback function tailored to work with a particular static
+        model name and static map element.  This callback will require
+        future scenario rasters depending on the value of the future scenario
+        dropdown.
+
+        Returns a function pointer that will work as a callback."""
+        def _setup_fut_validation(value=None, validate=True):
+            """Callback for setting up future validation for a static map input
+            element, where future scenarios are required by validation, but the
+            required future scenario is dependent on the value of the future
+            scenario type.
+
+            Returns nothing, but has a side effect of affecting the target
+            static map folder element's validation dictionary."""
+            future_type = future_type_elem.value()
+            expected_fut_raster = _fut_filename(model_name, future_type,
+                'static_map')
+            cur_raster_list = target_elem.config['validateAs']['contains']
+            new_raster_list = _remove_future_rasters(cur_raster_list)
+            new_raster_list.append(expected_fut_raster)
+
+            if include_pts is True:
+                pts_raster = _fut_filename(model_name, future_type, 'pts')
+                new_raster_list.append(pts_raster)
+
+            target_elem.config['validateAs']['contains'] = new_raster_list
+
+            if validate is True:
+                target_elem.validate()
+
+        # initialize the input element's future validation without actually
+        # triggering validation (not until user input)
+        _setup_fut_validation(validate=False)
+        return _setup_fut_validation
+
+    # Set up inter-element communication based on the dropdown menu.
+    # Items are: (target element ID, model name, whether to include PTS rasters
+    static_map_generators = [
+        ('sediment_static_maps', 'sediment', True),
+        ('nutrient_static_maps', 'nutrient', True),
+        ('carbon_static_maps', 'carbon', False),
+        ('custom_static_maps', 'custom', False),
+    ]
+    for elem_id, model_name, include_pts in static_map_generators:
+        target_element = ui_obj.find_element(elem_id)
+        future_type_elem.value_changed.register(_setup_future_validation(
+            model_name, target_element, include_pts))
+
 def main(json_config=None):
     # add logging handler so this stuff is written to disk
     if json_config is None:
@@ -99,6 +164,7 @@ def main(json_config=None):
             json_config = sys.argv[1]  # the first program argument
         app_icon = os.path.join(exe_dir, 'opal-logo-small.png')
         opal_logo = os.path.join(exe_dir, 'opal-logo-small.png')
+        dist_data = json.load(open(os.path.join(exe_dir, 'dist_version.json')))
     else:
         splash = os.path.join(os.getcwd(), 'windows_build', 'OPAL.png')
         args_parser = argparse.ArgumentParser(
@@ -112,6 +178,8 @@ def main(json_config=None):
             'opal-logo-small.png')
         opal_logo = os.path.join(os.getcwd(), 'installer', 'opal_images',
             'opal-logo-small.png')
+        dist_data = versioning.build_data()
+        dist_data['dist_name'] = 'OPAL'  # we are for sure for OPAL only
     LOGGER.debug('splash image: %s', splash)
 
     # use palisades function to locate the config in a couple of places.
@@ -141,7 +209,10 @@ def main(json_config=None):
 
     # set the stuff of the infoDialog.
     form_window.app_info_dialog.set_title('About OPAL')
-    form_window.app_info_dialog.set_messages = 'Version!'
+    form_window.app_info_dialog.setWindowTitle('About OPAL')
+    opal_info_text = "OPAL %s<br/><br/>" % dist_data['version_str']
+    opal_info_text += '<a href="naturalcapitalproject.org">naturalcapitalproject.org</a>'
+    form_window.app_info_dialog.body.setText(opal_info_text)
     form_window.app_info_dialog.set_icon(opal_logo, scale=True)
 
     #form_window.menu_bar.addMenu(help_menu)

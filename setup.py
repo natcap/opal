@@ -90,11 +90,21 @@ DATA_FILES.append(('src/adept/report_data',
 
 # get specific sets of data files from the tool_data.
 # first, get the vectors.
+vectors = {
+    'subzones': 'Hydrographic_subzones',
+    'municipalities': 'Municipalities',
+    'ecosystems': 'ecosys_dis_nat_comp_fac',
+    'hydrozones': 'hydrozones',
+    'sample_aoi': 'sample_aoi',
+    'watersheds': 'watersheds_cuencas',
+    'servicesheds_old': 'Servicesheds_Col',
+    'servicesheds_new': 'ssheds_Col_new',
+}
+
 tool_data = glob.glob('data/colombia_tool_data/*.csv')
-vectors = ['Hydrographic_subzones',
-    'Municipalities', 'ecosys_dis_nat_comp_fac', 'hydrozones',
-    'sample_aoi', 'watersheds_cuencas', 'Servicesheds_Col']
-for vector_base in vectors:
+for vector_key, vector_base in vectors.iteritems():
+    if vector_key in ['servicesheds_old']:
+        continue
     glob_pattern = 'data/colombia_tool_data/%s.*' % vector_base
     tool_data += glob.glob(glob_pattern)
 
@@ -202,6 +212,7 @@ class ZipColombiaData(Command):
 class SampleDataCommand(Command):
     description = "Prepares sample data for a single hydrozone"
     user_options = []
+    scenarios = ['bare', 'paved', 'protection']
 
     def initialize_options(self):
         pass
@@ -209,9 +220,9 @@ class SampleDataCommand(Command):
     def finalize_options(self):
         pass
 
-    def run(self):
+    def _gather_single_hydrozone_data(self):
         print ''
-        print 'Preparing single-hydrozone sample data'
+        print 'gathering single-hydrozone sample data'
 
         build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
         dist_dir = os.path.join(os.getcwd(), 'dist')
@@ -223,6 +234,7 @@ class SampleDataCommand(Command):
 
         print '\nDetermining active hydrozone'
         active_hydrozone = os.path.join(data_dir, 'active_hzone.shp')
+        self.active_hydrozone = active_hydrozone
         hydrozones = os.path.join(os.getcwd(), 'data', 'colombia_tool_data',
             'hydrozones.shp')
         impacts = os.path.join(os.getcwd(), 'data', 'colombia_sample_data',
@@ -239,17 +251,17 @@ class SampleDataCommand(Command):
         for service in ['sediment', 'nutrient', 'carbon']:
             service_out_dir = os.path.join(service_dir, service)
             os.makedirs(service_out_dir)
-            for scenario in ['bare', 'paved', 'protection']:
+            for scenario in self.scenarios:
                 map_name = '%s_%s_static_map_lzw.tif' % (service, scenario)
                 new_map_name = map_name.replace('_lzw', '')
                 src_static_map = os.path.join(static_maps_dir, map_name)
 
                 # rename the sample protection static maps to 'future'
                 if scenario == 'protection':
-                    new_map_name = new_map_name.replace(scenario, 'future')
+                    new_map_name = new_map_name.replace(scenario, 'protect')
                 dst_static_map = os.path.join(service_out_dir, new_map_name)
 
-                print 'Clipping %s' % new_map_name 
+                print 'Clipping %s' % new_map_name
                 static_maps.clip_static_map(src_static_map, active_hydrozone,
                     dst_static_map)
 
@@ -257,12 +269,13 @@ class SampleDataCommand(Command):
                     # same thing for pts rasters
                     map_name = '%s_%s_pts.tif' % (service, scenario)
                     src_raster = os.path.join(static_maps_dir, map_name)
+                    if scenario == 'protection':
+                        map_name = map_name.replace('protection', 'protect')
                     dst_raster = os.path.join(service_out_dir, map_name)
 
                     print 'Clipping %s' % map_name
                     static_maps.clip_static_map(src_raster, active_hydrozone,
                         dst_raster)
-
 
         print '\nCollecting sample vectors'
         vectors_to_copy = ['mine_site', 'power_line']
@@ -274,11 +287,56 @@ class SampleDataCommand(Command):
                 print 'Copying %s -> %s' % (source_file, dest_file)
                 shutil.copyfile(source_file, dest_file)
 
+
+    def run(self, gather_hzone_data=True):
+        if gather_hzone_data:
+            self._gather_single_hydrozone_data()
+
+        print ''
+        print 'Zipping up single-hydrozone sample data'
+
+        dist_dir = os.path.join(os.getcwd(), 'dist')
+        build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
+        data_dir = os.path.join(build_dir, 'sample_data')
+        service_dir = os.path.join(data_dir, 'services_static_data')
+
         sample_data_zip = os.path.join(dist_dir, 'sample_data')
         print "\nBuilding %s.zip" % sample_data_zip
         shutil.make_archive(sample_data_zip, 'zip', root_dir=service_dir)
         print 'Finished %s.zip (%sMB)' % (sample_data_zip,
                 os.path.getsize(sample_data_zip + '.zip') >> 20)
+
+class SampleDataGlobalCommand(SampleDataCommand):
+    description = "Zip up required tool and static data for OPAL"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        self._gather_single_hydrozone_data()
+        # active hydrozone URI saved to self.active_hydrozone
+        dest_dir = os.path.join('build', 'permitting_data', 'sample_data',
+            'services_static_data')
+
+        opal_vectors = [
+            (vectors['ecosystems'], 'natural_ecosystems'),
+            (vectors['servicesheds_old'], 'servicesheds'),
+            (vectors['subzones'], 'hydrographic_subzones')
+        ]
+        for vector_base, new_base in opal_vectors:
+            vector_uri = os.path.join('data', 'colombia_tool_data',
+                vector_base + '.shp')
+            new_uri = os.path.join(dest_dir, new_base + '.shp')
+
+            print 'Copying %s -> %s' % (vector_uri, new_uri)
+            preprocessing.locate_intersecting_polygons(vector_uri,
+                self.active_hydrozone, new_uri, clip=True)
+
+        SampleDataCommand.run(self, False)
 
 class NSISCommand(Command):
     """Uses two options: "version" : the rios version; "nsis_dir" : the
@@ -456,8 +514,13 @@ class ColombiaDistribution(NSISCommand):
         self.write_dist_data('MAFE-T')
 
         # copy documentation to the nsis_dir
-        source_file = os.path.join(os.getcwd(), 'windows_build', 'MAFE',
-            'MAFE-T User\'s Guide 2014-10-3 DRAFT.pdf')
+        source_file = glob.glob(os.path.join(os.getcwd(), 'windows_build', 'MAFE',
+            '*.pdf'))
+        if len(source_file) > 1:
+            raise Exception('Which MAFE-T pdf did you want to grab?')
+        else:
+            source_file = source_file[0]
+
         dest_file = os.path.join(self.nsis_dir, 'MAFE-T-user-guide.pdf')
         shutil.copyfile(source_file, dest_file)
 
@@ -542,7 +605,15 @@ class GlobalDistribution(NSISCommand):
         pass
 
     def run(self):
+        self.run_command('sample_data_global')
         self.write_dist_data('OPAL')
+
+        # copy the distribution UI config file to the pyinstaller dist folder.
+        source_file = os.path.join('windows_build', 'dist_config.json')
+        dest_dist_config_file = os.path.join(self.nsis_dir, 'dist_config.json')
+        print 'Copying %s -> %s' % (source_file, dest_dist_config_file)
+        shutil.copyfile(source_file, dest_dist_config_file)
+
         NSISCommand.run(self)
 
 
@@ -550,6 +621,7 @@ CMD_CLASSES['dist_colombia'] = ColombiaDistribution
 CMD_CLASSES['dist_global'] = GlobalDistribution
 CMD_CLASSES['static_data_colombia'] = ZipColombiaData
 CMD_CLASSES['sample_data'] = SampleDataCommand
+CMD_CLASSES['sample_data_global'] = SampleDataGlobalCommand
 CMD_CLASSES['tool_data_colombia'] = ToolDataColombia
 
 print 'DATA_FILES'

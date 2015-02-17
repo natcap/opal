@@ -24,8 +24,8 @@ common_kwargs = {
 }
 
 # write the static map analysis objects and analyze them.
-static_json_files = ['carbon_sm.json', 'generic_sm.json', 'nutrient_sm.json',
-    'opal.json', 'sediment_sm.json']
+static_json_files = ['opal_carbon_sm.json', 'opal_generic_sm.json', 'opal_nutrient_sm.json',
+    'opal.json', 'opal_sediment_sm.json']
 analysis_objects = []
 
 # analyze opal, append to the analysis objects
@@ -137,12 +137,16 @@ total_coll = COLLECT(
 if is_win:
     pkg_base, pkg_dir = get_package_paths('shapely')
     source_file = os.path.join(pkg_dir, 'geos_c.dll')
+    if not os.path.exists(source_file):
+        # Shapely moved their DLL location recently.
+        source_file = os.path.join(pkg_dir, 'DLLs', 'geos_c.dll')
+
     dest_file = os.path.join('dist', 'total_coll', 'geos_c.dll')
     shutil.copyfile(source_file, dest_file)
 
     # write the bat files to launch the proper ui.
     for json_filename in static_json_files:
-        batfile_name = 'run_%s.bat' % os.path.splitext(json_filename)[0]
+        batfile_name = 'run_%s.bat' % os.path.splitext(json_filename)[0].replace('opal_', '')
         batfile_uri = os.path.join(os.getcwd(), 'dist', 'total_coll', batfile_name)
 
         # write the contents of the launch batfile.

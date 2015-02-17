@@ -121,5 +121,8 @@ total_coll = COLLECT(
 if is_win:
     pkg_base, pkg_dir = get_package_paths('shapely')
     source_file = os.path.join(pkg_dir, 'geos_c.dll')
+    if not os.path.exists(source_file):
+        source_file = os.path.join(pkg_dir, 'DLLs', 'geos_c.dll')
+
     dest_file = os.path.join('dist', 'total_coll_mafe', 'geos_c.dll')
     shutil.copyfile(source_file, dest_file)
