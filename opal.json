@@ -204,7 +204,7 @@
             "type": "file", 
             "required": true,
             "label": {
-                "en": "Search areas", 
+                "en": "Search Zones (Hard Boundary) and subzones (Soft Boundary 1)", 
                 "es": "Usar áreas de búsqueda propias"
             }, 
             "validateAs": {
