@@ -413,7 +413,7 @@
                     "defaultValue": "", 
                     "required": true,
                     "label": {
-                        "en": "Carbon Static Maps", 
+                        "en": "Carbon Static Maps Folder", 
                         "es": "Mapas propios de carbono almacenado"
                     }, 
                     "helpText": {
@@ -462,7 +462,7 @@
                     "defaultValue": "", 
                     "required": true,
                     "label": {
-                        "en": "Nutrient Static Maps", 
+                        "en": "Nutrient Static Maps Folder", 
                         "es": "Usar mapas propios de nutrientes"
                     }, 
                     "helpText": {
@@ -513,7 +513,7 @@
                     "defaultValue": "", 
                     "required": true,
                     "label": {
-                        "en": "Sediment Static Maps", 
+                        "en": "Sediment Static Maps Folder", 
                         "es": "Usar mapas propios de sedimentos"
                     }, 
                     "helpText": {
@@ -564,7 +564,7 @@
                     "defaultValue": "", 
                     "required": true,
                     "label": {
-                        "en": "Custom Ecosystem Service Static Maps", 
+                        "en": "Custom Ecosystem Service Static Maps Folder", 
                         "es": "Usar mapas propios de otros servicios ecosistémicos"
                     }, 
                     "helpText": {
