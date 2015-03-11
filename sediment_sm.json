@@ -9,8 +9,6 @@
         "es": "sediment_static_map_es"
     }, 
     "targetScript": "adept.static_maps", 
-    "height": 700, 
-    "width": 700,
     "elements": [
         {
             "args_id": "workspace_dir", 

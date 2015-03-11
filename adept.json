@@ -9,8 +9,6 @@
         "es": "Licenciamiento"
     }, 
     "targetScript": "adept", 
-    "height": 700, 
-    "width": 700, 
     "condenseElements": true, 
     "elements": [
         {

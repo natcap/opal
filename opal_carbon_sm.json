@@ -9,8 +9,6 @@
         "es": "opal_carbon_static_map_es"
     }, 
     "targetScript": "adept.static_maps", 
-    "height": 800, 
-    "width": 700,
     "elements": [
         {
             "args_id": "workspace_dir", 
