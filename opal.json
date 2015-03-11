@@ -154,6 +154,10 @@
                         }
                     }
                 ]
+            },
+            "helpText": {
+                "en": "A polygon shapefile of potential offset sites for OPAL to select from. If protection is chosen as the offset type to be used, this should be a map of remaining natural ecosystems and can be the same file as the natural ecosystems map input above. If restoration is chosen as the offset type to be used, this should be a map of areas that have the potential to be restored to natural ecosystems.<br/><br/><b>Format:</b> Each row should be a polygon or multi-polygon of a particular ecosystem type. One column is required, and additional columns will be ignored. The required column must be named as follows:<ul><li><em>ecosystem:</em> string value with the name of the current ecosystem type if the chosen offset type is protection, or of the ecosystem type to be restored if the chosen offset type is restoration. These ecosystem types must be in the natural ecosystems map in order to match losses and offsets to the same ecosystem type.</li></ul>",
+                "es": ""
             }
         },
         {
@@ -396,7 +400,11 @@
                         "es": "DEFINE"
                     },
                     "type": "text",
-                    "defaultValue": 1.0
+                    "defaultValue": 1.0,
+                    "helpText": {
+                        "en": "The mitigation ratio is numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
+                        "es": ""
+                    }
                 },
                 {
                     "id": "carbon_static_maps", 
@@ -441,7 +449,11 @@
                         "es": "DEFINE"
                     },
                     "type": "text",
-                    "defaultValue": 1.0
+                    "defaultValue": 1.0,
+                    "helpText": {
+                        "en": "The mitigation ratio is numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
+                        "es": ""
+                    }
                 },
                 {
                     "id": "nutrient_static_maps", 
@@ -488,7 +500,11 @@
                         "es": "DEFINE"
                     },
                     "type": "text",
-                    "defaultValue": 1.0
+                    "defaultValue": 1.0,
+                    "helpText": {
+                        "en": "The mitigation ratio is numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
+                        "es": ""
+                    }
                 },
                 {
                     "id": "sediment_static_maps", 
@@ -535,7 +551,11 @@
                         "es": "DEFINE"
                     },
                     "type": "text",
-                    "defaultValue": 1.0
+                    "defaultValue": 1.0,
+                    "helpText": {
+                        "en": "The mitigation ratio is numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
+                        "es": ""
+                    }
                 },
                 {
                     "id": "custom_static_maps", 
@@ -596,7 +616,7 @@
                 "ES and biodiversity"
             ],
             "helpText": {
-                "en": "Select the offset scheme for this run.",
+                "en": "Offset scheme options include: ES and biodiversity, ES priority or biodiversity priority. If <b>“ES and biodiversity”</b> is chosen, OPAL will return potential offset parcels that contribute to meeting any ecosystem service or biodiversity target. If <b>“ES priority”</b> is chosen, OPAL will return only potential offset parcels that meet ecosystem service targets, and biodiversity offsets will be chosen from within that set. If <b>“biodiversity priority”</b> is chosen, OPAL will return only potential offset parcels that meet biodiversity targets (i.e., are of the same vegetation type as impacted vegetation), and ecosystem service offsets must be selected from within that set.",
                 "es": "FILL IN"
             }
         }, 
@@ -625,7 +645,12 @@
                 "es": "DEFINE"
             },
             "type": "text",
-            "defaultValue": 1.0
+            "defaultValue": 1.0,
+            "helpText": {
+                "en": "OPAL provides a suggested list of offset parcels likely to meet mitigation needs. This can provide a useful starting place for selecting an offset portfolio. This number determines what proportion of offset needs are included in the suggested list.",
+                "es": ""
+            }
+
         },
         {
             "type": "hidden",
