@@ -242,12 +242,12 @@
             }, 
             "required": false,
             "label": {
-                "en": "Area of Influence (optional)",
-                "es": "Área de influencia (opcional)"
+                "en": "Soft Boundary 2 (optional)",
+                "es": ""
             },
             "helpText": {
-                "en": "The area of influence is a polygon shapefile. If no input is provided, the tool defaults to using the project footprint's hydrological subzone. The tool tracks which potential offset parcels are located within the area of influence so that they can be prioritized for selection in the offset portfolio.",
-                "es": "El área de influencia es un shapefile de polígono. Si no se provee ningún archivo, la herramienta asignará por defecto la subzona hidrológica del área de influencia del proyecto. La herramienta rastrea qué parches potenciales para compensación se localizan dentro del área de influencia para priorizarlas en la selección del portafolio de compensación."
+                "en": "This is a polygon vector allowing additional level of prioritization of offset parcels, if desired. OPAL tracks which potential offset parcels are located within the same soft boundary polygons as the project footprint so that they can be prioritized for selection in the offset portfolio, if desired. For example, one set of soft boundaries might represent watersheds and the other represent administrative divisions in order to prioritize offsets within the same watershed and administrative unit where possible.",
+                "es": ""
             }
         }, 
         {
@@ -256,15 +256,15 @@
             "type": "file", 
             "required": false,
             "label": {
-                "en": "Municipalities (optional)", 
-                "es": "Usar capa propia de municipios (opcional)"
+                "en": "Soft Boundary 3 (optional)", 
+                "es": ""
             }, 
             "validateAs": {
                 "type": "OGR"
             },
             "helpText": {
-                "en": "A polygon shapefile. Within Colombia, each polygon should represent municipality borders. The results report indicates which offset patches are located within the same municipality as the project footprint so they can be prioritized. Outside of Colombia, this input can be used to indicate any areas within which offsets should be prioritized.",
-                "es": "Shapefile de polígono. Dentro de Colombia cada polígono debe representar los límites de un municipio. El reporte de resultados indica qué parches de compensación están localizados dentro del mismo municipio que el área de influencia del proyecto de forma que sean priorizadas. Fuera de Colombia esta entrada puede ser usada para indicar áreas dentro de las cuáles las compensaciones deben ser priorizadas."
+                "en": "This is a polygon vector allowing additional level of prioritization of offset parcels, if desired. OPAL tracks which potential offset parcels are located within the same soft boundary polygons as the project footprint so that they can be prioritized for selection in the offset portfolio, if desired. For example, one set of soft boundaries might represent watersheds and the other represent administrative divisions in order to prioritize offsets within the same watershed and administrative unit where possible.",
+                "es": ""
             }
         }, 
         {
