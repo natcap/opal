@@ -56,7 +56,7 @@
             }, 
             "id": "base_uri", 
             "label": {
-                "en": "Base raster", 
+                "en": "Base Raster", 
                 "es": "Raster base"
             }, 
             "required": true, 
@@ -73,7 +73,7 @@
             }, 
             "id": "paved_uri", 
             "label": {
-                "en": "Paved raster", 
+                "en": "Paved Raster", 
                 "es": "Raster de pavimento"
             }, 
             "required": true, 
@@ -90,7 +90,7 @@
             }, 
             "id": "bare_uri", 
             "label": {
-                "en": "Bare raster", 
+                "en": "Bare Raster", 
                 "es": "Raster de suelo desnudo"
             }, 
             "required": true, 
@@ -107,7 +107,7 @@
             }, 
             "id": "future_uri", 
             "label": {
-                "en": "Offset scenario raster", 
+                "en": "Offset Scenario Raster", 
                 "es": "Raster de protección"
             }, 
             "required": true, 
@@ -122,7 +122,7 @@
             "returns": {"type": "strings"}, 
             "defaultValue": 0, 
             "label": {
-                "en": "Offset scenario type", 
+                "en": "Offset Scenario Type", 
                 "es": "FILL IN"
             }, 
             "type": "dropdown", 

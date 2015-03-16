@@ -54,7 +54,7 @@
             "returns": {"type": "strings"}, 
             "defaultValue": 0, 
             "label": {
-                "en": "Impact type", 
+                "en": "Impact Type", 
                 "es": "Tipo de impacto"
             }, 
             "type": "dropdown", 
@@ -73,7 +73,7 @@
             "type": "file", 
             "required": true,
             "label": {
-                "en": "Natural ecosystems map", 
+                "en": "Natural Ecosystems Map", 
                 "es": "Usar un mapa propio de ecosistemas naturales"
             }, 
             "validateAs": {
@@ -113,7 +113,7 @@
             "returns": {"type": "strings"}, 
             "defaultValue": 0, 
             "label": {
-                "en": "Offset type", 
+                "en": "Offset Type", 
                 "es": "FILL IN"
             }, 
             "type": "dropdown", 
@@ -132,7 +132,7 @@
             "type": "file", 
             "required": true,
             "label": {
-                "en": "Potential offset sites", 
+                "en": "Potential Offset Sites", 
                 "es": "FILL IN"
             }, 
             "validateAs": {
@@ -206,7 +206,7 @@
             "type": "file", 
             "required": true,
             "label": {
-                "en": "Search Zones (Hard Boundary) and subzones (Soft Boundary 1)", 
+                "en": "Search Zones (Hard Boundary) and Subzones (Soft Boundary 1)", 
                 "es": ""
             }, 
             "validateAs": {
@@ -274,7 +274,7 @@
             "id": "threat_map", 
             "args_id": "threat_map", 
             "label": {
-                "en": "Threat map (optional)", 
+                "en": "Threat Map (optional)", 
                 "es": "Mapa de Amenazas (opcional)"
             },
             "validateAs": {
@@ -290,7 +290,7 @@
             "id": "species_richness_map", 
             "args_id": "species_richness_map", 
             "label": {
-                "en": "Species richness map (optional)", 
+                "en": "Species Richness Map (optional)", 
                 "es": "Mapa de riqueza de especies (opcional)"
             },
             "validateAs": {
@@ -306,7 +306,7 @@
             "id": "avoidance_areas", 
             "args_id": "avoidance_areas", 
             "label": {
-                "en": "Avoidance areas (optional)", 
+                "en": "Avoidance Areas (optional)", 
                 "es": "Áreas a evitar (opcional)"
             },
             "validateAs": {
@@ -330,7 +330,7 @@
             "id": "conservation_portfolio", 
             "args_id": "conservation_portfolio", 
             "label": {
-                "en": "Conservation portfolio (optional)", 
+                "en": "Conservation Portfolio (optional)", 
                 "es": "Portafolio de conservación (opcional)"
             },
             "validateas": {
@@ -354,7 +354,7 @@
             "id": "previously_granted_impacts", 
             "args_id": "previously_granted_impacts", 
             "label": {
-                "en": "Previously granted impacts (optional)", 
+                "en": "Previously Granted Impacts (optional)", 
                 "es": "Licencias previamente otorgadas (opcional)"
             },
             "validateas": {
@@ -370,7 +370,7 @@
             "id": "previously_selected_offsets", 
             "args_id": "previously_selected_offsets", 
             "label": {
-                "en": "Previously selected offsets (optional)", 
+                "en": "Previously Selected Offsets (optional)", 
                 "es": "Parches de compensación previamente seleccionados (opcional)"
             },
             "validateas": {
@@ -388,7 +388,7 @@
             "collapsible": true,
             "defaultValue": false,
             "label": {
-                "en": "Calculate impacts/offsets to carbon",
+                "en": "Calculate Impacts/Offsets to Carbon",
                 "es": "Calcular impactos/compensación por carbono"
             },
             "elements": [
@@ -396,7 +396,7 @@
                     "id": "carbon_mitigation_ratio",
                     "args_id": "carbon_mitigation_ratio",
                     "label": {
-                        "en": "Carbon mitigation ratio",
+                        "en": "Carbon Mitigation Ratio",
                         "es": "DEFINE"
                     },
                     "type": "text",
@@ -437,7 +437,7 @@
             "collapsible": true,
             "defaultValue": false,
             "label": {
-                "en": "Calculate impacts/offsets to nutrient",
+                "en": "Calculate Impacts/Offsets to Nutrient",
                 "es": "Calcular impactos/compensación por nitrógeno"
             },
             "elements": [
@@ -445,7 +445,7 @@
                     "id": "nutrient_mitigation_ratio",
                     "args_id": "nutrient_mitigation_ratio",
                     "label": {
-                        "en": "Nutrient mitigation ratio",
+                        "en": "Nutrient Mitigation Ratio",
                         "es": "DEFINE"
                     },
                     "type": "text",
@@ -488,7 +488,7 @@
             "collapsible": true,
             "defaultValue": false,
             "label": {
-                "en": "Calculate impacts/offsets to sediment",
+                "en": "Calculate Impacts/Offsets to Sediment",
                 "es": "Calcular impactos/compensación por sedimentos"
             },
             "elements": [
@@ -496,7 +496,7 @@
                     "id": "sediment_mitigation_ratio",
                     "args_id": "sediment_mitigation_ratio",
                     "label": {
-                        "en": "Sediment mitigation ratio",
+                        "en": "Sediment Mitigation Ratio",
                         "es": "DEFINE"
                     },
                     "type": "text",
@@ -539,7 +539,7 @@
             "collapsible": true,
             "defaultValue": false,
             "label": {
-                "en": "Calculate impacts/offsets to custom ecosystem service",
+                "en": "Calculate Impacts/Offsets to Custom Ecosystem Service",
                 "es": "DEFINE"
             },
             "elements": [
@@ -547,7 +547,7 @@
                     "id": "custom_mitigation_ratio",
                     "args_id": "custom_mitigation_ratio",
                     "label": {
-                        "en": "Custom mitigation ratio",
+                        "en": "Custom Mitigation Ratio",
                         "es": "DEFINE"
                     },
                     "type": "text",
@@ -590,7 +590,7 @@
                     "defaultValue": 0,
                     "returns": {"type": "strings"},
                     "label": {
-                        "en": "Type of custom service",
+                        "en": "Type of Custom Service",
                         "es": "Tipo de servicio"
                     },
                     "helpText": {
@@ -606,7 +606,7 @@
             "returns": {"type": "ordinals"}, 
             "defaultValue": 0, 
             "label": {
-                "en": "Offset scheme", 
+                "en": "Offset Scheme", 
                 "es": "Esquema de compensación"
             }, 
             "type": "dropdown", 
@@ -626,7 +626,7 @@
             "type": "checkbox",
             "defaultValue": true,
             "label": {
-                "en": "Restrict offset parcels by LCI",
+                "en": "Restrict Offset Parcels by LCI",
                 "es": "FILL IN"
             },
             "returns": {
@@ -641,7 +641,7 @@
             "id": "prop_offset",
             "args_id": "prop_offset",
             "label": {
-                "en": "Proportion of offset needs to suggest",
+                "en": "Proportion of Offset Needs to Suggest",
                 "es": "DEFINE"
             },
             "type": "text",

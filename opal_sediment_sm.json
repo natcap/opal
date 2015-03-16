@@ -51,7 +51,7 @@
             "returns": {"type": "strings"}, 
             "defaultValue": 0, 
             "label": {
-                "en": "Offset scenario type", 
+                "en": "Offset Scenario Type", 
                 "es": "FILL IN"
             }, 
             "type": "dropdown", 
@@ -72,7 +72,7 @@
             }, 
             "id": "cur_lulc_raster", 
             "label": {
-                "en": "Offset Scenario Land Use/Land Cover raster", 
+                "en": "Offset Scenario Land Use/Land Cover Raster", 
                 "es": "Raster de uso/cobertura del suelo futuro"
             }, 
             "required": true,
@@ -95,7 +95,7 @@
             "defaultValue": "",
             "required": true,
             "label": {
-                "en": "Paved landcover code",
+                "en": "Paved Landcover Code",
                 "es": "Código de uso del suelo pavimentado"
             },
             "type": "text",
@@ -112,7 +112,7 @@
             "defaultValue": "",
             "required": true,
             "label": {
-                "en": "Bare landcover code",
+                "en": "Bare Landcover Code",
                 "es": "Código de uso de suelo desnudo"
             },
             "type": "text",
@@ -250,7 +250,7 @@
             "required": true, 
             "id": "sediment_threshold_table_uri", 
             "label": {
-                "en": "Sediment threshold table", 
+                "en": "Sediment Threshold Table", 
                 "es": "Tabla de umbral de sedimentos"
             }, 
             "type": "file", 
@@ -267,7 +267,7 @@
         {
             "type": "container",
             "label": {
-                "en": "Calculate generated static map quality",
+                "en": "Calculate Generated Static Map Quality",
                 "es": "Calcular calidad del mapa estático generado"
             },
             "collapsible": true,
@@ -275,7 +275,7 @@
             "elements": [
                 {
                     "type": "text",
-                    "label": "Number of impact simulations per watershed",
+                    "label": "Number of Impact Simulations per Watershed",
                     "defaultValue": "25",
                     "args_id": "num_simulations",
                     "helpText": {

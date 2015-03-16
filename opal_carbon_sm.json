@@ -32,12 +32,12 @@
         {
             "args_id": "landuse_uri", 
             "helpText": {
-                "en": "Location of the landcover map for the current scenario.", 
+                "en": "Location of the Landcover Map for the Current Scenario.", 
                 "es": "Ubicación del mapa de uso del suelo para el escenario actual"
             }, 
             "id": "cur_lulc_raster", 
             "label": {
-                "en": "Land Use/Land Cover raster", 
+                "en": "Land Use/Land Cover Raster", 
                 "es": "Raster de uso/cobertura del suelo"
             }, 
             "required": true, 
@@ -52,7 +52,7 @@
             "returns": {"type": "strings"}, 
             "defaultValue": 0, 
             "label": {
-                "en": "Offset scenario type", 
+                "en": "Offset Scenario Type", 
                 "es": "FILL IN"
             }, 
             "type": "dropdown", 
@@ -68,12 +68,12 @@
         {
             "args_id": "fut_landuse_uri", 
             "helpText": {
-                "en": "Location of the landcover map for the future (protection/restoration) scenario.", 
+                "en": "Location of the Landcover Map for the Future (Protection/Restoration) Scenario.", 
                 "es": "Ubicación del mapa de uso del suelo para el escenario futuro (protección o restauración)"
             }, 
             "id": "cur_lulc_raster", 
             "label": {
-                "en": "Offset Scenario Land Use/Land Cover raster", 
+                "en": "Offset Scenario Land Use/Land Cover Raster", 
                 "es": "Raster de uso/cobertura del suelo ______"
             }, 
             "required": true,
@@ -90,7 +90,7 @@
             },
             "defaultValue": "",
             "label": {
-                "en": "Paved landcover code",
+                "en": "Paved Landcover Code",
                 "es": "Código de uso del suelo pavimentado"
             },
             "required": true,
@@ -107,7 +107,7 @@
             },
             "defaultValue": "",
             "label": {
-                "en": "Bare landcover code",
+                "en": "Bare Landcover Code",
                 "es": "Código de uso de suelo desnudo"
             },
             "required": true,
@@ -125,7 +125,7 @@
             "required": true,
             "id": "carbon_pools", 
             "label": {
-                "en": "Carbon pools", 
+                "en": "Carbon Pools", 
                 "es": "Contenidos de carbono"
             }, 
             "type": "file", 
