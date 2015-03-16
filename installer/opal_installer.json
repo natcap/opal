@@ -46,22 +46,22 @@
                 "icon": "${icon}"
             },
             {
-                "name": "${APP_NAME} Carbon Static Map Generator",
+                "name": "${APP_NAME}: Carbon Static Map Generator",
                 "target": "run_carbon_sm.bat",
                 "icon": "${icon}"
             },
             {
-                "name": "${APP_NAME} Sediment Static Map Generator",
+                "name": "${APP_NAME}: Sediment Static Map Generator",
                 "target": "run_sediment_sm.bat",
                 "icon": "${icon}"
             },
             {
-                "name": "${APP_NAME} Nutrient Static Map Generator",
+                "name": "${APP_NAME}: Nutrient Static Map Generator",
                 "target": "run_nutrient_sm.bat",
                 "icon": "${icon}"
             },
             {
-                "name": "${APP_NAME} Custom Static Map Calculator",
+                "name": "${APP_NAME}: Custom Static Map Calculator",
                 "target": "run_generic_sm.bat",
                 "icon": "${icon}"
             },
