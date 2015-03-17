@@ -1,6 +1,7 @@
 from PyInstaller.compat import is_win
 from PyInstaller.hooks.hookutils import get_package_paths
 import os
+import glob
 
 if is_win:
     files = [
@@ -19,4 +20,4 @@ if is_win:
 
     data_dir = os.path.join(pkg_dir, 'data', 'gdal')
     datas += [(os.path.join(data_dir, filename), '') for filename in
-            os.listdir(data_dir)]
+            glob.glob(data_dir + '/*')]
