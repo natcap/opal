@@ -16,3 +16,7 @@ if is_win:
         print 'Defaulting to osgeo pkg:', error
         pkg_base, pkg_dir = get_package_paths('osgeo')
     datas = [(os.path.join(pkg_dir, filename), '') for filename in files]
+
+    data_dir = os.path.join(pkg_dir, 'data', 'gdal')
+    datas += [(os.path.join(data_dir, filename), '') for filename in
+            os.listdir(data_dir)]
