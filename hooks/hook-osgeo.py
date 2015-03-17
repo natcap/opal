@@ -18,6 +18,7 @@ if is_win:
         pkg_base, pkg_dir = get_package_paths('osgeo')
     datas = [(os.path.join(pkg_dir, filename), '') for filename in files]
 
-    data_dir = os.path.join(pkg_dir, 'data', 'gdal')
+    osgeo_base, osgeo_dir = get_package_paths('osgeo')
+    data_dir = os.path.join(osgeo_dir, 'data', 'gdal')
     datas += [(os.path.join(data_dir, filename), '') for filename in
             glob.glob(data_dir + '/*')]
