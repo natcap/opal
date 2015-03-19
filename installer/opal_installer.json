@@ -37,7 +37,7 @@
         "icon": "opal_images\\opal-logo.ico",
         "extra_files": [
             "\"opal_images\\opal-logo.ico\"",
-            "\"..\\OPAL User's Guide v 1.0.pdf\""
+            "\"..\\OPAL User's Guide v.1.0.3.pdf\""
         ],
         "start_menu": [
             {
@@ -67,7 +67,7 @@
             },
             {
                 "name": "${APP_NAME} Documentation",
-                "target": "OPAL User's Guide v 1.0.pdf"
+                "target": "OPAL User's Guide v.1.0.3.pdf"
             }
         ],
         "sections": []
