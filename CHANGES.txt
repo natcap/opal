@@ -32,6 +32,8 @@ Changes
     workspace.
 - (Feature) Parcels table in the report now includes a binary column indicating
     whether each parcel is in the suggested set of parcels.
+- (Feature) Updated InVEST version dependency to use more recent versions of
+    hydrological routing algorithms.
 
 1.0.2 (2015-1-20)
 -----------------
