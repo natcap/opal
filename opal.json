@@ -8,6 +8,10 @@
         "en": "OPAL", 
         "es": "Licenciamiento"
     }, 
+    "openDirOnComplete": {
+        "type": "element",
+        "id": "workspace"
+    },
     "targetScript": "adept", 
     "condenseElements": true, 
     "elements": [

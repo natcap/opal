@@ -8,6 +8,10 @@
         "en": "opal_generic_static_map", 
         "es": "opal_generic_static_map_es"
     }, 
+    "openDirOnComplete": {
+        "type": "element",
+        "id": "workspace"
+    },
     "targetScript": "adept.static_maps", 
     "targetFunction": "raster_math",
     "elements": [

@@ -8,6 +8,10 @@
         "en": "opal_nutrient_static_map", 
         "es": "opal_nutrient_static_map_es"
     }, 
+    "openDirOnComplete": {
+        "type": "element",
+        "id": "workspace"
+    },
     "targetScript": "adept.static_maps", 
     "elements": [
         {
