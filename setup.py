@@ -465,7 +465,13 @@ class NSISCommand(Command):
         if versioning.get_tag_distance() > 0:
             version_string = versioning.get_build_id()
         else:
+            # if we're on a master branch, we only want the version num.
+            # If we're not on a master branch, just use the latest tag.
             version_string = versioning.get_latest_tag()
+            branchname = versioning.get_branch()
+            if branchname.startswith('master/'):
+                dist = branchname.replace('master/', '')
+                version_string = version_string.replace(dist + '-', '')
 
         # sanitize the version string
         version_string = version_string.replace(':', '_').replace(' ', '_')
