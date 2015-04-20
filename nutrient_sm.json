@@ -1,8 +1,8 @@
 {
     "id": "window", 
     "label": {
-        "en": "Nutrient", 
-        "es": "Nutrientes"
+        "en": "MAFE-T: Nutrient", 
+        "es": "MAFE-T: Nutrientes"
     }, 
     "modelName": {
         "en": "nutrient_static_map", 

@@ -1,8 +1,8 @@
 {
     "id": "window", 
     "label": {
-        "en": "Sediment", 
-        "es": "Sedimentos"
+        "en": "MAFE-T: Sediment", 
+        "es": "MAFE_T: Sedimentos"
     }, 
     "modelName": {
         "en": "sediment_static_map", 

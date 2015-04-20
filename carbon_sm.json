@@ -1,8 +1,8 @@
 {
     "id": "window", 
     "label": {
-        "en": "InVEST Carbon Model (Biophysical and Valuation)", 
-        "es": "Modelo de carbono de InVEST (Biofísico y valoración)"
+        "en": "MAFE-T: InVEST Carbon Model (Biophysical and Valuation)", 
+        "es": "MAFE-T: Modelo de carbono de InVEST (Biofísico y valoración)"
     }, 
     "modelName": {
         "en": "carbon_static_map", 

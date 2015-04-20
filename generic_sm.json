@@ -1,8 +1,8 @@
 {
     "id": "window", 
     "label": {
-        "en": "Static Map Raster Calculator", 
-        "es": "Calculadora de mapas estáticos"
+        "en": "MAFE-T: Static Map Raster Calculator", 
+        "es": "MAFE-T: Calculadora de mapas estáticos"
     }, 
     "modelName": {
         "en": "generic_static_map", 
