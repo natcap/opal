@@ -12,7 +12,7 @@
     "elements": [
         {
             "args_id": "workspace_dir", 
-            "defaultValue": "~/static_maps", 
+            "defaultValue": "~/static_maps_nutrient", 
             "helpText": {
                 "en": "This is the directory in which the output and intermediate files will be saved.", 
                 "es": "Este es el directorio donde se guardarán los archivos intermedios y finales"

@@ -12,7 +12,7 @@
     "elements": [
         {
             "args_id": "workspace_dir", 
-            "defaultValue": "~/custom_static_maps", 
+            "defaultValue": "~/static_maps_carbon", 
             "helpText": {
                 "en": "A directory that will contain the intermediate and output files for this run.", 
                 "es": "Directorio que contendrá los archivos intermedios y finales para esta corrida."

@@ -15,7 +15,7 @@
             "id": "workspace", 
             "args_id": "workspace_dir",
             "type": "folder", 
-            "defaultValue": "~/adept_workspace", 
+            "defaultValue": "~/MAFE_workspace", 
             "required": true, 
             "label": {
                 "en": "Workspace", 
