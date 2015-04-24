@@ -17,7 +17,7 @@
     "elements": [
         {
             "args_id": "workspace_dir", 
-            "defaultValue": "~/custom_static_maps", 
+            "defaultValue": "~/opal_custom_static_maps",
             "helpText": {
                 "en": "A directory that will contain the output files for this run.", 
                 "es": "Un directorio que contendrá los archivos finales para esta corrida"
