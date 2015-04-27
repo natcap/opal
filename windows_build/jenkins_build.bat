@@ -57,6 +57,12 @@ rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
 cd ..\..
 
+:: CD to the pygeoprocessing directory to install it to the virtual environment
+cd src/pygeoprocessing
+rmdir /S /Q build
+..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
+cd ..\..
+
 :: CD to the pyinstaller directory, build and install the bootloaders for pyinstaller
 cd src/pyinstaller/bootloader
 %ENVDIR%\Scripts\python .\waf configure build install
