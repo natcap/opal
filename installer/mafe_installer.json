@@ -37,10 +37,6 @@
                 "leave_funcname": "SedimentStaticDataFunctionLeave"
             },
             {
-                "enter_funcname": "SedimentStaticPercentToStreamDataFunction",
-                "leave_funcname": "SedimentStaticPercentToStreamDataFunctionLeave"
-            },
-            {
                 "enter_funcname": "NutrientStaticDataFunction",
                 "leave_funcname": "NutrientStaticDataFunctionLeave"
             },
@@ -131,26 +127,9 @@
                 },
                 "action": {
                     "type": "unzipSelect",
-                    "zipfile": "..\\dist\\sediment.zip",
+                    "zipfile": "..\\dist\\sdr.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/sediment.zip"
-                }
-            },
-            {
-                "name": {
-                    "english": "Sediment Static Percent-To-Stream Data",
-                    "spanish": "Datos estáticos de porcentaje de sedimentos en el río"
-                },
-                "size": "7400000",
-                "label": {
-                    "english": "Select an option to download sediment static percent-to-stream data",
-                    "spanish": "Seleccione una opción para descargar los datos estáticos de porcentaje de sedimentos en el río."
-                },
-                "action": {
-                    "type": "unzipSelect",
-                    "zipfile": "..\\dist\\sediment_pts.zip",
-                    "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/sediment_pts.zip"
+                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/sdr.zip"
                 }
             },
             {
