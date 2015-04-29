@@ -509,6 +509,11 @@
             "type": "hidden",
             "defaultValue": "Protection",
             "args_id": "offset_type"
+        },
+        {
+            "type": "hidden",
+            "defaultValue": "mafe-t",
+            "args_id": "distribution"
         }
-    ] 
+    ]
 }
