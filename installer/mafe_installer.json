@@ -116,7 +116,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\carbon.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/carbon.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/carbon.zip"
                 }
             },
             {
@@ -133,7 +133,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\sediment.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/sediment.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/sediment.zip"
                 }
             },
             {
@@ -150,7 +150,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\sediment_pts.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/sediment_pts.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/sediment_pts.zip"
                 }
             },
             {
@@ -167,7 +167,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\nutrient.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/nutrient.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/nutrient.zip"
                 }
             },
             {
@@ -184,7 +184,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\nutrient_pts.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/nutrient_pts.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/nutrient_pts.zip"
                 }
             }
         ]
