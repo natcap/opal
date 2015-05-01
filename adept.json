@@ -1,7 +1,7 @@
 {
     "label": {
-        "en": "Permitting", 
-        "es": "Licenciamiento"
+        "en": "MAFE-T", 
+        "es": "MAFE-T"
     }, 
     "id": "adept_window",
     "modelName": {
@@ -15,7 +15,7 @@
             "id": "workspace", 
             "args_id": "workspace_dir",
             "type": "folder", 
-            "defaultValue": "~/adept_workspace", 
+            "defaultValue": "~/MAFE_workspace", 
             "required": true, 
             "label": {
                 "en": "Workspace", 
@@ -509,6 +509,11 @@
             "type": "hidden",
             "defaultValue": "Protection",
             "args_id": "offset_type"
+        },
+        {
+            "type": "hidden",
+            "defaultValue": "mafe-t",
+            "args_id": "distribution"
         }
-    ] 
+    ]
 }

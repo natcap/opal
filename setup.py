@@ -18,9 +18,13 @@ from adept import versioning
 
 print 'Adept package version: %s' % adept.__version__
 print 'Palisades package version: %s' % palisades.__version__
+print 'Palisades imported from %s' % palisades.__file__
 
 # Raising an exception in some cases when the palisades HEAD can get detached
-# from a branch.
+# from a branch.  When this happens, fix it by going to the build server and
+# calling in the palisades repo:
+#     $ git checkout master
+# And then re-run the build.
 if palisades.__version__ == 'remotes/origin/HEAD':
     raise Exception('palisades version is invalid: %s' % palisades.__version__)
 
@@ -465,7 +469,13 @@ class NSISCommand(Command):
         if versioning.get_tag_distance() > 0:
             version_string = versioning.get_build_id()
         else:
+            # if we're on a master branch, we only want the version num.
+            # If we're not on a master branch, just use the latest tag.
             version_string = versioning.get_latest_tag()
+            branchname = versioning.get_branch()
+            if branchname.startswith('master/'):
+                dist = branchname.replace('master/', '')
+                version_string = version_string.replace(dist + '-', '')
 
         # sanitize the version string
         version_string = version_string.replace(':', '_').replace(' ', '_')
