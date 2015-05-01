@@ -18,9 +18,13 @@ from adept import versioning
 
 print 'Adept package version: %s' % adept.__version__
 print 'Palisades package version: %s' % palisades.__version__
+print 'Palisades imported from %s' % palisades.__file__
 
 # Raising an exception in some cases when the palisades HEAD can get detached
-# from a branch.
+# from a branch.  When this happens, fix it by going to the build server and
+# calling in the palisades repo:
+#     $ git checkout master
+# And then re-run the build.
 if palisades.__version__ == 'remotes/origin/HEAD':
     raise Exception('palisades version is invalid: %s' % palisades.__version__)
 

@@ -21,7 +21,7 @@
         "filename": "${APP_NAME}_${VERSION}_${APP_ARCHITECTURE}_Setup.exe",
         "install_dir": "C:\\Program Files\\${SAFE_VERSION}",
         "required": true,
-        "size": 3772307,
+        "size": 4337463,
         "save_log": true,
         "assert_not_running": true,
         "assert_arch_is_compatible": true,
@@ -107,7 +107,7 @@
                     "english": "Carbon Static Data",
                     "spanish": "Datos estáticos de carbono"
                 },
-                "size": "3700000",
+                "size": "3747991",
                 "label": {
                     "english": "Select an option to download Carbon static data",
                     "spanish": "Seleccione una opción para descargar los datos estáticos de carbono"
@@ -116,7 +116,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\carbon.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/carbon.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/carbon.zip"
                 }
             },
             {
@@ -124,7 +124,7 @@
                     "english": "Sediment Static Data",
                     "spanish": "Datos estáticos de sedimentos"
                 },
-                "size": "7400000",
+                "size": "4969644",
                 "label": {
                     "english": "Select an option to download sediment static data",
                     "spanish": "Seleccione una opción para descargar los datos estáticos de sedimentos"
@@ -133,7 +133,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\sediment.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/sediment.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/sediment.zip"
                 }
             },
             {
@@ -141,7 +141,7 @@
                     "english": "Sediment Static Percent-To-Stream Data",
                     "spanish": "Datos estáticos de porcentaje de sedimentos en el río"
                 },
-                "size": "7400000",
+                "size": "4714348",
                 "label": {
                     "english": "Select an option to download sediment static percent-to-stream data",
                     "spanish": "Seleccione una opción para descargar los datos estáticos de porcentaje de sedimentos en el río."
@@ -150,7 +150,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\sediment_pts.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/sediment_pts.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/sediment_pts.zip"
                 }
             },
             {
@@ -158,7 +158,7 @@
                     "english": "Nutrient Static Data",
                     "spanish": "Datos estáticos de nutrientes"
                 },
-                "size": "7400000",
+                "size": "5016600",
                 "label": {
                     "english": "Select an option to download nutrient static data.",
                     "spanish": "Seleccione una opción para descargar los datos estáticos de nutrientes."
@@ -167,7 +167,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\nutrient.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/nutrient.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/nutrient.zip"
                 }
             },
             {
@@ -175,7 +175,7 @@
                     "english": "Nutrient Static Percent-To-Stream Data",
                     "spanish": "Datos estáticos de porcentaje de nutrientes en el río"
                 },
-                "size": "7400000",
+                "size": "4710617",
                 "label": {
                     "english": "Select an option to download nutrient static percent-to-stream data.",
                     "spanish": "Seleccione una opción para descargar los datos estáticos de porcentaje de nutrientes en el río."
@@ -184,7 +184,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\nutrient_pts.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/nutrient_pts.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/nutrient_pts.zip"
                 }
             }
         ]

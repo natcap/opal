@@ -1,7 +1,7 @@
 {
     "label": {
-        "en": "Permitting", 
-        "es": "Licenciamiento"
+        "en": "MAFE-T", 
+        "es": "MAFE-T"
     }, 
     "id": "adept_window",
     "modelName": {
@@ -509,6 +509,11 @@
             "type": "hidden",
             "defaultValue": "Protection",
             "args_id": "offset_type"
+        },
+        {
+            "type": "hidden",
+            "defaultValue": "mafe-t",
+            "args_id": "distribution"
         }
-    ] 
+    ]
 }

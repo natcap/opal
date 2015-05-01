@@ -1,8 +1,8 @@
 {
     "id": "window", 
     "label": {
-        "en": "Nutrient", 
-        "es": "Nutrientes"
+        "en": "MAFE-T: Nutrient", 
+        "es": "MAFE-T: Nutrientes"
     }, 
     "modelName": {
         "en": "nutrient_static_map", 
@@ -310,7 +310,10 @@
             "elements": [
                 {
                     "type": "text",
-                    "label": "Number of impact simulations per watershed",
+                    "label": {
+                        "en": "The number of impact simulations per watershed",
+                        "es": "El número de simulaciones de impacto por cuenca"
+                    },
                     "defaultValue": "25",
                     "args_id": "num_simulations",
                     "helpText": {
