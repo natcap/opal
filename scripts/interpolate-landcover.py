@@ -1,5 +1,3 @@
-import argparse
-
 """
 Take in a vector of natural ecosystems and a sample raster (to use for
 extracting the sample pixel size and projection), and simulate the
@@ -30,6 +28,35 @@ Prodecure:
             return max(pixel_values)
 
 """
+import os
+from osgeo import ogr
+
+def _test_polytons_in_ecosystem(vector_uri):
+    vector_uri = os.path.join(os.path.dirname(__file__), '..', 'data',
+        'colombia_tool_data', 'ecosys_dis_nat_comp_fac.shp')
+
+    found_ecosystems = polygons_in_ecosystem(vector_uri)
+    assert(len(found_ecosystems) == 455)
+
+def polygons_in_ecosystem(vector_uri):
+    ecosystem_fieldname = 'ecosystem'
+
+    fids_in_ecosystem = {}
+
+    vector = ogr.Open(vector_uri)
+    layer = vector.GetLayer()
+
+    for feature in layer:
+        fid = feature.GetFID()
+        ecosystem = feature.GetField(ecosystem_fieldname)
+        try:
+            fids_in_ecosystem[ecosystem].append(fid)
+        except KeyError:
+            fids_in_ecosystem[ecosystem] = [fid]
+
+    return fids_in_ecosystem
+
+
 
 
 if __name__ == '__main__':
