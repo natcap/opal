@@ -32,7 +32,9 @@ import os
 import tempfile
 import shutil
 import logging
+import glob
 
+import numpy
 from osgeo import ogr
 from osgeo import gdal
 from adept import static_maps
@@ -49,6 +51,7 @@ ADEPT_LOGGER.setLevel(logging.WARNING)
 LOGGER = logging.getLogger('interpolate-landcover')
 
 def _test_polytons_in_ecosystem():
+
     found_ecosystems = polygons_in_ecosystem(_VECTOR_URI)
     print found_ecosystems
     assert(len(found_ecosystems) == 455)
@@ -133,18 +136,23 @@ def interpolate_landcover(vector_uri, lulc_uri):
         pygeoprocessing.rasterize_layer_uri(filtered_raster, ecosystem_vector_uri, [1.0])
 
 
-    def _max_pixels(pixel_stack):
-        return reduce(lambda x, y: max(x, y), pixel_stack)
+def calc_max(rasters_list, lulc_uri, out_uri):
+    def _max_pixels(*matrix_stack):
+        # Stack up all the matrices into a 3-D matrix, return the 3rd dimension
+        # index of the highest pixel value.
+        dstack = numpy.dstack(matrix_stack)
+        amax = numpy.argmax(dstack, axis=2)
+        return amax
 
     pygeoprocessing.vectorize_datasets(
         rasters_list,
         _max_pixels,
-        out_uri=paths['out_lulc_raster'],
+        dataset_out_uri=out_uri,
         datatype_out=gdal.GDT_Int32,
         nodata_out=-1,
         pixel_size_out=pygeoprocessing.get_cell_size_from_uri(lulc_uri),
         bounding_box_mode='intersection',
-        vectorize_op=True,
+        vectorize_op=False,
         datasets_are_pre_aligned=True
     )
 
@@ -153,4 +161,5 @@ def interpolate_landcover(vector_uri, lulc_uri):
 
 if __name__ == '__main__':
     #_test_polytons_in_ecosystem()
-    interpolate_landcover(_VECTOR_URI, _RASTER_URI)
+    #interpolate_landcover(_VECTOR_URI, _RASTER_URI)
+    calc_max(glob.glob('tmpKxiOGa/ecosys_rasters/*_filtered.tif'), _RASTER_URI, 'expanded_lulc.tif')
