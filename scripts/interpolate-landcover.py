@@ -80,8 +80,12 @@ def polygons_in_ecosystem(vector_uri):
     return fids_in_ecosystem
 
 
-def interpolate_landcover(vector_uri, lulc_uri):
-    workspace = tempfile.mkdtemp(dir=os.getcwd())
+def interpolate_landcover(vector_uri, lulc_uri, sigma, out_dir=None, rerasterize=True):
+
+    if out_dir is None:
+        workspace = tempfile.mkdtemp(dir=os.getcwd())
+    else:
+        workspace = out_dir
 
     paths = {
         'split_ecosys_dir': os.path.join(workspace, 'split_ecosystems'),
@@ -114,7 +118,7 @@ def interpolate_landcover(vector_uri, lulc_uri):
 
     LOGGER.debug('Creating decay kernel')
     pollination_core.make_exponential_decay_kernel_uri(
-        100,
+        sigma,
         paths['kernel']
     )
 
@@ -133,7 +137,11 @@ def interpolate_landcover(vector_uri, lulc_uri):
         # make the initial rasterization, gaussian filter and re-rasterize
         pygeoprocessing.rasterize_layer_uri(new_raster, ecosystem_vector_uri, [1.0])
         pygeoprocessing.convolve_2d_uri(new_raster, paths['kernel'], filtered_raster)
-        pygeoprocessing.rasterize_layer_uri(filtered_raster, ecosystem_vector_uri, [1.0])
+
+        if rerasterize:
+            pygeoprocessing.rasterize_layer_uri(filtered_raster, ecosystem_vector_uri, [1.0])
+
+    calc_max(rasters_list, lulc_uri, paths['out_lulc_raster'])
 
 
 def calc_max(rasters_list, lulc_uri, out_uri):
@@ -157,9 +165,10 @@ def calc_max(rasters_list, lulc_uri, out_uri):
     )
 
 
-
-
 if __name__ == '__main__':
     #_test_polytons_in_ecosystem()
-    #interpolate_landcover(_VECTOR_URI, _RASTER_URI)
-    calc_max(glob.glob('tmpKxiOGa/ecosys_rasters/*_filtered.tif'), _RASTER_URI, 'expanded_lulc.tif')
+    for sigma in [25, 50, 100, 200]:
+        for re_rasterize in [True, False]:
+            out_dir = 'temp_%s_%sre' % (sigma, '' if re_rasterize is True else 'no')
+            interpolate_landcover(_VECTOR_URI, _RASTER_URI, sigma=sigma, out_dir=out_dir, rerasterize=re_rasterize)
+    #calc_max(glob.glob('tmpKxiOGa/ecosys_rasters/*_filtered.tif'), _RASTER_URI, 'expanded_lulc.tif')
