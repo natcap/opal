@@ -80,6 +80,13 @@ def polygons_in_ecosystem(vector_uri):
     return fids_in_ecosystem
 
 
+def _get_lucode(vector_uri):
+    # assume there's only one layer and one polygon in this vector.
+    datasource = ogr.Open(vector_uri)
+    layer = datasource.GetLayer()
+    feature = layer.GetFeature(0)
+    return feature.GetField('lucode')
+
 def interpolate_landcover(vector_uri, lulc_uri, sigma, out_dir=None, rerasterize=True):
 
     if out_dir is None:
@@ -94,7 +101,8 @@ def interpolate_landcover(vector_uri, lulc_uri, sigma, out_dir=None, rerasterize
         'raster_bbox': os.path.join(workspace, 'lulc_bbox.shp'),
         'ecosys_in_raster': os.path.join(workspace, 'ecosystems_in_raster.shp'),
         'kernel': os.path.join(workspace, 'kernel.tif'),
-        'out_lulc_raster': os.path.join(workspace, 'out_lulc_.tif')
+        'out_lulc_raster': os.path.join(workspace, 'out_lulc_.tif'),
+        'reclass_lulc': os.path.join(workspace, 'final_lulc.tif'),
     }
 
     pygeoprocessing.create_directories([paths['ecosys_rasters_dir']])
@@ -123,12 +131,15 @@ def interpolate_landcover(vector_uri, lulc_uri, sigma, out_dir=None, rerasterize
     )
 
     rasters_list = []
+    reclass_dict = {}  # map raster_id: actual lucode
     for raster_id, ecosystem_vector_uri in enumerate(ecosystem_vectors):
         new_raster = os.path.join(paths['ecosys_rasters_dir'],
             str(raster_id) + '_base.tif')
         filtered_raster = os.path.join(paths['ecosys_rasters_dir'],
             str(raster_id) + '_filtered.tif')
         rasters_list.append(filtered_raster)
+
+        reclass_dict[raster_id] = _get_lucode(ecosystem_vector_uri)
 
         # Setting nodata value to -1.0 so this will never be reached from the gaussian filter.
         pygeoprocessing.make_constant_raster_from_base_uri(lulc_uri, 0.0, new_raster, nodata_value=-1.0)
@@ -143,8 +154,16 @@ def interpolate_landcover(vector_uri, lulc_uri, sigma, out_dir=None, rerasterize
 
     calc_max(rasters_list, lulc_uri, paths['out_lulc_raster'])
 
+    pygeoprocessing.reclassify_dataset_uri(
+        dataset_uri=paths['out_lulc_raster'],
+        value_map=reclass_dict,
+        raster_out_uri=paths['reclass_lulc'],
+        out_datatype=gdal.GDT_Int32,
+        out_nodata=-1
+    )
 
-def calc_max(rasters_list, lulc_uri, out_uri):
+
+def calc_max(rasters_list, lulc_uri, out_lulc_uri):
     def _max_pixels(*matrix_stack):
         # Stack up all the matrices into a 3-D matrix, return the 3rd dimension
         # index of the highest pixel value.
@@ -155,7 +174,7 @@ def calc_max(rasters_list, lulc_uri, out_uri):
     pygeoprocessing.vectorize_datasets(
         rasters_list,
         _max_pixels,
-        dataset_out_uri=out_uri,
+        dataset_out_uri=out_lulc_uri,
         datatype_out=gdal.GDT_Int32,
         nodata_out=-1,
         pixel_size_out=pygeoprocessing.get_cell_size_from_uri(lulc_uri),
@@ -165,10 +184,41 @@ def calc_max(rasters_list, lulc_uri, out_uri):
     )
 
 
+def _reclassify_existing_lulc(folder):
+    """
+    Take an existing expansion folder and reclassify the out_lulc_.tif therein.
+    Also builds up the needed reclassification mapping from the split ecosystems.
+
+    Params:
+        folder (string): the filepath to the simulation folder to run.
+
+    Returns:
+        None.
+    """
+    reclass_dict = {}
+    all_vectors = glob.glob(os.path.join(folder, 'split_ecosystems', '*.shp'))
+    sorted_vectors = \
+        sorted(all_vectors, key = lambda x: int(os.path.splitext(os.path.basename(x))[0].split('_')[-1]))
+    for raster_id, vector_uri in enumerate(sorted_vectors):
+        print raster_id, vector_uri
+        reclass_dict[raster_id] = _get_lucode(vector_uri)
+
+    pygeoprocessing.reclassify_dataset_uri(
+        dataset_uri=os.path.join(folder, 'out_lulc_.tif'),
+        value_map=reclass_dict,
+        raster_out_uri=os.path.join(folder, 'lulc_reclass.tif'),
+        out_datatype=gdal.GDT_Int32,
+        out_nodata=-1
+    )
+
 if __name__ == '__main__':
     #_test_polytons_in_ecosystem()
-    for sigma in [25, 50, 100, 200]:
-        for re_rasterize in [True, False]:
-            out_dir = 'temp_%s_%sre' % (sigma, '' if re_rasterize is True else 'no')
-            interpolate_landcover(_VECTOR_URI, _RASTER_URI, sigma=sigma, out_dir=out_dir, rerasterize=re_rasterize)
+    #for sigma in [25, 50, 100, 200]:
+    #    for re_rasterize in [True, False]:
+    #        out_dir = 'temp_%s_%sre' % (sigma, '' if re_rasterize is True else 'no')
+    #        interpolate_landcover(_VECTOR_URI, _RASTER_URI, sigma=sigma, out_dir=out_dir, rerasterize=re_rasterize)
     #calc_max(glob.glob('tmpKxiOGa/ecosys_rasters/*_filtered.tif'), _RASTER_URI, 'expanded_lulc.tif')
+
+    interpolate_landcover(_VECTOR_URI, _RASTER_URI, sigma=100, out_dir=out_dir, rerasterize=True)
+
+
