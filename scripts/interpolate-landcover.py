@@ -30,7 +30,6 @@ Prodecure:
 """
 import os
 import tempfile
-import shutil
 import logging
 import glob
 
@@ -44,11 +43,13 @@ import pygeoprocessing
 
 _VECTOR_URI = os.path.join(os.path.dirname(__file__), '..', 'data',
                           'colombia_tool_data', 'ecosys_dis_nat_comp_fac.shp')
-_RASTER_URI = os.path.join(os.path.dirname(__file__), '..', 'data', 'OPAL_symposium', 'ecosystems.tif')
+_RASTER_URI = os.path.join(os.path.dirname(__file__), '..', 'data',
+                           'OPAL_symposium', 'ecosystems.tif')
 
 ADEPT_LOGGER = logging.getLogger('adept.static_maps')
 ADEPT_LOGGER.setLevel(logging.WARNING)
 LOGGER = logging.getLogger('interpolate-landcover')
+
 
 def _test_polytons_in_ecosystem():
 
@@ -56,10 +57,12 @@ def _test_polytons_in_ecosystem():
     print found_ecosystems
     assert(len(found_ecosystems) == 455)
 
+
 def features_in_vector(vector_uri):
     vector = ogr.Open(vector_uri)
     layer = vector.GetLayer()
     return layer.GetFeatureCount()
+
 
 def polygons_in_ecosystem(vector_uri):
     ecosystem_fieldname = 'ecosystem'
@@ -86,6 +89,7 @@ def _get_lucode(vector_uri):
     layer = datasource.GetLayer()
     feature = layer.GetFeature(0)
     return feature.GetField('lucode')
+
 
 def interpolate_landcover(vector_uri, lulc_uri, sigma, out_dir=None, rerasterize=True):
 
@@ -115,7 +119,7 @@ def interpolate_landcover(vector_uri, lulc_uri, sigma, out_dir=None, rerasterize
         paths['raster_bbox'], paths['ecosys_in_raster'], clip=True)
 
     if len(polygons_in_ecosystem(vector_uri)) != features_in_vector(vector_uri):
-        adept.preprocessing.union_by_attribute(paths['ecosys_in_raster'], 'ecosystem',
+        preprocessing.union_by_attribute(paths['ecosys_in_raster'], 'ecosystem',
             paths['ecosystems'])
     else:
         paths['ecosystems'] = paths['ecosys_in_raster']
@@ -212,13 +216,4 @@ def _reclassify_existing_lulc(folder):
     )
 
 if __name__ == '__main__':
-    #_test_polytons_in_ecosystem()
-    #for sigma in [25, 50, 100, 200]:
-    #    for re_rasterize in [True, False]:
-    #        out_dir = 'temp_%s_%sre' % (sigma, '' if re_rasterize is True else 'no')
-    #        interpolate_landcover(_VECTOR_URI, _RASTER_URI, sigma=sigma, out_dir=out_dir, rerasterize=re_rasterize)
-    #calc_max(glob.glob('tmpKxiOGa/ecosys_rasters/*_filtered.tif'), _RASTER_URI, 'expanded_lulc.tif')
-
-    interpolate_landcover(_VECTOR_URI, _RASTER_URI, sigma=100, out_dir=out_dir, rerasterize=True)
-
-
+    interpolate_landcover(_VECTOR_URI, _RASTER_URI, sigma=100, rerasterize=True)
