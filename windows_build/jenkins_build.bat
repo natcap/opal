@@ -27,6 +27,7 @@ IF EXIST C:\Python27\Lib (
     :: standard chocolatey python distutils location
     copy C:\tools\python2-x86_32\Lib\distutils\distutils.cfg .\%ENVDIR%\Lib\distutils\distutils.cfg
 )
+%ENVDIR%\Scripts\activate.bat
 
 %ENVDIR%\Scripts\pip install windows_build\dbfpy-2.2.5.tar.gz
 
