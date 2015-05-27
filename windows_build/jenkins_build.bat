@@ -1,4 +1,5 @@
 SET ENVDIR=adept_environment
+SET PYTHONHOME=%ENVDIR%
 DEL /S /Q build
 DEL /S /Q %ENVDIR%
 
