@@ -6,6 +6,9 @@ import json
 
 from PyQt4 import QtGui
 
+# importing tkinter because matplotlib wants to use it.
+import Tkinter
+
 import palisades
 import palisades.i18n
 from palisades import execution
