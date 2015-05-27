@@ -59,7 +59,7 @@ cd ..\..
 
 :: CD to the pyinstaller directory, build and install the bootloaders for pyinstaller
 cd src/pyinstaller/bootloader
-%ENVDIR%\Scripts\python .\waf configure build install
+..\..\%ENVDIR%\Scripts\python .\waf configure build install
 cd ..\..\..
 
 IF NOT %BUILD_STATIC_DATA% == "true" goto :skip_big_data
