@@ -6,8 +6,9 @@ import json
 
 from PyQt4 import QtGui
 
-# importing tkinter because matplotlib wants to use it.
+# importing tkinter, FileDialog because matplotlib wants to use it.
 import Tkinter
+import FileDialog
 
 import palisades
 import palisades.i18n
