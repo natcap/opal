@@ -1,7 +1,9 @@
 SET ENVDIR=adept_environment
-SET PYTHONHOME=%ENVDIR%
 DEL /S /Q build
 DEL /S /Q %ENVDIR%
+
+:: Unset the pythonhome environment variable, since it's messing up my package imports.
+SET PYTHONHOME=
 
 :: Set the default python if a python exe is not passed in as arg1
 IF "%1" == "" SET PYTHON=C:\py27_build\python.exe
