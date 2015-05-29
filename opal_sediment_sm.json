@@ -222,7 +222,6 @@
             "validateAs": {
                 "fieldsExist": [
                     "lucode", 
-                    "sedret_eff", 
                     "usle_c", 
                     "usle_p"
                 ], 
@@ -246,26 +245,48 @@
             "validText": "^[0-9]+$"
         }, 
         {
-            "args_id": "sediment_threshold_table_uri", 
-            "helpText": {
-                "en": "A table containing annual sediment load threshold information for each of the watersheds. There must be one row for each watershed in the Watersheds layer and have the fields 'ws_id', 'dr_time', 'dr_deadvol', and 'wq_annload'.  See the user's guide for the meaning of these fields.", 
-                "es": "Una table que contenga información sobre el umbral de carga annual de sedimentos para cada cuenca. Debe haber una fila para cada cuenca del mapa de Cuencas y tener los campos 'ws_id' 'dr_time' 'dr_deadvol' and 'wq_annload'. Vea la guía de usuario para el significado de estos campos."
-            }, 
-            "required": true, 
-            "id": "sediment_threshold_table_uri", 
+            "args_id": "k_param",
+            "type": "text",
             "label": {
-                "en": "Sediment Threshold Table", 
-                "es": "Tabla de umbral de sedimentos"
-            }, 
-            "type": "file", 
-            "validateAs": {
-                "fieldsExist": [
-                    "ws_id", 
-                    "dr_time", 
-                    "dr_deadvol", 
-                    "wq_annload"
-                ], 
-                "type": "CSV"
+                "en": "Borselli k Parameter",
+                "es": ""
+            },
+            "defaultValue": "2",
+            "required": true,
+            "validText": "^[0-9]+\\.?[0-9]*$",
+            "helpText": {
+                "en": "Borselli k parameter.",
+                "es": ""
+            }
+        },
+        {
+            "args_id": "ic_0_param",
+            "type": "text",
+            "label": {
+                "en": "Borselli IC0 Parameter",
+                "es": ""
+            },
+            "defaultValue": "0.5",
+            "required": true,
+            "validText": "^[0-9]+\\.?[0-9]*$",
+            "helpText": {
+                "en": "Borselli IC0 parameter.",
+                "es": ""
+            }
+        },
+        {
+            "args_id": "sdr_max",
+            "type": "text",
+            "label": {
+              "en": "Max SDR Value",
+              "es": ""
+            },
+            "defaultValue": "0.8",
+            "required": true,
+            "validText": "^[0-9]+\\.?[0-9]*$",
+            "helpText": {
+              "en": "Maximum SDR value.",
+              "es": ""
             }
         },
         {

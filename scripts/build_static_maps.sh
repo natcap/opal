@@ -22,6 +22,10 @@ pushd src/adept
 python setup.py install
 popd
 
+pushd src/pygeoprocessing
+python setup.py install
+popd
+
 python scripts/build_carbon_maps.py
 python scripts/build_sediment_maps.py
 python scripts/build_nutrient_maps.py
