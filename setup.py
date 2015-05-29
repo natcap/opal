@@ -26,7 +26,7 @@ print 'Palisades imported from %s' % palisades.__file__
 #     $ git checkout master
 # And then re-run the build.
 if palisades.__version__ == 'remotes/origin/HEAD':
-    raise Exception('palisades version is invalid: %s' % palisades.__version__)
+    LOGGER.error('palisades version is invalid: %s' % palisades.__version__)
 
 py2exe_options = {}
 
