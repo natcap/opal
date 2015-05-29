@@ -132,7 +132,7 @@ def setup_opal_callbacks(ui_obj):
     # Set up inter-element communication based on the dropdown menu.
     # Items are: (target element ID, model name, whether to include PTS rasters
     static_map_generators = [
-        ('sediment_static_maps', 'sediment', True),
+        ('sediment_static_maps', 'sediment', False),
         ('nutrient_static_maps', 'nutrient', True),
         ('carbon_static_maps', 'carbon', False),
         ('custom_static_maps', 'custom', False),
