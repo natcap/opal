@@ -34,6 +34,12 @@ call %ENVDIR%\Scripts\activate.bat
 
 %ENVDIR%\Scripts\pip install windows_build\dbfpy-2.2.5.tar.gz
 
+:: CD to the pygeoprocessing directory to install it to the virtual environment
+cd src/pygeoprocessing
+rmdir /S /Q build
+..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
+cd ..\..
+
 :: CD to the invest-3 directory to install it to the virtual environment
 cd invest-natcap.invest-3
 rmdir /S /Q build
@@ -57,12 +63,6 @@ cd ..\..
 
 :: CD to the Adept directory to install adept to the virtual environment
 cd src/adept
-rmdir /S /Q build
-..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
-cd ..\..
-
-:: CD to the pygeoprocessing directory to install it to the virtual environment
-cd src/pygeoprocessing
 rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
 cd ..\..
