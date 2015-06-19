@@ -1,0 +1,13 @@
+{
+    "workspace_dir": "",
+    "dem_uri": "data/colombia_tool_data/DEM.tif",
+    "erosivity_uri": "data/colombia_tool_data/Erosivity.tif",
+    "erodibility_uri": "data/colombia_tool_data/Erodability.tif",
+    "lulc_uri": "",
+    "watersheds_uri": "data/colombia_tool_data/watersheds_cuencas.shp",
+    "biophysical_table_uri": "data/colombia_tool_data/Biophysical_Colombia.csv",
+    "threshold_flow_accumulation": 100,
+    "k_param": 2,
+    "sdr_max": 0.8,
+    "ic_0_param": 0.5
+}

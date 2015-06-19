@@ -1,0 +1,8 @@
+{
+    "workspace_dir": "",
+    "do_biophysical": true,
+    "do_uncertainty": false,
+    "do_valuation": false,
+    "lulc_cur_uri": "",
+    "carbon_pools_uri": "data/colombia_tool_data/Carbon_pools_Colombia.csv"
+}

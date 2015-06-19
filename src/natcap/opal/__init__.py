@@ -1,0 +1,60 @@
+import versioning
+import sys
+import nose
+import os
+import faulthandler
+
+faulthandler.enable()  # enable for the ENTIRE adept package.
+
+# The __version__ attribute MUST be set to 'dev'.  It is changed automatically
+# when the package is built.  The build_attrs attribute is set at the same time,
+# but it instead contains a list of attributes of __init__.py that are related
+# to the build.
+__version__ = 'dev'
+build_data = None
+
+if __version__ == 'dev' and build_data == None:
+    __version__ = versioning.version()
+    build_data = versioning.build_data()
+    for key, value in sorted(build_data.iteritems()):
+        setattr(sys.modules[__name__], key, value)
+
+    del sys.modules[__name__].key
+    del sys.modules[__name__].value
+
+def test():
+    """Autodiscover and run all tests in the adept package."""
+    # use run() here, because it won't automatically quit the python interpreter
+    # if we're running it within the interpreter.
+    import adept.tests
+    import unittest
+
+    test_runner = unittest.TextTestRunner(verbosity=2)
+    result = test_runner.run(adept.tests.test_suite())
+
+def execute(args):
+    import adept_core
+    __doc__ = adept_core.execute.__doc__
+    adept_core.execute(args)
+
+def is_frozen():
+    if getattr(sys, 'frozen', False):
+        # we are running in a |PyInstaller| bundle
+        return True
+        #basedir = os.path.dirname(sys.executable)
+    else:
+        return False
+        #basedir = os.path.dirname(__file__)
+
+def get_frozen_dir():
+    return os.path.dirname(sys.executable)
+
+def local_dir(file_path):
+    if getattr(sys, 'frozen', False):
+        # we are running in a |PyInstaller| bundle
+        package_dirname = os.path.dirname(os.path.dirname(__file__))
+        relpath = os.path.relpath(os.path.dirname(file_path), package_dirname)
+        return os.path.join(os.path.dirname(sys.executable), relpath)
+    return os.path.dirname(file_path)
+
+
