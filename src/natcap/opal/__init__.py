@@ -1,8 +1,8 @@
-import versioning
 import sys
 import os
-import faulthandler
+import imp
 
+import faulthandler
 faulthandler.enable()  # enable for the ENTIRE adept package.
 
 # The __version__ attribute MUST be set to 'dev'.  It is changed automatically
@@ -13,6 +13,9 @@ __version__ = 'dev'
 build_data = None
 
 if __version__ == 'dev' and build_data == None:
+    versioning = imp.load_source(
+        'versioning',
+        os.path.join(os.path.dirname(__file__), 'versioning.py'))
     __version__ = versioning.version()
     build_data = versioning.build_data()
     for key, value in sorted(build_data.iteritems()):

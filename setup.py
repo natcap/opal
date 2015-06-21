@@ -1,5 +1,10 @@
-from setuptools import setup
-from setuptools import Command
+import distutils
+from distutils.core import setup
+from distutils.core import Command
+from distutils.command.build_py import build_py as _build_py
+from distutils.command.sdist import sdist as _sdist
+from distutils.command.install_data import install_data as _install_data
+from distutils.command.build import build as _build
 import platform
 import imp
 import os
@@ -11,6 +16,7 @@ import json
 
 CMD_CLASSES = {}
 DATA_FILES = [('.', ['adept.json', 'opal.json', 'msvcp90.dll'])]
+SITE_PACKAGES = distutils.sysconfig.get_python_lib()
 
 # Use the determined virtualenv site-packages path to add all files in the
 # IUI resources directory to our setup.py data files.
@@ -593,12 +599,87 @@ class GlobalDistribution(NSISCommand):
         NSISCommand.run(self)
 
 
+
+class CustomPythonBuilder(_build_py):
+    """Custom python build step for distutils.  Builds a python distribution in
+    the specified folder ('build' by default) and writes the adept version
+    information to the temporary source tree therein."""
+    def run(self):
+        _build_py.run(self)
+
+        # Write version information (which is derived from the adept mercurial
+        # source tree) to the build folder's copy of adept.__init__.
+        filename = os.path.join(self.build_lib, 'adept', '__init__.py')
+        print 'Writing version data to %s' % filename
+        adept.versioning.write_build_info(filename)
+
+class CustomSdist(_sdist):
+    """Custom source distribution builder.  Builds a source distribution via the
+    distutils sdist command, but then writes the adept version information to
+    the temp source tree before everything is archived for distribution."""
+    def make_release_tree(self, base_dir, files):
+        _sdist.make_release_tree(self, base_dir, files)
+
+        # Write version information (which is derived from the adept mercurial
+        # source tree) to the build folder's copy of adept.__init__.
+        filename = os.path.join(base_dir, 'adept', '__init__.py')
+        print 'Writing version data to %s' % filename
+        adept.versioning.write_build_info(filename)
+
+class build_translations(Command):
+    """Custom distutions command to compile translation files for installation."""
+    description = 'Compile .po files to .mo files'
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        po_dir = os.path.join(os.path.dirname(os.curdir), 'i18n')
+        for path, names, filenames in os.walk(po_dir):
+            for filepath in filenames:
+                if filepath.endswith('.po'):
+                    lang_code = filepath[:-3]
+                    src = os.path.join(path, filepath)
+                    dest_path = os.path.join('build', 'locale', lang_code,
+                            'LC_MESSAGES')
+                    dest = os.path.join(dest_path, 'adept.mo')
+                    if not os.path.exists(dest_path):
+                        os.makedirs(dest_path)
+
+                    # I always want to recompile.
+                    print 'Compiling %s to %s' % (src, dest)
+                    adept.i18n.msgfmt.make(src, dest)
+
+class build(_build):
+    sub_commands = _build.sub_commands + [('build_trans', None)]
+    def run(self):
+        _build.run(self)
+
+class install_data(_install_data):
+    def run(self):
+        for lang in os.listdir('build/locale'):
+            lang_dir = os.path.join(SITE_PACKAGES, 'adept', 'i18n',
+                'locale', lang, 'LC_MESSAGES')
+            lang_file = os.path.join('build', 'locale', lang, 'LC_MESSAGES',
+                'adept.mo')
+            self.data_files.append((lang_dir, [lang_file]))
+        _install_data.run(self)
+
 CMD_CLASSES['dist_colombia'] = ColombiaDistribution
 CMD_CLASSES['dist_global'] = GlobalDistribution
 CMD_CLASSES['static_data_colombia'] = ZipColombiaData
 CMD_CLASSES['sample_data'] = SampleDataCommand
 CMD_CLASSES['sample_data_global'] = SampleDataGlobalCommand
 CMD_CLASSES['tool_data_colombia'] = ToolDataColombia
+CMD_CLASSES['build'] = build
+CMD_CLASSES['build_trans'] = build_translations
+CMD_CLASSES['build_py'] = CustomPythonBuilder
+CMD_CLASSES['sdist'] = CustomSdist
+CMD_CLASSES['install_data'] = install_data
 
 print 'DATA_FILES'
 print DATA_FILES
@@ -606,6 +687,20 @@ print DATA_FILES
 README = open('README.rst').read()
 HISTORY = open('HISTORY.rst').read()
 LICENSE = open('LICENSE.txt').read()
+
+def load_version():
+    """
+    Load the version string.
+
+    If we're in a source tree, load the version from the opal __init__ file.
+    If we're in an installed version of opal, use the __version__attribute.
+    """
+    try:
+        import natcap.opal as opal
+    except ImportError:
+        import imp
+        opal = imp.load_source('natcap.opal', 'src/natcap/opal/__init__.py')
+    return opal.__version__
 
 setup(
     name='natcap.opal',
@@ -628,12 +723,8 @@ setup(
         'scipy',
         'shapely',
         'GDAL',
-        'setuptools',
-        'setuptools_scm',
     ],
-    use_scm_version={
-        'write_to': 'src/natcap/opal/version.py',
-    },
+    version=load_version(),
     cmdclass=CMD_CLASSES,
     license=LICENSE,
     zip_safe=False,
