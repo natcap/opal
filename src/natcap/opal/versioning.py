@@ -174,6 +174,6 @@ def get_archive_attr(attr):
         IOError when the .hg_archival.txt file cannot be found.
         KeyError when `attr` is not in .hg_archival.txt
     """
-    yaml.safe_load(open('.hg_archival.txt'))[attr]
+    return yaml.safe_load(open('.hg_archival.txt'))[attr]
 
 
