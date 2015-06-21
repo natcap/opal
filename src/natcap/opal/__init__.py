@@ -1,6 +1,5 @@
 import versioning
 import sys
-import nose
 import os
 import faulthandler
 
@@ -26,15 +25,15 @@ def test():
     """Autodiscover and run all tests in the adept package."""
     # use run() here, because it won't automatically quit the python interpreter
     # if we're running it within the interpreter.
-    import adept.tests
+    import natcap.opal.tests
     import unittest
 
     test_runner = unittest.TextTestRunner(verbosity=2)
-    result = test_runner.run(adept.tests.test_suite())
+    test_runner.run(natcap.opal.tests.test_suite())
 
 def execute(args):
     import adept_core
-    __doc__ = adept_core.execute.__doc__
+    execute.__doc__ = adept_core.execute.__doc__
     adept_core.execute(args)
 
 def is_frozen():
