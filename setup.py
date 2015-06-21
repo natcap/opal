@@ -11,12 +11,12 @@ import json
 
 import matplotlib
 import palisades
-import adept
-from adept import preprocessing
-from adept import static_maps
-from adept import versioning
+import natcap.opal
+from natcap.opal import preprocessing
+from natcap.opal import static_maps
+from natcap.opal import versioning
 
-print 'Adept package version: %s' % adept.__version__
+print 'OPAL package version: %s' % natcap.opal.__version__
 print 'Palisades package version: %s' % palisades.__version__
 print 'Palisades imported from %s' % palisades.__file__
 
@@ -53,30 +53,8 @@ for name in icon_names:
 DATA_FILES.append(('invest_natcap/iui', iui_icons))
 
 if platform.system() == 'Windows':
-    import py2exe
-    dist_dir = 'adept_py2exe'
-    py2exe_options['options'] ={
-        'py2exe': {
-            'dist_dir': dist_dir,
-            'packages': ['adept'],
-            'skip_archive': True,
-            'includes': [
-                'sip',
-                'adept',
-                'scipy.sparse.csgraph._validation',
-                'matplotlib',
-                'distutils',
-            ],
-            'excludes': ['Tkconstants', 'Tkinter', 'tcl', '_gtkagg', '_tkagg',
-                '_qt4agg'],
-            'xref': True,
-        },
-        'build_installer': {'nsis_dir': dist_dir},
-    }
-    py2exe_options['console'] = ['run_adept.py']
     DATA_FILES += matplotlib.get_py2exe_datafiles()
     DATA_FILES += palisades.get_py2exe_datafiles()
-
 else:
     python_version = 'python%s' % '.'.join([str(r) for r in
         sys.version_info[:2]])
@@ -636,9 +614,50 @@ CMD_CLASSES['tool_data_colombia'] = ToolDataColombia
 print 'DATA_FILES'
 print DATA_FILES
 
+README = open('README.rst').read()
+HISTORY = open('HISTORY.rst').read()
+LICENSE = open('LICENSE.txt').read()
+
 setup(
-    name='adept',
+    name='natcap.opal',
+    description="Decision support tool for mitigating development impacts to ecosystem services",
+    long_description=README + '\n\n' + HISTORY,
+    maintainer='James Douglass',
+    maintainer_email='jdouglass@stanford.edu',
+    url='https://bitbucket.org/natcap/opal',
+    packages=[
+        'natcap.opal',
+        'natcap.opal.i18n',
+        'natcap.opal.tests'
+    ],
+    package_dir={'natcap': 'src/natcap'},
+    include_package_data=True,
+    install_requires=[
+        'numpy',
+        'scipy',
+        'shapely',
+        'GDAL',
+        'setuptools',
+        'setuptools_scm',
+    ],
+    use_scm_version={
+        'write_to': 'src/natcap/opal/version.py',
+    },
     cmdclass=CMD_CLASSES,
-    version = adept.__version__,
+    license=LICENSE,
+    version = natcap.opal.__version__,
+    zip_safe=False,
+    keywords='GIS',
+    classifiers=[
+        'Intended Audience :: Developers',
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Science/Research',
+        'Natural Language :: English',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: Microsoft',
+        'Operating System :: POSIX',
+        'Programming Language :: Python :: 2 :: Only',
+        'Topic :: Scientific/Engineering :: GIS'
+    ],
     data_files = DATA_FILES,
-    **py2exe_options)
+)
