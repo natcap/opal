@@ -20,7 +20,9 @@ def build_data():
         'release': get_latest_tag(),
         'build_id': get_build_id(),
         'py_arch': get_py_arch(),
-        'version_str': version()
+        'version_str': version(),
+        'branch': get_branch(),
+        'pep440': get_pep440(),
     }
     return data
 
@@ -113,6 +115,31 @@ def get_version_from_hg():
     else:
         return build_dev_id()
 
+def get_pep440():
+    """
+    Build a PEP440-compliant version.  Returns a string.
+    """
+    template_string = ("%(latesttag)s.dev%(tagdist)s+n%(node)s"
+                       "-%(branch)s")
+
+    if is_archive():
+        data = {
+            'tagdist': get_archive_attr('latesttagdistance'),
+            'latesttag': get_archive_attr('latesttag'),
+            'node': get_archive_attr('node')[:8],
+            'branch': get_archive_attr('branch'),
+        }
+        return template_string % data
+    else:
+        data = {
+            'tagdist': '{latesttagdistance}',
+            'latesttag': '{latesttag}',
+            'node': '{node|short}',
+            'branch': '{branch}',
+        }
+        cmd = HG_CALL + ' --template "%s"' % template_string % data
+        return run_command(cmd)
+
 def get_build_id():
     """Call mercurial with a template argument to get the build ID.  Returns a
     python bytestring."""
@@ -138,6 +165,15 @@ def get_latest_tag():
     if is_archive():
         return get_archive_attr('latesttag')
     cmd = HG_CALL + ' --template "{latesttag}"'
+    return run_command(cmd)
+
+def get_branch():
+    """
+    Get the branch from hg.
+    """
+    if is_archive():
+        return get_archive_attr('branch')
+    cmd = HG_CALL + ' --template "{branch}"'
     return run_command(cmd)
 
 def run_command(cmd):
