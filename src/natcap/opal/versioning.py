@@ -6,6 +6,7 @@ import shutil
 import os
 import tempfile
 import atexit
+import yaml
 
 HG_CALL = 'hg log -r . --config ui.report_untrusted=False'
 
@@ -115,18 +116,27 @@ def get_version_from_hg():
 def get_build_id():
     """Call mercurial with a template argument to get the build ID.  Returns a
     python bytestring."""
+    if is_archive():
+        tagdist = get_archive_attr('latesttagdistance')
+        latesttag = get_archive_attr('latesttag')
+        node = get_archive_attr('node')[:8]
+        return "%s:%s [%s]" % (tagdist, latesttag, node)
     cmd = HG_CALL + ' --template "{latesttagdistance}:{latesttag} [{node|short}]"'
     return run_command(cmd)
 
 def get_tag_distance():
     """Call mercurial with a template argument to get the distance to the latest
     tag.  Returns an int."""
+    if is_archive():
+        return get_archive_attr('latesttagdistance')
     cmd = HG_CALL + ' --template "{latesttagdistance}"'
     return int(run_command(cmd))
 
 def get_latest_tag():
     """Call mercurial with a template argument to get the latest tag.  Returns a
     python bytestring."""
+    if is_archive():
+        return get_archive_attr('latesttag')
     cmd = HG_CALL + ' --template "{latesttag}"'
     return run_command(cmd)
 
@@ -141,3 +151,29 @@ def run_command(cmd):
     p = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     return p.stdout.read()
+
+def is_archive():
+    if os.path.exists('.hg_archival.txt'):
+        return True
+    return False
+
+def get_archive_attr(attrs):
+    """
+    If we're in an hg archive, there will be a file '.hg_archival.txt' in the
+    repo root.  If this is the case, we can fetch relevant build information
+    from this file that we might normally be able to get directly from hg.
+
+    Parameters:
+        attr (string): The archive attr to fetch.  One of
+        "repo"|"node"|"branch"|"latesttag"|"latesttagdistance"|"changessincelatesttag"
+
+    Returns:
+        The value of the attribute in the .hg_archival file.
+
+    Raises:
+        IOError when the .hg_archival.txt file cannot be found.
+        KeyError when `attr` is not in .hg_archival.txt
+    """
+    yaml.safe_load(open('.hg_archival.txt'))[attr]
+
+
