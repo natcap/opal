@@ -686,9 +686,6 @@ CMD_CLASSES['build_py'] = CustomPythonBuilder
 CMD_CLASSES['sdist'] = CustomSdist
 CMD_CLASSES['install_data'] = install_data
 
-print 'DATA_FILES'
-print DATA_FILES
-
 README = open('README.rst').read()
 HISTORY = open('HISTORY.rst').read()
 LICENSE = open('LICENSE.txt').read()
@@ -720,10 +717,8 @@ setup(
         'natcap.opal.i18n',
         'natcap.opal.tests'
     ],
-    namespace_packages=['natcap'],
     package_dir={'natcap': 'src/natcap'},
-    include_package_data=True,
-    install_requires=[
+    requires=[
         'numpy',
         'scipy',
         'shapely',
@@ -732,7 +727,6 @@ setup(
     version=load_version(),
     cmdclass=CMD_CLASSES,
     license=LICENSE,
-    zip_safe=False,
     keywords='GIS',
     classifiers=[
         'Intended Audience :: Developers',
