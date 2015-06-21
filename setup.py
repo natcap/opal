@@ -598,7 +598,12 @@ class GlobalDistribution(NSISCommand):
 
         NSISCommand.run(self)
 
-
+try:
+    from natcap.opal import versioning
+    import natcap.opal.i18n as opal_i18n
+except ImportError:
+    versioning = imp.load_source('versioning', 'src/natcap/opal/versioning.py')
+    opal_i18n = imp.load_source('i18n', 'src/natcap/opal/i18n/__init__.py')
 
 class CustomPythonBuilder(_build_py):
     """Custom python build step for distutils.  Builds a python distribution in
@@ -609,9 +614,9 @@ class CustomPythonBuilder(_build_py):
 
         # Write version information (which is derived from the adept mercurial
         # source tree) to the build folder's copy of adept.__init__.
-        filename = os.path.join(self.build_lib, 'adept', '__init__.py')
+        filename = os.path.join(self.build_lib, 'natcap', 'opal', '__init__.py')
         print 'Writing version data to %s' % filename
-        adept.versioning.write_build_info(filename)
+        versioning.write_build_info(filename)
 
 class CustomSdist(_sdist):
     """Custom source distribution builder.  Builds a source distribution via the
@@ -624,7 +629,7 @@ class CustomSdist(_sdist):
         # source tree) to the build folder's copy of adept.__init__.
         filename = os.path.join(base_dir, 'adept', '__init__.py')
         print 'Writing version data to %s' % filename
-        adept.versioning.write_build_info(filename)
+        versioning.write_build_info(filename)
 
 class build_translations(Command):
     """Custom distutions command to compile translation files for installation."""
