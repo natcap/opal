@@ -600,10 +600,10 @@ class GlobalDistribution(NSISCommand):
 
 try:
     from natcap.opal import versioning
-    import natcap.opal.i18n as opal_i18n
+    from natcap.opal.i18n import msgfmt as opal_i18n_msgfmt
 except ImportError:
     versioning = imp.load_source('versioning', 'src/natcap/opal/versioning.py')
-    opal_i18n = imp.load_source('i18n', 'src/natcap/opal/i18n/__init__.py')
+    opal_i18n_msgfmt = imp.load_source('i18n', 'src/natcap/opal/i18n/msgfmt.py')
 
 class CustomPythonBuilder(_build_py):
     """Custom python build step for distutils.  Builds a python distribution in
@@ -657,7 +657,7 @@ class build_translations(Command):
 
                     # I always want to recompile.
                     print 'Compiling %s to %s' % (src, dest)
-                    adept.i18n.msgfmt.make(src, dest)
+                    opal_i18n_msgfmt.make(src, dest)
 
 class build(_build):
     sub_commands = _build.sub_commands + [('build_trans', None)]
