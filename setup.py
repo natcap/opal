@@ -1,5 +1,5 @@
-from distutils.core import setup
-from distutils.core import Command
+from setuptools import setup
+from setuptools import Command
 import platform
 import imp
 import os
@@ -8,19 +8,6 @@ import sys
 import glob
 import shutil
 import json
-
-import matplotlib
-import palisades
-
-# Raising an exception in some cases when the palisades HEAD can get detached
-# from a branch.  When this happens, fix it by going to the build server and
-# calling in the palisades repo:
-#     $ git checkout master
-# And then re-run the build.
-if palisades.__version__ == 'remotes/origin/HEAD':
-    raise Exception('palisades version is invalid: %s' % palisades.__version__)
-
-py2exe_options = {}
 
 CMD_CLASSES = {}
 DATA_FILES = [('.', ['adept.json', 'opal.json', 'msvcp90.dll'])]
@@ -45,6 +32,8 @@ for name in icon_names:
 DATA_FILES.append(('invest_natcap/iui', iui_icons))
 
 if platform.system() == 'Windows':
+    import matplotlib
+    import palisades
     DATA_FILES += matplotlib.get_py2exe_datafiles()
     DATA_FILES += palisades.get_py2exe_datafiles()
 else:
