@@ -11,14 +11,6 @@ import json
 
 import matplotlib
 import palisades
-import natcap.opal
-from natcap.opal import preprocessing
-from natcap.opal import static_maps
-from natcap.opal import versioning
-
-print 'OPAL package version: %s' % natcap.opal.__version__
-print 'Palisades package version: %s' % palisades.__version__
-print 'Palisades imported from %s' % palisades.__file__
 
 # Raising an exception in some cases when the palisades HEAD can get detached
 # from a branch.  When this happens, fix it by going to the build server and
@@ -111,6 +103,7 @@ class ToolDataColombia(Command):
         pass
 
     def run(self):
+        from natcap.opal import preprocessing
         tool_data_dir = os.path.join(os.getcwd(), 'build', 'co_tool_data')
         if not os.path.exists(tool_data_dir):
             os.makedirs(tool_data_dir)
@@ -156,6 +149,8 @@ class ZipColombiaData(Command):
         pass
 
     def run(self):
+        from natcap.opal import preprocessing
+        from natcap.opal import static_maps
         build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
         dist_dir = os.path.join(os.getcwd(), 'dist')
         data_dir = os.path.join(build_dir, 'data')
@@ -202,6 +197,8 @@ class SampleDataCommand(Command):
         pass
 
     def _gather_single_hydrozone_data(self):
+        from natcap.opal import preprocessing
+        from natcap.opal import static_maps
         print ''
         print 'gathering single-hydrozone sample data'
 
@@ -298,6 +295,7 @@ class SampleDataGlobalCommand(SampleDataCommand):
         pass
 
     def run(self):
+        from natcap.opal import preprocessing
         self._gather_single_hydrozone_data()
         # active hydrozone URI saved to self.active_hydrozone
         dest_dir = os.path.join('build', 'permitting_data', 'sample_data',
@@ -355,6 +353,7 @@ class NSISCommand(Command):
         pass
 
     def write_dist_data(self, dist_name):
+        from natcap.opal import versioning
         dist_data = versioning.build_data()
         dist_data['dist_name'] = dist_name
 
@@ -367,6 +366,7 @@ class NSISCommand(Command):
             os.remove(dist_file)
 
     def run(self):
+        from natcap.opal import versioning
         print ''
         print 'Starting NSIS installer build'
 
@@ -626,10 +626,12 @@ setup(
     maintainer_email='jdouglass@stanford.edu',
     url='https://bitbucket.org/natcap/opal',
     packages=[
+        'natcap',
         'natcap.opal',
         'natcap.opal.i18n',
         'natcap.opal.tests'
     ],
+    namespace_packages=['natcap'],
     package_dir={'natcap': 'src/natcap'},
     include_package_data=True,
     install_requires=[
@@ -645,7 +647,6 @@ setup(
     },
     cmdclass=CMD_CLASSES,
     license=LICENSE,
-    version = natcap.opal.__version__,
     zip_safe=False,
     keywords='GIS',
     classifiers=[
