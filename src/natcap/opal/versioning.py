@@ -157,7 +157,7 @@ def is_archive():
         return True
     return False
 
-def get_archive_attr(attrs):
+def get_archive_attr(attr):
     """
     If we're in an hg archive, there will be a file '.hg_archival.txt' in the
     repo root.  If this is the case, we can fetch relevant build information
