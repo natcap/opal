@@ -4,7 +4,6 @@ import imp
 
 import faulthandler
 faulthandler.enable()  # enable for the ENTIRE adept package.
-import natcap
 
 # The __version__ attribute MUST be set to 'dev'.  It is changed automatically
 # when the package is built.  The build_attrs attribute is set at the same time,
@@ -55,8 +54,8 @@ def get_frozen_dir():
 def local_dir(file_path):
     if getattr(sys, 'frozen', False):
         # we are running in a |PyInstaller| bundle
-        package_dirname = os.path.dirname(natcap.__file__)
-        relpath = os.path.relpath(os.path.dirname(file_path), package_dirname)
+        pyinstaller_dir = os.path.join('..', '..', os.path.dirname(__file__))
+        relpath = os.path.relpath(os.path.dirname(file_path), pyinstaller_dir)
         return os.path.join(os.path.dirname(sys.executable), relpath)
     return os.path.dirname(file_path)
 
