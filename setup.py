@@ -684,6 +684,7 @@ setup(
         'scipy',
         'shapely',
         'GDAL',
+        'pyyaml',
     ],
     version=load_version(),
     cmdclass=CMD_CLASSES,
