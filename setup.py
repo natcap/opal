@@ -15,27 +15,9 @@ import shutil
 import json
 
 CMD_CLASSES = {}
-DATA_FILES = [('.', ['adept.json', 'opal.json', 'msvcp90.dll'])]
+DATA_FILES = []
 SITE_PACKAGES = distutils.sysconfig.get_python_lib()
 
-# Use the determined virtualenv site-packages path to add all files in the
-# IUI resources directory to our setup.py data files.
-directory = 'invest-natcap.invest-3/invest_natcap/iui/iui_resources'
-for root_dir, sub_folders, file_list in os.walk(directory):
-    destination = root_dir.replace('invest-natcap.invest-3/', '')
-    DATA_FILES.append((destination, map(lambda x:
-        os.path.join(root_dir, x), file_list)))
-
-iui_dir = os.path.join('invest-natcap.invest-3', 'invest_natcap', 'iui')
-icon_names = ['dialog-close', 'dialog-ok', 'document-open', 'edit-undo',
-              'info', 'natcap_logo', 'validate-pass', 'validate-fail',
-              'dialog-warning', 'dialog-warning-big', 'dialog-information-2',
-              'dialog-error', 'list-remove']
-iui_icons = []
-for name in icon_names:
-    iui_icons.append(os.path.join(iui_dir, '%s.png' % name))
-
-DATA_FILES.append(('invest_natcap/iui', iui_icons))
 
 if platform.system() == 'Windows':
     import matplotlib
@@ -45,13 +27,9 @@ if platform.system() == 'Windows':
 else:
     python_version = 'python%s' % '.'.join([str(r) for r in
         sys.version_info[:2]])
-    lib_path = os.path.join('lib', python_version, 'site-packages')
-    iui_icon_path = os.path.join(lib_path, 'invest_natcap', 'iui')
-    DATA_FILES.append((iui_icon_path, iui_icons))
 
 # Since this repo is not for specific packages, I'm assuming that this
 # section is for py2exe ONLY.
-DATA_FILES.append(('invest_natcap/iui', iui_icons))
 DATA_FILES.append(('natcap/opal/report_data',
     glob.glob('src/natcap/opal/report_data/*')))
 #    DATA_FILES.append(('data/colombia_static_data',
@@ -145,7 +123,6 @@ class ZipColombiaData(Command):
 
     def run(self):
         from natcap.opal import preprocessing
-        from natcap.opal import static_maps
         build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
         dist_dir = os.path.join(os.getcwd(), 'dist')
         data_dir = os.path.join(build_dir, 'data')
@@ -627,7 +604,7 @@ class CustomSdist(_sdist):
 
         # Write version information (which is derived from the adept mercurial
         # source tree) to the build folder's copy of adept.__init__.
-        filename = os.path.join(base_dir, 'natcap', 'opal', '__init__.py')
+        filename = os.path.join(base_dir, 'src', 'natcap', 'opal', '__init__.py')
         print 'Writing version data to %s' % filename
         versioning.write_build_info(filename)
 
@@ -667,7 +644,7 @@ class build(_build):
 class install_data(_install_data):
     def run(self):
         for lang in os.listdir('build/locale'):
-            lang_dir = os.path.join(SITE_PACKAGES, 'adept', 'i18n',
+            lang_dir = os.path.join(SITE_PACKAGES, 'natcap', 'opal', 'i18n',
                 'locale', lang, 'LC_MESSAGES')
             lang_file = os.path.join('build', 'locale', lang, 'LC_MESSAGES',
                 'adept.mo')
@@ -717,7 +694,9 @@ setup(
         'natcap.opal.i18n',
         'natcap.opal.tests'
     ],
-    package_dir={'natcap': 'src/natcap'},
+    package_dir={
+        'natcap': 'src/natcap',
+    },
     requires=[
         'numpy',
         'scipy',
