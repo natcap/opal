@@ -16,7 +16,7 @@ if __version__ == 'dev' and build_data == None:
     versioning = imp.load_source(
         'versioning',
         os.path.join(os.path.dirname(__file__), 'versioning.py'))
-    __version__ = versioning.version()
+    __version__ = versioning.get_pep440(branch=False)
     build_data = versioning.build_data()
     for key, value in sorted(build_data.iteritems()):
         setattr(sys.modules[__name__], key, value)
