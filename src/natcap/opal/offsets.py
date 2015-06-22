@@ -14,7 +14,7 @@ import shapely.geos
 
 import adept_core
 
-LOGGER = logging.getLogger('adept.offsets')
+LOGGER = logging.getLogger('natcap.opal.offsets')
 
 # offset schemes
 OFFSET_SCHEME_ES = 0
@@ -911,7 +911,7 @@ def select_set_multifactor(parcels, biodiversity_req=None, es_hydro_req=None,
 
 def translate_parcel_data(per_offset_data):
     """Translate the per-offset parcel data dictionary returned from
-    adept.analysis.percent_overlap() into the data structures required for
+    natcap.opal.analysis.percent_overlap() into the data structures required for
     multifactor parcel selection to take place."""
     output_parcels = {}
     output_ssheds = {}
@@ -941,7 +941,7 @@ def translate_parcel_data(per_offset_data):
 
 def translate_es_impacts(per_impact_data, custom_type='global'):
     """Translate the per-impact data dictionary returned from
-    adept.analysis.percent_overlap() into the hydrological ES dictionary.
+    natcap.opal.analysis.percent_overlap() into the hydrological ES dictionary.
 
     Returns one dictionary for hydrological impacts, and another one for global
     impacts."""

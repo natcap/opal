@@ -14,7 +14,7 @@ import preprocessing
 import offsets
 import utils
 
-LOGGER = logging.getLogger('adept.analysis')
+LOGGER = logging.getLogger('natcap.opal.analysis')
 
 #    # now, aggregate over the correct polygons.
 #    LOGGER.debug('Aggregating impacts')

@@ -15,13 +15,13 @@ import shapely.geos
 import shapely.validation
 
 import adept_core
-import adept.i18n
+import natcap.opal.i18n
 import offsets
 import preprocessing
 import utils
 
-LOGGER = logging.getLogger('adept.reporting')
-_ = adept.i18n.language.ugettext
+LOGGER = logging.getLogger('natcap.opal.reporting')
+_ = natcap.opal.i18n.language.ugettext
 
 def _recode(string):
     """Re-encode an input string as UTF-8 if it isn't already encoded.  If
@@ -201,8 +201,8 @@ def build_parcel_table(per_offset_data, total_impacts, out_csv,
             'custom' - (optional) a float, the total custom ES impact.
         out_csv - the file to which the parcel table information should be
         saved.
-        dist - a string, either adept.adept_core.DIST_OPAL or
-            adept.adept_core.DIST_MAFE.  Changes the rendering of a
+        dist - a string, either natcap.opal.adept_core.DIST_OPAL or
+            natcap.opal.adept_core.DIST_MAFE.  Changes the rendering of a
             cuople strings.
         include_aoi_column=True - Boolean.  Indicate whether to include the AOI
         column in the output tables.

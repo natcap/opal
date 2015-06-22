@@ -25,7 +25,7 @@ import scipy
 import preprocessing
 import utils
 
-LOGGER = logging.getLogger('adept.static_maps')
+LOGGER = logging.getLogger('natcap.opal.static_maps')
 NODATA = 999999.0
 
 COLOMBIA_BARE_LUCODE = 301
@@ -653,7 +653,7 @@ def _load_json(filename):
     if getattr(sys, 'frozen', False):
         # we are running in a |PyInstaller| bundle
         # basedir = sys._MEIPASS  #suggested by pyinstaller
-        basedir = os.path.join(sys._MEIPASS, 'adept')
+        basedir = os.path.join(sys._MEIPASS, 'natcap', 'opal')
     else:
         basedir = os.path.dirname(__file__)
 
@@ -856,7 +856,7 @@ def test_static_map_quality(
             this folder does not already exist, it will be created.
         config (dict): The arguments dictionary to use for running the model.
             See `static_maps.execute_model()` for details, or else
-            `adept/static_data/<model_name>_parameters.json` for sample
+            `natcap/opal/static_data/<model_name>_parameters.json` for sample
             argument dictionaries (albeit serialized as JSON).
         num_iterations=5 (int, optional): The number of simulated impacts to run per
             watershed.

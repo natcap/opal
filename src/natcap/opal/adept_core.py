@@ -1,4 +1,4 @@
-"""Adept_core contains the core logic for the adept permitting tool."""
+"""Adept_core contains the core logic for the natcap.opal permitting tool."""
 # -*- coding: utf-8 -*-
 
 import json
@@ -13,23 +13,23 @@ from osgeo import ogr
 from invest_natcap import reporting
 import pygeoprocessing
 
-import adept
-import adept.i18n
+import natcap.opal
+import natcap.opal.i18n
 import preprocessing
 import offsets
 import static_maps
-import reporting as adept_reporting
+import reporting as opal_reporting
 import analysis
 import utils
 
 logging.basicConfig(format='%(asctime)s %(name)-18s %(levelname)-8s \
      %(message)s', level=logging.DEBUG, datefmt='%m/%d/%Y %H:%M:%S ')
 
-LOGGER = logging.getLogger('adept')
+LOGGER = logging.getLogger('natcap.opal')
 
 SOURCE_DATA = os.path.join(os.getcwd(), 'data', 'colombia_tool_data')
-REPORT_DATA = os.path.join(adept.local_dir(__file__), 'report_data')
-_ = adept.i18n.language.ugettext
+REPORT_DATA = os.path.join(natcap.opal.local_dir(__file__), 'report_data')
+_ = natcap.opal.i18n.language.ugettext
 LABEL_PROTECTION = 'Protection'
 LABEL_RESTORATION = 'Restoration'
 DIST_OPAL = 'opal'
@@ -39,7 +39,7 @@ class InvalidImpactsVector(Exception): pass
 class InvalidInput(Exception): pass
 
 def execute(args):
-    """The main execution function for adept.
+    """The main execution function for natcap.opal.
         args - a python dictionary containing the following elements:
             'workspace_dir' - A uri to the output workspace.
             'project_footprint_uri' - a URI to a shapefile of the project
@@ -126,14 +126,14 @@ def execute(args):
 
         Returns nothing."""
 
-    LOGGER.debug('Current language: "%s"', adept.i18n.language.current_lang)
+    LOGGER.debug('Current language: "%s"', natcap.opal.i18n.language.current_lang)
     utils.log_run('adept.core')
 
     # build a list of possible places to look for the ascii art text file in
     # order of priority.
     possible_dirs = []
-    if adept.is_frozen():
-        possible_dirs += [adept.get_frozen_dir()]
+    if natcap.opal.is_frozen():
+        possible_dirs += [natcap.opal.get_frozen_dir()]
     possible_dirs += [os.path.dirname(__file__), os.getcwd()]
     ascii_art_uri = ''
     for dirname in possible_dirs:
@@ -625,7 +625,7 @@ def execute(args):
             temp_municipalities, 'pop_center')
         json.dump(per_offset_data, open(os.path.join(hzone_dev,
             'per_offset_data.json'), 'w'), indent=4, sort_keys=True)
-        adept_reporting.write_per_offset_csv(per_offset_data,
+        opal_reporting.write_per_offset_csv(per_offset_data,
             os.path.join(hzone_dir, 'offset_benefits_to_servicesheds.csv'))
 
 
@@ -788,7 +788,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
 #        json.dumps(per_offset_data, indent=4, sort_keys=True))
 #    json.dump(per_offset_data, open(os.path.join(dev_dir,
 #        'per_offset_data.json'), 'w'), indent=4, sort_keys=True)
-#    adept_reporting.write_per_offset_csv(per_offset_data,
+#    opal_reporting.write_per_offset_csv(per_offset_data,
 #            os.path.join(output_workspace, 'offset_benefits_to_servicesheds.csv'))
 #    LOGGER.debug('Total impacts: %s', total_impacts)
 
@@ -824,7 +824,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
         'text': '',
     }.copy()
     if not skip_biodiv:
-        impacted_parcels_table = adept_reporting.impacted_parcels_table(
+        impacted_parcels_table = opal_reporting.impacted_parcels_table(
             impact_sites, natural_parcels, os.path.join(output_workspace,
             'impacted_parcels.csv'))
     else:
@@ -839,7 +839,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
 
     LOGGER.debug('Total impacts before adjustment: %s', total_impacts)
     LOGGER.debug('adjusted_global_impacts: %s', adjusted_global_impacts)
-    offset_parcels_table = adept_reporting.build_parcel_table(per_offset_data,
+    offset_parcels_table = opal_reporting.build_parcel_table(per_offset_data,
         adjusted_global_impacts.copy(), os.path.join(output_workspace,
         'offset_parcels.csv'), distribution, include_aoi_column,
         include_subzone_column, suggested_parcels)
@@ -892,7 +892,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 'section': 'head',
                 'format': 'json',
                 'input_type': 'Text',
-                'data_src': json.dumps(adept_reporting.get_impact_data(
+                'data_src': json.dumps(opal_reporting.get_impact_data(
                     temp_municipalities, impact_sites, pop_col,
                     'pop_size', service_mitrat,
                     os.path.join(dev_dir, 'serviceshed_data.json'))),
@@ -929,7 +929,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 'position': 0,
                 'text': '<h2>%s</h2>' % _('Total impacts to ecosystem services'),
             },
-            adept_reporting.es_impacts_table(total_impacts, service_mitrat),
+            opal_reporting.es_impacts_table(total_impacts, service_mitrat),
             {
                 'type': 'text',
                 'section': 'body',
@@ -1083,12 +1083,12 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 hydro_services.append(possible_hydro_service)
         if custom_es_servicesheds == 'hydrological':
             hydro_services.append('custom')
-        hydrological_table =  adept_reporting.es_benefits_table(hydro_services)
+        hydrological_table =  opal_reporting.es_benefits_table(hydro_services)
         report_args['elements'].insert(-1, hydrological_table)
 
     if 'carbon' in total_impacts or custom_es_servicesheds == 'global':
         LOGGER.debug('Including the global table')
-        global_table = adept_reporting.global_benefits_table(
+        global_table = opal_reporting.global_benefits_table(
             custom_es_servicesheds == 'global', adjusted_global_impacts)
         report_args['elements'].insert(-1, global_table)
 

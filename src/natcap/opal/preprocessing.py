@@ -26,7 +26,7 @@ import preprocessing
 import utils
 
 
-LOGGER = logging.getLogger('adept.preprocessing')
+LOGGER = logging.getLogger('natcap.opal.preprocessing')
 
 def rm_shapefile(uri):
     """Delete all files associated with the user-defined ESRI Shapefile.

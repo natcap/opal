@@ -7,7 +7,7 @@ import codecs
 from types import StringType
 import time
 
-import adept
+import natcap.opal
 import invest_natcap
 import shapely
 import shapely.speedups
@@ -17,7 +17,7 @@ import shapely.geometry
 import shapely.geos
 from osgeo import ogr
 
-LOGGER = logging.getLogger('adept.offsets')
+LOGGER = logging.getLogger('natcap.opal.offsets')
 
 # create a logging filter
 class TimedLogFilter(logging.Filter):
@@ -37,7 +37,7 @@ class TimedLogFilter(logging.Filter):
             return True
         else:
             # Only log a message if more than <interval> seconds have passed
-            # since the last record was logged. 
+            # since the last record was logged.
             if current_time - self._last_record_time >= 5.0:
                 self._last_record_time = current_time
                 return True
@@ -83,13 +83,13 @@ def log_run(base_string):
 
     # if we're in a frozen environment, fetch the build information about the
     # distribution.
-    if adept.is_frozen():
+    if natcap.opal.is_frozen():
         # read build information from the local configuration file.
         # distribution_name
         # distribution_build_id
         #
         # Build a full model name and version string out of this info
-        dist_data_file = os.path.join(adept.get_frozen_dir(),
+        dist_data_file = os.path.join(natcap.opal.get_frozen_dir(),
             'dist_version.json')
         dist_data = json.load(open(dist_data_file))
 
@@ -99,9 +99,9 @@ def log_run(base_string):
         # we're not in a built distribution, so we someone must be running this
         # from the command line.  In this case, we're obviously not in a
         # distribution, but we may be in the permitting repo, not just as a
-        # standalone adept repo.
+        # standalone natcap.opal repo.
         model_name = string
-        model_version = adept.__version__
+        model_version = natcap.opal.__version__
 
     invest_natcap.log_model(model_name, model_version)
 
