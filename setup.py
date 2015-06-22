@@ -52,8 +52,8 @@ else:
 # Since this repo is not for specific packages, I'm assuming that this
 # section is for py2exe ONLY.
 DATA_FILES.append(('invest_natcap/iui', iui_icons))
-DATA_FILES.append(('src/adept/report_data',
-    glob.glob('src/adept/adept/report_data/*')))
+DATA_FILES.append(('natcap/opal/report_data',
+    glob.glob('src/natcap/opal/report_data/*')))
 #    DATA_FILES.append(('data/colombia_static_data',
 #        glob.glob('data/colombia_static_data/*')))
 
@@ -627,7 +627,7 @@ class CustomSdist(_sdist):
 
         # Write version information (which is derived from the adept mercurial
         # source tree) to the build folder's copy of adept.__init__.
-        filename = os.path.join(base_dir, 'adept', '__init__.py')
+        filename = os.path.join(base_dir, 'natcap', 'opal', '__init__.py')
         print 'Writing version data to %s' % filename
         versioning.write_build_info(filename)
 
