@@ -1,4 +1,4 @@
-invest-natcap.invest-3 = https://code.google.com/p/invest-natcap.invest-3/
+invest-natcap.invest-3 = https://bitbucket.org/natcap-archive/invest-natcap.invest-3/
 data = [svn]http://ncp-yamato.stanford.edu/svn/permitting-data
 src/pyinstaller = [git]https://github.com/pyinstaller/pyinstaller.git
 src/palisades = [git]https://github.com/phargogh/palisades.git
