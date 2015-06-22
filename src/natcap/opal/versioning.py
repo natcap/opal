@@ -22,7 +22,8 @@ def build_data():
         'py_arch': get_py_arch(),
         'version_str': version(),
         'branch': get_branch(),
-        'pep440': get_pep440(),
+        'pep440': get_pep440(branch=False),
+        'pep440branch': get_pep440(branch=True),
     }
     return data
 
@@ -35,7 +36,7 @@ def write_build_info(source_file_uri):
     source_file = open(os.path.abspath(source_file_uri))
     for line in source_file:
         if line == "__version__ = 'dev'\n":
-            temp_file.write("__version__ = '%s'\n" % version())
+            temp_file.write("__version__ = '%s'\n" % get_pep440(branch=False))
         elif line == "build_data = None\n":
             build_information = build_data()
             temp_file.write("build_data = %s\n" % str(build_information.keys()))
@@ -115,17 +116,30 @@ def get_version_from_hg():
     else:
         return build_dev_id()
 
-def get_pep440():
+def _increment_tag(version_string):
+    split_string = version_string.split('.dev')
+    if len(split_string) == 1:
+        # When the version string is just the tag, we return the tag
+        return version_string
+    else:
+        # increment the minor version number and not the update num.
+        tag = split_string[0].split('.')
+        tag[-2] = str(int(tag[-2]) + 1)
+        tag[-1] = '0'
+        return '.'.join(tag) + '.dev' + split_string[1]
+
+def get_pep440(branch=True):
     """
     Build a PEP440-compliant version.  Returns a string.
     """
-    template_string = ("%(latesttag)s.dev%(tagdist)s+n%(node)s"
-                       "-%(branch)s")
+    template_string = "%(latesttag)s.dev%(tagdist)s+n%(node)s"
+    if branch is True:
+        template_string += "-%(branch)s"
 
     if is_archive():
         data = {
             'tagdist': get_archive_attr('latesttagdistance'),
-            'latesttag': get_archive_attr('latesttag'),
+            'latesttag': _increment_tag(get_archive_attr('latesttag')),
             'node': get_archive_attr('node')[:8],
             'branch': get_archive_attr('branch'),
         }
@@ -138,7 +152,7 @@ def get_pep440():
             'branch': '{branch}',
         }
         cmd = HG_CALL + ' --template "%s"' % template_string % data
-        return run_command(cmd)
+        return _increment_tag(run_command(cmd))
 
 def get_build_id():
     """Call mercurial with a template argument to get the build ID.  Returns a
