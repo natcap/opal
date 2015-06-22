@@ -15,25 +15,7 @@ import shutil
 import json
 
 CMD_CLASSES = {}
-DATA_FILES = []
 SITE_PACKAGES = distutils.sysconfig.get_python_lib()
-
-
-if platform.system() == 'Windows':
-    import matplotlib
-    import palisades
-    DATA_FILES += matplotlib.get_py2exe_datafiles()
-    DATA_FILES += palisades.get_py2exe_datafiles()
-else:
-    python_version = 'python%s' % '.'.join([str(r) for r in
-        sys.version_info[:2]])
-
-# Since this repo is not for specific packages, I'm assuming that this
-# section is for py2exe ONLY.
-DATA_FILES.append(('natcap/opal/report_data',
-    glob.glob('src/natcap/opal/report_data/*')))
-#    DATA_FILES.append(('data/colombia_static_data',
-#        glob.glob('data/colombia_static_data/*')))
 
 # get specific sets of data files from the tool_data.
 # first, get the vectors.
@@ -718,5 +700,8 @@ setup(
         'Programming Language :: Python :: 2 :: Only',
         'Topic :: Scientific/Engineering :: GIS'
     ],
-    data_files = DATA_FILES,
+    data_files = [
+        ('natcap/opal/report_data', glob.glob('src/natcap/opal/report_data/*')),
+        ('natcap/opal/static_data', glob.glob('src/natcap/opal/static_data/*')),
+    ]
 )
