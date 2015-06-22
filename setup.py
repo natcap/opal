@@ -1,6 +1,7 @@
 import distutils
 from distutils.core import setup
 from distutils.core import Command
+from distutils.command.build import build as _build
 from distutils.command.build_py import build_py as _build_py
 from distutils.command.sdist import sdist as _sdist
 from distutils.command.install_data import install_data as _install_data
@@ -564,6 +565,13 @@ except ImportError:
     versioning = imp.load_source('versioning', 'src/natcap/opal/versioning.py')
     opal_i18n_msgfmt = imp.load_source('i18n', 'src/natcap/opal/i18n/msgfmt.py')
 
+class build(_build):
+    """Custom python build step for distutils.  Builds the OPAL translations
+    as part of the build step."""
+    sub_commands = _build.sub_commands + [('build_trans', None)]
+    def run(self):
+        _build.run(self)
+
 class CustomPythonBuilder(_build_py):
     """Custom python build step for distutils.  Builds a python distribution in
     the specified folder ('build' by default) and writes the adept version
@@ -644,6 +652,7 @@ CMD_CLASSES['build_trans'] = build_translations
 CMD_CLASSES['build_py'] = CustomPythonBuilder
 CMD_CLASSES['sdist'] = CustomSdist
 CMD_CLASSES['install_data'] = install_data
+CMD_CLASSES['build'] = build
 
 README = open('README.rst').read()
 CHANGES = open('CHANGES.txt').read()
@@ -703,5 +712,7 @@ setup(
     ],
     package_data={
         'natcap.opal': ['report_data/*', 'static_data/*'],
-    }
+    },
+    data_files=[(os.path.join(SITE_PACKAGES, 'natcap', 'opal', 'i18n'),
+                 glob.glob('i18n/*'))]
 )
