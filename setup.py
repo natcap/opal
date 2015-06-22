@@ -701,8 +701,7 @@ setup(
         'Programming Language :: Python :: 2 :: Only',
         'Topic :: Scientific/Engineering :: GIS'
     ],
-    data_files = [
-        ('natcap/opal/report_data', glob.glob('src/natcap/opal/report_data/*')),
-        ('natcap/opal/static_data', glob.glob('src/natcap/opal/static_data/*')),
-    ]
+    package_data={
+        'natcap.opal': ['report_data/*', 'static_data/*'],
+    }
 )
