@@ -687,7 +687,7 @@ CMD_CLASSES['sdist'] = CustomSdist
 CMD_CLASSES['install_data'] = install_data
 
 README = open('README.rst').read()
-HISTORY = open('HISTORY.rst').read()
+CHANGES = open('CHANGES.txt').read()
 LICENSE = open('LICENSE.txt').read()
 
 def load_version():
@@ -707,7 +707,7 @@ def load_version():
 setup(
     name='natcap.opal',
     description="Decision support tool for mitigating development impacts to ecosystem services",
-    long_description=README + '\n\n' + HISTORY,
+    long_description=README + '\n\n' + CHANGES,
     maintainer='James Douglass',
     maintainer_email='jdouglass@stanford.edu',
     url='https://bitbucket.org/natcap/opal',
