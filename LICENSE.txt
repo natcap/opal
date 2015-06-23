@@ -1,7 +1,7 @@
 This tool has an open license. All people are invited to use the tool
 under the following conditions and terms:
 
-Copyright (c) 2013, The Natural Capital Project
+Copyright (c) 2015, The Natural Capital Project
 
 All rights reserved.
 

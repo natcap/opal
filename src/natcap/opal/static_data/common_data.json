@@ -1,0 +1,32 @@
+{
+    "hydrozones": "data/colombia_tool_data/hydrozones.shp",
+    "municipalities": "data/colombia_tool_data/Municipalities.shp",
+    "servicesheds": "data/colombia_tool_data/ssheds_Col_new.shp",
+    "hydrosubzones": "data/colombia_tool_data/Hydrographic_subzones.shp",
+    "ecosystems": "data/colombia_tool_data/ecosys_dis_nat_comp_fac.shp",
+    "future_landcover": "data/colombia_tool_data/converted_veg_deforest.tif",
+    "static_maps": {
+        "bare": {
+            "carbon": "data/colombia_static_data/carbon_bare_static_map_lzw.tif",
+            "nutrient": "data/colombia_static_data/nutrient_bare_static_map_lzw.tif",
+            "sediment": "data/colombia_static_data/sediment_bare_static_map_lzw.tif"
+        },
+        "paved": {
+            "carbon": "data/colombia_static_data/carbon_paved_static_map_lzw.tif",
+            "nutrient": "data/colombia_static_data/nutrient_paved_static_map_lzw.tif",
+            "sediment": "data/colombia_static_data/sediment_paved_static_map_lzw.tif"
+        },
+        "protection": {
+            "carbon": "data/colombia_static_data/carbon_protection_static_map_lzw.tif",
+            "nutrient": "data/colombia_static_data/nutrient_protection_static_map_lzw.tif",
+            "sediment": "data/colombia_static_data/sediment_protection_static_map_lzw.tif"
+        }
+    },
+    "percent_to_stream": {
+        "nutrient": {
+            "bare": "data/colombia_static_data/nutrient_bare_pts.tif",
+            "paved": "data/colombia_static_data/nutrient_paved_pts.tif",
+            "protection": "data/colombia_static_data/nutrient_protection_pts.tif"
+        }
+    }
+}

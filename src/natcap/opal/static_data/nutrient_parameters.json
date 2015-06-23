@@ -1,0 +1,18 @@
+{
+    "workspace_dir": "",
+    "dem_uri": "data/colombia_tool_data/DEM.tif",
+    "lulc_uri": "",
+    "watersheds_uri": "data/colombia_tool_data/watersheds_cuencas.shp",
+    "biophysical_table_uri": "data/colombia_tool_data/Biophysical_Colombia.csv",
+    "soil_depth_uri": "data/colombia_tool_data/Soil_depth.tif",
+    "precipitation_uri": "data/colombia_tool_data/Precipitation.tif",
+    "pawc_uri": "data/colombia_tool_data/Plant_available_water_content.tif",
+    "eto_uri": "data/colombia_tool_data/Ref_evapotranspiration.tif",
+    "seasonality_constant": 5,
+    "calc_p": false,
+    "calc_n": true,
+    "water_purification_threshold_table_uri": "data/colombia_tool_data/sediment_threshold.csv",
+    "accum_threshold": 1000,
+    "depth_to_root_rest_layer_uri": "data/colombia_tool_data/Soil_depth.tif",
+    "valuation_enabled": false
+}

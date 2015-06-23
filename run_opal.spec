@@ -14,12 +14,12 @@ import platform
 import json
 import shutil
 
-from adept import versioning
+from natcap.opal import versioning
 
 common_kwargs = {
     'hookspath': ['./hooks'],
     'runtime_hooks': ['./hooks/rthook.py'],
-    'hiddenimports': ['adept', 'adept.static_maps', 'os', 'traceback',
+    'hiddenimports': ['natcap.opal', 'natcap.opal.static_maps', 'os', 'traceback',
         'run_opal'],
 }
 
