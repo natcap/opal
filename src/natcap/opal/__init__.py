@@ -54,9 +54,10 @@ def get_frozen_dir():
 def local_dir(file_path):
     if getattr(sys, 'frozen', False):
         # we are running in a |PyInstaller| bundle
-        pyinstaller_dir = os.path.join('..', '..', os.path.dirname(__file__))
-        relpath = os.path.relpath(os.path.dirname(file_path), pyinstaller_dir)
-        return os.path.join(os.path.dirname(sys.executable), relpath)
+        # get the folder containing the natcap folder.
+        relpath = os.path.relpath(file_path, os.path.dirname(__file__))
+        pkg_path = os.path.join('natcap', 'opal', relpath)
+        return os.path.join(os.path.dirname(sys.executable), os.path.dirname(pkg_path))
     return os.path.dirname(file_path)
 
 
