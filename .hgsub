@@ -1,4 +1,4 @@
-invest-natcap.invest-3 = https://code.google.com/p/invest-natcap.invest-3/
+src/invest = https://bitbucket.org/natcap/invest
 data = [svn]http://ncp-yamato.stanford.edu/svn/permitting-data
 src/adept = https://code.google.com/p/invest-natcap.adept
 src/pyinstaller = [git]https://github.com/pyinstaller/pyinstaller.git
