@@ -41,7 +41,7 @@ rmdir /S /Q build
 cd ..\..
 
 :: CD to the invest-3 directory to install it to the virtual environment
-cd invest-natcap.invest-3
+cd src/invest
 rmdir /S /Q build
 ..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..

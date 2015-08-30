@@ -10,7 +10,7 @@ python bootstrap_adept_environment.py > setup_environment.py
 python setup_environment.py --clear --system-site-packages $ENVDIR
 source $ENVDIR/bin/activate
 
-pushd invest-natcap.invest-3
+pushd src/invest
 # IF YOU WOULD LIKE TO REBUILD ALL OF INVEST-3, UNCOMMENT THIS NEXT LINE
 #hg purge  # clean out the invest-3 repo
 python setup.py install

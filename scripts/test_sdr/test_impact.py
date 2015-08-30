@@ -187,9 +187,9 @@ def split_datasource(ds_uri, workspace, include_fields=[],
     LOGGER.debug('Finished creating the new shapefiles')
     return output_vectors
 
-STARTING_WATERSHEDS = ('invest-natcap.invest-3/test/invest-data/'
+STARTING_WATERSHEDS = ('src/invest/data/invest-data/'
     'Base_Data/Freshwater/watersheds.shp')
-LULC_URI = ('invest-natcap.invest-3/test/invest-data/Base_Data/'
+LULC_URI = ('src/invest/data/invest-data/Base_Data/'
     'Terrestrial/lulc_samp_cur')
 LULC_PIXEL_SIZE = raster_utils.get_cell_size_from_uri(LULC_URI)
 LULC_NODATA = raster_utils.get_nodata_from_uri(LULC_URI)
