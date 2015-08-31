@@ -1,67 +1,67 @@
 {
     "label": {
-        "en": "OPAL", 
-        "es": "Licenciamiento"
-    }, 
+        "en": "OPAL",
+        "es": "OPAL"
+    },
     "id": "adept_window",
     "modelName": {
-        "en": "OPAL", 
-        "es": "Licenciamiento"
-    }, 
+        "en": "OPAL",
+        "es": "OPAL"
+    },
     "openDirOnComplete": {
         "type": "element",
         "id": "workspace"
     },
-    "targetScript": "adept", 
-    "condenseElements": true, 
+    "targetScript": "adept",
+    "condenseElements": true,
     "elements": [
         {
-            "id": "workspace", 
+            "id": "workspace",
             "args_id": "workspace_dir",
-            "type": "folder", 
-            "defaultValue": "~/opal_workspace", 
-            "required": true, 
+            "type": "folder",
+            "defaultValue": "~/opal_workspace",
+            "required": true,
             "label": {
-                "en": "Workspace", 
-                "es": "Carpeta de trabajo"
-            }, 
+                "en": "Workspace",
+                "es": "Carpeta de Trabajo"
+            },
             "helpText": {
-                "en": "Select a folder to be used as your workspace.  If the folder you select does not exist, it will be created for you.<br/><br/>This folder will contain the rasters produced by this model.  <b>If datasets already exist in this folder, they will be overwritten</b>.", 
-                "es": "Seleccione una carpeta que será usada como su espacio de trabajo. Si la carpeta no existe, el programa la creará por usted.<br/><br/>Esta carpeta contendrá los raster producidos por este modelo.  <b>Si ya existen archivos de previas corridas en esta carpeta, serán sobreescritos.</b>"
-            }, 
+                "en": "Select a folder to be used as your workspace.  If the folder you select does not exist, it will be created for you.<br/><br/>This folder will contain the rasters produced by this model.  <b>If datasets already exist in this folder, they will be overwritten</b>.",
+                "es": "Seleccione una carpeta que será usada como su espacio de trabajo. Si la carpeta seleccionada no existe, será creada.<br/><br/>Esta carpeta contendrá los rásters producidos por este modelo.  <b>Si los grupos de datos ya existen en esta carpeta, serán sobrescritos</b>."
+            },
             "validateAs": {
-                "type": "folder", 
+                "type": "folder",
                 "permissions": "rwx"
             }
-        }, 
+        },
         {
-            "id": "project_footprint", 
-            "args_id": "project_footprint_uri", 
-            "type": "file", 
-            "defaultValue": "", 
+            "id": "project_footprint",
+            "args_id": "project_footprint_uri",
+            "type": "file",
+            "defaultValue": "",
             "required": true,
             "label": {
                 "en": "Project Footprint",
-                "es": "Área de impacto del proyecto"
+                "es": "Huella del Proyecto"
             },
             "validateAs": {
                 "type": "OGR"
             },
             "helpText": {
                 "en": "The project footprint must be a polygon shapefile of the area of development.",
-                "es": "El ‘Área de impacto del proyecto’ debe ser un shapefile de polígono del área de desarrollo del proyecto."
+                "es": "La huella del proyecto debe ser un shapefile poligonal del área de desarrollo."
             }
-        }, 
+        },
         {
-            "args_id": "impact_type", 
+            "args_id": "impact_type",
             "id": "impact_type",
-            "returns": {"type": "strings"}, 
-            "defaultValue": 0, 
+            "returns": {"type": "strings"},
+            "defaultValue": 0,
             "label": {
-                "en": "Impact Type", 
-                "es": "Tipo de impacto"
-            }, 
-            "type": "dropdown", 
+                "en": "Impact Type",
+                "es": "Tipo de Impacto"
+            },
+            "type": "dropdown",
             "options": [
                 "Road/Paved",
                 "Mine/Bare"
@@ -70,22 +70,22 @@
                 "en": "Select the impact type of the proposed development.",
                 "es": "Seleccione el tipo de impacto del desarrollo propuesto."
             }
-        }, 
+        },
         {
-            "id": "ecosystems_map", 
+            "id": "ecosystems_map",
             "args_id": "ecosystems_map_uri",
-            "type": "file", 
+            "type": "file",
             "required": true,
             "label": {
-                "en": "Natural Ecosystems Map", 
-                "es": "Usar un mapa propio de ecosistemas naturales"
-            }, 
+                "en": "Natural Ecosystems Map",
+                "es": "Mapa de Ecosistemas Naturales"
+            },
             "validateAs": {
                 "type": "OGR",
                 "fieldsExist": ["ecosystem", "mit_ratio"],
                 "layers": [
                     {
-                        "type": "polygons", 
+                        "type": "polygons",
                         "name": {
                             "inheritFrom": "file"
                         }
@@ -108,19 +108,19 @@
             },
             "helpText": {
                 "en": "A polygon shapefile of natural ecosystems. The amount and type of biodiversity offset needed is calculated based on the overlap between natural ecosystems and the project footprint, and potential offset patches are also selected from natural ecosystems provided here. <br/><br/> <b>Format:</b> Each row should be a polygon or multi-polygon of a particular ecosystem type. Each column contains information about the ecosystem, and two columns must be named as follows: <ol><li> <em>ecos_dis</em>: string value with the name of the ecosystem type </li><li> <em>factor_de</em>: the numeric compensation factor/mitigation ratio for that ecosystem</li></ol>",
-                "es": "Shapefile de polígono de ecosistemas naturales. La cantidad y tipo de compensación necesaria es calculada por la superposición entre ecosistemas naturales y el área de influencia del proyecto, y los parches potenciales para la compensación también son seleccionados del mapa de ecosistemas naturales provisto aquí. <br/><br/> <b>Format</b> Cada fila debe ser un polígono o un multipolígono de un tipo particular de ecosistema. Deben ser creadas dos columnas denominadas de la siguiente forma <ol><li> <em>ecos_dis</em> valor en texto con el nombre del tipo de ecosistema </li><li> <em>factor_de</em> la tasa numérica de compensación para ese ecosistema. </li></ol>"
+                "es": "Un shapefile poligonal de los ecosistemas naturales. La cantidad y el tipo de compensación de la biodiversidad necesarios se calcula sobre la base de la superposición entre los ecosistemas naturales y la huella del proyecto, y los parches de compensación potenciales también se seleccionan entre los ecosistemas naturales provistos aquí.<br><br/> <b>Formato</b> Cada fila debe ser un polígono o varios polígonos de un tipo de ecosistema en particular. Cada columna contiene información sobre el ecosistema y dos columnas deben denominarse de la siguiente manera<ol><li> <em>ecos_dis </ em> valor de cadena con el nombre del tipo de ecosistema</li><li> <em> factor_de</em> el factor numérico de compensación/tasa de mitigación para ese ecosistema</li></ol>"
             }
-        }, 
+        },
         {
-            "args_id": "offset_type", 
+            "args_id": "offset_type",
             "id": "offset_type",
-            "returns": {"type": "strings"}, 
-            "defaultValue": 0, 
+            "returns": {"type": "strings"},
+            "defaultValue": 0,
             "label": {
-                "en": "Offset Type", 
-                "es": "FILL IN"
-            }, 
-            "type": "dropdown", 
+                "en": "Offset Type",
+                "es": "Tipo de Compensación"
+            },
+            "type": "dropdown",
             "options": [
                 "Protection",
                 "Restoration"
@@ -129,22 +129,22 @@
                 "en": "Select the offset type of your future static map scenarios",
                 "es": "FILL IN"
             }
-        }, 
+        },
         {
-            "id": "offset_parcels_vector", 
+            "id": "offset_parcels_vector",
             "args_id": "offset_parcels",
-            "type": "file", 
+            "type": "file",
             "required": true,
             "label": {
-                "en": "Potential Offset Sites", 
-                "es": "FILL IN"
-            }, 
+                "en": "Potential Offset Sites",
+                "es": "Sitios Potenciales de Compensación"
+            },
             "validateAs": {
                 "type": "OGR",
                 "fieldsExist": ["ecosystem"],
                 "layers": [
                     {
-                        "type": "polygons", 
+                        "type": "polygons",
                         "name": {
                             "inheritFrom": "file"
                         }
@@ -161,24 +161,24 @@
             },
             "helpText": {
                 "en": "A polygon shapefile of potential offset sites for OPAL to select from. If protection is chosen as the offset type to be used, this should be a map of remaining natural ecosystems and can be the same file as the natural ecosystems map input above. If restoration is chosen as the offset type to be used, this should be a map of areas that have the potential to be restored to natural ecosystems.<br/><br/><b>Format:</b> Each row should be a polygon or multi-polygon of a particular ecosystem type. One column is required, and additional columns will be ignored. The required column must be named as follows:<ul><li><em>ecosystem:</em> string value with the name of the current ecosystem type if the chosen offset type is protection, or of the ecosystem type to be restored if the chosen offset type is restoration. These ecosystem types must be in the natural ecosystems map in order to match losses and offsets to the same ecosystem type.</li></ul>",
-                "es": ""
+                "es": "Un shapefile poligonal de los sitios potenciales de compensación para que OPAL seleccione. Si la protección es elegida como el tipo de compensación que se utilizará, se trata de un mapa de ecosistemas naturales remanentes y puede ser el mismo archivo que el mapa de los ecosistemas naturales de entrada visto antes. Si la restauración es elegida como el tipo de compensación que se utilizará, se trata de un mapa de las áreas que tienen el potencial de ser restauradas a ecosistemas naturales. <br/><br/><b>Formato</b> Cada fila debe ser un polígono o varios polígonos de un tipo de ecosistema en particular. Se requiere una columna y las columnas adicionales se ignorarán. La columna requerida debe ser nombrada como sigue <ul><li><em>ecosistema</em> valor de cadena con el nombre del tipo de ecosistema actual si el tipo de compensación elegido es protección o del tipo de ecosistema que se restablezca si el tipo de compensación es la restauración. Estos tipos de ecosistemas deben estar en el mapa de ecosistemas naturales con el fin de equiparar las pérdidas y compensaciones al mismo tipo de ecosistemas.</li></ul>"
             }
         },
         {
-            "id": "servicesheds_map", 
+            "id": "servicesheds_map",
             "args_id": "servicesheds_uri",
-            "type": "file", 
+            "type": "file",
             "required": true,
             "label": {
-                "en": "Servicesheds", 
-                "es": "Mapa propio de 'servicesheds'"
-            }, 
+                "en": "Servicesheds",
+                "es": "Cuencas de servicio"
+            },
             "validateAs": {
                 "type": "OGR",
                 "fieldsExist": ["pop_center", "pop_size"],
                 "layers": [
                     {
-                        "type": "polygons", 
+                        "type": "polygons",
                         "name": {
                             "inheritFrom": "file"
                         }
@@ -201,24 +201,24 @@
             },
             "helpText": {
             "en": "A polygon shapefile of the servicesheds for hydrological services, which are the watersheds upstream of drinking water intake points. Impacts for hydrological services will be summed by serviceshed. <br/><br/><b>Format:</b><br/> Each row should be a polygon or multi-polygon of the serviceshed for a particular population center. Each column contains information about the serviceshed, and two columns must be named as follows: <ol><li><em>Pop_center:</em> string value with the name of the population center or beneficiary group linked to the serviceshed</li><li><em>pop_cent_5:</em> the number of people within the population center or beneficiary group</li></ol>",
-                "es": "Un shapefile de polígono de las 'servicesheds' para servicios hidrológicos. Las ‘servicesheds’ son las áreas aguas arriba que drenan hacia un punto de toma de agua potable. Los impactos para servicios hidrológicos serán sumarizados por 'serviceshed'. <br/><br/><b>Format</b><br/> Cada fila debe ser un polígono o multipolígono de la 'serviceshed' para un centro poblado particular. Cada columna contiene información sobre la ‘serviceshed’ y se deben crear dos columnas y nombrarlas como se indica a continuación<ol><li><em>Pop_center</em> valor en texto con el nombre del centro poblado</li><li><em>pop_cent_5</em> el número de personas del centro poblado o el grupo de beneficiarios</li></ol>" 
+            "es": "Un shapefile poligonal de las cuencas de servicios para servicios hidrológicos que son las cuencas aguas arriba de los  puntos de toma de agua potable. Los impactos de los servicios hidrológicos se sumarán por cuenca de servicio. <br/><br/><b>Formato</b><br/> Cada fila debe ser un polígono o varios polígonos de la cuenca de servicio para un centro poblado en particular. Cada columna contiene información sobre la cuenca de servicio y dos columnas que deben denominarse de la siguiente manera <ol><li><em>Pop_center</em> valor de cadena con el nombre del grupo de centros de población o beneficiarios vinculados a la cuenca de servicio</li><li><em> pop_cent_5 </em> el número de personas dentro del centro población o grupo beneficiario</li></ol>"
             }
-        }, 
+        },
         {
-            "id": "search_areas_map", 
+            "id": "search_areas_map",
             "args_id": "search_areas_uri",
-            "type": "file", 
+            "type": "file",
             "required": true,
             "label": {
-                "en": "Search Zones (Hard Boundary) and Subzones (Soft Boundary 1)", 
-                "es": ""
-            }, 
+                "en": "Search Zones (Hard Boundary) and Subzones (Soft Boundary 1)",
+                "es": "Zonas de Búsqueda (Límite Duro) y Subzonas (Límite Suave 1)"
+            },
             "validateAs": {
                 "type": "OGR",
                 "fieldsExist": ["zone"],
                 "layers": [
                     {
-                        "type": "polygons", 
+                        "type": "polygons",
                         "name": {
                             "inheritFrom": "file"
                         }
@@ -235,67 +235,67 @@
             },
             "helpText": {
                 "en": "A polygon shapefile representing search zones and subzones. Potential offset patches are restricted to the same zone as the project footprint, and the results report indicates which offset patches are located within the same subzone as the project footprint so that they can be prioritized. <br/><br/><b>Format:</b><br/> Each row should be a subzone, associated with a priority zone. If subzones are not desired, only a single polygon per zone should be provided. To search the entire study area for offset sites, without restricting by zones, this shapefile should contain a single polygon covering the full extent of the data. The column contains the name of the zone to which each priority search area belongs, and must be formatted as follows: <ol><li><em>zone:</em> string value with the name of the zone to which the priority subzone belongs</li></ol>",
-                "es": ""
+                "es": "Un shapefile poligonal que representa zonas y subzonas de búsqueda. Los parches de compensación potenciales se limitan a la misma zona que la huella del proyecto y el informe de los resultados indica que parches de compensación se encuentran dentro de la misma subzona que la huella del proyecto para que puedan ser priorizados.<br/><b>Formato</b><br/>Cada fila debe ser una subzona asociada a una zona de prioridad. Si no se desean subzonas debe proporcionarse un único polígono por zona. Para buscar en toda el área de estudio los sitios de compensación sin restringir por zonas, este shapefile debe contener un único polígono que cubre la totalidad de los datos. La columna contiene el nombre de la zona a la que cada área de búsqueda prioritaria pertenece y debe tener el siguiente formato<ol><li><em>Zona</em> valor de la cadena con el nombre de la zona a la que la subzona prioritaria pertenece</li></ol>"
             }
-        }, 
+        },
         {
-            "id": "area_of_influence", 
-            "args_id": "area_of_influence_uri", 
-            "type": "file", 
-            "defaultValue": "", 
+            "id": "area_of_influence",
+            "args_id": "area_of_influence_uri",
+            "type": "file",
+            "defaultValue": "",
             "validateAs": {
                 "type": "file"
-            }, 
+            },
             "required": false,
             "label": {
                 "en": "Soft Boundary 2 (optional)",
-                "es": ""
+                "es": "Límite Suave 2 (opcional)"
             },
             "helpText": {
                 "en": "This is a polygon vector allowing additional level of prioritization of offset parcels, if desired. OPAL tracks which potential offset parcels are located within the same soft boundary polygons as the project footprint so that they can be prioritized for selection in the offset portfolio, if desired. For example, one set of soft boundaries might represent watersheds and the other represent administrative divisions in order to prioritize offsets within the same watershed and administrative unit where possible.",
-                "es": ""
+                "es": "Este es un vector poligonal que permite un nivel adicional de priorización de paquetes de compensación, si se desea. Las pistas OPAL que potencialmente compensan parcelas se ubican dentro de los mismos polígonos de contorno suave que la huella del proyecto para que puedan ser priorizadas para la selección de la cartera de compensación, si se desea. Por ejemplo, un conjunto de límites blandos podría representar las cuencas hidrográficas y el otro representar las divisiones administrativas con el fin de priorizar las compensaciones dentro de la misma cuenca y unidad administrativa, cuando sea posible."
             }
-        }, 
+        },
         {
-            "id": "municipalities_map", 
+            "id": "municipalities_map",
             "args_id": "municipalities_uri",
-            "type": "file", 
+            "type": "file",
             "required": false,
             "label": {
-                "en": "Soft Boundary 3 (optional)", 
-                "es": ""
-            }, 
+                "en": "Soft Boundary 3 (optional)",
+                "es": "Límite Suave 3 (Opcional)"
+            },
             "validateAs": {
                 "type": "OGR"
             },
             "helpText": {
-                "en": "This is a polygon vector allowing additional level of prioritization of offset parcels, if desired. OPAL tracks which potential offset parcels are located within the same soft boundary polygons as the project footprint so that they can be prioritized for selection in the offset portfolio, if desired. For example, one set of soft boundaries might represent watersheds and the other represent administrative divisions in order to prioritize offsets within the same watershed and administrative unit where possible.",
-                "es": ""
+                "en": "This is a polygon vector allowing an additional level of prioritization of offset parcels, if desired. OPAL tracks which potential offset parcels are located within the same soft boundary polygons as the project footprint so that they can be prioritized for selection in the offset portfolio, if desired. For example, one set of soft boundaries might represent watersheds and the other represent administrative divisions in order to prioritize offsets within the same watershed and administrative unit where possible.",
+                "es": "Este es un vector poligonal que permite un nivel adicional de priorización de paquetes de compensación, si se desea. Las pistas OPAL que potencialmente compensan parcelas se ubican dentro de los mismos polígonos de contorno suave que la huella del proyecto para que puedan ser priorizadas para la selección de la cartera de compensación, si se desea. Por ejemplo, un conjunto de límites blandos podría representar las cuencas hidrográficas y el otro representar las divisiones administrativas con el fin de priorizar las compensaciones dentro de la misma cuenca y unidad administrativa, cuando sea posible."
             }
-        }, 
+        },
         {
-            "type": "file", 
-            "id": "threat_map", 
-            "args_id": "threat_map", 
+            "type": "file",
+            "id": "threat_map",
+            "args_id": "threat_map",
             "label": {
-                "en": "Threat Map (optional)", 
-                "es": "Mapa de Amenazas (opcional)"
+                "en": "Threat Map (optional)",
+                "es": "Mapa de amenazas (opcional)"
             },
             "validateAs": {
                 "type": "GDAL"
             },
             "helpText": {
                 "en": "A raster file. A raster file whose values should indicate the level of threat from anthropogenic influences at a particular point. Threat is considered an indicator of patch quality for biodiversity. If included, offset patches will be restricted to those with average threat values less than or equal to that of ecosystem patches intersecting the impact site (project footprint). This ensures that offset patches are of equal or greater quality to the impacted patches.",
-                "es": "Archivo raster. En Colombia los valores deben indicar el nivel de amenaza antropogénica en un punto particular. La amenaza es considerada un indicador de la calidad del parche en biodiversidad. Si se incluye esta opción, los parches para compensación serán restringidos a aquellos con valores promedio de amenaza menores o iguales a parches que intersectan con el sitio de impacto (área de influencia). Esto asegura que los parches de compensación sean de igual o mayor calidad que los parches impactados. Fuera de Colombia, cualquier raster indicando calidad de hábitat puede ser sustituido siempre y cuando los valores menores indiquen mayor calidad."
+                "es": "Un archivo ráster. Un archivo ráster cuyos valores deben indicar el nivel de amenaza de las influencias antropogénicas en un punto particular. Amenaza se considera un indicador de la calidad del parche para la biodiversidad. Si los parches de compensación incluidos están restringidos a aquellos con valores de riesgo promedio menores o iguales a los de los parches de los ecosistemas que intersectan el lugar del impacto (huella del proyecto). Esto asegura que los parches de compensación son de calidad igual o superior a los parches impactados."
             }
-        }, 
+        },
         {
-            "type": "file", 
-            "id": "species_richness_map", 
-            "args_id": "species_richness_map", 
+            "type": "file",
+            "id": "species_richness_map",
+            "args_id": "species_richness_map",
             "label": {
-                "en": "Species Richness Map (optional)", 
-                "es": "Mapa de riqueza de especies (opcional)"
+                "en": "Species Richness Map (optional)",
+                "es": "Mapa de Riqueza de Especies (opcional)"
             },
             "validateAs": {
                 "type": "GDAL"
@@ -304,87 +304,87 @@
                 "en": "A raster file. A raster file whose values indicate the level of species richness at a particular site. Species richness is considered an indicator of patch quality for biodiversity. If included, offset patches will be restricted to those with average species richness values greater than or equal to that of ecosystem patches intersecting the impact site (project footprint). This ensures that offset patches are contain an equal or greater amount of species richness relative to the impacted patches",
                 "es": "Archivo raster. En Colombia los valores deberían indicar la riqueza de especies en un sitio particular. La riqueza de especies es considerada como un indicador de la calidad del parche. Si se incluye esta opción, los parches para compensación serán restringidos a aquellos con valores promedio de riqueza mayores o iguales a parches que intersectan con el sitio de impacto (área de influencia). Esto asegura que los parches de compensación son de igual o mayor calidad que los parches impactados. Fuera de Colombia, cualquier raster indicando calidad puede ser sustituido siempre y cuando los valores mayores indiquen mayor calidad."
             }
-        }, 
+        },
         {
-            "type": "file", 
-            "id": "avoidance_areas", 
-            "args_id": "avoidance_areas", 
+            "type": "file",
+            "id": "avoidance_areas",
+            "args_id": "avoidance_areas",
             "label": {
-                "en": "Avoidance Areas (optional)", 
-                "es": "Áreas a evitar (opcional)"
+                "en": "Avoidance Areas (optional)",
+                "es": "Áreas a Evitación (opcional)"
             },
             "validateAs": {
                 "layers": [
                     {
-                        "type": "polygons", 
+                        "type": "polygons",
                         "name": {
                             "inheritFrom": "file"
                         }
                     }
-                ], 
+                ],
                 "type": "OGR"
             },
             "helpText": {
                 "en": "A polygon shapefile indicating designated areas where development impacts should be avoided. For example, this might include protected areas, RAMSAR wetland sites or other areas where development impacts are discouraged or prevented by law. If the project footprint intersects with an avoidance area, the tool will issue a warning.",
-                "es": "Shapefile de polígono indicando áreas designadas en las que deberían ser evitadas actividades de desarrollo. En Colombia, estas también se denominan \"Áreas de exclusión\". Esto puede incluir áreas protegidas, sitios RAMSAR u otras áreas en dónde las actividades de desarrollo sean prohibidas por la ley. Si el proyecto se superpone con un área a evitar, la herramienta arrojará una alerta. Tales proyectos son improbables de ser permitidos o pueden enfrentar requerimientos adicionales de mitigación más allá que los calculados por la herramienta dadas sus condiciones especiales."
+                "es": "Un shapefile poligonal que indica las áreas designadas donde se deben evitar los impactos del desarrollo. Por ejemplo, esto podría incluir áreas protegidas de humedales RAMSAR u otras áreas donde los impactos del desarrollo se desalientan o previenen por ley. Si la huella del proyecto se cruza con un área de evitación, la herramienta emitirá una advertencia."
             }
-        }, 
+        },
         {
-            "type": "file", 
-            "id": "conservation_portfolio", 
-            "args_id": "conservation_portfolio", 
+            "type": "file",
+            "id": "conservation_portfolio",
+            "args_id": "conservation_portfolio",
             "label": {
-                "en": "Conservation Portfolio (optional)", 
-                "es": "Portafolio de conservación (opcional)"
+                "en": "Conservation Portfolio (optional)",
+                "es": "Portafolio de Conservación (opcional)"
             },
             "validateas": {
                 "layers": [
                     {
-                        "type": "polygons", 
+                        "type": "polygons",
                         "name": {
                             "inheritfrom": "file"
                         }
                     }
-                ], 
+                ],
                 "type": "OGR"
             },
             "helpText": {
                 "en": "A polygon shapefile indicating priority areas for locating offsets. This map could be based on landscape-level conservation planning exercises, policy or other source of prioritization. If included, the results will indicate which potential offset patches fall within the conservation portfolio so that they can be preferentially selected for the offset portfolio.",
-                "es": "Shapefile de polígono indicando las áreas prioritarias para ubicar áreas de compensación. Este mapa puede estar basado en una planificación de conservación de paisaje, políticas u otra fuente de priorización. Si se incluye esta opción, los resultados indicarían que parches potenciales de compensación caerían dentro de qué portafolio de conservación de forma que puedan ser priorizados por el portafolio de compensación."
+                "es": "Un shapefile poligonal que indica las áreas prioritarias para la localización de las compensaciones. Este mapa podría basarse en políticas de planificación de la conservación a nivel de paisaje u otra fuente de priorización. Si se incluyen, los resultados indicarán qué parches potenciales de compensación caen dentro de la cartera de conservación de modo que se pueden seleccionar preferentemente para la cartera de compensación."
             }
-        }, 
+        },
         {
-            "type": "file", 
-            "id": "previously_granted_impacts", 
-            "args_id": "previously_granted_impacts", 
+            "type": "file",
+            "id": "previously_granted_impacts",
+            "args_id": "previously_granted_impacts",
             "label": {
-                "en": "Previously Granted Impacts (optional)", 
-                "es": "Licencias previamente otorgadas (opcional)"
+                "en": "Previously Granted Impacts (optional)",
+                "es": "Impactos Previamente Concedidos (opcional)"
             },
             "validateas": {
                 "type": "OGR"
             },
             "helpText": {
                 "en": "A polygon shapefile of project footprints of impact sites that have been granted but are not yet represented as developed land in the land use/land cover map. If included, portions of natural vegetation patches that intersect previously granted impacts will be removed from potential offset patches so that they cannot be counted towards offsets.",
-                "es": "Shapefile de polígono de áreas de influencia previamente licenciadas pero que no están representadas como áreas de desarrollo en el mapa de usos del suelo. Si se incluye esta opción, parches de vegetación natural que intersectan áreas de influencia previamente licenciadas serán eliminados de los parches potenciales de compensación para que no queden contabilizados dentro de las opciones."
+                "es": "Un shapefile poligonal de huellas de proyectos de sitios de impacto que se han concedido, pero que aún no están representadas como desarrolladas en el mapa de cobertura/uso de suelo. Si las porciones incluidas de los parches de vegetación natural que se cruzan con impactos otorgados previamente se eliminaran de los parches de compensación potenciales para que no pueden ser tomadas en cuenta para las compensaciones."
             }
-        }, 
+        },
         {
-            "type": "file", 
-            "id": "previously_selected_offsets", 
-            "args_id": "previously_selected_offsets", 
+            "type": "file",
+            "id": "previously_selected_offsets",
+            "args_id": "previously_selected_offsets",
             "label": {
-                "en": "Previously Selected Offsets (optional)", 
-                "es": "Parches de compensación previamente seleccionados (opcional)"
+                "en": "Previously Selected Offsets (optional)",
+                "es": "Compensaciones Previamente Seleccionadas (opcional)"
             },
             "validateas": {
                 "type": "OGR"
             },
             "helpText": {
                 "en": "A polygon shapefile of areas that cannot be selected as offsets, either because they have already designated as offsets for other projects, <b>they are not at risk of degradation and so protection would not provide additional benefits beyond baseline conditions (e.g., protected areas), or because their use as offsets is not feasible for political, social, economic or other reasons.</b> If included, vegetation patches within this shapefile will be excluded from potential offset sites in the results.",
-                "es": "Shapefile de polígono de áreas que no pueden ser seleccionadas como compensación bien porque ya han sido designadas como compensación por otros proyectos, <b>porque no están en riesgo de degradación de manera que su protección no traería ningún beneficio adicional más allá de las condiciones de línea base (e.g áreas protegidas) o porque su uso para compensación no es viable por razones políticas, económicas o sociales.</b> Si se incluye esta opción, los parches de vegetación dentro de este shapefile serán excluídos de áreas potenciales de compensación."
+                "es": "Un shapefile poligonal de las áreas que no se pueden seleccionar como compensaciones, ya sea porque ya han sido designadas como compensaciones para otros proyectos <b>no están en riesgo de degradación y así la protección no proporcionaría beneficios adicionales más allá de las condiciones de referencia (por ejemplo, áreas protegidas) o porque su uso como compensaciones no es factible por razones económicas, sociales, políticos o de otro tipo.</b> Si los parches de vegetación incluidos dentro de este shapefile serán excluidos de los sitios potenciales de compensación en los resultados."
             }
-        }, 
+        },
         {
             "id": "do_carbon",
             "args_id": "do_carbon",
@@ -393,7 +393,7 @@
             "defaultValue": false,
             "label": {
                 "en": "Calculate Impacts/Offsets to Carbon",
-                "es": "Calcular impactos/compensación por carbono"
+                "es": "Calcular los Impactos/Compensaciones al Carbono"
             },
             "elements": [
                 {
@@ -401,31 +401,31 @@
                     "args_id": "carbon_mitigation_ratio",
                     "label": {
                         "en": "Carbon Mitigation Ratio",
-                        "es": "DEFINE"
+                        "es": "Tasa de Mitigación de Carbono"
                     },
                     "type": "text",
                     "defaultValue": 1.0,
                     "helpText": {
                         "en": "The mitigation ratio is numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
-                        "es": ""
+                        "es": "La tasa de mitigación es el valor numérico que indica el número de unidades de compensación necesarias para compensar una unidad por la pérdida de servicios de los ecosistemas. La tasa de mitigación puede ser utilizada para dar cuenta de la adicionalidad de las compensaciones (ver la última sección de \"Generación de mapas estáticos\" de la Guía del Usuario para más información) y también para ajustar  cualquier sesgos en las estimaciones de los mapas y las compensaciones. Por ejemplo, si las simulaciones del generador de mapas estáticos indican que las estimaciones de los mapas estáticos de los beneficios de restauración en comparación con los impactos son más bajos que las estimaciones InVEST, podría ser deseable especificar una tasa de mitigación mayor a 1."
                     }
                 },
                 {
-                    "id": "carbon_static_maps", 
+                    "id": "carbon_static_maps",
                     "args_id": "carbon_static_maps",
-                    "type": "folder", 
-                    "defaultValue": "", 
+                    "type": "folder",
+                    "defaultValue": "",
                     "required": true,
                     "label": {
-                        "en": "Carbon Static Maps Folder", 
-                        "es": "Mapas propios de carbono almacenado"
-                    }, 
+                        "en": "Carbon Static Maps Folder",
+                        "es": "Carpeta de Mapas Estáticos de Carbono"
+                    },
                     "helpText": {
-                        "en": "A folder with carbon static maps. These maps can be created using the tool's carbon static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_<future type>_static_map.tif</li></ul>  <future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
-                        "es": "Carpeta con mapas de carbono almacenado. Estos mapas pueden ser creados usando el generador de mapas de carbono almacenado de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_future_static_map.tif</li></ul>"
-                    }, 
+                        "en": "A folder with carbon static maps. These maps can be created using the tool's carbon static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_<future type>_static_map.tif</li></ul>  <future type> will be either 'protect' or 'restore', depending on your selected future scenario.",
+                        "es": "Una carpeta con mapas estáticos de carbono. Estos mapas se pueden crear usando el generador de mapas estáticos de la herramienta. <br/><br/><b>Contenido</b><br/>esta carpeta debe contener los siguientes rásters <ul><li>carbon_bare_static_map.tif</li><li>carbon_paved_static_map.tif</li><li>carbon_<tipo futuro>_static_map.tif</li></ul>  <tipo futuro> será ya sea 'proteger' o 'restaurar' dependiendo de la selección de su escenario futuro."
+                    },
                     "validateAs": {
-                        "type": "folder", 
+                        "type": "folder",
                         "contains": [
                             "carbon_bare_static_map.tif",
                             "carbon_paved_static_map.tif"
@@ -442,7 +442,7 @@
             "defaultValue": false,
             "label": {
                 "en": "Calculate Impacts/Offsets to Nutrient",
-                "es": "Calcular impactos/compensación por nitrógeno"
+                "es": "Calcular Impactos/Compensaciones a Nutrientes"
             },
             "elements": [
                 {
@@ -450,31 +450,31 @@
                     "args_id": "nutrient_mitigation_ratio",
                     "label": {
                         "en": "Nutrient Mitigation Ratio",
-                        "es": "DEFINE"
+                        "es": "Tasa de Mitigación de Nutrientes"
                     },
                     "type": "text",
                     "defaultValue": 1.0,
                     "helpText": {
-                        "en": "The mitigation ratio is numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
-                        "es": ""
+                        "en": "The mitigation ratio is a numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
+                        "es": "La tasa de mitigación es el valor numérico que indica el número de unidades de compensación necesarias para compensar una unidad por la pérdida de servicios de los ecosistemas. La tasa de mitigación puede ser utilizada para dar cuenta de la adicionalidad de las compensaciones (ver la última sección de \"Generación de mapas estáticos\" de la Guía del Usuario para más información) y también para ajustar  cualquier sesgos en las estimaciones de los mapas y las compensaciones. Por ejemplo, si las simulaciones del generador de mapas estáticos indican que las estimaciones de los mapas estáticos de los beneficios de restauración en comparación con los impactos son más bajos que las estimaciones InVEST, podría ser deseable especificar una tasa de mitigación mayor a 1."
                     }
                 },
                 {
-                    "id": "nutrient_static_maps", 
+                    "id": "nutrient_static_maps",
                     "args_id": "nutrient_static_maps",
-                    "type": "folder", 
-                    "defaultValue": "", 
+                    "type": "folder",
+                    "defaultValue": "",
                     "required": true,
                     "label": {
-                        "en": "Nutrient Static Maps Folder", 
-                        "es": "Usar mapas propios de nutrientes"
-                    }, 
+                        "en": "Nutrient Static Maps Folder",
+                        "es": "Carpeta de Mapas Estáticos de Nutrientes"
+                    },
                     "helpText": {
-                        "en": "A folder with nitrogen static maps. These maps can be created using the tool's nutrient static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_<future type>_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
-                        "es": "Carpeta con mapas de nitrógeno. Estos mapas pueden ser creados usando el generador de mapas de nitrógeno de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_future_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_future_pts.tif</li></ul>"
-                    }, 
+                        "en": "A folder with nitrogen static maps. These maps can be created using the tool's nutrient static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_<future type>_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.",
+                        "es": "Una carpeta con los mapas estáticos de nitrógeno. Estos mapas se pueden crear con el generador de mapas estáticos de  nutrientes de la herramienta.<br/><br/><b>Contenidos</b><br/>Esta carpeta de contener los siguientes rásters<ul><li>nutrient_bare_static_map.tif</li><li>nutrient_paved_static_map.tif</li><li>nutrient_<tipo futuro>_static_map.tif</li><li>nutrient_bare_pts.tif</li><li>nutrient_paved_pts.tif</li><li>nutrient_<tipo futuro>_pts.tif</li></ul><tipo futuro> será ya sea 'proteger' o 'restaurar' dependiendo de su escenario futuro seleccionado."
+                    },
                     "validateAs": {
-                        "type": "folder", 
+                        "type": "folder",
                         "contains": [
                             "nutrient_bare_static_map.tif",
                             "nutrient_paved_static_map.tif",
@@ -493,7 +493,7 @@
             "defaultValue": false,
             "label": {
                 "en": "Calculate Impacts/Offsets to Sediment",
-                "es": "Calcular impactos/compensación por sedimentos"
+                "es": "Calcular Impactos/Compensaciones para Sedimentos"
             },
             "elements": [
                 {
@@ -501,39 +501,39 @@
                     "args_id": "sediment_mitigation_ratio",
                     "label": {
                         "en": "Sediment Mitigation Ratio",
-                        "es": "DEFINE"
+                        "es": "Tasa de Mitigación de Sedimentación"
                     },
                     "type": "text",
                     "defaultValue": 1.0,
                     "helpText": {
-                        "en": "The mitigation ratio is numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
-                        "es": ""
+                        "en": "The mitigation ratio is a numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
+                        "es": "La tasa de mitigación es el valor numérico que indica el número de unidades de compensación necesarias para compensar una unidad por la pérdida de servicios de los ecosistemas. La tasa de mitigación puede ser utilizada para dar cuenta de la adicionalidad de las compensaciones (ver la última sección de \"Generación de mapas estáticos\" de la Guía del Usuario para más información) y también para ajustar  cualquier sesgos en las estimaciones de los mapas y las compensaciones. Por ejemplo, si las simulaciones del generador de mapas estáticos indican que las estimaciones de los mapas estáticos de los beneficios de restauración en comparación con los impactos son más bajos que las estimaciones InVEST, podría ser deseable especificar una tasa de mitigación mayor a 1."
                     }
                 },
                 {
-                    "id": "sediment_static_maps", 
+                    "id": "sediment_static_maps",
                     "args_id": "sediment_static_maps",
-                    "type": "folder", 
-                    "defaultValue": "", 
+                    "type": "folder",
+                    "defaultValue": "",
                     "required": true,
                     "label": {
-                        "en": "Sediment Static Maps Folder", 
-                        "es": "Usar mapas propios de sedimentos"
-                    }, 
+                        "en": "Sediment Static Maps Folder",
+                        "es": "Carpeta de Mapas Estáticos de Sedimentos"
+                    },
                     "helpText": {
-                        "en": "A folder with sediment static maps. These maps can be created using the tool's sediment static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_<future type>_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
-                        "es": "Carpeta con mapas de sedimentos. Estos mapas pueden ser creados usando el generador de mapas de sedimentos de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_future_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_future_pts.tif</li></ul>"
-                    }, 
+                        "en": "A folder with sediment static maps. These maps can be created using the tool's sediment static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_<future type>_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.",
+                        "es": "Una carpeta con mapas estáticos de sedimento. Estos mapas se pueden crear mediante el generador de mapas estáticos de la herramienta. <br/><br/><b>Contents</b><br/>This folder must contain the following rasters<ul><li>sediment_bare_static_map.tif</li><li>sediment_paved_static_map.tif</li><li>sediment_<future type>_static_map.tif</li><li>sediment_bare_pts.tif</li><li>sediment_paved_pts.tif</li><li>sediment_<future type>_pts.tif</li></ul><future type> será ya sea 'proteger' o 'restaurar' dependiendo del escenario futuro seleccionado."
+                    },
                     "validateAs": {
-                        "type": "folder", 
+                        "type": "folder",
                         "contains": [
                             "sediment_bare_static_map.tif",
                             "sediment_paved_static_map.tif"
                         ]
-                    } 
+                    }
                 }
             ]
-        }, 
+        },
         {
             "id": "do_custom",
             "args_id": "do_custom",
@@ -542,7 +542,7 @@
             "defaultValue": false,
             "label": {
                 "en": "Calculate Impacts/Offsets to Custom Ecosystem Service",
-                "es": "DEFINE"
+                "es": "Calcular Impactos/Compensaciones al Servicio Ecosistémico Personalizado"
             },
             "elements": [
                 {
@@ -550,31 +550,31 @@
                     "args_id": "custom_mitigation_ratio",
                     "label": {
                         "en": "Custom Mitigation Ratio",
-                        "es": "DEFINE"
+                        "es": "Tasa de Mitigación Personalizada"
                     },
                     "type": "text",
                     "defaultValue": 1.0,
                     "helpText": {
-                        "en": "The mitigation ratio is numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
-                        "es": ""
+                        "en": "The mitigation ratio is a numeric value indicating the number of units of offsets required to compensate for one unit of ecosystem service loss. The mitigation ratio can be used to account for the additionality of offsets (see the last section of “Generating static maps” of the Users' Guide for more info) and also to adjust for any biases in static maps impact and offset estimates. For example, if simulations from the static map generator indicate that static map estimates of restoration benefits as compared to impacts are lower than InVEST estimates, it may be desirable to specify a mitigation ration greater than 1.",
+                        "es": "La tasa de mitigación es el valor numérico que indica el número de unidades de compensación necesarias para compensar una unidad por la pérdida de servicios de los ecosistemas. La tasa de mitigación puede ser utilizada para dar cuenta de la adicionalidad de las compensaciones (ver la última sección de \"Generación de mapas estáticos\" de la Guía del Usuario para más información) y también para ajustar  cualquier sesgos en las estimaciones de los mapas y las compensaciones. Por ejemplo, si las simulaciones del generador de mapas estáticos indican que las estimaciones de los mapas estáticos de los beneficios de restauración en comparación con los impactos son más bajos que las estimaciones InVEST, podría ser deseable especificar una tasa de mitigación mayor a 1."
                     }
                 },
                 {
-                    "id": "custom_static_maps", 
+                    "id": "custom_static_maps",
                     "args_id": "custom_static_maps",
-                    "type": "folder", 
-                    "defaultValue": "", 
+                    "type": "folder",
+                    "defaultValue": "",
                     "required": true,
                     "label": {
-                        "en": "Custom Ecosystem Service Static Maps Folder", 
-                        "es": "Usar mapas propios de otros servicios ecosistémicos"
-                    }, 
+                        "en": "Custom Ecosystem Service Static Maps Folder",
+                        "es": "Carpeta de los Mapas Estáticos de Servicios Personalizados de Ecosistemas"
+                    },
                     "helpText": {
-                        "en": "A folder with custom static maps. These maps can be created using the tool's custom static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_<future type>_static_map.tif</li></ul><br/><br/>If these custom static rasters account for a hydrological service, the following rasters must also be in this folder:<ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.", 
-                        "es": "Carpeta con mapas de servicios ecosistémicos. Estos mapas pueden ser creados usando el generador de mapas de servicios ecosistémicos de la herramienta.<br/><br/><b>Contents</b><br/> Esta carpeta debe contener los siguientes raster <ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_future_static_map.tif</li></ul><br/><br/> Si estos raster corresponden a un servicio ecosistémico hidrológico, los siguientes raster también deben estar en esta carpeta <ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_future_pts.tif</li></ul>" 
-                    }, 
+                        "en": "A folder with custom static maps. These maps can be created using the tool's custom static map generator.<br/><br/><b>Contents:</b><br/>This folder must contain the following rasters:<ul><li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_<future type>_static_map.tif</li></ul><br/><br/>If these custom static rasters account for a hydrological service, the following rasters must also be in this folder:<ul><li>custom_bare_pts.tif</li><li>custom_paved_pts.tif</li><li>custom_<future type>_pts.tif</li></ul><future type> will be either 'protect' or 'restore', depending on your selected future scenario.",
+                        "es": "Una carpeta con mapas estáticos personalizados. Estos mapas pueden ser creados usando el generador de mapas estáticos personalizados de la herramienta.<br/><br/><b>Contenido</b> <br/>Esta carpeta debe contener los siguientes rásters<ul> <li>custom_bare_static_map.tif</li><li>custom_paved_static_map.tif</li><li>custom_<tipo futuro> _static_map.tif</li></ul><br/>Si estos rásters personalizados estáticos representan un servicio hidrológico, los siguientes rásters también deben estar en esta carpeta<ul><li> custom_bare_pts.tif</ul><li>custom_paved_pts.tif</li><li> custom_<tipo futuro>_pts.tif</li></ul><tipo futuro>será ya sea 'proteger' o 'restaurar' en función de su escenario futuro seleccionado."
+                    },
                     "validateAs": {
-                        "type": "folder", 
+                        "type": "folder",
                         "contains": [
                             "custom_bare_static_map.tif",
                             "custom_paved_static_map.tif"
@@ -593,25 +593,25 @@
                     "returns": {"type": "strings"},
                     "label": {
                         "en": "Type of Custom Service",
-                        "es": "Tipo de servicio"
+                        "es": "Tipo de Servicio Personalizado."
                     },
                     "helpText": {
                         "en": "Indicates whether the custom ecosystem service input is a hydrological or global service.",
-                        "es": "Indica si el servicio ecosistémico es hidrológico o global."
+                        "es": "Indica si la entrada personalizada de servicio ecosistémico es un servicio hidrológico o global."
                     }
                 }
             ]
         },
         {
-            "args_id": "offset_scheme", 
+            "args_id": "offset_scheme",
             "id": "impact_type",
-            "returns": {"type": "ordinals"}, 
-            "defaultValue": 0, 
+            "returns": {"type": "ordinals"},
+            "defaultValue": 0,
             "label": {
-                "en": "Offset Scheme", 
-                "es": "Esquema de compensación"
-            }, 
-            "type": "dropdown", 
+                "en": "Offset Scheme",
+                "es": "Esquema de Compensaciones"
+            },
+            "type": "dropdown",
             "options": [
                 "ES priority",
                 "Biodiversity priority",
@@ -619,9 +619,9 @@
             ],
             "helpText": {
                 "en": "Offset scheme options include: ES and biodiversity, ES priority or biodiversity priority. If <b>“ES and biodiversity”</b> is chosen, OPAL will return potential offset parcels that contribute to meeting any ecosystem service or biodiversity target. If <b>“ES priority”</b> is chosen, OPAL will return only potential offset parcels that meet ecosystem service targets, and biodiversity offsets will be chosen from within that set. If <b>“biodiversity priority”</b> is chosen, OPAL will return only potential offset parcels that meet biodiversity targets (i.e., are of the same vegetation type as impacted vegetation), and ecosystem service offsets must be selected from within that set.",
-                "es": "FILL IN"
+                "es": "Las opciones de esquemas de compensación incluyen ES y la biodiversidad prioritaria ES o la prioridad de la biodiversidad. Si <b>\"ES y biodiversidad\"</b> es seleccionado, OPAL  devolverá posibles paquetes de compensación que contribuyan a satisfacer cualquier servicio de ecosistema o meta de diversidad biológica. Si <b>\"ES Prioridad\" </ b> es seleccionado, solo se obtendrán las parcelas de compensación potenciales que cumplan con los objetivos del servicio ecosistémico y las compensaciones de biodiversidad serán elegidas dentro de ese conjunto. Si <b>\"Prioridad de Biodiversidad\"</b> se elige, OPAL devolverá solamente las parcelas potenciales de compensación que cumplan con las metas de biodiversidad (es decir, son del mismo tipo de vegetación que la vegetación impactada) y las compensaciones de servicios ambientales deben ser seleccionadas desde dentro de ese establecer."
             }
-        }, 
+        },
         {
             "id": "include_lci",
             "args_id": "include_lci",
@@ -629,14 +629,14 @@
             "defaultValue": true,
             "label": {
                 "en": "Restrict Offset Parcels by LCI",
-                "es": "FILL IN"
+                "es": "Restringir Parcelas de Compensación por LCI"
             },
             "returns": {
                 "ifEmpty": true
             },
             "helpText": {
                 "en": "Select this checkbox to have the set of offset parcels restricted by the Landscape Context Index.  If this is selected, offset parcels may only be used as offsets to biodiversity if they also have at least the same LCI as the natural parcels that were impacted.",
-                "es": "FILL IN"
+                "es": "Seleccione esta casilla para que el conjunto de paquetes de compensación se restrinjan según el Índice de Contexto Paisajístico. Si se selecciona esta opción, los paquetes de compensación sólo se podrán utilizar como compensaciones a la biodiversidad si también tienen al menos el mismo ICP que las parcelas naturales que fueron impactadas."
             }
         },
         {
@@ -644,15 +644,14 @@
             "args_id": "prop_offset",
             "label": {
                 "en": "Proportion of Offset Needs to Suggest",
-                "es": "DEFINE"
+                "es": "Proporción de las Necesidades que se Deben Sugerir"
             },
             "type": "text",
             "defaultValue": 1.0,
             "helpText": {
                 "en": "OPAL provides a suggested list of offset parcels likely to meet mitigation needs. This can provide a useful starting place for selecting an offset portfolio. This number determines what proportion of offset needs are included in the suggested list.",
-                "es": ""
+                "es": "OPAL ofrece una lista sugerida de paquetes de compensación que podrían satisfacer las necesidades de mitigación. Esto puede proporcionar un punto de partida útil para la selección de una cartera de compensación. Este número determina qué proporción de las necesidades de compensación está incluida en la lista propuesta."
             }
-
         },
         {
             "type": "hidden",
@@ -664,5 +663,5 @@
             "defaultValue": "opal",
             "args_id": "distribution"
         }
-    ] 
+    ]
 }
