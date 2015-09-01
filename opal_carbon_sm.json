@@ -1,101 +1,101 @@
 {
-    "id": "window", 
+    "id": "window",
     "label": {
-        "en": "InVEST Carbon Model (Biophysical and Valuation)", 
-        "es": "Modelo de carbono de InVEST (Biofísico y valoración)"
-    }, 
+        "en": "InVEST Carbon Model (Biophysical and Valuation)",
+        "es": "Modelo InVEST de Carbono (Biofísico y Valoración)"
+    },
     "modelName": {
-        "en": "opal_carbon_static_map", 
+        "en": "opal_carbon_static_map",
         "es": "opal_carbon_static_map_es"
-    }, 
+    },
     "openDirOnComplete": {
         "type": "element",
         "id": "workspace"
     },
-    "targetScript": "adept.static_maps", 
+    "targetScript": "adept.static_maps",
     "elements": [
         {
-            "args_id": "workspace_dir", 
+            "args_id": "workspace_dir",
             "defaultValue": "~/opal_carbon_static_maps",
             "helpText": {
-                "en": "A directory that will contain the intermediate and output files for this run.", 
-                "es": "Directorio que contendrá los archivos intermedios y finales para esta corrida."
-            }, 
-            "id": "workspace", 
+                "en": "A directory that will contain the intermediate and output files for this run.",
+                "es": "Un directorio que contendrá los archivos intermedios y de salida de esta corrida."
+            },
+            "id": "workspace",
             "label": {
-                "en": "Workspace", 
-                "es": "Carpeta de trabajo"
-            }, 
-            "required": true, 
+                "en": "Workspace",
+                "es": "Espacio de trabajo"
+            },
+            "required": true,
             "type": "folder",
             "validateAs": {
                 "type": "folder",
                 "mustExist": false
             }
-        }, 
+        },
         {
-            "args_id": "landuse_uri", 
+            "args_id": "landuse_uri",
             "helpText": {
-                "en": "Location of the Landcover Map for the Current Scenario.", 
-                "es": "Ubicación del mapa de uso del suelo para el escenario actual"
-            }, 
-            "id": "cur_lulc_raster", 
+                "en": "Location of the Landcover Map for the Current Scenario.",
+                "es": "Localización del Mapa de Cobertura para el Escenario Actual."
+            },
+            "id": "cur_lulc_raster",
             "label": {
-                "en": "Land Use/Land Cover Raster", 
-                "es": "Raster de uso/cobertura del suelo"
-            }, 
-            "required": true, 
-            "type": "file", 
+                "en": "Land Use/Land Cover Raster",
+                "es": "Ráster de Uso/Cobertura de Suelo"
+            },
+            "required": true,
+            "type": "file",
             "validateAs": {
                 "type": "GDAL"
             }
-        }, 
+        },
         {
-            "args_id": "future_type", 
+            "args_id": "future_type",
             "id": "future_type",
-            "returns": {"type": "strings"}, 
-            "defaultValue": 0, 
+            "returns": {"type": "strings"},
+            "defaultValue": 0,
             "label": {
-                "en": "Offset Scenario Type", 
-                "es": "FILL IN"
-            }, 
-            "type": "dropdown", 
+                "en": "Offset Scenario Type",
+                "es": "Tipo de Escenario de Compensación"
+            },
+            "type": "dropdown",
             "options": [
                 "protection",
                 "restoration"
             ],
             "helpText": {
                 "en": "Select the type of future landcover scenario you are using.",
-                "es": "FILL IN"
+                "es": "Seleccione el tipo de escenario de cobertura de suelo que está usando."
             }
-        }, 
+        },
         {
-            "args_id": "fut_landuse_uri", 
+            "args_id": "fut_landuse_uri",
             "helpText": {
-                "en": "Location of the Landcover Map for the Future (Protection/Restoration) Scenario.", 
-                "es": "Ubicación del mapa de uso del suelo para el escenario futuro (protección o restauración)"
-            }, 
-            "id": "cur_lulc_raster", 
+                "en": "Location of the Landcover Map for the Future (Protection/Restoration) Scenario.",
+                "es": "Localización del Mapa de Cobertura de Suelos del Escenario Futuro (Protección/Restauración)"
+            },
+            "id": "cur_lulc_raster",
             "label": {
-                "en": "Offset Scenario Land Use/Land Cover Raster", 
-                "es": "Raster de uso/cobertura del suelo ______"
-            }, 
+                "en": "Offset Scenario Land Use/Land Cover Raster",
+                "es": "Ráster del Escenario de Compensación de Uso/Cobertura del Suelo"
+            },
             "required": true,
-            "type": "file", 
+            "type": "file",
             "validateAs": {
                 "type": "GDAL"
             }
-        }, 
+        },
         {
             "args_id": "paved_landcover_code",
             "helpText": {
                 "en": "The numeric land cover class for your LULC that represents pavement.",
-                "es": "La clase numérica de uso del suelo en su mapa que representa ‘pavimento’"
+                "es": "La clase numérica de cobertura de suelo para su LULC que representa pavimento."
             },
             "defaultValue": "",
             "label": {
                 "en": "Paved Landcover Code",
-                "es": "Código de uso del suelo pavimentado"
+                "es": "Código de Cobertura de Suelo Pavimentada"
             },
             "required": true,
             "type": "text",
@@ -107,12 +107,12 @@
             "args_id": "bare_landcover_code",
             "helpText": {
                 "en": "The numeric land cover class for your LULC that represents bare ground.",
-                "es": "La clase numérica de uso del suelo en su mapa que representa ‘suelo desnudo’"
+                "es": "La clase numérica de cobertura del suelo para su LULC que representa suelo desnudo."
             },
             "defaultValue": "",
             "label": {
                 "en": "Bare Landcover Code",
-                "es": "Código de uso de suelo desnudo"
+                "es": "Código de Suelo Descubierto"
             },
             "required": true,
             "type": "text",
@@ -121,26 +121,26 @@
             }
         },
         {
-            "args_id": "carbon_pools_uri", 
+            "args_id": "carbon_pools_uri",
             "helpText": {
-                "en": "A table that maps the land cover ids to carbon pools.  The table must contain columns of 'LULC', 'C_above', 'C_Below', 'C_Soil', 'C_Dead' as described in the user's guide.  The values in LULC must at least include the LULC ids in the land cover maps.", 
-                "es": "Tabla que conecta los ‘id’ del mapa de usos del suelo con la tabla de contenidos de  carbono. La tabla debe contener las siguientes columnas: ‘LULC’, C_above’, C_below’, C_soil’, ‘C_dead’ tal como se describe en la guía de usuario.  Los valores en la columna ‘LULC’ deben al menos incluir los ID del mapa de usos del suelo."
-            }, 
+                "en": "A table that maps the land cover ids to carbon pools.  The table must contain columns of 'LULC', 'C_above', 'C_Below', 'C_Soil', 'C_Dead' as described in the user's guide.  The values in LULC must at least include the LULC ids in the land cover maps.",
+                "es": "Una tabla de mapea la ids de cobertura del suelo en reservorios de carbono. La tabla debe contener las columnas de 'LULC' 'C_above' 'C_Below' 'C_Soil' 'C_Dead' según se describe en la guía de uso. Los valores en LULC deben al menos incluir los ids de LULC en los mapas de cobertura de suelo."
+            },
             "required": true,
-            "id": "carbon_pools", 
+            "id": "carbon_pools",
             "label": {
-                "en": "Carbon Pools", 
-                "es": "Contenidos de carbono"
-            }, 
-            "type": "file", 
+                "en": "Carbon Pools",
+                "es": "Reservorios de Carbono"
+            },
+            "type": "file",
             "validateAs": {
                 "fieldsExist": [
-                    "lucode", 
-                    "C_above", 
-                    "C_Below", 
-                    "C_Soil", 
+                    "lucode",
+                    "C_above",
+                    "C_Below",
+                    "C_Soil",
                     "C_Dead"
-                ], 
+                ],
                 "type": "CSV"
             }
         },
@@ -169,5 +169,5 @@
             "returnValue": false,
             "type": "hidden"
         }
-    ] 
+    ]
 }
