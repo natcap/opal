@@ -1074,8 +1074,8 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 'input_type': 'text',
                 'position': 0,
                 'text': ('<div id="metadata">'
-                         'Created {timestamp}<br/>'
                          'OPAL {opal_version}<br/>'
+                         '{timestamp}<br/>'
                          '</div>').format(
                              opal_version=natcap.opal.__version__,
                              timestamp=time.strftime('%Y-%m-%d %H:%M:%S'))
