@@ -9,9 +9,9 @@ from shapely.geometry import Polygon
 import invest_natcap.testing
 import numpy
 
-import adept.i18n
-from adept.tests import vector, raster, COLOMBIA_SRS, COLOMBIA_GEOTRANSFORM
-from adept import adept_core
+import natcap.opal.i18n
+from natcap.opal.tests import vector, raster, COLOMBIA_SRS, COLOMBIA_GEOTRANSFORM
+from natcap.opal import adept_core
 
 def square(center_coords, side_len):
     x, y = center_coords
@@ -59,7 +59,7 @@ def named_workspace(clean=True, index=1):
 
 class SmokeTest(invest_natcap.testing.GISTest):
     def setUp(self):
-        adept.i18n.language.set('en')
+        natcap.opal.i18n.language.set('en')
         # make directories on disk in which to store internal data
         self._data_base_dir = tempfile.mkdtemp()
         internal_static_data = os.path.join(self._data_base_dir, 'data',
@@ -269,7 +269,7 @@ class SmokeTest(invest_natcap.testing.GISTest):
 
     def tearDown(self):
         md5sum_logfile = self.__class__.__name__ + '-' + self._testMethodName + '.log'
-        adept.tests.record_workspace_md5sums(self.workspace, md5sum_logfile)
+        natcap.opal.tests.record_workspace_md5sums(self.workspace, md5sum_logfile)
 
         folders_to_rm = [
             self.sediment_static_data,
@@ -290,13 +290,13 @@ class SmokeTest(invest_natcap.testing.GISTest):
         adept_core.execute(self.args)
 
     def test_smoke_es(self):
-        adept.i18n.language.set('es')
+        natcap.opal.i18n.language.set('es')
         self.test_smoke()
         if os.path.exists('es_workspace'):
             shutil.rmtree('es_workspace')
         shutil.copytree(self.workspace, 'es_workspace')
-        print adept.i18n.language.available_langs
-        print adept.i18n.LOCALE_DIR
+        print natcap.opal.i18n.language.available_langs
+        print natcap.opal.i18n.LOCALE_DIR
 
     def test_smoke_custom_es(self):
         self.args['custom_static_maps'] = self.custom_static_data
@@ -446,5 +446,5 @@ class SmokeTestOPAL(SmokeTest):
 
 class SmokeTest_ES(SmokeTest):
     def setUp(self):
-        adept.i18n.language.set('es')
+        natcap.opal.i18n.language.set('es')
         SmokeTest.setUp(self)
