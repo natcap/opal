@@ -12,7 +12,7 @@
         "type": "element",
         "id": "workspace"
     },
-    "targetScript": "adept.static_maps",
+    "targetScript": "natcap.opal.static_maps", 
     "targetFunction": "raster_math",
     "elements": [
         {

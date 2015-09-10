@@ -12,8 +12,8 @@
         "type": "element",
         "id": "workspace"
     },
-    "targetScript": "adept",
-    "condenseElements": true,
+    "targetScript": "natcap.opal", 
+    "condenseElements": true, 
     "elements": [
         {
             "id": "workspace",

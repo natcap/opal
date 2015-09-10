@@ -14,8 +14,8 @@ import palisades
 import palisades.i18n
 from palisades import execution
 from palisades import elements
-import adept.i18n
-from adept import versioning
+import natcap.opal.i18n
+from natcap.opal import versioning
 
 # capture palisades logging and only display INFO or higher
 PALISADES_LOGGER = logging.getLogger('palisades')
@@ -27,10 +27,10 @@ class MultilingualRunner(execution.PythonRunner):
     def start(self):
         """Start the execution.
         Overridden here to take the language of the palisades UI and set the
-        adept package language to the same language code."""
+        natcap.opal package language to the same language code."""
         palisades_lang = palisades.i18n.current_lang()
-        print 'setting adept lang to %s' % palisades_lang
-        adept.i18n.language.set(palisades_lang)
+        print 'setting opal lang to %s' % palisades_lang
+        natcap.opal.i18n.language.set(palisades_lang)
         execution.PythonRunner.start(self)
 
 def setup_opal_callbacks(ui_obj):

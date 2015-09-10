@@ -61,8 +61,8 @@ rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\pip install dist\faulthandler-2.3.tar.gz || goto :error
 cd ..\..
 
-:: CD to the Adept directory to install adept to the virtual environment
-cd src/adept
+:: CD to the pygeoprocessing directory to install it to the virtual environment
+cd src/pygeoprocessing
 rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
 cd ..\..
@@ -71,6 +71,11 @@ cd ..\..
 cd src/pyinstaller/bootloader
 ..\..\%ENVDIR%\Scripts\python .\waf configure build install
 cd ..\..\..
+
+:: The opal package is installed from the repo root
+rmdir /S /Q build
+%ENVDIR%\Scripts\python setup.py install || goto :error
+
 
 IF NOT %BUILD_STATIC_DATA% == "true" goto :skip_big_data
 %ENVDIR%\Scripts\python setup.py static_data_colombia || goto :error
