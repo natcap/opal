@@ -8,6 +8,7 @@ import shutil
 import tempfile
 from types import BooleanType
 from types import StringType
+import time
 
 from osgeo import ogr
 from invest_natcap import reporting
@@ -1070,6 +1071,18 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
             {
                 'type': 'text',
                 'section': 'body',
+                'input_type': 'text',
+                'position': 0,
+                'text': ('<div id="metadata">'
+                         'Created {timestamp}<br/>'
+                         'OPAL {opal_version}<br/>'
+                         '</div>').format(
+                             opal_version=natcap.opal.__version__,
+                             timestamp=time.strftime('%Y-%m-%d %H:%M:%S'))
+            },
+            {
+                'type': 'text',
+                'section': 'body',
                 'text': '</div></div>',
             },
         ]
@@ -1084,13 +1097,13 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
         if custom_es_servicesheds == 'hydrological':
             hydro_services.append('custom')
         hydrological_table =  opal_reporting.es_benefits_table(hydro_services)
-        report_args['elements'].insert(-1, hydrological_table)
+        report_args['elements'].insert(-2, hydrological_table)
 
     if 'carbon' in total_impacts or custom_es_servicesheds == 'global':
         LOGGER.debug('Including the global table')
         global_table = opal_reporting.global_benefits_table(
             custom_es_servicesheds == 'global', adjusted_global_impacts)
-        report_args['elements'].insert(-1, global_table)
+        report_args['elements'].insert(-2, global_table)
 
     # If the user's impact sites intersect an avoidance area, then insert a
     # warning into the HTML report.

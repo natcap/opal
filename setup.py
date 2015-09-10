@@ -241,7 +241,7 @@ class SampleDataCommand(Command):
 
 class SampleDataGlobalCommand(SampleDataCommand):
     description = "Zip up required tool and static data for OPAL"
-    user_options = []
+    user_options = ['no-zip']
 
     def initialize_options(self):
         pass
