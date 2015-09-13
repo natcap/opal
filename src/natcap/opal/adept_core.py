@@ -492,14 +492,14 @@ def execute(args):
             hzone_static_maps])
 
         hzone_paths = {
-            'offset_sites': os.path.join(hzone_dir, 'offset_sites.shp'),
-            'all_offsets': os.path.join(hzone_dir, 'offset_parcels_in_zone.shp'),
+            'offset_sites': os.path.join(hzone_dir, 'offset_sites_available.shp'),
+            'all_offsets': os.path.join(hzone_dir, 'potential_offsets_in_zone.shp'),
             'all_natural_parcels': os.path.join(hzone_dir, 'natural_parcels_in_zone.shp'),
             'impact_sites': impact_sites_data['uri'],
             'bio_impacts': os.path.join(hzone_dev, 'bio_impacts.json'),
-            'selected_offsets': os.path.join(hzone_dir, 'selected_offsets.shp'),
-            'impacted_muni': os.path.join(hzone_dir, 'impacted_municipalities.shp'),
-            'servicesheds': os.path.join(hzone_dir, 'servicesheds.shp'),
+            'selected_offsets': os.path.join(hzone_dir, 'offset_sites_filtered.shp'),
+            'impacted_muni': os.path.join(hzone_dir, 'impacted_softboundary2.shp'),
+            'servicesheds': os.path.join(hzone_dir, 'servicesheds_in_zone.shp'),
             'hydrozone': os.path.join(hzone_dir, 'impacted_zone.shp'),
             'hydrosubzones': os.path.join(hzone_dir, 'impacted_subzones.shp'),
             'parcel_info': os.path.join(hzone_dev, 'selected_parcels.json'),
@@ -627,7 +627,7 @@ def execute(args):
         json.dump(per_offset_data, open(os.path.join(hzone_dev,
             'per_offset_data.json'), 'w'), indent=4, sort_keys=True)
         opal_reporting.write_per_offset_csv(per_offset_data,
-            os.path.join(hzone_dir, 'offset_benefits_to_servicesheds.csv'))
+            os.path.join(hzone_dir, 'offset_benefits_per_serviceshed.csv'))
 
 
         #########################
@@ -827,7 +827,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
     if not skip_biodiv:
         impacted_parcels_table = opal_reporting.impacted_parcels_table(
             impact_sites, natural_parcels, os.path.join(output_workspace,
-            'impacted_parcels.csv'))
+            'impacted_natural_ecosystems.csv'))
     else:
         impacted_parcels_table = EMPTY_REPORT_OBJ()
 
@@ -842,7 +842,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
     LOGGER.debug('adjusted_global_impacts: %s', adjusted_global_impacts)
     offset_parcels_table = opal_reporting.build_parcel_table(per_offset_data,
         adjusted_global_impacts.copy(), os.path.join(output_workspace,
-        'offset_parcels.csv'), distribution, include_aoi_column,
+        'offset_sites_filtered_table.csv'), distribution, include_aoi_column,
         include_subzone_column, suggested_parcels)
 
     report_args = {
