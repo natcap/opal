@@ -1001,11 +1001,8 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 'type': 'text',
                 'section': 'body',
                 #'position': 0,
-                'text': '<b>%s: %s</b>%s<br/>%s<br/>' % (_('Suggested offset parcels'),
+                'text': '<b>%s: %s</b><br/>%s<br/>' % (_('Suggested offset parcels'),
                     suggested_parcels,
-                    ('<button type="button" onClick="checkSomeBoxes(%s); '
-                     'return false;">Select suggested</button>') %
-                    json.dumps(suggested_parcels),
                     _('Suggested parcels account for %sx impacts x mitigation ratio') % prop_offset)
             },
             offset_parcels_table,
