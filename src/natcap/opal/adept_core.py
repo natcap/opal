@@ -989,12 +989,17 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 'type': 'text',
                 'section': 'body',
                 #'position': 0,
-                'text': '<h2>%s</h2>%s<br/><br/>%s: <a href="%s">%s</a><br/>' %
-                    (_('Possible offset patches'),
-                        '<a href="#" class="export">Export CSV</a>',
-                        _('GIS vector with all selected offset patches'),
-                        selected_parcels,
-                        os.path.relpath(selected_parcels,
+                'text': (
+                    '<h2>{title}</h2>{export_csv}<br/><br/>'
+                    '{all_offsets_title}: <b>{offsets_link}</b>'
+                    '<br/>').format(
+                        title=_('Possible offset patches'),
+                        export_csv=('<a href="#" '
+                                    'class="export">Export CSV</a>'),
+                        all_offsets_title=_('GIS vector with all selected '
+                                            'offset patches'),
+                        offsets_link=os.path.relpath(
+                            selected_parcels,
                             os.path.join(output_workspace, '..', '..')))
             },
             {
