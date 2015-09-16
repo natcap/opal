@@ -184,7 +184,10 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
                 polygons.append(geometry.ExportToWkb())
                 polygons_in_feature.append(geometry.ExportToWkb())
         else:
-            raise Exception
+            feature_type_label = geometry.ExportToWkt().split()[0]
+            raise ValueError(_(
+                'Features provided must be polygons, but found '
+                '%s instead') % feature_type_label)
 
         for polygon_wkb in polygons_in_feature:
             # new_geometry = ogr.CreateGeometryFromWkb()
