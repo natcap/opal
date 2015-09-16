@@ -384,7 +384,7 @@ def execute(args):
         hydro_subzones = args['search_areas_uri']
         LOGGER.debug('Using user-provided hydro subzones: %s', hydro_subzones)
 
-        hydrozones = os.path.join(dirs['workspace'], 'hydrozones.shp')
+        hydrozones = os.path.join(dirs['intermediate'], 'hydrozones.shp')
         # build the hydrozones out of the hydrosubzones by zone attribute
         contained_subzones = preprocessing.union_by_attribute(hydro_subzones,
             'zone', hydrozones)
@@ -415,7 +415,7 @@ def execute(args):
         LOGGER.debug('Using user-provided AOI')
     except KeyError:
         LOGGER.debug('Building AOI from hydro subzones')
-        area_of_influence = os.path.join(dirs['workspace'], 'aoi_computed.shp')
+        area_of_influence = os.path.join(dirs['intermediate'], 'aoi_computed.shp')
         preprocessing.prepare_aoi(args['project_footprint_uri'],
             hydro_subzones, area_of_influence)
 
