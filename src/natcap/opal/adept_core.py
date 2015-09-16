@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import glob
 import logging
 import os
 import shutil
@@ -163,6 +164,7 @@ def execute(args):
         'impact_sites': os.path.join(args['workspace_dir'], 'intermediate',
             'impact_sites'),
         'temp': os.path.join(args['workspace_dir'], 'temp'),
+        'results': os.path.join(args['workspace_dir'], 'results'),
     }
     LOGGER.debug('workspace directories: %s', json.dumps(dirs, indent=4,
         sort_keys=True))
@@ -198,6 +200,7 @@ def execute(args):
             'union_impacted_subzones.shp'),
         'buffered_subzones': os.path.join(dirs['intermediate'],
             'buffered_subzones.shp'),
+        'base_report': os.path.join(dirs['results'], 'index.html'),
     }
 
     pygeoprocessing.create_directories(dirs.values())
@@ -473,7 +476,7 @@ def execute(args):
         servicesheds = common_data['servicesheds']
         LOGGER.debug('Using default servicesheds: %s', servicesheds)
 
-    # Start looping through all of the
+    # Start looping through all of the impacted hydrozones
     for impact_sites_data in impact_sites_list:
         if type(impact_sites_data['name']) is StringType:
             recode = lambda s: s.decode('utf-8')
@@ -484,8 +487,8 @@ def execute(args):
         LOGGER.debug('Processing impacts for hydrozone %s',
             impact_sites_data['name'])
         _clean_hydrozone_name = impact_sites_data['name'].lower().replace(' ', '_')
-        _workspace_name = 'results_' + _clean_hydrozone_name
-        hzone_dir = os.path.join(dirs['workspace'], _workspace_name)
+
+        hzone_dir = os.path.join(dirs['results'], _clean_hydrozone_name)
         hzone_dev = os.path.join(hzone_dir, '_dev')
         hzone_static_maps = os.path.join(hzone_dir, 'static_data')
         pygeoprocessing.create_directories([hzone_dir, hzone_dev,
@@ -754,6 +757,74 @@ def execute(args):
     # return tempfile.tempdir to its original state.
     tempfile.tempdir = old_temp_dir
     shutil.rmtree(dirs['temp'])
+
+    write_results_index(dirs['results'], files['base_report'],
+                         distribution=args['distribution'])
+
+def write_results_index(results_dir, out_file, distribution):
+    """
+    Write an HTML page to the results folder with links to per-zone analyses.
+
+    This HTML page is extremely simple relative to the interactivity contained
+    in the analysis pages.  It's just a UL with some helptext, where each LI
+    links to the given hydrozones analysis.
+
+    Parameters:
+        results_dir (string): A string filepath to the folder containing each
+            of the per-hydrozone results directories.
+        out_file (string): The path to the file to which the HTML file will be
+            written.
+        distribution (string): The name of the distribution to write to the
+            file.
+
+    Returns:
+        None
+    """
+    zone_glob = os.path.join(results_dir, '*')
+    zone_directory_basenames = [os.path.basename(d)
+                                for d in glob.glob(zone_glob)
+                                if os.path.isdir(d)]
+    LOGGER.debug('Zone directory basenames: %s', zone_directory_basenames)
+
+    reporting_config = {
+        'title': _('Report'),
+        'sortable': False,
+        'totals': False,
+        'out_uri': out_file,
+        'elements': [
+            {
+                'type': 'head',
+                'section': 'head',
+                'format': 'style',
+                'position': 0,
+                'input_type': 'File',
+                'data_src': os.path.join(REPORT_DATA, 'table_style.css')
+            },
+            {
+                'type': 'text',
+                'section': 'body',
+                'input_type': 'text',
+                'position': 0,
+                'text': (
+                    '<h1>{distribution} {title}</h1>'
+                    '{help_text}'
+                    '<ul>{formatted_hzone_list}</ul>'
+                ).format(
+                    distribution=distribution.upper(),
+                    title=_('Per-Zone Analyses'),
+                    help_text=_(
+                        'Select a zone to navigate to its impact summary.'
+                    ),
+                    formatted_hzone_list='\n'.join([
+                        '<li><a href="{href}">{text}</li>'.format(
+                            href=os.path.join(d, d + '_report.html'),
+                            text=d)
+                        for d in zone_directory_basenames])
+                )
+            }
+        ]
+    }
+    reporting.generate_report(reporting_config)
 
 def build_report(municipalities, biodiversity_impact, selected_parcels,
     project_footprint, total_impacts,
