@@ -11,9 +11,9 @@ from types import StringType
 import time
 
 from osgeo import ogr
-from invest_natcap import reporting
 import pygeoprocessing
 
+from natcap.invest import reporting
 import natcap.opal
 import natcap.opal.i18n
 import preprocessing

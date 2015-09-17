@@ -14,10 +14,9 @@ import zipfile
 
 from osgeo import gdal
 from osgeo import ogr
-import invest_natcap.testing
-from invest_natcap.sdr import sdr
-from invest_natcap.nutrient import nutrient
-from invest_natcap.carbon import carbon_combined as carbon
+from natcap.invest.sdr import sdr
+from natcap.invest.nutrient import nutrient
+from natcap.invest.carbon import carbon_combined as carbon
 import pygeoprocessing
 import numpy
 import scipy
@@ -689,13 +688,17 @@ def get_json_md5(json_uri):
         if isinstance(value, UnicodeType):
             if os.path.exists(value):
                 LOGGER.debug('Value %s is a URI', value)
-                value = invest_natcap.testing.get_hash(value)
+                file_handler = open(value, 'rb')
+                file_md5 = hashlib.md5()
+                for chunk in iter(lambda: file_handler.read(2**20), ''):
+                    file_md5.update(chunk)
+                value = file_md5.hexdigest()
 
         LOGGER.debug('Updating digest with %s: %s', key, value)
         config_md5sum.update(key)
         config_md5sum.update(value)
 
-    return config.md5sum.hexdigest()
+    return config_md5sum.hexdigest()
 
 
 def clip_raster_to_watershed(in_raster, ws_vector, out_uri, clip_raster=None):

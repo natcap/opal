@@ -8,7 +8,7 @@ from types import StringType
 import time
 
 import natcap.opal
-import invest_natcap
+import natcap.invest
 import shapely
 import shapely.speedups
 import shapely.wkb
@@ -103,7 +103,7 @@ def log_run(base_string):
         model_name = string
         model_version = natcap.opal.__version__
 
-    invest_natcap.log_model(model_name, model_version)
+    natcap.invest.log_model(model_name, model_version)
 
 class VectorUnprojected(Exception):
     """An Exception in case a vector is unprojected"""
