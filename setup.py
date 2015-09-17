@@ -550,6 +550,13 @@ class GlobalDistribution(NSISCommand):
         self.run_command('sample_data_global')
         self.write_dist_data('OPAL')
 
+        # Build the documentation.  Installer expects the PDFs to be in the
+        # repo root, which is where the makefile will leave it.
+        cwd = os.getcwd()
+        os.chdir('doc/users-guide')
+        subprocess.call(['make', 'all'])
+        os.chdir(cwd)
+
         # copy the distribution UI config file to the pyinstaller dist folder.
         source_file = os.path.join('windows_build', 'dist_config.json')
         dest_dist_config_file = os.path.join(self.nsis_dir, 'dist_config.json')
