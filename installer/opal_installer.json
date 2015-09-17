@@ -37,7 +37,8 @@
         "icon": "opal_images\\opal-logo.ico",
         "extra_files": [
             "\"opal_images\\opal-logo.ico\"",
-            "\"..\\OPAL User's Guide v.1.0.3.pdf\""
+            "\"..\\docs\users-guide\OPAL_manual_en.pdf\""
+            "\"..\\docs\users-guide\OPAL_manual_es.pdf\""
         ],
         "start_menu": [
             {
@@ -66,8 +67,12 @@
                 "icon": "${icon}"
             },
             {
-                "name": "${APP_NAME} Documentation",
-                "target": "OPAL User's Guide v.1.0.3.pdf"
+                "name": "${APP_NAME} Documentation (English)",
+                "target": "OPAL_manual_en.pdf"
+            },
+            {
+                "name": "${APP_NAME} Documentación (Español)",
+                "target": "OPAL_manual_es.pdf"
             }
         ],
         "sections": []
