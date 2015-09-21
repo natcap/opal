@@ -6,14 +6,13 @@ import glob
 
 import shapely.wkt
 import shapely.ops
-from shapely.geometry import Polygon
-from shapely.geometry import MultiPolygon
+from shapely.geometry import Polygon, MultiPolygon, LineString, MultiLineString
 import rtree
 from osgeo import ogr
 
-import adept.tests
-from adept import preprocessing
-from adept import utils
+import natcap.opal.tests
+from natcap.opal import preprocessing
+from natcap.opal import utils
 
 class PreprocessingTest(unittest.TestCase):
     def test_rm_shapefile(self):
@@ -45,8 +44,8 @@ class PreprocessingTest(unittest.TestCase):
         polygon_c = Polygon([(8, 1), (11, 1), (11, 4), (8, 4),
             (8, 1)])
 
-        vector_uri = adept.tests.vector([polygon_a, polygon_b, polygon_c],
-            adept.tests.COLOMBIA_SRS)
+        vector_uri = natcap.opal.tests.vector([polygon_a, polygon_b, polygon_c],
+            natcap.opal.tests.COLOMBIA_SRS)
 
         spat_index, parcels = preprocessing.build_spatial_index(vector_uri)
 
@@ -54,7 +53,7 @@ class PreprocessingTest(unittest.TestCase):
         self.assertEqual(len(parcels), 3)
         self.assertEqual(isinstance(spat_index, rtree.index.Index), True)
 
-        adept.tests.cleanup(vector_uri)
+        natcap.opal.tests.cleanup(vector_uri)
 
     def test_split_multipolygons(self):
         base_coords = [(2, 2), (4, 2), (4, 4), (2, 4), (2, 2)]
@@ -70,8 +69,8 @@ class PreprocessingTest(unittest.TestCase):
         multipoly_a = MultiPolygon([polygon_a, polygon_b])
         multipoly_b = MultiPolygon([polygon_c, polygon_d])
 
-        multi_vec = adept.tests.vector([multipoly_a, multipoly_b, polygon_e],
-            adept.tests.COLOMBIA_SRS, format='ESRI Shapefile')
+        multi_vec = natcap.opal.tests.vector([multipoly_a, multipoly_b, polygon_e],
+            natcap.opal.tests.COLOMBIA_SRS, format='ESRI Shapefile')
 
         out_dir = tempfile.mkdtemp()
         out_vector_uri = os.path.join(out_dir, 'split.shp')
@@ -86,20 +85,48 @@ class PreprocessingTest(unittest.TestCase):
         out_vector = None
         shutil.rmtree(out_dir)
 
+    def test_split_multipolygons_line(self):
+        """
+        Split_multipolygons() should skip over features that are not polygons
+        """
+        base_coords = [(2, 2), (4, 2), (4, 4), (2, 4), (2, 2)]
+        def translate(x, y):
+            return [(a + x, b + y) for (a, b) in base_coords]
+
+        linestring_a = LineString(base_coords)
+        linestring_b = LineString(translate(4, 0))
+        linestring_c = LineString(translate(0, 4))
+        linestring_d = LineString(translate(4, 4))
+        linestring_e = LineString(translate(8, 2))
+
+        multilinestring_a = MultiLineString([linestring_a, linestring_b])
+        multilinestring_b = MultiLineString([linestring_c, linestring_d])
+
+        multi_vec = natcap.opal.tests.vector(
+            [multilinestring_a, multilinestring_b, linestring_e],
+            natcap.opal.tests.COLOMBIA_SRS, format='ESRI Shapefile')
+
+        out_dir = tempfile.mkdtemp()
+        out_vector_uri = os.path.join(out_dir, 'split.shp')
+        self.assertRaises(ValueError,  preprocessing.split_multipolygons, multi_vec, out_vector_uri)
+
+        shutil.rmtree(out_dir)
+
+
     def test_prepare_aoi(self):
         # create an impact sites vector.
         impact_a = Polygon([(5, 3), (10, 3), (10, 5), (5, 5), (5, 3)])
         impact_b = Polygon([(4, 9), (6, 9), (6, 11), (4, 11), (4, 9)])
-        impacts_vector = adept.tests.vector([impact_a, impact_b],
-            adept.tests.COLOMBIA_SRS, format='ESRI Shapefile')
+        impacts_vector = natcap.opal.tests.vector([impact_a, impact_b],
+            natcap.opal.tests.COLOMBIA_SRS, format='ESRI Shapefile')
 
         # create a sample hydrozubsones vector
         subzone_a = Polygon([(1, 1), (8, 1), (8, 7), (1, 7), (1, 1)])
         subzone_b = Polygon([(8, 1), (14, 1), (14, 8), (8, 8), (8, 1)])
         subzone_c = Polygon([(8, 8), (15, 8), (15, 14), (8, 14), (8, 8)])
         subzone_d = Polygon([(1, 7), (8, 7), (8, 14), (1, 14), (1, 7)])
-        subzones_vector = adept.tests.vector([subzone_a, subzone_b, subzone_c,
-            subzone_d], adept.tests.COLOMBIA_SRS, format='ESRI Shapefile')
+        subzones_vector = natcap.opal.tests.vector([subzone_a, subzone_b, subzone_c,
+            subzone_d], natcap.opal.tests.COLOMBIA_SRS, format='ESRI Shapefile')
 
         temp_dir = tempfile.mkdtemp()
         out_uri = os.path.join(temp_dir, 'aoi.shp')
@@ -132,8 +159,8 @@ class PreprocessingTest(unittest.TestCase):
         # build an impact sites vector.
         impact_a = Polygon([(5, 3), (10, 3), (10, 5), (5, 5), (5, 3)])
         impact_b = Polygon([(4, 9), (6, 9), (6, 11), (4, 11), (4, 9)])
-        impacts_vector = adept.tests.vector([impact_a, impact_b],
-            adept.tests.COLOMBIA_SRS, format='ESRI Shapefile')
+        impacts_vector = natcap.opal.tests.vector([impact_a, impact_b],
+            natcap.opal.tests.COLOMBIA_SRS, format='ESRI Shapefile')
 
         # build a hydrozones vector where two hydrozones intersect the same
         # impact polygon.
@@ -150,8 +177,8 @@ class PreprocessingTest(unittest.TestCase):
             {'zone': 'C'},
             {'zone': 'D'},
         ]
-        subzones_vector = adept.tests.vector([subzone_a, subzone_b, subzone_c,
-            subzone_d], adept.tests.COLOMBIA_SRS, format='ESRI Shapefile',
+        subzones_vector = natcap.opal.tests.vector([subzone_a, subzone_b, subzone_c,
+            subzone_d], natcap.opal.tests.COLOMBIA_SRS, format='ESRI Shapefile',
             fields=fields, features=field_values)
 
         temp_dir = tempfile.mkdtemp()
@@ -195,8 +222,8 @@ class PreprocessingTest(unittest.TestCase):
             {'zone': 'first'},
             {'zone': 'second'},
         ]
-        sample_vector = adept.tests.vector([polygon_a, polygon_b, polygon_c],
-            adept.tests.COLOMBIA_SRS, fields, field_values)
+        sample_vector = natcap.opal.tests.vector([polygon_a, polygon_b, polygon_c],
+            natcap.opal.tests.COLOMBIA_SRS, fields, field_values)
 
         temp_dir = tempfile.mkdtemp()
         out_file = os.path.join(temp_dir, 'union_by_attribute.shp')
@@ -221,5 +248,28 @@ class PreprocessingTest(unittest.TestCase):
 
         shutil.rmtree(temp_dir)
 
+
+    def test_locate_intersecting_polygons(self):
+        polygon_a = Polygon([(1, 1), (5, 1), (5, 5), (1, 5),
+            (1, 1)])
+        polygon_b = Polygon([(3, 3), (9, 3), (9, 9), (3, 9),
+            (3, 3)])
+        polygon_c = Polygon([(8, 1), (11, 1), (11, 4), (8, 4),
+            (8, 1)])
+
+        vector_uri = natcap.opal.tests.vector([polygon_a, polygon_b, polygon_c],
+            natcap.opal.tests.COLOMBIA_SRS)
+
+        comparison_polygon = Polygon([(0, 0), (4, 0), (4, 4), (4, 0), (0, 0)])
+        comp_vector_uri = natcap.opal.tests.vector([comparison_polygon],
+                                                   natcap.opal.tests.COLOMBIA_SRS)
+
+        out_dir = tempfile.mkdtemp()
+        out_vector_uri = os.path.join(out_dir, 'out_vector.shp')
+        preprocessing.locate_intersecting_polygons(vector_uri, comp_vector_uri,
+                                                   out_vector_uri)
+
+        # TODO: use this test (or even better, a test on real sample data)
+        # to compare OGR layer operations against per-polygon operations.
 
 

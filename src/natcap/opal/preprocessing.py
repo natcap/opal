@@ -4,9 +4,9 @@ import os
 import logging
 import tempfile
 import shutil
-import math
 import json
 import glob
+import time
 
 from osgeo import ogr
 from osgeo import gdal
@@ -22,7 +22,6 @@ import rtree
 import pygeoprocessing
 
 import offsets
-import preprocessing
 import utils
 
 
@@ -185,7 +184,10 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
                 polygons.append(geometry.ExportToWkb())
                 polygons_in_feature.append(geometry.ExportToWkb())
         else:
-            raise Exception
+            feature_type_label = geometry.ExportToWkt().split()[0]
+            raise ValueError(_(
+                'Features provided must be polygons, but found '
+                '%s instead') % feature_type_label)
 
         for polygon_wkb in polygons_in_feature:
             # new_geometry = ogr.CreateGeometryFromWkb()
@@ -542,10 +544,13 @@ def locate_intersecting_polygons(source_vector_uri, comparison_vector_uri,
 
     LOGGER.debug('Locating intersecting polygons')
     found_features = {}
+    last_time = time.time()
+    num_features = 0
     for feature in in_layer:
         index = feature.GetFID()
         feature_defn = feature.GetDefnRef()
         geometry = feature.GetGeometryRef()
+        num_features += 1
 
         try:
             polygon = offsets.build_shapely_polygon(feature)
@@ -576,6 +581,15 @@ def locate_intersecting_polygons(source_vector_uri, comparison_vector_uri,
                                 found_features[index] = [intersection.wkb]
         else:
             LOGGER.warn('Feature %s is invalid and could not be fixed.', index)
+
+        current_time = time.time()
+        if (current_time - last_time) > 5.:
+            last_time = current_time
+            percent_complete = round((float(num_features) /
+                                      in_layer.GetFeatureCount()) * 100, 2)
+            LOGGER.info('Locating polygons %s%% complete', percent_complete)
+
+    LOGGER.info('Locating polygons %s%% complete', 100)
 
     LOGGER.debug('Creating %s new geometries', len(found_features))
     for index, binary_geometries in found_features.iteritems():

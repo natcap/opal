@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import glob
 import logging
 import os
 import shutil
@@ -163,6 +164,7 @@ def execute(args):
         'impact_sites': os.path.join(args['workspace_dir'], 'intermediate',
             'impact_sites'),
         'temp': os.path.join(args['workspace_dir'], 'temp'),
+        'results': os.path.join(args['workspace_dir'], 'results'),
     }
     LOGGER.debug('workspace directories: %s', json.dumps(dirs, indent=4,
         sort_keys=True))
@@ -198,6 +200,7 @@ def execute(args):
             'union_impacted_subzones.shp'),
         'buffered_subzones': os.path.join(dirs['intermediate'],
             'buffered_subzones.shp'),
+        'base_report': os.path.join(dirs['results'], 'index.html'),
     }
 
     pygeoprocessing.create_directories(dirs.values())
@@ -381,7 +384,7 @@ def execute(args):
         hydro_subzones = args['search_areas_uri']
         LOGGER.debug('Using user-provided hydro subzones: %s', hydro_subzones)
 
-        hydrozones = os.path.join(dirs['workspace'], 'hydrozones.shp')
+        hydrozones = os.path.join(dirs['intermediate'], 'hydrozones.shp')
         # build the hydrozones out of the hydrosubzones by zone attribute
         contained_subzones = preprocessing.union_by_attribute(hydro_subzones,
             'zone', hydrozones)
@@ -412,7 +415,7 @@ def execute(args):
         LOGGER.debug('Using user-provided AOI')
     except KeyError:
         LOGGER.debug('Building AOI from hydro subzones')
-        area_of_influence = os.path.join(dirs['workspace'], 'aoi_computed.shp')
+        area_of_influence = os.path.join(dirs['intermediate'], 'aoi_computed.shp')
         preprocessing.prepare_aoi(args['project_footprint_uri'],
             hydro_subzones, area_of_influence)
 
@@ -473,7 +476,7 @@ def execute(args):
         servicesheds = common_data['servicesheds']
         LOGGER.debug('Using default servicesheds: %s', servicesheds)
 
-    # Start looping through all of the
+    # Start looping through all of the impacted hydrozones
     for impact_sites_data in impact_sites_list:
         if type(impact_sites_data['name']) is StringType:
             recode = lambda s: s.decode('utf-8')
@@ -484,22 +487,22 @@ def execute(args):
         LOGGER.debug('Processing impacts for hydrozone %s',
             impact_sites_data['name'])
         _clean_hydrozone_name = impact_sites_data['name'].lower().replace(' ', '_')
-        _workspace_name = 'results_' + _clean_hydrozone_name
-        hzone_dir = os.path.join(dirs['workspace'], _workspace_name)
+
+        hzone_dir = os.path.join(dirs['results'], _clean_hydrozone_name)
         hzone_dev = os.path.join(hzone_dir, '_dev')
         hzone_static_maps = os.path.join(hzone_dir, 'static_data')
         pygeoprocessing.create_directories([hzone_dir, hzone_dev,
             hzone_static_maps])
 
         hzone_paths = {
-            'offset_sites': os.path.join(hzone_dir, 'offset_sites.shp'),
-            'all_offsets': os.path.join(hzone_dir, 'offset_parcels_in_zone.shp'),
+            'offset_sites': os.path.join(hzone_dir, 'offset_sites_available.shp'),
+            'all_offsets': os.path.join(hzone_dir, 'potential_offsets_in_zone.shp'),
             'all_natural_parcels': os.path.join(hzone_dir, 'natural_parcels_in_zone.shp'),
             'impact_sites': impact_sites_data['uri'],
             'bio_impacts': os.path.join(hzone_dev, 'bio_impacts.json'),
-            'selected_offsets': os.path.join(hzone_dir, 'selected_offsets.shp'),
-            'impacted_muni': os.path.join(hzone_dir, 'impacted_municipalities.shp'),
-            'servicesheds': os.path.join(hzone_dir, 'servicesheds.shp'),
+            'selected_offsets': os.path.join(hzone_dir, 'offset_sites_filtered.shp'),
+            'impacted_muni': os.path.join(hzone_dir, 'impacted_softboundary2.shp'),
+            'servicesheds': os.path.join(hzone_dir, 'servicesheds_in_zone.shp'),
             'hydrozone': os.path.join(hzone_dir, 'impacted_zone.shp'),
             'hydrosubzones': os.path.join(hzone_dir, 'impacted_subzones.shp'),
             'parcel_info': os.path.join(hzone_dev, 'selected_parcels.json'),
@@ -627,7 +630,7 @@ def execute(args):
         json.dump(per_offset_data, open(os.path.join(hzone_dev,
             'per_offset_data.json'), 'w'), indent=4, sort_keys=True)
         opal_reporting.write_per_offset_csv(per_offset_data,
-            os.path.join(hzone_dir, 'offset_benefits_to_servicesheds.csv'))
+            os.path.join(hzone_dir, 'offset_benefits_per_serviceshed.csv'))
 
 
         #########################
@@ -755,6 +758,74 @@ def execute(args):
     tempfile.tempdir = old_temp_dir
     shutil.rmtree(dirs['temp'])
 
+    write_results_index(dirs['results'], files['base_report'],
+                         distribution=args['distribution'])
+
+def write_results_index(results_dir, out_file, distribution):
+    """
+    Write an HTML page to the results folder with links to per-zone analyses.
+
+    This HTML page is extremely simple relative to the interactivity contained
+    in the analysis pages.  It's just a UL with some helptext, where each LI
+    links to the given hydrozones analysis.
+
+    Parameters:
+        results_dir (string): A string filepath to the folder containing each
+            of the per-hydrozone results directories.
+        out_file (string): The path to the file to which the HTML file will be
+            written.
+        distribution (string): The name of the distribution to write to the
+            file.
+
+    Returns:
+        None
+    """
+    zone_glob = os.path.join(results_dir, '*')
+    zone_directory_basenames = [os.path.basename(d)
+                                for d in glob.glob(zone_glob)
+                                if os.path.isdir(d)]
+    LOGGER.debug('Zone directory basenames: %s', zone_directory_basenames)
+
+    reporting_config = {
+        'title': _('Report'),
+        'sortable': False,
+        'totals': False,
+        'out_uri': out_file,
+        'elements': [
+            {
+                'type': 'head',
+                'section': 'head',
+                'format': 'style',
+                'position': 0,
+                'input_type': 'File',
+                'data_src': os.path.join(REPORT_DATA, 'table_style.css')
+            },
+            {
+                'type': 'text',
+                'section': 'body',
+                'input_type': 'text',
+                'position': 0,
+                'text': (
+                    '<h1>{distribution} {title}</h1>'
+                    '{help_text}'
+                    '<ul>{formatted_hzone_list}</ul>'
+                ).format(
+                    distribution=distribution.upper(),
+                    title=_('Per-Zone Analyses'),
+                    help_text=_(
+                        'Select a zone to navigate to its impact summary.'
+                    ),
+                    formatted_hzone_list='\n'.join([
+                        '<li><a href="{href}">{text}</li>'.format(
+                            href=os.path.join(d, d + '_report.html'),
+                            text=d)
+                        for d in zone_directory_basenames])
+                )
+            }
+        ]
+    }
+    reporting.generate_report(reporting_config)
+
 def build_report(municipalities, biodiversity_impact, selected_parcels,
     project_footprint, total_impacts,
     impact_type, output_workspace, impact_sites, pop_col, report_name,
@@ -827,7 +898,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
     if not skip_biodiv:
         impacted_parcels_table = opal_reporting.impacted_parcels_table(
             impact_sites, natural_parcels, os.path.join(output_workspace,
-            'impacted_parcels.csv'))
+            'impacted_natural_ecosystems.csv'))
     else:
         impacted_parcels_table = EMPTY_REPORT_OBJ()
 
@@ -842,7 +913,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
     LOGGER.debug('adjusted_global_impacts: %s', adjusted_global_impacts)
     offset_parcels_table = opal_reporting.build_parcel_table(per_offset_data,
         adjusted_global_impacts.copy(), os.path.join(output_workspace,
-        'offset_parcels.csv'), distribution, include_aoi_column,
+        'offset_sites_filtered_table.csv'), distribution, include_aoi_column,
         include_subzone_column, suggested_parcels)
 
     report_args = {
@@ -989,32 +1060,26 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 'type': 'text',
                 'section': 'body',
                 #'position': 0,
-                'text': '<h2>%s</h2>%s<br/><br/>%s: <a href="%s">%s</a><br/>' %
-                    (_('Possible offset patches'),
-                        '<a href="#" class="export">Export CSV</a>',
-                        _('GIS vector with all selected offset patches'),
-                        selected_parcels,
-                        os.path.relpath(selected_parcels,
+                'text': (
+                    '<h2>{title}</h2>{export_csv}<br/><br/>'
+                    '{all_offsets_title}: <b>{offsets_link}</b>'
+                    '<br/>').format(
+                        title=_('Possible offset patches'),
+                        export_csv=('<a href="#" '
+                                    'class="export">Export CSV</a>'),
+                        all_offsets_title=_('GIS vector with all selected '
+                                            'offset patches'),
+                        offsets_link=os.path.relpath(
+                            selected_parcels,
                             os.path.join(output_workspace, '..', '..')))
             },
             {
                 'type': 'text',
                 'section': 'body',
                 #'position': 0,
-                'text': '<b>%s: %s</b>%s<br/>%s<br/>' % (_('Suggested offset parcels'),
+                'text': '<b>%s: %s</b><br/>%s<br/>' % (_('Suggested offset parcels'),
                     suggested_parcels,
-                    ('<button type="button" onClick="checkSomeBoxes(%s); '
-                     'return false;">Select suggested</button>') %
-                    json.dumps(suggested_parcels),
                     _('Suggested parcels account for %sx impacts x mitigation ratio') % prop_offset)
-            },
-            {
-                'type': 'text',
-                'section': 'body',
-                'text': (
-                    '<button type="button" onClick="checkAllBoxes(true); return false;">Select All</button> '
-                    '<button type="button" onClick="checkAllBoxes(false); return false;">Select None</button>'
-                    )
             },
             offset_parcels_table,
             {
