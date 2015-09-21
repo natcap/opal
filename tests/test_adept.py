@@ -5,10 +5,10 @@ import json
 
 from invest_natcap.testing import GISTest
 
-import adept.i18n
-from adept import adept_core
-from adept import analysis
-from adept import offsets
+import natcap.opal.i18n
+from natcap.opal import adept_core
+from natcap.opal import analysis
+from natcap.opal import offsets
 
 DATA = os.path.join(os.getcwd(), '..', 'data', 'colombia_tool_data')
 TEST_DATA = os.path.join(os.getcwd(), '..', 'data', 'colombia_testing')
@@ -75,7 +75,7 @@ class AdeptTest(GISTest):
         adept_core.execute(args)
 
     def test_smoke_es(self):
-        adept.i18n.language.set('es')
+        natcap.opal.i18n.language.set('es')
         if os.path.exists(self.workspace):
             shutil.rmtree(self.workspace)
 
@@ -140,7 +140,7 @@ class AdeptTest(GISTest):
         analysis.percent_overlap(offset_sites, municipalities, temp_file)
 
     def test_reporting(self):
-        adept.i18n.language.set('es')
+        natcap.opal.i18n.language.set('es')
 #        municipalities = os.path.join(TEST_DATA, 'limited_servicesheds_2.shp')
         municipalities = os.path.join(self.workspace, 'Medio Magdalena',
             'servicesheds.shp')
