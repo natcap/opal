@@ -130,7 +130,6 @@ def execute(args):
 
     LOGGER.debug('Current language: "%s"', natcap.opal.i18n.language.current_lang)
     utils.log_run('adept.core')
-
     # build a list of possible places to look for the ascii art text file in
     # order of priority.
     possible_dirs = []
@@ -737,7 +736,8 @@ def execute(args):
             dev_dir = hzone_dev, service_mitrat=service_mitigation_ratios,
             per_offset_data=per_offset_data, prop_offset=args['prop_offset'],
             distribution=args['distribution'], include_aoi_column=include_aoi,
-            include_subzone_column=include_subzone)
+            include_subzone_column=include_subzone,
+            hzone_name=impact_sites_data['name'])
 
         # copy static maps to the workspace.
         LOGGER.info('Clipping static data to the hydrozone for reference')
@@ -833,7 +833,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
     custom_es_servicesheds=None, dev_dir='_dev', service_mitrat={'carbon': 1.0,
         'nutrient': 1.0, 'sediment': 1.0}, per_offset_data=None,
     prop_offset=1.0, distribution='opal', include_aoi_column=True,
-    include_subzone_column=True):
+    include_subzone_column=True, hzone_name=''):
 
     # sort the suggested offset parcels
     suggested_parcels = sorted(suggested_parcels)
@@ -990,10 +990,14 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 'type': 'text',
                 'section': 'body',
                 'position': 0,
-                'text': '%s%s%s' % (
-                    '<h1>%s</h1>' % _('Summary of impacts to ecosystems and ecosystem services'),
-                    '<p>%s: ' % _('Impact type'),
-                    '<strong>%s</strong></p>' % impact_type),
+                'text': ''.join([
+                    '<h1>{hzone}: {title}</h1>'.format(
+                        hzone=hzone_name,
+                        title=_('Summary of impacts to ecosystems and ecosystem services')),
+                    '<p>{i18n_impact}: <strong>{imp_type}</strong></p>'.format(
+                        i18n_impact=_('Impact type'),
+                        imp_type=impact_type)
+                    ])
             },
             {
                 'type': 'text',
