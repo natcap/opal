@@ -547,6 +547,8 @@ class GlobalDistribution(NSISCommand):
         pass
 
     def run(self):
+        from natcap.opal import versioning
+        version = versioning.build_data()['version_str']
         self.run_command('sample_data_global')
         self.write_dist_data('OPAL')
 
@@ -554,7 +556,7 @@ class GlobalDistribution(NSISCommand):
         # repo root, which is where the makefile will leave it.
         cwd = os.getcwd()
         os.chdir('doc/users-guide')
-        subprocess.call(['make', 'all'])
+        subprocess.call(['make', 'all', 'VERSION="%s"' % version])
         os.chdir(cwd)
 
         # copy the distribution UI config file to the pyinstaller dist folder.
