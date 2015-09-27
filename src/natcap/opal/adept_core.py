@@ -955,7 +955,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 'type': 'head',
                 'section': 'head',
                 'format': 'json',
-                'data_src': json.dumps(per_offset_data),
+                'data_src': json.dumps(recurse_sigfig(per_offset_data, 3)),
                 'input_type': 'Text',
                 'attributes': {'id': 'muni-data'},
             },
@@ -1273,3 +1273,36 @@ def write_vector(in_vector_uri, feature_indices, out_vector_uri,
 
     return index_map
 
+
+def recurse_sigfig(per_offset_data, num_digits):
+    """
+    Recurse through a dictionary of offset data.  Any impacts to ecosystem
+    services will be rounded to `num_digits` significant figures.
+
+    Parameters:
+        per_offset_data(dict): A dictionary of values, mapping string parcel
+            IDs to dictionaries of values, including keys with service names.
+        num_digits(int): The number of digits to round to.
+
+    Returns:
+        A dictionary of the same structure as `per_offset_data`.
+    """
+
+    service_names = set([_('Sediment'), _('Nitrogen'), _('Carbon'),
+                         _('Custom')])
+
+    def _recurse(iterable, key=None):
+        if isinstance(iterable, dict):
+            return_iterable = {}
+            for key, value in iterable.iteritems():
+                return_iterable[key] = _recurse(value, key=key)
+            return return_iterable
+        elif isinstance(iterable, list):
+            return [_recurse(item) for item in iterable]
+        else:
+            if key in service_names:
+                return opal_reporting.sigfig(iterable, num_digits)
+            else:
+                return iterable
+
+    return _recurse(per_offset_data)
