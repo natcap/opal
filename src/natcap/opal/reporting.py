@@ -91,7 +91,7 @@ def get_impact_data(municipalities_vector, impacts_vector, name_col, pop_col,
                 LOGGER.debug('Impact %s has %s impact of None', impact_fid,
                     service_name)
                 impact = 0.0
-            service_dict[service_name] = impact
+            service_dict[service_name] = sigfig(impact, 3)
         impact_features[impact_fid] = service_dict
     impacts_layer.ResetReading()
 
