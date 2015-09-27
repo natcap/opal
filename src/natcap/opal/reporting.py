@@ -23,6 +23,23 @@ import utils
 LOGGER = logging.getLogger('natcap.opal.reporting')
 _ = natcap.opal.i18n.language.ugettext
 
+def sigfig(number, places):
+    """
+    Round `number` to `places` significant digits.
+
+    Parameters:
+        number (int or float): A number to round.
+        places (int): The number of places to round to.
+
+    Returns:
+        A number
+    """
+
+    # Passing a negative int to round() gives us a sigfig determination.
+    # Example: round(12345, -2) = 12300
+    ndigits = -int(len(str(abs(number)).split('.')[0]) - places)
+    return round(number, ndigits)
+
 def _recode(string):
     """Re-encode an input string as UTF-8 if it isn't already encoded.  If
     the input value is not a string, return the value as-is."""
@@ -331,7 +348,7 @@ def build_parcel_table(per_offset_data, total_impacts, out_csv,
         LOGGER.debug('parcel_data %s', parcel_data)
 
         data = {
-            fieldname_map['distance']: parcel_data['Distance'] / 1000.0,
+            fieldname_map['distance']: sigfig(parcel_data['Distance'] / 1000.0, 3),
             fieldname_map['area']: parcel_data['Area'] / 10000.0,
             fieldname_map['ecosystem_type']: _recode(parcel_data['Ecosystem']),
             fieldname_map['parcel_id']: parcel_id,
@@ -351,7 +368,7 @@ def build_parcel_table(per_offset_data, total_impacts, out_csv,
                 else:
                     shortened_name = es_key[0:3].lower()
             percent_key = '%s_impact_%s' % ('%', shortened_name)
-            data[fieldname_map[fieldname_key]] = parcel_data[es_key]
+            data[fieldname_map[fieldname_key]] = sigfig(parcel_data[es_key], 3)
 
             if fieldname_key == 'nitrogen':
                 fieldname_key = 'nutrient'
@@ -366,7 +383,7 @@ def build_parcel_table(per_offset_data, total_impacts, out_csv,
 
         # copy over fields that we now know to exist.
         for json_field, csv_field in fields_to_copy:
-            data[csv_field] = parcel_data[json_field]
+            data[csv_field] = sigfig(parcel_data[json_field], 3)
 
         rows.append(data)
 
@@ -524,9 +541,9 @@ def impacted_parcels_table(impact_sites, natural_parcels, csv_uri):
         # convert from m^2 to ha.
         intersection_area /= 10000.0
 
-        row_data[_('Patch area impacted (ha)')] = round(intersection_area, 2)
-        row_data[_('Required offset area (ha)')] = round(intersection_area *
-            natural_parcel.GetField('mit_ratio'), 2)
+        row_data[_('Patch area impacted (ha)')] = sigfig(round(intersection_area, 2), 3)
+        row_data[_('Required offset area (ha)')] = sigfig(round(intersection_area *
+            natural_parcel.GetField('mit_ratio'), 2), 3)
 
         rows.append(row_data)
 
@@ -719,18 +736,18 @@ def global_benefits_table(add_custom, total_impacts):
         benefits_table['data'].append(
             {
                 _('Service type'): _('Carbon'),
-                _('Impacts to service'): total_impacts['carbon'],
+                _('Impacts to service'): sigfig(total_impacts['carbon'], 3),
                 _('Selected offset'): 0.0,
-                _('Net service'): total_impacts['carbon'],
+                _('Net service'): sigfig(total_impacts['carbon'], 3),
             }
         )
 
     if add_custom is True:
         benefits_table['data'].append({
             _('Service type'): _('Custom'),
-            _('Impacts to service'): total_impacts['custom'],
+            _('Impacts to service'): sigfig(total_impacts['custom'], 3),
             _('Selected offset'): 0.0,
-            _('Net service'): 0.0 - total_impacts['custom']
+            _('Net service'): sigfig(0.0 - total_impacts['custom'], 3)
         })
 
     return benefits_table
@@ -777,7 +794,7 @@ def write_per_offset_csv(per_offset_data, out_csv):
             row_data = [parcel_key, serviceshed_name]
             for service_name in known_services:
                 service_amt = percent_overlap * parcel_data[service_name]
-                row_data.append(service_amt)
+                row_data.append(sigfig(service_amt, 3))
 
             def _smart_cast(string):
                 """Cast to UTF-8 if the string is not already UTF-8"""
@@ -848,9 +865,9 @@ def es_impacts_table(service_impacts, service_mitrat):
         required_offset = _calc_req_offset(service_impact, mit_ratio)
         row_data = {
             table_strings['service_name']: table_strings[service_name],
-            table_strings['service_impact']: service_impact,
+            table_strings['service_impact']: sigfig(service_impact, 3),
             table_strings['mit_ratio']: mit_ratio,
-            table_strings['required_offset']: required_offset,
+            table_strings['required_offset']: sigfig(required_offset, 3),
         }
         table_rows.append(row_data)
 
