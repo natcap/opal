@@ -86,6 +86,9 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
     in_layer_srs = in_layer.GetSpatialRef()
     in_layer_defn = in_layer.GetLayerDefn()
 
+    if in_layer.GetFeatureCount() == 0:
+        raise ValueError('Vector has no features: %s' % in_vector_uri)
+
     if os.path.exists(out_vector_uri):
         LOGGER.warning('%s already exists on disk', out_vector_uri)
         rm_shapefile(out_vector_uri)
