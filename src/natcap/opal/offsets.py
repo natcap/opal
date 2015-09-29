@@ -366,12 +366,14 @@ def _select_offsets(offset_parcels_uri, impact_sites_uri, biodiversity_impacts, 
 
     offset_parcels_schema = map(lambda d: d.GetName(), offsets_layer.schema)
     output_fields = ['ecosystem'] + services
-    new_fields += ['parcel_id']
+    new_fields += ['parcel_id', 'area']
     field_types = {
         'parcel_id': ogr.OFTInteger,
         'Subzone': ogr.OFTInteger,
         'AOI': ogr.OFTInteger,
         'City': ogr.OFTInteger,
+        'distance': ogr.OFTReal,
+        'area': ogr.OFTReal,
     }
     for key in ['LCI', 'Threat', 'Richness', 'custom']:
         if key in offset_parcels_schema:
