@@ -594,6 +594,7 @@ def locate_intersecting_polygons(source_vector_uri, comparison_vector_uri,
 
     LOGGER.info('Locating polygons %s%% complete', 100)
 
+    last_time = time.time()
     LOGGER.debug('Creating %s new geometries', len(found_features))
     for index, binary_geometries in found_features.iteritems():
         old_feature = in_layer.GetFeature(index)
@@ -607,6 +608,13 @@ def locate_intersecting_polygons(source_vector_uri, comparison_vector_uri,
                 new_feature.SetField(new_index, old_value)
 
             out_layer.CreateFeature(new_feature)
+
+            current_time = time.time()
+            if (current_time - last_time) > 5.:
+                last_time = current_time
+                percent_complete = round((float(num_features) /
+                                        in_layer.GetFeatureCount()) * 100, 2)
+                LOGGER.info('Creating geometries %s%% complete', percent_complete)
 
     ogr.DataSource.__swig_destroy__(in_vector)
     ogr.DataSource.__swig_destroy__(out_vector)
