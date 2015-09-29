@@ -162,7 +162,7 @@ def _select_offsets(offset_parcels_uri, impact_sites_uri, biodiversity_impacts, 
             Richness - (float) required if an ecosystem has richness data.
     biodiversity_impacts - Dict mapping string ecosystem names to dicts with
         the following key-value pairs:
-            min_impacted_parcel_area - (number) The area of the smallest
+            min_impacted_parcel_area - (number) The area (in Ha) of the smallest
                 impacted natural parcel of this ecosystem type.
             min_lci - (number between 0, 1) The lowest LCI of all impacted
                 parcels of this ecosystem type.
@@ -460,9 +460,11 @@ def locate_biodiversity_offsets(offset_parcels_uri, biodiversity_impacts,
     LOGGER.debug('Examining %s possible offset parcels', num_offset_parcels)
     for offset_index in xrange(num_offset_parcels):
         offset_feature = offsets_layer.GetFeature(offset_index)
-        offset_polygon = build_shapely_polygon(offset_feature)
         ecosystem_impacted = offset_feature.GetField('ecosystem')
-        parcel_area = offset_feature.GetGeometryRef().Area()
+
+        # Convert parcel area to Ha.
+        # eco_impact_data['min_impacted_parcel_area'] is also in Ha.
+        parcel_area = offset_feature.GetGeometryRef().Area() / 10000.0
 
         try:
             parcel_lci = offset_feature.GetField('LCI')
