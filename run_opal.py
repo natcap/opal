@@ -14,6 +14,9 @@ import palisades
 import palisades.i18n
 from palisades import execution
 from palisades import elements
+from palisades import utils as palisades_utils
+from palisades.gui import qt4 as palisades_qt4
+from palisades.i18n import translation as palisades_translation
 import natcap.opal.i18n
 from natcap.opal import versioning
 
@@ -192,13 +195,37 @@ def main(json_config=None):
 
     # set up the palisades gui object and initialize the splash screen
     gui_app = palisades.gui.get_application()
+
+    try:
+        language_pref = palisades_utils.get_user_language()
+    except RuntimeError:
+        # When the user has not set a language or we can't read the config.
+        lang_dialog = palisades_qt4.LanguageSelectionDialog()
+        lang_dialog.setWindowTitle('Select OPAL Language')
+        lang_dialog.set_icon(opal_logo, scale=True)
+
+        # get the available translations from the JSON file given.
+        available_langs, _ = palisades_translation.translate_json(found_json, '')
+        lang_dialog.set_allowed_langs(available_langs)
+
+        # set the distribution default from dist_config.
+        default_language = palisades.locate_dist_config()['lang']
+        lang_dialog.set_default_lang(default_language)
+
+        lang_dialog.show()
+        lang_dialog.exec_()
+        if not lang_dialog.was_rejected():
+            language_pref = lang_dialog.language()
+            palisades_utils.save_user_language(language_pref)
+        else:
+            language_pref = default_language
+
     gui_app.show_splash(splash)
     gui_app.set_splash_message(palisades.SPLASH_MSG_CORE_APP)
 
     # create the core Application instance so that I can access its elements
     # for callbacks.
-    ui = elements.Application(found_json,
-        palisades.locate_dist_config()['lang'])
+    ui = elements.Application(found_json, language_pref)
     if os.path.basename(found_json) == 'opal.json':
         setup_opal_callbacks(ui._window)
 
