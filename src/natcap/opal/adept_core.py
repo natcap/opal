@@ -993,9 +993,10 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 'text': ''.join([
                     '<h1>{hzone}: {title}</h1>'.format(
                         hzone=hzone_name,
-                        title=_('Summary of impacts to ecosystems and ecosystem services')),
+                        title=_('Summary of impacts to ecosystems and '
+                                'ecosystem services').encode('utf-8')),
                     '<p>{i18n_impact}: <strong>{imp_type}</strong></p>'.format(
-                        i18n_impact=_('Impact type'),
+                        i18n_impact=_('Impact type').encode('utf-8'),
                         imp_type=impact_type)
                     ])
             },
@@ -1068,11 +1069,11 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                     '<h2>{title}</h2>{export_csv}<br/><br/>'
                     '{all_offsets_title}: <b>{offsets_link}</b>'
                     '<br/>').format(
-                        title=_('Possible offset patches'),
+                        title=_('Possible offset patches').encode('utf-8'),
                         export_csv=('<a href="#" '
                                     'class="export">Export CSV</a>'),
                         all_offsets_title=_('GIS vector with all selected '
-                                            'offset patches'),
+                                            'offset patches').encode('utf-8'),
                         offsets_link=os.path.relpath(
                             selected_parcels,
                             os.path.join(output_workspace, '..', '..')))
@@ -1081,9 +1082,9 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
                 'type': 'text',
                 'section': 'body',
                 #'position': 0,
-                'text': '<b>%s: %s</b><br/>%s<br/>' % (_('Suggested offset parcels'),
+                'text': '<b>%s: %s</b><br/>%s<br/>' % (_('Suggested offset parcels').encode('utf-8'),
                     suggested_parcels,
-                    _('Suggested parcels account for %sx impacts x mitigation ratio') % prop_offset)
+                    (_('Suggested parcels account for %sx impacts x mitigation ratio') % prop_offset).encode('utf-8'))
             },
             offset_parcels_table,
             {

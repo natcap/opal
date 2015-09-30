@@ -5,7 +5,7 @@ import locale
 import gettext
 import logging
 
-LOGGER = logging.getLogger('adept.i18n')
+LOGGER = logging.getLogger('natcap.opal.i18n')
 
 # Change this variable to your app name!
 #  The translation files will be under
