@@ -201,7 +201,23 @@ def main(json_config=None):
     except RuntimeError:
         # When the user has not set a language or we can't read the config.
         lang_dialog = palisades_qt4.LanguageSelectionDialog()
-        lang_dialog.setWindowTitle('Select OPAL Language')
+
+        # Provide basic translation for the language dialog.
+        # Gettext felt like overkill, so I'm not using it.
+        dialog_trans = {
+            'en': ('Select OPAL Language', 'Select language'),
+            'es': ('Seleccionar la idioma de OPAL', 'Seleccione idioma'),
+        }
+        os_default_lang = palisades.i18n.os_default_lang()
+        try:
+            window_title, body_text = dialog_trans[os_default_lang]
+        except KeyError:
+            # If the user's default language is not provided, default to
+            # English.
+            window_title, body_text = dialog_trans['en']
+
+        lang_dialog.setWindowTitle(window_title)
+        lang_dialog.set_title(body_text)
         lang_dialog.set_icon(opal_logo, scale=True)
 
         # get the available translations from the JSON file given.
