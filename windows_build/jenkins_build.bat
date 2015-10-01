@@ -44,7 +44,7 @@ cd ..\..
 :: CD to the invest-3 directory to install it to the virtual environment
 cd src\invest
 rmdir /S /Q build
-..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
+..\..\%ENVDIR%\Scripts\python setup.py install --single-version-externally-managed --record natcap.invest.log|| goto :error
 cd ..\..
 ::
 :: CD to the palisades directory to install it to the virtual environment
@@ -62,12 +62,6 @@ rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\pip install dist\faulthandler-2.3.tar.gz || goto :error
 cd ..\..
 
-:: CD to the pygeoprocessing directory to install it to the virtual environment
-cd src\pygeoprocessing
-rmdir /S /Q build
-..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
-cd ..\..
-
 :: CD to the pyinstaller directory, build and install the bootloaders for pyinstaller
 cd src\pyinstaller\bootloader
 ..\..\%ENVDIR%\Scripts\python .\waf configure build install
@@ -75,7 +69,7 @@ cd ..\..\..
 
 :: The opal package is installed from the repo root
 rmdir /S /Q build
-%ENVDIR%\Scripts\python setup.py build_trans install || goto :error
+%ENVDIR%\Scripts\python setup.py install --single-version-externally-managed --record natcap.opal.log|| goto :error
 
 
 IF NOT %BUILD_STATIC_DATA% == "true" goto :skip_big_data

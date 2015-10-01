@@ -1,11 +1,10 @@
 import distutils
-from distutils.core import setup
-from distutils.core import Command
+from setuptools import setup
+from setuptools import Command
 from distutils.command.build import build as _build
-from distutils.command.build_py import build_py as _build_py
-from distutils.command.sdist import sdist as _sdist
+from setuptools.command.build_py import build_py as _build_py
+from setuptools.command.sdist import sdist as _sdist
 from distutils.command.install_data import install_data as _install_data
-from distutils.command.build import build as _build
 import platform
 import imp
 import os
