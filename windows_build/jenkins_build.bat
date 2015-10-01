@@ -75,7 +75,7 @@ cd ..\..\..
 
 :: The opal package is installed from the repo root
 rmdir /S /Q build
-%ENVDIR%\Scripts\python setup.py install || goto :error
+%ENVDIR%\Scripts\python setup.py build_trans install || goto :error
 
 
 IF NOT %BUILD_STATIC_DATA% == "true" goto :skip_big_data
