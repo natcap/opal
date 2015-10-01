@@ -35,19 +35,19 @@ call %ENVDIR%\Scripts\activate.bat
 %ENVDIR%\Scripts\pip install windows_build\dbfpy-2.2.5.tar.gz
 
 :: CD to the pygeoprocessing directory to install it to the virtual environment
-cd src/pygeoprocessing
+cd src\pygeoprocessing
 rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
 cd ..\..
 
 :: CD to the invest-3 directory to install it to the virtual environment
-cd src/invest
+cd src\invest
 rmdir /S /Q build
 ..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..
 ::
 :: CD to the palisades directory to install it to the virtual environment
-cd src/palisades
+cd src\palisades
 rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..\..
@@ -55,20 +55,20 @@ cd ..\..
 :: CD to the faulthandler directory to install it to the virtual env
 :: Building from an sdist is the best way to avoid installing as an EGG (installing as EGG causes
 :: problems when I try to import it for pyinstaller, despite that EGG is supposed to be fully supported).
-cd src/faulthandler
+cd src\faulthandler
 rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py sdist --format=gztar || goto :error
 ..\..\%ENVDIR%\Scripts\pip install dist\faulthandler-2.3.tar.gz || goto :error
 cd ..\..
 
 :: CD to the pygeoprocessing directory to install it to the virtual environment
-cd src/pygeoprocessing
+cd src\pygeoprocessing
 rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
 cd ..\..
 
 :: CD to the pyinstaller directory, build and install the bootloaders for pyinstaller
-cd src/pyinstaller/bootloader
+cd src\pyinstaller\bootloader
 ..\..\%ENVDIR%\Scripts\python .\waf configure build install
 cd ..\..\..
 
