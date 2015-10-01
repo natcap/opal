@@ -1,3 +1,4 @@
+@echo on
 SET ENVDIR=adept_environment
 DEL /S /Q build
 DEL /S /Q %ENVDIR%
@@ -99,4 +100,5 @@ IF NOT %BUILD_OPAL% == "true" goto :skip_opal
 goto :EOF
 
 :error
+@echo off
 exit /b %errorlevel%
