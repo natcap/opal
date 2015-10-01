@@ -44,7 +44,7 @@ cd ..\..
 :: CD to the invest-3 directory to install it to the virtual environment
 cd src\invest
 rmdir /S /Q build
-..\..\%ENVDIR%\Scripts\pip install --no-use-wheel . || goto :error
+..\..\%ENVDIR%\Scripts\pip install --no-deps --no-use-wheel . || goto :error
 cd ..\..
 ::
 :: CD to the palisades directory to install it to the virtual environment
@@ -75,7 +75,7 @@ cd ..\..\..
 
 :: The opal package is installed from the repo root
 rmdir /S /Q build
-%ENVDIR%\Scripts\pip install --no-use-wheel . || goto :error
+%ENVDIR%\Scripts\pip install --no-deps --no-use-wheel . || goto :error
 
 
 IF NOT %BUILD_STATIC_DATA% == "true" goto :skip_big_data
