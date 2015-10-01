@@ -44,7 +44,7 @@ cd ..\..
 :: CD to the invest-3 directory to install it to the virtual environment
 cd src\invest
 rmdir /S /Q build
-..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
+..\..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..
 ::
 :: CD to the palisades directory to install it to the virtual environment
