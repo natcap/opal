@@ -877,7 +877,7 @@ def build_report(municipalities, biodiversity_impact, selected_parcels,
             _('Total impacted area (ha)'): round(bio_impact_dict['impacted_area'], 2),
             _('Required offset area (ha)'): round(bio_impact_dict['mitigation_area'],
                 2),
-            _('Mean mitigation ratio'): round(bio_impact_dict['mitigation_ratio'], 1),
+            _('Mean mitigation ratio'): round(bio_impact_dict['mitigation_ratio'], 2),
             _('No. patches impacted'): bio_impact_dict['patches_impacted'],
 
             # initialize for the biodiversity impacts table
