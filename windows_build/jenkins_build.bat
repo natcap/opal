@@ -34,7 +34,7 @@ IF EXIST C:\Python27\Lib (
 call %ENVDIR%\Scripts\activate.bat
 
 %ENVDIR%\Scripts\pip install windows_build\dbfpy-2.2.5.tar.gz
-%ENVDIR%\Scripts\pip install --no-use-wheel natcap.versioner
+%ENVDIR%\Scripts\pip install -I --no-use-wheel natcap.versioner
 
 :: CD to the pygeoprocessing directory to install it to the virtual environment
 cd src\pygeoprocessing
