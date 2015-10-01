@@ -511,7 +511,7 @@ def build_static_map(
             When invert==True, the static map produced will be the differece
             of `converted` - `base_run`.
     """
-    assert invert in [True, False]
+    assert invert in [True, False], '%s found instead' % type(invert)
     assert model_name in MODELS.keys()
     LOGGER.info('Building static map for the %s model', model_name)
 
@@ -575,7 +575,8 @@ def build_static_map(
             model_name,
             simulation_workspace,
             config,
-            num_simulations)
+            num_simulations,
+            invert=invert)
 
         simulations_csv = os.path.join(simulation_workspace,
                                        'impact_site_simulation.csv')
@@ -840,7 +841,8 @@ def test_static_map_quality(
         num_iterations=5,
         clean_workspaces=False,
         start_ws=0,
-        start_impact=0):
+        start_impact=0,
+        invert=None):
     """Test the quality of the provided static map.
 
     Args:
@@ -870,10 +872,12 @@ def test_static_map_quality(
             failure (such as when running out of disk space).
         start_impact=0 (int, optional): The integer impact ID to start on.
             This must be less than `num_interations`.
+        invert=None (boolean): Whether to invert the static map calculation.
 
     Returns:
         Nothing.
     """
+    assert invert in [True, False], '%s found instead' % type(invert)
     old_tempdir = tempfile.tempdir
     temp_dir = os.path.join(workspace, 'tmp')  # for ALL tempfiles
     tempfile.tempdir = temp_dir  # all tempfiles will be saved here.
@@ -1008,7 +1012,8 @@ def test_static_map_quality(
                 watershed_uri,
                 impact_site,
                 ws_base_static_map,
-                ws_base_export_uri)
+                ws_base_export_uri,
+                invert=invert)
 
             # ability to sort based on area of impact site.
             # also record which watershed this run is in, impact site ID as well
@@ -1322,7 +1327,7 @@ def convert_impact(impact_uri, base_lulc, impacted_value, converted_lulc_uri,
 
 
 def aggregate_test_results(impact_workspace, model_name, watershed_uri,
-                           impact_site, base_static_map, base_export):
+                           impact_site, base_static_map, base_export, invert):
     # get the target raster for the selected ecosystem service.
     export = os.path.join(impact_workspace,
                           MODELS[model_name]['target_raster'])
@@ -1365,15 +1370,15 @@ def aggregate_test_results(impact_workspace, model_name, watershed_uri,
     base_ws_export = pygeoprocessing.aggregate_raster_values_uri(
         masked_base_export, watershed_uri, 'ws_id').total[watershed_id]
 
-    LOGGER.warning('NOT adjusting by %-to-stream. model=%s', model_name)
-    # If carbon, higher values are 'good'.  Otherwise, higher values
-    # are 'bad'.  This conditional tries to make the outputs all
+    LOGGER.warning('NOT adjusting by %%-to-stream. model=%s', model_name)
+    # This conditional makes the outputs all
     # represent the same thing: positive values are desireable,
     # negative values are not desireable.
-    if model_name == 'carbon':
+    if invert:
         invest_estimate = impact_ws_export - base_ws_export
     else:
         invest_estimate = base_ws_export - impact_ws_export
+
 
     export_ratio = static_estimate / invest_estimate
 
