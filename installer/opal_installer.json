@@ -37,8 +37,8 @@
         "icon": "opal_images\\opal-logo.ico",
         "extra_files": [
             "\"opal_images\\opal-logo.ico\"",
-            "\"..\\docs\\users-guide\\source\\OPAL_manual_en.pdf\"",
-            "\"..\\docs\\users-guide\\source\\OPAL_manual_es.pdf\""
+            "\"..\\doc\\users-guide\\source\\OPAL_manual_en.pdf\"",
+            "\"..\\doc\\users-guide\\source\\OPAL_manual_es.pdf\""
         ],
         "start_menu": [
             {
