@@ -835,7 +835,14 @@ def select_set_multifactor(parcels, biodiversity_req=None, es_hydro_req=None,
                     continue
 
                 # Determine service values that have already been selected
-                for sshed_parcel in serviceshed_data['parcels']:
+                try:
+                    sshed_parcels = serviceshed_data['parcels']
+                except KeyError:
+                    # If there are no parcels in this serviceshed, skip
+                    # the serviceshed.  Related to adept_core.py, line 667.
+                    continue
+
+                for sshed_parcel in sshed_parcels:
                     if sshed_parcel in selected_parcels:
                         service_offset = parcels[sshed_parcel][service_key]
                         sshed_service_data['offset'] += service_offset
