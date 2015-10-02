@@ -609,12 +609,19 @@ def locate_intersecting_polygons(source_vector_uri, comparison_vector_uri,
 
             out_layer.CreateFeature(new_feature)
 
+            # Sometimes, this progress logging show up and I have no idea why
+            # it doesn't.  Need to debug later.
+            # https://bitbucket.org/natcap/opal/issues/3371
             current_time = time.time()
             if (current_time - last_time) > 5.:
                 last_time = current_time
                 percent_complete = round((float(num_features) /
                                         in_layer.GetFeatureCount()) * 100, 2)
                 LOGGER.info('Creating geometries %s%% complete', percent_complete)
+            print "%s %s" % (current_time, last_time)
+
+    LOGGER.debug('Creating geometries 100%% complete')
+    out_vector.SyncToDisk()
 
     ogr.DataSource.__swig_destroy__(in_vector)
     ogr.DataSource.__swig_destroy__(out_vector)
