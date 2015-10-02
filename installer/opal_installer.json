@@ -71,7 +71,7 @@
                 "target": "OPAL_manual_en.pdf"
             },
             {
-                "name": "${APP_NAME} DocumentaciÃ³n (EspaÃ±ol)",
+                "name": "${APP_NAME} Documentación (Español)",
                 "target": "OPAL_manual_es.pdf"
             }
         ],

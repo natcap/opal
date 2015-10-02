@@ -9,6 +9,8 @@ import os
 import codecs
 from types import DictType
 
+ENCODING = locale.getdefaultlocale()[1]
+
 LOG_FILE_SCRIPT = """
 ; This function (and these couple variables) allow us to dump the NSIS
 ; Installer log to a log file of our choice, which is very handy for debugging.
@@ -103,7 +105,7 @@ class EncodingFound(Exception): pass
 def build_installer_script(config_file_uri, out_file_uri):
     config_dict = None
     try:
-        for encoding in ['utf-8', 'latin-1']:
+        for encoding in [ENCODING, 'utf-8', 'latin-1']:
             try:
                 new_file = codecs.open(out_file_uri, 'w', encoding)
                 config_dict = json.load(open(config_file_uri), encoding)
@@ -406,11 +408,6 @@ def start_menu_links(options):
             # no language dictionary provided, assume string.
             link_name = link_data['name']
 
-        # decode from a utf-8 string (from JSON) into the OS's default
-        # encoding.  This will prevent installation of a link that is of the
-        # wrong encoding.
-        link_name = link_name.encode(locale.getdefaultlocale()[1])
-
         link_path = "${START_MENU_FOLDER}\\%s.lnk" % link_name
         link_target = "$INSTDIR\\%s" % link_data['target']
         try:
@@ -434,7 +431,7 @@ Section \"$(MAINSECTIONTITLE)\" SEC01\n
 
   ; Desired files are up one directory and in the given build folder.
   File /r "${BUILD_FOLDER}\*"
-    """, 'utf-8')
+    """, ENCODING)
 
     try:
         if installer_options['required']:
