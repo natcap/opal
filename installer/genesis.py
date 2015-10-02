@@ -406,6 +406,11 @@ def start_menu_links(options):
             # no language dictionary provided, assume string.
             link_name = link_data['name']
 
+        # decode from a utf-8 string (from JSON) into the OS's default
+        # encoding.  This will prevent installation of a link that is of the
+        # wrong encoding.
+        link_name = link_name.encode(locale.getdefaultlocale()[1])
+
         link_path = "${START_MENU_FOLDER}\\%s.lnk" % link_name
         link_target = "$INSTDIR\\%s" % link_data['target']
         try:
