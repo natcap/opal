@@ -38,6 +38,8 @@ common_kwargs = {
         'natcap',
         'natcap.opal',
         'natcap.opal.static_maps',
+        'natcap.invest.version',
+        'pygeoprocessing.version',
         'os',
         'traceback',
         'run_opal'
