@@ -42,7 +42,11 @@ common_kwargs = {
         'pygeoprocessing.version',
         'os',
         'traceback',
-        'run_opal'
+        'run_opal',
+        'scipy.linalg.cython_blas',
+        'scipy.linalg.cython_lapack',
+        'scipy.special._ufuncs_cxx',
+        'scipy.sparse.linalg.dsolve._superlu',
     ],
 }
 
