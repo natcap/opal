@@ -3,7 +3,7 @@
 
 
 import json
-import sys
+import locale
 import argparse
 import os
 import codecs
