@@ -818,6 +818,12 @@ def select_set_multifactor(parcels, biodiversity_req=None, es_hydro_req=None,
     if es_hydro_req is not None:
         hydro_selected_parcels = set([])
         for serviceshed_id, serviceshed_data in es_hydro_req.iteritems():
+            try:
+                sshed_parcels = serviceshed_data['parcels']
+            except KeyError:
+                # If there are no parcels in this serviceshed, skip
+                # the serviceshed.  Related to adept_core.py, line 667.
+                continue
 
             # Figure out which hydrological services have impacts and if we
             # have selected parcels, we want to know the service offset values
@@ -832,14 +838,6 @@ def select_set_multifactor(parcels, biodiversity_req=None, es_hydro_req=None,
                 except KeyError:
                     # when the service is not in serviceshed_data, we're not
                     # trying to meet that service's requrements.
-                    continue
-
-                # Determine service values that have already been selected
-                try:
-                    sshed_parcels = serviceshed_data['parcels']
-                except KeyError:
-                    # If there are no parcels in this serviceshed, skip
-                    # the serviceshed.  Related to adept_core.py, line 667.
                     continue
 
                 for sshed_parcel in sshed_parcels:
