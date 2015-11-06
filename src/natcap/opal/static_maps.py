@@ -206,6 +206,7 @@ def execute(args):
 
     processes = []
     for impact_type in ['paved', 'bare']:
+        continue  # Only want to do the future scenario right now.
         LOGGER.debug('Starting calculations for impact %s', impact_type)
         impact_code = args['%s_landcover_code' % impact_type]
 
@@ -1002,6 +1003,9 @@ def test_static_map_quality(
             # code(s), run the target model and analyze the outputs.
             converted_landcover = os.path.join(impact_workspace,
                                                'converted_lulc.tif')
+            # If the landcover is a string, we convert to the area under the
+            # impact.  If the landcover is a number, that's the conversion
+            # type.
             convert_impact(impact_site, watershed_lulc, impact_lucode,
                            converted_landcover, impact_workspace)
             execute_model(model_name, converted_landcover, impact_workspace,
@@ -1316,12 +1320,22 @@ def convert_impact(impact_uri, base_lulc, impacted_value, converted_lulc_uri,
         aoi_uri=impact_uri,
         vectorize_op=False)
 
-    def _convert_impact(mask_values, lulc_values):
-        return numpy.where(mask_values == 1, impacted_value,
-                           lulc_values)
+
+    if isinstance(impacted_value, basestring):
+        def _convert_impact(mask_values, lulc_values, impacted_lulc_values):
+            """Convert values under the mask to the future lulc values."""
+            return numpy.where(mask_values == 1, impacted_lulc_values,
+                               lulc_values)
+        rasters_list = [impact_mask, base_lulc, impacted_value]
+    else:
+        def _convert_impact(mask_values, lulc_values):
+            """Convert values under the mask to the scalar impacted value."""
+            return numpy.where(mask_values == 1, impacted_value,
+                               lulc_values)
+        rasters_list = [impact_mask, base_lulc]
 
     pygeoprocessing.vectorize_datasets(
-        [impact_mask, base_lulc], _convert_impact, converted_lulc_uri,
+        rasters_list, _convert_impact, converted_lulc_uri,
         lulc_datatype, lulc_nodata, lulc_pixel_size, 'union',
         dataset_to_align_index=0, vectorize_op=False)
 
