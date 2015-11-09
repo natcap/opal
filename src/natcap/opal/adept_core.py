@@ -129,7 +129,6 @@ def execute(args):
         Returns nothing."""
 
     LOGGER.debug('Current language: "%s"', natcap.opal.i18n.language.current_lang)
-    utils.log_run('adept.core')
     # build a list of possible places to look for the ascii art text file in
     # order of priority.
     possible_dirs = []

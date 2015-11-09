@@ -3,6 +3,8 @@ import os
 import argparse
 import logging
 import json
+import uuid
+import threading
 
 from PyQt4 import QtGui
 
@@ -19,22 +21,14 @@ from palisades.gui import qt4 as palisades_qt4
 from palisades.i18n import translation as palisades_translation
 import natcap.opal.i18n
 from natcap.opal import versioning
+from natcap.opal import utils
+from natcap.invest.iui import executor as invest_executor
 
 # capture palisades logging and only display INFO or higher
 PALISADES_LOGGER = logging.getLogger('palisades')
 PALISADES_LOGGER.setLevel(logging.INFO)
 
 LOGGER = logging.getLogger('_opal_launch')
-
-class MultilingualRunner(execution.PythonRunner):
-    def start(self):
-        """Start the execution.
-        Overridden here to take the language of the palisades UI and set the
-        natcap.opal package language to the same language code."""
-        palisades_lang = palisades.i18n.current_lang()
-        print 'setting opal lang to %s' % palisades_lang
-        natcap.opal.i18n.language.set(palisades_lang)
-        execution.PythonRunner.start(self)
 
 def setup_opal_callbacks(ui_obj):
     servicesheds_elem = ui_obj.find_element('servicesheds_map')
@@ -242,8 +236,50 @@ def main(json_config=None):
     # create the core Application instance so that I can access its elements
     # for callbacks.
     ui = elements.Application(found_json, language_pref)
-    if os.path.basename(found_json) == 'opal.json':
+    json_basename = os.path.basename(found_json)
+    if json_basename == 'opal.json':
         setup_opal_callbacks(ui._window)
+        log_name = 'opal.core'
+    elif json_basename.endswith('_sm.json'):
+        # json basename is expected to be in the form "opal_<model>_sm.json"
+        log_name = 'opal.%s_sm' % json_basename.split('_')[1]
+
+    class MultilingualRunner(execution.PythonRunner):
+        def __init__(self, module_string, args, func_name='execute'):
+            execution.PythonRunner.__init__(self, module_string, args, func_name)
+            self.user_args = args
+            self.session_id = str(uuid.uuid4())
+
+            # redister the status-logging callback.
+            self.finished.register(self.finish)
+
+        def start(self):
+            """Start the execution.
+            Overridden here to take the language of the palisades UI and set the
+            natcap.opal package language to the same language code."""
+            log_thread = threading.Thread(
+                target=utils._log_model, args=(log_name, self.user_args,
+                                               self.session_id))
+            log_thread.start()
+            palisades_lang = palisades.i18n.current_lang()
+            print 'setting opal lang to %s' % palisades_lang
+            natcap.opal.i18n.language.set(palisades_lang)
+            execution.PythonRunner.start(self)
+
+        def finish(self, thread_name):
+            """
+            Log the status of the executor to the logging_server.
+            """
+            if self.executor.exception is not None:
+                message = self.executor.exception
+            else:
+                # Smileyface is the standard way to indicate model success.
+                message = ':)'
+
+            log_exit_thread = threading.Thread(
+                target=invest_executor._log_exit_status,
+                args=(self.session_id, message))
+            log_exit_thread.start()
 
     ui._window.set_runner(MultilingualRunner)
     gui_app.set_splash_message(palisades.SPLASH_MSG_GUI)
