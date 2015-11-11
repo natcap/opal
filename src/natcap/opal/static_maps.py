@@ -283,7 +283,7 @@ def execute(args):
         args['workspace_dir'], '%s_%s_static_map.tif' %
         (args['model_name'], future_tif_name))
     future_workspace = os.path.join(args['workspace_dir'], future_tif_name)
-    build_static_map(args['model_name'], future_landuse_uri, None,
+    build_static_map(args['model_name'], args['landuse_uri'], future_landuse_uri,
                      future_map_uri, base_raster, model_args, future_workspace,
                      convert_landcover=False,  # just use the future landcover
                      num_simulations=num_simulations, invert=invert)
@@ -530,8 +530,10 @@ def build_static_map(
         converted_lulc = os.path.join(workspace, 'converted_lulc.tif')
         LOGGER.info('Creating converted landcover raster: %s', converted_lulc)
         convert_lulc(landcover_uri, landcover_code, converted_lulc)
+        landcover_label = str(landcover_code)
     else:
         converted_lulc = landcover_uri
+        landcover_label = 'transformed'
 
     LOGGER.info('Running the model on the converted landcover')
     # run the sediment model on the converted LULC
@@ -566,7 +568,7 @@ def build_static_map(
         watersheds = config[MODELS[model_name]['watersheds_key']]
 
         simulation_workspace = os.path.join(workspace, 'simulations_%s' %
-                                            landcover_code)
+                                            landcover_label)
         test_static_map_quality(
             base_run,
             static_map_uri,
@@ -1322,12 +1324,14 @@ def convert_impact(impact_uri, base_lulc, impacted_value, converted_lulc_uri,
 
 
     if isinstance(impacted_value, basestring):
+        LOGGER.debug('Converting values to those of %s', impacted_value)
         def _convert_impact(mask_values, lulc_values, impacted_lulc_values):
             """Convert values under the mask to the future lulc values."""
             return numpy.where(mask_values == 1, impacted_lulc_values,
                                lulc_values)
         rasters_list = [impact_mask, base_lulc, impacted_value]
     else:
+        LOGGER.debug('Converting values to scalar: %s', impacted_value)
         def _convert_impact(mask_values, lulc_values):
             """Convert values under the mask to the scalar impacted value."""
             return numpy.where(mask_values == 1, impacted_value,
