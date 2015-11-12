@@ -37,9 +37,13 @@ common_kwargs = {
     'hiddenimports': [
         'natcap',
         'natcap.opal',
+        'natcap.opal.version',
         'natcap.opal.static_maps',
+        'natcap.invest',
         'natcap.invest.version',
         'pygeoprocessing.version',
+        'natcap.versioner',
+        'yaml',
         'os',
         'traceback',
         'run_opal',
