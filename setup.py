@@ -2,8 +2,7 @@ import distutils
 from setuptools import setup
 from setuptools import Command
 from distutils.command.build import build as _build
-from setuptools.command.build_py import build_py as _build_py
-from setuptools.command.sdist import sdist as _sdist
+from distutils.command.build_py import build_py as _build_py
 from distutils.command.install_data import install_data as _install_data
 import platform
 import imp
@@ -606,15 +605,15 @@ class build_translations(Command):
                     print 'Compiling %s to %s' % (src, dest)
                     opal_i18n_msgfmt.make(src, dest)
 
-class build(_build):
-    sub_commands = _build.sub_commands + [('build_trans', None)]
+class build_py(_build_py):
     def run(self):
-        _build.run(self)
+        self.run_command('build_trans')
+        _build_py.run(self)
 
 class install_data(_install_data):
     def run(self):
         for lang in os.listdir('build/locale'):
-            lang_dir = os.path.join(SITE_PACKAGES, 'natcap', 'opal', 'i18n',
+            lang_dir = os.path.join('natcap', 'opal', 'i18n',
                 'locale', lang, 'LC_MESSAGES')
             lang_file = os.path.join('build', 'locale', lang, 'LC_MESSAGES',
                 'adept.mo')
@@ -628,6 +627,7 @@ CMD_CLASSES['sample_data'] = SampleDataCommand
 CMD_CLASSES['sample_data_global'] = SampleDataGlobalCommand
 CMD_CLASSES['tool_data_colombia'] = ToolDataColombia
 CMD_CLASSES['build'] = build
+CMD_CLASSES['build_py'] = build_py
 CMD_CLASSES['build_trans'] = build_translations
 CMD_CLASSES['install_data'] = install_data
 CMD_CLASSES['build'] = build
@@ -691,7 +691,5 @@ setup(
     ],
     package_data={
         'natcap.opal': ['report_data/*', 'static_data/*'],
-    },
-    data_files=[(os.path.join(SITE_PACKAGES, 'natcap', 'opal', 'i18n'),
-                 glob.glob('i18n/*'))]
+    }
 )
