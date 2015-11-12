@@ -54,15 +54,14 @@ def test_existing_sm(args):
             'paved_landcover_code': The numeric landcover code to use.
             'num_simulations': The numeric number of simulations to run.
     """
-    model = 'protect'
+    model = 'paved'
     paths = get_paths(args['workspace_dir'], model, args['model_name'])
     config = static_maps.get_static_data_json(args['model_name'])
     static_maps.test_static_map_quality(
         base_run=paths['base_run'],
         base_static_map=paths['base_static_map'],
         landuse_uri=args['landuse_uri'],
-        #impact_lucode=args['%s_landcover_code' % model],
-        impact_lucode=args['fut_landuse_uri'],
+        impact_lucode=args['%s_landcover_code' % model],
         watersheds_uri=config['watersheds_uri'],
         model_name=args['model_name'],
         workspace=paths['workspace'],
@@ -72,11 +71,10 @@ def test_existing_sm(args):
 
 
 if __name__ == '__main__':
-
     args = {
         'paved_landcover_code': 89,
         'bare_landcover_code': 301,
-        #'workspace_dir': os.path.join(os.getcwd(), 'nutrient_static_maps'),
+        'workspace_dir': os.path.join(os.getcwd(), 'nutrient_static_maps'),
         'model_name': 'nutrient',
         'landuse_uri': os.path.join(FULL_DATA, 'ecosystems.tif'),
         #'fut_landuse_uri': os.path.join(FULL_DATA, 'es_comp_rd.tif'),
@@ -84,13 +82,10 @@ if __name__ == '__main__':
         'future_type': 'protection',
         'do_parallelism': True,
         'valuation_enabled': False,
-        'num_simulations': 2,
+        'num_simulations': 5,
     }
-    args['workspace_dir'] = '/colossus/nutrient_d07accbb763b_protect_deforest'
-    logging.basicConfig(filename='nutrient_d07accbb763b_protect_deforest.log',
-        level=logging.DEBUG)
-    #if os.path.exists(args['workspace_dir']):
-    #    shutil.rmtree(args['workspace_dir'])
-    #os.makedirs(args['workspace_dir'])
+    if os.path.exists(args['workspace_dir']):
+        shutil.rmtree(args['workspace_dir'])
+    os.makedirs(args['workspace_dir'])
     static_maps.execute(args)
     #test_existing_sm(args)
