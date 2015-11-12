@@ -1,7 +1,7 @@
 Changes
 =======
 
-1.1.0 (???)
+1.1.0 (2015-11-12)
 -----------
 - (Feature) OPAL now saves a vector to the workspace of those municipalities 
   (softboundary 3) that intersect the project footprint.  This is only saved
