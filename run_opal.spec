@@ -14,7 +14,7 @@ import platform
 import json
 import shutil
 
-from natcap.opal import versioning
+from natcap.versioner import versioning
 
 # Add the release virtual environment to the extended PATH.
 # This helps IMMENSELY with trying to get the binaries to work from within

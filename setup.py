@@ -14,6 +14,9 @@ import glob
 import shutil
 import json
 
+import natcap.versioner
+from natcap.versioner import versioning
+
 CMD_CLASSES = {}
 SITE_PACKAGES = distutils.sysconfig.get_python_lib()
 
@@ -307,7 +310,6 @@ class NSISCommand(Command):
         pass
 
     def write_dist_data(self, dist_name):
-        from natcap.opal import versioning
         dist_data = versioning.build_data()
         dist_data['dist_name'] = dist_name
 
@@ -320,7 +322,6 @@ class NSISCommand(Command):
             os.remove(dist_file)
 
     def run(self):
-        from natcap.opal import versioning
         print ''
         print 'Starting NSIS installer build'
 
@@ -546,7 +547,6 @@ class GlobalDistribution(NSISCommand):
         pass
 
     def run(self):
-        from natcap.opal import versioning
         version = versioning.build_data()['version_str']
         self.run_command('sample_data_global')
         self.write_dist_data('OPAL')
@@ -567,10 +567,8 @@ class GlobalDistribution(NSISCommand):
         NSISCommand.run(self)
 
 try:
-    from natcap.opal import versioning
     from natcap.opal.i18n import msgfmt as opal_i18n_msgfmt
 except ImportError:
-    versioning = imp.load_source('versioning', 'src/natcap/opal/versioning.py')
     opal_i18n_msgfmt = imp.load_source('i18n', 'src/natcap/opal/i18n/msgfmt.py')
 
 class build(_build):
@@ -579,32 +577,6 @@ class build(_build):
     sub_commands = _build.sub_commands + [('build_trans', None)]
     def run(self):
         _build.run(self)
-
-class CustomPythonBuilder(_build_py):
-    """Custom python build step for distutils.  Builds a python distribution in
-    the specified folder ('build' by default) and writes the adept version
-    information to the temporary source tree therein."""
-    def run(self):
-        _build_py.run(self)
-
-        # Write version information (which is derived from the adept mercurial
-        # source tree) to the build folder's copy of adept.__init__.
-        filename = os.path.join(self.build_lib, 'natcap', 'opal', '__init__.py')
-        print 'Writing version data to %s' % filename
-        versioning.write_build_info(filename)
-
-class CustomSdist(_sdist):
-    """Custom source distribution builder.  Builds a source distribution via the
-    distutils sdist command, but then writes the adept version information to
-    the temp source tree before everything is archived for distribution."""
-    def make_release_tree(self, base_dir, files):
-        _sdist.make_release_tree(self, base_dir, files)
-
-        # Write version information (which is derived from the adept mercurial
-        # source tree) to the build folder's copy of adept.__init__.
-        filename = os.path.join(base_dir, 'src', 'natcap', 'opal', '__init__.py')
-        print 'Writing version data to %s' % filename
-        versioning.write_build_info(filename)
 
 class build_translations(Command):
     """Custom distutions command to compile translation files for installation."""
@@ -657,8 +629,6 @@ CMD_CLASSES['sample_data_global'] = SampleDataGlobalCommand
 CMD_CLASSES['tool_data_colombia'] = ToolDataColombia
 CMD_CLASSES['build'] = build
 CMD_CLASSES['build_trans'] = build_translations
-CMD_CLASSES['build_py'] = CustomPythonBuilder
-CMD_CLASSES['sdist'] = CustomSdist
 CMD_CLASSES['install_data'] = install_data
 CMD_CLASSES['build'] = build
 
@@ -703,7 +673,8 @@ setup(
         'GDAL',
         'pyyaml',
     ],
-    version=load_version(),
+    version=natcap.versioner.parse_version(),
+    natcap_version='src/natcap/opal/version.py',
     cmdclass=CMD_CLASSES,
     license=LICENSE,
     keywords='GIS',

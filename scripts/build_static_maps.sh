@@ -17,15 +17,13 @@ python setup.py install
 
 popd
 
-# return to adept dir to build adept.
-pushd src/adept
+# return to opal dir to build adept.
 python setup.py install
-popd
 
 pushd src/pygeoprocessing
 python setup.py install
 popd
 
-python scripts/build_carbon_maps.py
-python scripts/build_sediment_maps.py
+#python scripts/build_carbon_maps.py
+#python scripts/build_sediment_maps.py
 python scripts/build_nutrient_maps.py

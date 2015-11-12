@@ -148,16 +148,16 @@ def execute(args):
             'clipped_dem.tif')
         LOGGER.debug('Current DEM: %s', model_args['dem_uri'])
         LOGGER.debug('Saving clipped DEM to %s', new_dem_uri)
-        _clip_dem(model_args['dem_uri'], model_args['lulc_uri'], new_dem_uri)
+        #_clip_dem(model_args['dem_uri'], model_args['lulc_uri'], new_dem_uri)
         model_args['dem_uri'] = new_dem_uri
     elif args['model_name'] == 'nutrient':
         # filter the watersheds to just those that intersect with the LULC.
         new_watersheds_uri = os.path.join(model_args['workspace_dir'],
                                           'watersheds_filtered.shp')
-        preprocessing.filter_by_raster(
-            model_args['lulc_uri'],
-            model_args['watersheds_uri'],
-            new_watersheds_uri)
+        #preprocessing.filter_by_raster(
+        #    model_args['lulc_uri'],
+        #    model_args['watersheds_uri'],
+        #    new_watersheds_uri)
         model_args['watersheds_uri'] = new_watersheds_uri
         model_args['soil_depth_uri'] = model_args[
             'depth_to_root_rest_layer_uri']
@@ -184,8 +184,8 @@ def execute(args):
                      original_workspace)
 
     LOGGER.debug('Original workspace: %s', original_workspace)
-    execute_model(args['model_name'], args['landuse_uri'], original_workspace,
-                  model_args)
+    #execute_model(args['model_name'], args['landuse_uri'], original_workspace,
+    #              model_args)
     base_raster = os.path.join(original_workspace,
                                MODELS[args['model_name']]['target_raster'])
 
@@ -540,7 +540,7 @@ def build_static_map(
     target_raster = MODELS[model_name]['target_raster']
     converted_workspace = os.path.join(workspace, '%s_converted' % model_name)
     LOGGER.debug('Converted workspace: %s', converted_workspace)
-    execute_model(model_name, converted_lulc, converted_workspace, config)
+    #execute_model(model_name, converted_lulc, converted_workspace, config)
     converted_es_map = os.path.join(converted_workspace, target_raster)
 
     # subtract the two rasters.
