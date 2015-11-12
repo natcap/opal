@@ -3,7 +3,13 @@ Changes
 
 1.1.0 (???)
 -----------
-- (Usability) OPAL UI is not offered in spanish as well as english.
+- (Feature) OPAL now saves a vector to the workspace of those municipalities
+    (softboundary 3) that intersect the project footprint.  This is only saved
+    when the softboundary 3 input is provided by the user.
+- (Bugfix) Corrected an issue where testing future scenarios in the static map 
+    generator would raise an exception.
+- (Usability) Versioning replaced by `natcap.versioner`
+- (Usability) OPAL UI is now offered in spanish as well as english.
 - (Usability) OPAL UI allows for the user to select their language of choice among 
     those offered (currently english and spanish).
 - (Feature) OPAL/MAFE-T report and output CSV values are rounded to 3 significant 
