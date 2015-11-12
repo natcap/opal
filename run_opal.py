@@ -20,7 +20,7 @@ from palisades import utils as palisades_utils
 from palisades.gui import qt4 as palisades_qt4
 from palisades.i18n import translation as palisades_translation
 import natcap.opal.i18n
-from natcap.opal import versioning
+from natcap.versioner import versioning
 from natcap.opal import utils
 from natcap.invest.iui import executor as invest_executor
 
