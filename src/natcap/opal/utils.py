@@ -6,9 +6,14 @@ import sys
 import codecs
 from types import StringType
 import time
+import platform
+import hashlib
+import locale
+import threading
 
 import natcap.opal
 import natcap.invest
+from natcap.invest.iui import executor as invest_executor
 import shapely
 import shapely.speedups
 import shapely.wkb
@@ -62,6 +67,7 @@ def build_shapely_polygon(ogr_feature, prep=False, fix=False):
         polygon = shapely.prepared.prep(polygon)
     return polygon
 
+
 def assert_files_exist(files):
     """Assert that all input files exist.
 
@@ -73,9 +79,21 @@ def assert_files_exist(files):
         if not os.path.exists(file_uri):
             raise IOError('File not found: %s' % file_uri)
 
-def log_run(base_string):
-    """Log the model run back to NatCap servers for usage statistics."""
-    string = base_string[:]  # make a copy
+
+def _log_model(model_name, model_args, session_id=None):
+    """Log information about a model run to a remote server.
+
+    Parameters:
+        model_name (string): a python string of the package version.
+        model_args (dict): the traditional InVEST argument dictionary.
+
+    Returns:
+        None
+    """
+
+    logger = logging.getLogger('natcap.opal.utils._log_model')
+
+    string = model_name[:]  # make a copy
     if 'palisades' in globals().keys() or 'palisades' in sys.modules:
         string += '.gui'
     else:
@@ -103,7 +121,40 @@ def log_run(base_string):
         model_name = string
         model_version = natcap.opal.__version__
 
-    natcap.invest.log_model(model_name, model_version)
+    def _node_hash():
+        """Returns a hash for the current computational node."""
+        data = {
+            'os': platform.platform(),
+            'hostname': platform.node(),
+            'userdir': os.path.expanduser('~')
+        }
+        md5 = hashlib.md5()
+        # a json dump will handle non-ascii encodings
+        md5.update(json.dumps(data))
+        return md5.hexdigest()
+
+    try:
+        bounding_box_intersection, bounding_box_union = (
+            invest_executor._calculate_args_bounding_box(model_args))
+
+        payload = {
+            'model_name': model_name,
+            'invest_release': model_version,
+            'node_hash': _node_hash(),
+            'system_full_platform_string': platform.platform(),
+            'system_preferred_encoding': locale.getdefaultlocale()[1],
+            'system_default_language': locale.getdefaultlocale()[0],
+            'bounding_box_intersection': str(bounding_box_intersection),
+            'bounding_box_union': str(bounding_box_union),
+            'session_id': session_id,
+        }
+
+        logging_server = invest_executor._get_logging_server()
+        logging_server.log_invest_run(payload)
+    except Exception as exception:
+        # An exception was thrown, we don't care.
+        logger.warn(
+            'an exception encountered when logging %s', str(exception))
 
 class VectorUnprojected(Exception):
     """An Exception in case a vector is unprojected"""

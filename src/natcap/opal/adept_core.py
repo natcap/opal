@@ -129,7 +129,6 @@ def execute(args):
         Returns nothing."""
 
     LOGGER.debug('Current language: "%s"', natcap.opal.i18n.language.current_lang)
-    utils.log_run('adept.core')
     # build a list of possible places to look for the ascii art text file in
     # order of priority.
     possible_dirs = []
@@ -189,7 +188,7 @@ def execute(args):
             'search_area.shp'),
         'ecosystems': _ecosystems,
         'offset_parcels': _offset_parcels,
-        'prep_offset_sites': os.path.join(dirs['intermediate'],
+        'prep_offset_sites': os.path.join(dirs['temp'],
             'tmp_offset_sites.shp'),
         'prep_natural_parcels': os.path.join(dirs['intermediate'],
             'prepared_ecosystems.shp'),
@@ -200,6 +199,8 @@ def execute(args):
         'buffered_subzones': os.path.join(dirs['intermediate'],
             'buffered_subzones.shp'),
         'base_report': os.path.join(dirs['results'], 'index.html'),
+        'impacted_sb3': os.path.join(dirs['intermediate'],
+                                     'impacted_softboundary3.shp')
     }
 
     pygeoprocessing.create_directories(dirs.values())
@@ -402,12 +403,18 @@ def execute(args):
     finally:
         # Raise error about required municipalities only if the file can't be
         # found.
-        if not os.path.exists(municipalities):
-            if args['distribution'] == DIST_OPAL:
+        if args['distribution'] == DIST_OPAL:
+            if not os.path.exists(municipalities):
                 municipalities = None
             else:
-                raise RuntimeError(("Municipalities vector is required, "
-                    "but was not provided or could not be found"))
+                # if the user prvided a softboundary3 (municipalities), save off a vector
+                # of all the municipalities that intersect the impact sites.
+                preprocessing.locate_intersecting_polygons(
+                    municipalities, args['project_footprint_uri'],
+                    files['impacted_sb3'])
+        else:
+            raise RuntimeError(("Municipalities vector is required, "
+                "but was not provided or could not be found"))
 
     try:
         area_of_influence = args['area_of_influence_uri']
@@ -467,6 +474,7 @@ def execute(args):
     else:
         LOGGER.debug('Offset parcels are natural')
         files['prep_natural_parcels'] = files['prep_offset_sites']
+
 
     try:
         servicesheds = args['servicesheds_uri']

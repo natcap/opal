@@ -105,8 +105,6 @@ def execute(args):
         'Model name must be one of "carbon", "sediment", or "nutrient",'
         'not %s' % args['model_name'])
 
-    utils.log_run('adept.%s_sm' % args['model_name'])
-
     if not os.path.exists(args['workspace_dir']):
         os.makedirs(args['workspace_dir'])
         LOGGER.debug('Creating new workspace: %s', args['workspace_dir'])
@@ -336,9 +334,6 @@ def raster_math(args):
         workspace/<name>_bare_static_map.tif
         workspace/<name>_paved_static_map.tif
         workspace/<name>_future_static_map.tif"""
-
-    utils.log_run('adept.generic_sm')
-
     workspace = args['workspace_dir']
     name = args['name']
     base_uri = args['base_uri']
