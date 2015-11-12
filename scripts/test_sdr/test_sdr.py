@@ -669,7 +669,7 @@ if __name__ == '__main__':
 #    sys.exit(0)
 #
 #    # WILLAMETTE SAMPLE DATA
-#    invest_data = 'invest-natcap.invest-3/test/invest-data'
+#    invest_data = 'src/invest/data/invest-data'
 #    base_data = os.path.join(invest_data, 'Base_Data')
 #
 #    # Construct the arguments to be used as a base set for all of the

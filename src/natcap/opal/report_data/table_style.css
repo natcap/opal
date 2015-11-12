@@ -139,3 +139,14 @@ a.export, a.export:visited {
     border: 1px solid #ccc;
     padding:8px;
 }
+
+div#metadata {
+    padding: 20px;
+    text-align: right;
+    display: inline-block;
+    float: right;
+    background-color: #efefef;
+    border: 2px solid #cfcfcf;
+    font-family: monospace;
+    color: #696969;
+}

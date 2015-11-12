@@ -14,7 +14,7 @@ import platform
 import json
 import shutil
 
-from natcap.opal import versioning
+from natcap.versioner import versioning
 
 CONSOLE = True
 

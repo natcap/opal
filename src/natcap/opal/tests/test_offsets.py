@@ -4,10 +4,9 @@ import shutil
 
 from shapely.geometry import Polygon
 
-import adept.tests
-from adept.tests import vector, COLOMBIA_SRS
-from adept.tests import test_smoke
-from adept import offsets
+from natcap.opal.tests import vector, COLOMBIA_SRS
+from natcap.opal.tests import test_smoke
+from natcap.opal import offsets
 
 class OffsetTest(unittest.TestCase):
     def test_select_set_multifactor_bio(self):
@@ -332,8 +331,11 @@ class OffsetTest(unittest.TestCase):
             expected_parcels)
 
     def test_select_offsets(self):
-        ecosystems_polygons = map(lambda x: test_smoke.square((x, 20), 10), [20, 60,
-            100, 140])
+        ecosystems_polygons = [test_smoke.square((x, 20), 10)
+                               for x in [20, 60, 100, 140]]
+
+        # Screening should screen out this parcel.
+        ecosystems_polygons += [test_smoke.square((160, 20), 10)]
         ecosystems_fields = {
             'ecosystem': str,
             'LCI': float,
@@ -350,6 +352,8 @@ class OffsetTest(unittest.TestCase):
                 'nutrient': 136.92, 'sediment': 379.30},
             {'ecosystem': 'eco_b', 'LCI': 0.1, 'carbon': 402.12,
                 'nutrient': 829.71, 'sediment': 571.09},
+            {'ecosystem': 'eco_b', 'LCI': 0.1, 'carbon': 123.42,
+                'nutrient': 14.34, 'sediment': 592.01},
         ]
         ecosystems_vector = vector(ecosystems_polygons, COLOMBIA_SRS,
             ecosystems_fields, ecosystems_attributes, format='ESRI Shapefile')

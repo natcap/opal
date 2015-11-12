@@ -14,10 +14,9 @@ import zipfile
 
 from osgeo import gdal
 from osgeo import ogr
-import invest_natcap.testing
-from invest_natcap.sdr import sdr
-from invest_natcap.nutrient import nutrient
-from invest_natcap.carbon import carbon_combined as carbon
+from natcap.invest.sdr import sdr
+from natcap.invest.nutrient import nutrient
+from natcap.invest.carbon import carbon_combined as carbon
 import pygeoprocessing
 import numpy
 import scipy
@@ -105,8 +104,6 @@ def execute(args):
     assert args['model_name'] in ['carbon', 'sediment', 'nutrient'], (
         'Model name must be one of "carbon", "sediment", or "nutrient",'
         'not %s' % args['model_name'])
-
-    utils.log_run('adept.%s_sm' % args['model_name'])
 
     if not os.path.exists(args['workspace_dir']):
         os.makedirs(args['workspace_dir'])
@@ -207,6 +204,7 @@ def execute(args):
 
     processes = []
     for impact_type in ['paved', 'bare']:
+        continue  # Only want to do the future scenario right now.
         LOGGER.debug('Starting calculations for impact %s', impact_type)
         impact_code = args['%s_landcover_code' % impact_type]
 
@@ -283,7 +281,7 @@ def execute(args):
         args['workspace_dir'], '%s_%s_static_map.tif' %
         (args['model_name'], future_tif_name))
     future_workspace = os.path.join(args['workspace_dir'], future_tif_name)
-    build_static_map(args['model_name'], future_landuse_uri, None,
+    build_static_map(args['model_name'], args['landuse_uri'], future_landuse_uri,
                      future_map_uri, base_raster, model_args, future_workspace,
                      convert_landcover=False,  # just use the future landcover
                      num_simulations=num_simulations, invert=invert)
@@ -336,9 +334,6 @@ def raster_math(args):
         workspace/<name>_bare_static_map.tif
         workspace/<name>_paved_static_map.tif
         workspace/<name>_future_static_map.tif"""
-
-    utils.log_run('adept.generic_sm')
-
     workspace = args['workspace_dir']
     name = args['name']
     base_uri = args['base_uri']
@@ -512,7 +507,7 @@ def build_static_map(
             When invert==True, the static map produced will be the differece
             of `converted` - `base_run`.
     """
-    assert invert in [True, False]
+    assert invert in [True, False], '%s found instead' % type(invert)
     assert model_name in MODELS.keys()
     LOGGER.info('Building static map for the %s model', model_name)
 
@@ -530,8 +525,10 @@ def build_static_map(
         converted_lulc = os.path.join(workspace, 'converted_lulc.tif')
         LOGGER.info('Creating converted landcover raster: %s', converted_lulc)
         convert_lulc(landcover_uri, landcover_code, converted_lulc)
+        landcover_label = str(landcover_code)
     else:
         converted_lulc = landcover_uri
+        landcover_label = 'transformed'
 
     LOGGER.info('Running the model on the converted landcover')
     # run the sediment model on the converted LULC
@@ -566,7 +563,7 @@ def build_static_map(
         watersheds = config[MODELS[model_name]['watersheds_key']]
 
         simulation_workspace = os.path.join(workspace, 'simulations_%s' %
-                                            landcover_code)
+                                            landcover_label)
         test_static_map_quality(
             base_run,
             static_map_uri,
@@ -576,7 +573,8 @@ def build_static_map(
             model_name,
             simulation_workspace,
             config,
-            num_simulations)
+            num_simulations,
+            invert=invert)
 
         simulations_csv = os.path.join(simulation_workspace,
                                        'impact_site_simulation.csv')
@@ -689,13 +687,17 @@ def get_json_md5(json_uri):
         if isinstance(value, UnicodeType):
             if os.path.exists(value):
                 LOGGER.debug('Value %s is a URI', value)
-                value = invest_natcap.testing.get_hash(value)
+                file_handler = open(value, 'rb')
+                file_md5 = hashlib.md5()
+                for chunk in iter(lambda: file_handler.read(2**20), ''):
+                    file_md5.update(chunk)
+                value = file_md5.hexdigest()
 
         LOGGER.debug('Updating digest with %s: %s', key, value)
         config_md5sum.update(key)
         config_md5sum.update(value)
 
-    return config.md5sum.hexdigest()
+    return config_md5sum.hexdigest()
 
 
 def clip_raster_to_watershed(in_raster, ws_vector, out_uri, clip_raster=None):
@@ -837,7 +839,8 @@ def test_static_map_quality(
         num_iterations=5,
         clean_workspaces=False,
         start_ws=0,
-        start_impact=0):
+        start_impact=0,
+        invert=None):
     """Test the quality of the provided static map.
 
     Args:
@@ -867,10 +870,12 @@ def test_static_map_quality(
             failure (such as when running out of disk space).
         start_impact=0 (int, optional): The integer impact ID to start on.
             This must be less than `num_interations`.
+        invert=None (boolean): Whether to invert the static map calculation.
 
     Returns:
         Nothing.
     """
+    assert invert in [True, False], '%s found instead' % type(invert)
     old_tempdir = tempfile.tempdir
     temp_dir = os.path.join(workspace, 'tmp')  # for ALL tempfiles
     tempfile.tempdir = temp_dir  # all tempfiles will be saved here.
@@ -995,6 +1000,9 @@ def test_static_map_quality(
             # code(s), run the target model and analyze the outputs.
             converted_landcover = os.path.join(impact_workspace,
                                                'converted_lulc.tif')
+            # If the landcover is a string, we convert to the area under the
+            # impact.  If the landcover is a number, that's the conversion
+            # type.
             convert_impact(impact_site, watershed_lulc, impact_lucode,
                            converted_landcover, impact_workspace)
             execute_model(model_name, converted_landcover, impact_workspace,
@@ -1005,7 +1013,8 @@ def test_static_map_quality(
                 watershed_uri,
                 impact_site,
                 ws_base_static_map,
-                ws_base_export_uri)
+                ws_base_export_uri,
+                invert=invert)
 
             # ability to sort based on area of impact site.
             # also record which watershed this run is in, impact site ID as well
@@ -1308,18 +1317,30 @@ def convert_impact(impact_uri, base_lulc, impacted_value, converted_lulc_uri,
         aoi_uri=impact_uri,
         vectorize_op=False)
 
-    def _convert_impact(mask_values, lulc_values):
-        return numpy.where(mask_values == 1, impacted_value,
-                           lulc_values)
+
+    if isinstance(impacted_value, basestring):
+        LOGGER.debug('Converting values to those of %s', impacted_value)
+        def _convert_impact(mask_values, lulc_values, impacted_lulc_values):
+            """Convert values under the mask to the future lulc values."""
+            return numpy.where(mask_values == 1, impacted_lulc_values,
+                               lulc_values)
+        rasters_list = [impact_mask, base_lulc, impacted_value]
+    else:
+        LOGGER.debug('Converting values to scalar: %s', impacted_value)
+        def _convert_impact(mask_values, lulc_values):
+            """Convert values under the mask to the scalar impacted value."""
+            return numpy.where(mask_values == 1, impacted_value,
+                               lulc_values)
+        rasters_list = [impact_mask, base_lulc]
 
     pygeoprocessing.vectorize_datasets(
-        [impact_mask, base_lulc], _convert_impact, converted_lulc_uri,
+        rasters_list, _convert_impact, converted_lulc_uri,
         lulc_datatype, lulc_nodata, lulc_pixel_size, 'union',
         dataset_to_align_index=0, vectorize_op=False)
 
 
 def aggregate_test_results(impact_workspace, model_name, watershed_uri,
-                           impact_site, base_static_map, base_export):
+                           impact_site, base_static_map, base_export, invert):
     # get the target raster for the selected ecosystem service.
     export = os.path.join(impact_workspace,
                           MODELS[model_name]['target_raster'])
@@ -1362,15 +1383,15 @@ def aggregate_test_results(impact_workspace, model_name, watershed_uri,
     base_ws_export = pygeoprocessing.aggregate_raster_values_uri(
         masked_base_export, watershed_uri, 'ws_id').total[watershed_id]
 
-    LOGGER.warning('NOT adjusting by %-to-stream. model=%s', model_name)
-    # If carbon, higher values are 'good'.  Otherwise, higher values
-    # are 'bad'.  This conditional tries to make the outputs all
+    LOGGER.warning('NOT adjusting by %%-to-stream. model=%s', model_name)
+    # This conditional makes the outputs all
     # represent the same thing: positive values are desireable,
     # negative values are not desireable.
-    if model_name == 'carbon':
+    if invert:
         invest_estimate = impact_ws_export - base_ws_export
     else:
         invest_estimate = base_ws_export - impact_ws_export
+
 
     export_ratio = static_estimate / invest_estimate
 

@@ -1,7 +1,7 @@
 import os
 import logging
 
-from adept import static_maps
+from natcap.opal import static_maps
 
 DATA = os.path.join(os.path.dirname(__file__), '..', 'data')
 CLIPPED_DATA = os.path.join(DATA, 'colombia_clipped')
@@ -43,7 +43,7 @@ def test_existing_sm(args):
     the current landuse/landcover scenario.
 
     Configuration parameters will be loaded from the target model's static
-    JSON configuration in the adept package.
+    JSON configuration in the opal package.
 
     Parameters:
         args - a python dictionary with the following entries:
@@ -77,7 +77,9 @@ if __name__ == '__main__':
         'workspace_dir': os.path.join(os.getcwd(), 'nutrient_static_maps'),
         'model_name': 'nutrient',
         'landuse_uri': os.path.join(FULL_DATA, 'ecosystems.tif'),
-        'fut_landuse_uri': os.path.join(FULL_DATA, 'es_comp_rd.tif'),
+        #'fut_landuse_uri': os.path.join(FULL_DATA, 'es_comp_rd.tif'),
+        'fut_landuse_uri': os.path.join(FULL_DATA, 'converted_veg_deforest.tif'),
+        'future_type': 'protection',
         'do_parallelism': True,
         'valuation_enabled': False,
         'num_simulations': 5,
@@ -86,3 +88,4 @@ if __name__ == '__main__':
         shutil.rmtree(args['workspace_dir'])
     os.makedirs(args['workspace_dir'])
     static_maps.execute(args)
+    #test_existing_sm(args)

@@ -162,7 +162,7 @@ def _select_offsets(offset_parcels_uri, impact_sites_uri, biodiversity_impacts, 
             Richness - (float) required if an ecosystem has richness data.
     biodiversity_impacts - Dict mapping string ecosystem names to dicts with
         the following key-value pairs:
-            min_impacted_parcel_area - (number) The area of the smallest
+            min_impacted_parcel_area - (number) The area (in Ha) of the smallest
                 impacted natural parcel of this ecosystem type.
             min_lci - (number between 0, 1) The lowest LCI of all impacted
                 parcels of this ecosystem type.
@@ -366,12 +366,14 @@ def _select_offsets(offset_parcels_uri, impact_sites_uri, biodiversity_impacts, 
 
     offset_parcels_schema = map(lambda d: d.GetName(), offsets_layer.schema)
     output_fields = ['ecosystem'] + services
-    new_fields += ['parcel_id']
+    new_fields += ['parcel_id', 'area']
     field_types = {
         'parcel_id': ogr.OFTInteger,
         'Subzone': ogr.OFTInteger,
         'AOI': ogr.OFTInteger,
         'City': ogr.OFTInteger,
+        'distance': ogr.OFTReal,
+        'area': ogr.OFTReal,
     }
     for key in ['LCI', 'Threat', 'Richness', 'custom']:
         if key in offset_parcels_schema:
@@ -458,9 +460,11 @@ def locate_biodiversity_offsets(offset_parcels_uri, biodiversity_impacts,
     LOGGER.debug('Examining %s possible offset parcels', num_offset_parcels)
     for offset_index in xrange(num_offset_parcels):
         offset_feature = offsets_layer.GetFeature(offset_index)
-        offset_polygon = build_shapely_polygon(offset_feature)
         ecosystem_impacted = offset_feature.GetField('ecosystem')
-        parcel_area = offset_feature.GetGeometryRef().Area()
+
+        # Convert parcel area to Ha.
+        # eco_impact_data['min_impacted_parcel_area'] is also in Ha.
+        parcel_area = offset_feature.GetGeometryRef().Area() / 10000.0
 
         try:
             parcel_lci = offset_feature.GetField('LCI')
@@ -814,6 +818,12 @@ def select_set_multifactor(parcels, biodiversity_req=None, es_hydro_req=None,
     if es_hydro_req is not None:
         hydro_selected_parcels = set([])
         for serviceshed_id, serviceshed_data in es_hydro_req.iteritems():
+            try:
+                sshed_parcels = serviceshed_data['parcels']
+            except KeyError:
+                # If there are no parcels in this serviceshed, skip
+                # the serviceshed.  Related to adept_core.py, line 667.
+                continue
 
             # Figure out which hydrological services have impacts and if we
             # have selected parcels, we want to know the service offset values
@@ -830,8 +840,7 @@ def select_set_multifactor(parcels, biodiversity_req=None, es_hydro_req=None,
                     # trying to meet that service's requrements.
                     continue
 
-                # Determine service values that have already been selected
-                for sshed_parcel in serviceshed_data['parcels']:
+                for sshed_parcel in sshed_parcels:
                     if sshed_parcel in selected_parcels:
                         service_offset = parcels[sshed_parcel][service_key]
                         sshed_service_data['offset'] += service_offset

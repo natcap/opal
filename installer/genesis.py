@@ -3,11 +3,13 @@
 
 
 import json
-import sys
+import locale
 import argparse
 import os
 import codecs
 from types import DictType
+
+ENCODING = locale.getdefaultlocale()[1]
 
 LOG_FILE_SCRIPT = """
 ; This function (and these couple variables) allow us to dump the NSIS
@@ -103,7 +105,7 @@ class EncodingFound(Exception): pass
 def build_installer_script(config_file_uri, out_file_uri):
     config_dict = None
     try:
-        for encoding in ['utf-8', 'latin-1']:
+        for encoding in [ENCODING, 'utf-8', 'latin-1']:
             try:
                 new_file = codecs.open(out_file_uri, 'w', encoding)
                 config_dict = json.load(open(config_file_uri), encoding)
@@ -429,7 +431,7 @@ Section \"$(MAINSECTIONTITLE)\" SEC01\n
 
   ; Desired files are up one directory and in the given build folder.
   File /r "${BUILD_FOLDER}\*"
-    """, 'utf-8')
+    """, ENCODING)
 
     try:
         if installer_options['required']:

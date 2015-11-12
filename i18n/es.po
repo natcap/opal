@@ -291,17 +291,14 @@ msgid "Net service"
 msgstr "Servicio neto"
 
 #: adept/reporting.py:770
-#, fuzzy
 msgid "Service name"
 msgstr "Tipo de servicio"
 
 #: adept/reporting.py:771
-#, fuzzy
 msgid "Impact to service"
 msgstr "Impactos al servicio"
 
 #: adept/reporting.py:773
-#, fuzzy
 msgid "Required offset value"
 msgstr "Área de compensación requerida (Ha)"
 
