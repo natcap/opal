@@ -1,0 +1,4 @@
+include i18n/*.po
+include README.rst
+include CHANGES.txt
+include LICENSE.txt

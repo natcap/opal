@@ -1,7 +1,7 @@
 {
     "label": {
-        "en": "Permitting", 
-        "es": "Licenciamiento"
+        "en": "MAFE-T", 
+        "es": "MAFE-T"
     }, 
     "id": "adept_window",
     "modelName": {
@@ -15,7 +15,7 @@
             "id": "workspace", 
             "args_id": "workspace_dir",
             "type": "folder", 
-            "defaultValue": "~/adept_workspace", 
+            "defaultValue": "~/mafe-t_workspace",
             "required": true, 
             "label": {
                 "en": "Workspace", 
@@ -450,10 +450,7 @@
                 "contains": [
                     "sediment_bare_static_map.tif",
                     "sediment_paved_static_map.tif",
-                    "sediment_protect_static_map.tif",
-                    "sediment_bare_pts.tif",
-                    "sediment_paved_pts.tif",
-                    "sediment_protect_pts.tif"
+                    "sediment_protect_static_map.tif"
                 ]
             } 
         }, 
@@ -509,6 +506,11 @@
             "type": "hidden",
             "defaultValue": "Protection",
             "args_id": "offset_type"
+        },
+        {
+            "type": "hidden",
+            "defaultValue": "mafe-t",
+            "args_id": "distribution"
         }
-    ] 
+    ]
 }

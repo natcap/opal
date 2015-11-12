@@ -4,12 +4,12 @@ import shutil
 
 from invest_natcap.testing import GISTest
 from invest_natcap import raster_utils
-from adept import static_maps
+from natcap.opal import static_maps
 
 DATA = os.path.join(os.path.dirname(__file__), '..', 'data')
 CLIPPED_DATA = os.path.join(DATA, 'colombia_clipped')
 FULL_DATA = os.path.join(DATA, 'colombia_tool_data')
-INVEST_DATA = os.path.join(os.path.dirname(__file__), '..',
+INVEST_DATA = os.path.join(os.path.dirname(__file__), '..', '..',
     'invest-natcap.invest-3', 'test', 'invest-data')
 
 class SedimentStaticMapTest(GISTest):
@@ -150,6 +150,9 @@ class SedimentStaticMapTest(GISTest):
             'biophysical_table.csv')
         self.config['threshold_flow_accumulation'] = 400
         self.config['slope_threshold'] = "5",
+        self.config['k_param'] = 2
+        self.config['sdr_max'] = 0.8
+        self.config['ic_0_param'] = 0.5
         self.config['sediment_threshold_table_uri'] = os.path.join(INVEST_DATA,
             'Sedimentation', 'input', 'sediment_threshold_table.csv')
 
@@ -173,9 +176,11 @@ class SedimentStaticMapTest(GISTest):
 #        static_maps.subtract_rasters(base_run, converted_raster,
 #            difference_raster)
 
+        # invert is False here because we're running sediment on the paved
+        # scenario.
         static_maps.test_static_map_quality(base_run, static_map_uri,
             lulc_uri, impact_lucode, watersheds, model_name, workspace,
-            self.config, num_iterations=num_iterations)
+            self.config, num_iterations=num_iterations, invert=False)
 
         print 'graphing'
         log_file = os.path.join(workspace, 'impact_site_simulation.csv')

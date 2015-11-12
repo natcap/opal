@@ -14,14 +14,14 @@ import platform
 import json
 import shutil
 
-from adept import versioning
+from natcap.versioner import versioning
 
 CONSOLE = True
 
 common_kwargs = {
     'hookspath': ['./hooks'],
     'runtime_hooks': ['./hooks/rthook.py'],
-    'hiddenimports': ['adept', 'adept.static_maps'],
+    'hiddenimports': ['natcap.opal', 'natcap.opal.static_maps'],
 }
 
 adept_analysis = Analysis(['run_adept.py'], **common_kwargs)

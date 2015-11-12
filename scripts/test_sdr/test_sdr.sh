@@ -10,7 +10,7 @@ source $ENVDIR/bin/activate
 alias nosetests=$ENVDIR/bin/nosetests
 echo "Activated!"
 
-pushd invest-natcap.invest-3
+pushd src/invest
 
 # IF YOU WOULD LIKE TO REBUILD ALL OF INVEST-3, UNCOMMENT THIS NEXT LINE
 #hg purge  # clean out the invest-3 repo

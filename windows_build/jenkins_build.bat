@@ -1,6 +1,10 @@
+@echo on
 SET ENVDIR=adept_environment
 DEL /S /Q build
 DEL /S /Q %ENVDIR%
+
+:: Unset the pythonhome environment variable, since it's messing up my package imports.
+SET PYTHONHOME=
 
 :: Set the default python if a python exe is not passed in as arg1
 IF "%1" == "" SET PYTHON=C:\py27_build\python.exe
@@ -27,17 +31,25 @@ IF EXIST C:\Python27\Lib (
     :: standard chocolatey python distutils location
     copy C:\tools\python2-x86_32\Lib\distutils\distutils.cfg .\%ENVDIR%\Lib\distutils\distutils.cfg
 )
+call %ENVDIR%\Scripts\activate.bat
 
 %ENVDIR%\Scripts\pip install windows_build\dbfpy-2.2.5.tar.gz
+%ENVDIR%\Scripts\pip install -I --no-use-wheel natcap.versioner
+
+:: CD to the pygeoprocessing directory to install it to the virtual environment
+cd src\pygeoprocessing
+rmdir /S /Q build
+..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
+cd ..\..
 
 :: CD to the invest-3 directory to install it to the virtual environment
-cd invest-natcap.invest-3
+cd src\invest
 rmdir /S /Q build
-..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
-cd ..
+..\..\%ENVDIR%\Scripts\python setup.py install --single-version-externally-managed --record natcap.invest.log|| goto :error
+cd ..\..
 ::
 :: CD to the palisades directory to install it to the virtual environment
-cd src/palisades
+cd src\palisades
 rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py build_ext install || goto :error
 cd ..\..
@@ -45,22 +57,21 @@ cd ..\..
 :: CD to the faulthandler directory to install it to the virtual env
 :: Building from an sdist is the best way to avoid installing as an EGG (installing as EGG causes
 :: problems when I try to import it for pyinstaller, despite that EGG is supposed to be fully supported).
-cd src/faulthandler
+cd src\faulthandler
 rmdir /S /Q build
 ..\..\%ENVDIR%\Scripts\python setup.py sdist --format=gztar || goto :error
 ..\..\%ENVDIR%\Scripts\pip install dist\faulthandler-2.3.tar.gz || goto :error
 cd ..\..
 
-:: CD to the Adept directory to install adept to the virtual environment
-cd src/adept
-rmdir /S /Q build
-..\..\%ENVDIR%\Scripts\python setup.py install || goto :error
-cd ..\..
-
 :: CD to the pyinstaller directory, build and install the bootloaders for pyinstaller
-cd src/pyinstaller/bootloader
-%ENVDIR%\Scripts\python .\waf configure build install
+cd src\pyinstaller\bootloader
+..\..\%ENVDIR%\Scripts\python .\waf configure build install
 cd ..\..\..
+
+:: The opal package is installed from the repo root
+rmdir /S /Q build
+%ENVDIR%\Scripts\python setup.py install --single-version-externally-managed --record natcap.opal.log|| goto :error
+
 
 IF NOT %BUILD_STATIC_DATA% == "true" goto :skip_big_data
 %ENVDIR%\Scripts\python setup.py static_data_colombia || goto :error
@@ -84,4 +95,5 @@ IF NOT %BUILD_OPAL% == "true" goto :skip_opal
 goto :EOF
 
 :error
+@echo off
 exit /b %errorlevel%

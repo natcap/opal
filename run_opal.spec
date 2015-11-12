@@ -14,13 +14,44 @@ import platform
 import json
 import shutil
 
-from adept import versioning
+from natcap.versioner import versioning
+
+# Add the release virtual environment to the extended PATH.
+# This helps IMMENSELY with trying to get the binaries to work from within
+# a virtual environment, even if the virtual environment is hardcoded.
+path_extension = []
+if is_win:
+    import distutils
+    path_base = os.path.join('adept_environment', 'lib')
+else:
+    path_base = os.path.join('adept_environment', 'lib', 'python2.7')
+path_base = os.path.abspath(path_base)
+path_extension.insert(0, path_base)
+path_extension.insert(0, os.path.join(path_base, 'site-packages'))
+print 'PATH EXT: %s' % path_extension
 
 common_kwargs = {
     'hookspath': ['./hooks'],
     'runtime_hooks': ['./hooks/rthook.py'],
-    'hiddenimports': ['adept', 'adept.static_maps', 'os', 'traceback',
-        'run_opal'],
+    'pathex': path_extension,
+    'hiddenimports': [
+        'natcap',
+        'natcap.opal',
+        'natcap.opal.version',
+        'natcap.opal.static_maps',
+        'natcap.invest',
+        'natcap.invest.version',
+        'pygeoprocessing.version',
+        'natcap.versioner',
+        'yaml',
+        'os',
+        'traceback',
+        'run_opal',
+        'scipy.linalg.cython_blas',
+        'scipy.linalg.cython_lapack',
+        'scipy.special._ufuncs_cxx',
+        'scipy.sparse.linalg.dsolve._superlu',
+    ],
 }
 
 # write the static map analysis objects and analyze them.

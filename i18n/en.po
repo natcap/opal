@@ -1,0 +1,337 @@
+# English translations for OPAL/MAFE package.
+# Copyright (C) 2014 THE OPAL/MAFE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the OPAL/MAFE package.
+# James Douglass <jadoug06@ncp-helios.stanford.edu>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OPAL/MAFE\n"
+"Report-Msgid-Bugs-To: jdouglass@stanford.edu\n"
+"POT-Creation-Date: 2015-01-28 16:55-0800\n"
+"PO-Revision-Date: 2014-08-21 12:07-0700\n"
+"Last-Translator: James Douglass <jdouglass@stanford.edu>\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: adept/adept_core.py:751
+msgid "Impact footprint shapefile"
+msgstr "Impact footprint shapefile"
+
+#: adept/adept_core.py:784 adept/adept_core.py:894 adept/adept_core.py:897
+#: adept/adept_core.py:971 adept/adept_core.py:974 adept/reporting.py:230
+#: adept/reporting.py:447 adept/reporting.py:501
+msgid "Ecosystem type"
+msgstr "Ecosystem type"
+
+#: adept/adept_core.py:785 adept/adept_core.py:910 adept/adept_core.py:978
+msgid "Total impacted area (ha)"
+msgstr "Total impacted area (ha)"
+
+#: adept/adept_core.py:786 adept/adept_core.py:915 adept/adept_core.py:982
+#: adept/reporting.py:490 adept/reporting.py:500
+msgid "Required offset area (ha)"
+msgstr "Required offset area (ha)"
+
+#: adept/adept_core.py:788 adept/adept_core.py:905
+msgid "Mean mitigation ratio"
+msgstr "Mean mitigation ratio"
+
+#: adept/adept_core.py:789 adept/adept_core.py:901
+msgid "No. patches impacted"
+msgstr "No. patches impacted"
+
+#: adept/adept_core.py:792 adept/adept_core.py:987
+msgid "Area offset (ha)"
+msgstr "Area offset (ha)"
+
+#: adept/adept_core.py:793 adept/adept_core.py:992
+msgid "Net benefits (ha)"
+msgstr "Net benefits (ha)"
+
+#: adept/adept_core.py:826
+msgid "Report"
+msgstr "Report"
+
+#: adept/adept_core.py:870
+msgid "Summary of impacts to ecosystems and ecosystem services"
+msgstr "Summary of impacts to ecosystems and ecosystem services"
+
+#: adept/adept_core.py:871
+msgid "Impact type"
+msgstr "Impact type"
+
+#: adept/adept_core.py:878
+msgid "Total impacts to ecosystem services"
+msgstr "Total impacts to ecosystem services"
+
+#: adept/adept_core.py:885
+msgid "Total impacts to terrestrial ecosystems"
+msgstr "Total impacts to terrestrial ecosystems"
+
+#: adept/adept_core.py:926
+msgid "Details of impacts to terrestrial ecosystems"
+msgstr "Details of impacts to terrestrial ecosystems"
+
+#: adept/adept_core.py:933
+msgid "Offset patches and mitigation potential"
+msgstr "Offset patches and mitigation potential"
+
+#: adept/adept_core.py:940
+msgid "Possible offset patches"
+msgstr "Possible offset patches"
+
+#: adept/adept_core.py:941
+msgid "GIS vector with all selected offset patches"
+msgstr "GIS vector with all selected offset patches"
+
+#: adept/adept_core.py:948
+msgid "Suggested offset parcels"
+msgstr "Suggested offset parcels"
+
+#: adept/adept_core.py:950
+#, python-format
+msgid "Suggested parcels account for %sx impacts*mitigation ratio"
+msgstr "Suggested parcels account for %sx impacts*mitigation ratio"
+
+#: adept/adept_core.py:957
+msgid "Net benefits to ecosystems and ecosystem services"
+msgstr "Net benefits to ecosystems and ecosystem services"
+
+#: adept/adept_core.py:962
+msgid "Benefits to terrestrial ecosystems"
+msgstr "Benefits to terrestrial ecosystems"
+
+#: adept/adept_core.py:1002
+msgid "Ecosystem service benefits"
+msgstr "Ecosystem service benefits"
+
+#: adept/adept_core.py:1037
+msgid "WARNING: Impact sites intersect an avoidance area"
+msgstr "WARNING: Impact sites intersect an avoidance area"
+
+#: adept/reporting.py:229
+msgid "Potential offset patch ID code"
+msgstr "Potential offset patch ID code"
+
+#: adept/reporting.py:231
+msgid "Sediment retention offset"
+msgstr "Sediment retention offset"
+
+#: adept/reporting.py:232
+msgid "Nitrogen retention offset"
+msgstr "Nitrogen retention offset"
+
+#: adept/reporting.py:233
+msgid "Carbon storage offset"
+msgstr "Carbon storage offset"
+
+#: adept/reporting.py:234
+msgid "Percent of total impact offset (sediment)"
+msgstr "Percent of total impact offset (sediment)"
+
+#: adept/reporting.py:235
+msgid "Percent of total impact offset (nitrogen)"
+msgstr "Percent of total impact offset (nitrogen)"
+
+#: adept/reporting.py:236
+msgid "Percent of total impact offset (carbon)"
+msgstr "Percent of total impact offset (carbon)"
+
+#: adept/reporting.py:237
+msgid "Distance from impact site (km)"
+msgstr "Distance from impact site (km)"
+
+#: adept/reporting.py:238
+msgid "Total patch area (ha)"
+msgstr "Total patch area (ha)"
+
+#: adept/reporting.py:239
+msgid "Custom ecosystem service offset"
+msgstr "Custom ecosystem service offset"
+
+#: adept/reporting.py:240
+msgid "Percent of total impact offset (custom ES)"
+msgstr "Percent of total impact offset (custom ES)"
+
+#: adept/reporting.py:241
+msgid "Landscape context index (LCI)"
+msgstr "Landscape context index (LCI)"
+
+#: adept/reporting.py:272
+msgid "AOI (area of influence)"
+msgstr "AOI (area of influence)"
+
+#: adept/reporting.py:273
+msgid "Municipality"
+msgstr "Municipality"
+
+#: adept/reporting.py:274
+msgid "Hydrographic sub-zone"
+msgstr "Hydrographic sub-zone"
+
+#: adept/reporting.py:275
+msgid "Avoidance Areas"
+msgstr "Avoidance Areas"
+
+#: adept/reporting.py:276
+msgid "Conservation Portfolio"
+msgstr "Conservation Portfolio"
+
+#: adept/reporting.py:277 adept/reporting.py:330
+msgid "Richness"
+msgstr "Richness"
+
+#: adept/reporting.py:278 adept/reporting.py:330
+msgid "Threat"
+msgstr "Threat"
+
+#: adept/reporting.py:352 adept/reporting.py:683 adept/reporting.py:774
+msgid "Carbon"
+msgstr "Carbon"
+
+#: adept/reporting.py:375 adept/reporting.py:692
+#, fuzzy
+msgid "Custom"
+msgstr "Custom"
+
+#: adept/reporting.py:446 adept/reporting.py:497
+msgid "Impacted patch code"
+msgstr "Impacted patch code"
+
+#: adept/reporting.py:448 adept/reporting.py:499 adept/reporting.py:772
+msgid "Mitigation ratio"
+msgstr "Mitigation ratio"
+
+#: adept/reporting.py:452 adept/reporting.py:504
+msgid "Landscape Context Index (LCI)"
+msgstr "Landscape Context Index (LCI)"
+
+#: adept/reporting.py:489 adept/reporting.py:498
+msgid "Patch area impacted (ha)"
+msgstr "Patch area impacted (ha)"
+
+#: adept/reporting.py:543
+msgid "Population center"
+msgstr "Population center"
+
+#: adept/reporting.py:548
+msgid "Population size"
+msgstr "Population size"
+
+#: adept/reporting.py:553
+msgid "Sediment impact"
+msgstr "Sediment impact"
+
+#: adept/reporting.py:558
+msgid "Nitrogen impact"
+msgstr "Nitrogen impact"
+
+#: adept/reporting.py:563
+msgid "Custom impact"
+msgstr "Custom impact"
+
+#: adept/reporting.py:568
+msgid "Sediment offset"
+msgstr "Sediment offset"
+
+#: adept/reporting.py:573
+msgid "Nitrogen offset"
+msgstr "Nitrogen offset"
+
+#: adept/reporting.py:578
+msgid "Custom offset"
+msgstr "Custom offset"
+
+#: adept/reporting.py:583
+msgid "Net sediment retention benefits"
+msgstr "Net sediment retention benefits"
+
+#: adept/reporting.py:588
+msgid "Net nitrogen retention benefits"
+msgstr "Net nitrogen retention benefits"
+
+#: adept/reporting.py:593
+msgid "Net custom ES benefits"
+msgstr "Net custom ES benefits"
+
+#: adept/reporting.py:598
+msgid "Net sediment * population"
+msgstr "Net sediment * population"
+
+#: adept/reporting.py:603
+msgid "Net nitrogen * population"
+msgstr "Net nitrogen * population"
+
+#: adept/reporting.py:608
+msgid "Net custom ES * population"
+msgstr "Net custom ES * population"
+
+#: adept/reporting.py:655
+msgid "Carbon impact"
+msgstr "Carbon impact"
+
+#: adept/reporting.py:658 adept/reporting.py:683 adept/reporting.py:692
+msgid "Service type"
+msgstr "Service type"
+
+#: adept/reporting.py:663 adept/reporting.py:684 adept/reporting.py:693
+msgid "Impacts to service"
+msgstr "Impacts to service"
+
+#: adept/reporting.py:668 adept/reporting.py:685 adept/reporting.py:694
+msgid "Selected offset"
+msgstr "Selected offset"
+
+#: adept/reporting.py:673 adept/reporting.py:686 adept/reporting.py:695
+msgid "Net service"
+msgstr "Net service"
+
+#: adept/reporting.py:770
+#, fuzzy
+msgid "Service name"
+msgstr "Service name"
+
+#: adept/reporting.py:771
+#, fuzzy
+msgid "Impact to service"
+msgstr "Impacts to service"
+
+#: adept/reporting.py:773
+#, fuzzy
+msgid "Required offset value"
+msgstr "Required offset area (ha)"
+
+#: adept/reporting.py:775
+msgid "Nutrient"
+msgstr "Nutrient"
+
+#: adept/reporting.py:776
+#, fuzzy
+msgid "Sediment"
+msgstr "Sediment"
+
+#: adept/reporting.py:777
+#, fuzzy
+msgid "Custom ecosystem service"
+msgstr "Custom ecosystem service"
+
+#~ msgid "Impact to %s"
+#~ msgstr "Impact to %s"
+
+#, fuzzy
+#~ msgid "Impact to sediment retention"
+#~ msgstr "Net sediment retention benefits"
+
+#, fuzzy
+#~ msgid "Impact to carbon storage"
+#~ msgstr "Impacts to service"
+
+#~ msgid "Custom Ecosystem Service Impact Amount"
+#~ msgstr "Custom Ecosystem Service Impact Amount"
+
+#~ msgid "%s impact"
+#~ msgstr "%s impact"

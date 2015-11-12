@@ -1,5 +1,9 @@
-from distutils.core import setup
-from distutils.core import Command
+import distutils
+from setuptools import setup
+from setuptools import Command
+from distutils.command.build import build as _build
+from distutils.command.build_py import build_py as _build_py
+from distutils.command.install_data import install_data as _install_data
 import platform
 import imp
 import os
@@ -9,84 +13,11 @@ import glob
 import shutil
 import json
 
-import matplotlib
-import palisades
-import adept
-from adept import preprocessing
-from adept import static_maps
-from adept import versioning
-
-print 'Adept package version: %s' % adept.__version__
-print 'Palisades package version: %s' % palisades.__version__
-
-# Raising an exception in some cases when the palisades HEAD can get detached
-# from a branch.
-if palisades.__version__ == 'remotes/origin/HEAD':
-    raise Exception('palisades version is invalid: %s' % palisades.__version__)
-
-py2exe_options = {}
+import natcap.versioner
+from natcap.versioner import versioning
 
 CMD_CLASSES = {}
-DATA_FILES = [('.', ['adept.json', 'opal.json', 'msvcp90.dll'])]
-
-# Use the determined virtualenv site-packages path to add all files in the
-# IUI resources directory to our setup.py data files.
-directory = 'invest-natcap.invest-3/invest_natcap/iui/iui_resources'
-for root_dir, sub_folders, file_list in os.walk(directory):
-    destination = root_dir.replace('invest-natcap.invest-3/', '')
-    DATA_FILES.append((destination, map(lambda x:
-        os.path.join(root_dir, x), file_list)))
-
-iui_dir = os.path.join('invest-natcap.invest-3', 'invest_natcap', 'iui')
-icon_names = ['dialog-close', 'dialog-ok', 'document-open', 'edit-undo',
-              'info', 'natcap_logo', 'validate-pass', 'validate-fail',
-              'dialog-warning', 'dialog-warning-big', 'dialog-information-2',
-              'dialog-error', 'list-remove']
-iui_icons = []
-for name in icon_names:
-    iui_icons.append(os.path.join(iui_dir, '%s.png' % name))
-
-DATA_FILES.append(('invest_natcap/iui', iui_icons))
-
-if platform.system() == 'Windows':
-    import py2exe
-    dist_dir = 'adept_py2exe'
-    py2exe_options['options'] ={
-        'py2exe': {
-            'dist_dir': dist_dir,
-            'packages': ['adept'],
-            'skip_archive': True,
-            'includes': [
-                'sip',
-                'adept',
-                'scipy.sparse.csgraph._validation',
-                'matplotlib',
-                'distutils',
-            ],
-            'excludes': ['Tkconstants', 'Tkinter', 'tcl', '_gtkagg', '_tkagg',
-                '_qt4agg'],
-            'xref': True,
-        },
-        'build_installer': {'nsis_dir': dist_dir},
-    }
-    py2exe_options['console'] = ['run_adept.py']
-    DATA_FILES += matplotlib.get_py2exe_datafiles()
-    DATA_FILES += palisades.get_py2exe_datafiles()
-
-else:
-    python_version = 'python%s' % '.'.join([str(r) for r in
-        sys.version_info[:2]])
-    lib_path = os.path.join('lib', python_version, 'site-packages')
-    iui_icon_path = os.path.join(lib_path, 'invest_natcap', 'iui')
-    DATA_FILES.append((iui_icon_path, iui_icons))
-
-# Since this repo is not for specific packages, I'm assuming that this
-# section is for py2exe ONLY.
-DATA_FILES.append(('invest_natcap/iui', iui_icons))
-DATA_FILES.append(('src/adept/report_data',
-    glob.glob('src/adept/adept/report_data/*')))
-#    DATA_FILES.append(('data/colombia_static_data',
-#        glob.glob('data/colombia_static_data/*')))
+SITE_PACKAGES = distutils.sysconfig.get_python_lib()
 
 # get specific sets of data files from the tool_data.
 # first, get the vectors.
@@ -129,6 +60,7 @@ class ToolDataColombia(Command):
         pass
 
     def run(self):
+        from natcap.opal import preprocessing
         tool_data_dir = os.path.join(os.getcwd(), 'build', 'co_tool_data')
         if not os.path.exists(tool_data_dir):
             os.makedirs(tool_data_dir)
@@ -174,6 +106,7 @@ class ZipColombiaData(Command):
         pass
 
     def run(self):
+        from natcap.opal import preprocessing
         build_dir = os.path.join(os.getcwd(), 'build', 'permitting_data')
         dist_dir = os.path.join(os.getcwd(), 'dist')
         data_dir = os.path.join(build_dir, 'data')
@@ -190,8 +123,7 @@ class ZipColombiaData(Command):
             ('carbon', glob.glob('data/colombia_static_data/carbon*.tif')),
             ('nutrient', glob.glob('data/colombia_static_data/nutrient*lzw.tif')),
             ('nutrient_pts', glob.glob('data/colombia_static_data/nutrient*pts.tif')),
-            ('sediment', glob.glob('data/colombia_static_data/sediment*lzw.tif')),
-            ('sediment_pts', glob.glob('data/colombia_static_data/sediment*pts.tif')),
+            ('sdr', glob.glob('data/colombia_static_data/sediment*lzw.tif')),
         ]
         for sm_name, static_rasters in static_files:
             print '\nCopying %s data' % sm_name
@@ -221,6 +153,8 @@ class SampleDataCommand(Command):
         pass
 
     def _gather_single_hydrozone_data(self):
+        from natcap.opal import preprocessing
+        from natcap.opal import static_maps
         print ''
         print 'gathering single-hydrozone sample data'
 
@@ -308,7 +242,7 @@ class SampleDataCommand(Command):
 
 class SampleDataGlobalCommand(SampleDataCommand):
     description = "Zip up required tool and static data for OPAL"
-    user_options = []
+    user_options = ['no-zip']
 
     def initialize_options(self):
         pass
@@ -317,6 +251,7 @@ class SampleDataGlobalCommand(SampleDataCommand):
         pass
 
     def run(self):
+        from natcap.opal import preprocessing
         self._gather_single_hydrozone_data()
         # active hydrozone URI saved to self.active_hydrozone
         dest_dir = os.path.join('build', 'permitting_data', 'sample_data',
@@ -611,8 +546,16 @@ class GlobalDistribution(NSISCommand):
         pass
 
     def run(self):
+        version = versioning.build_data()['version_str']
         self.run_command('sample_data_global')
         self.write_dist_data('OPAL')
+
+        # Build the documentation.  Installer expects the PDFs to be in the
+        # repo root, which is where the makefile will leave it.
+        cwd = os.getcwd()
+        os.chdir('doc/users-guide')
+        subprocess.call(['make', 'all', 'VERSION="%s"' % version])
+        os.chdir(cwd)
 
         # copy the distribution UI config file to the pyinstaller dist folder.
         source_file = os.path.join('windows_build', 'dist_config.json')
@@ -622,6 +565,60 @@ class GlobalDistribution(NSISCommand):
 
         NSISCommand.run(self)
 
+try:
+    from natcap.opal.i18n import msgfmt as opal_i18n_msgfmt
+except ImportError:
+    opal_i18n_msgfmt = imp.load_source('i18n', 'src/natcap/opal/i18n/msgfmt.py')
+
+class build(_build):
+    """Custom python build step for distutils.  Builds the OPAL translations
+    as part of the build step."""
+    sub_commands = _build.sub_commands + [('build_trans', None)]
+    def run(self):
+        _build.run(self)
+
+class build_translations(Command):
+    """Custom distutions command to compile translation files for installation."""
+    description = 'Compile .po files to .mo files'
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        po_dir = os.path.join(os.path.dirname(os.curdir), 'i18n')
+        for path, names, filenames in os.walk(po_dir):
+            for filepath in filenames:
+                if filepath.endswith('.po'):
+                    lang_code = filepath[:-3]
+                    src = os.path.join(path, filepath)
+                    dest_path = os.path.join('build', 'locale', lang_code,
+                            'LC_MESSAGES')
+                    dest = os.path.join(dest_path, 'adept.mo')
+                    if not os.path.exists(dest_path):
+                        os.makedirs(dest_path)
+
+                    # I always want to recompile.
+                    print 'Compiling %s to %s' % (src, dest)
+                    opal_i18n_msgfmt.make(src, dest)
+
+class build_py(_build_py):
+    def run(self):
+        self.run_command('build_trans')
+        _build_py.run(self)
+
+class install_data(_install_data):
+    def run(self):
+        for lang in os.listdir('build/locale'):
+            lang_dir = os.path.join('natcap', 'opal', 'i18n',
+                'locale', lang, 'LC_MESSAGES')
+            lang_file = os.path.join('build', 'locale', lang, 'LC_MESSAGES',
+                'adept.mo')
+            self.data_files.append((lang_dir, [lang_file]))
+        _install_data.run(self)
 
 CMD_CLASSES['dist_colombia'] = ColombiaDistribution
 CMD_CLASSES['dist_global'] = GlobalDistribution
@@ -629,13 +626,70 @@ CMD_CLASSES['static_data_colombia'] = ZipColombiaData
 CMD_CLASSES['sample_data'] = SampleDataCommand
 CMD_CLASSES['sample_data_global'] = SampleDataGlobalCommand
 CMD_CLASSES['tool_data_colombia'] = ToolDataColombia
+CMD_CLASSES['build'] = build
+CMD_CLASSES['build_py'] = build_py
+CMD_CLASSES['build_trans'] = build_translations
+CMD_CLASSES['install_data'] = install_data
+CMD_CLASSES['build'] = build
 
-print 'DATA_FILES'
-print DATA_FILES
+README = open('README.rst').read()
+CHANGES = open('CHANGES.txt').read()
+LICENSE = open('LICENSE.txt').read()
+
+def load_version():
+    """
+    Load the version string.
+
+    If we're in a source tree, load the version from the opal __init__ file.
+    If we're in an installed version of opal, use the __version__attribute.
+    """
+    try:
+        import natcap.opal as opal
+    except ImportError:
+        import imp
+        opal = imp.load_source('natcap.opal', 'src/natcap/opal/__init__.py')
+    return opal.__version__
 
 setup(
-    name='adept',
+    name='natcap.opal',
+    description="Decision support tool for mitigating development impacts to ecosystem services",
+    long_description=README + '\n\n' + CHANGES,
+    maintainer='James Douglass',
+    maintainer_email='jdouglass@stanford.edu',
+    url='https://bitbucket.org/natcap/opal',
+    packages=[
+        'natcap',
+        'natcap.opal',
+        'natcap.opal.i18n',
+        'natcap.opal.tests'
+    ],
+    package_dir={
+        'natcap': 'src/natcap',
+    },
+    requires=[
+        'numpy',
+        'scipy',
+        'shapely',
+        'GDAL',
+        'pyyaml',
+    ],
+    version=natcap.versioner.parse_version(),
+    natcap_version='src/natcap/opal/version.py',
     cmdclass=CMD_CLASSES,
-    version = adept.__version__,
-    data_files = DATA_FILES,
-    **py2exe_options)
+    license=LICENSE,
+    keywords='GIS',
+    classifiers=[
+        'Intended Audience :: Developers',
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Science/Research',
+        'Natural Language :: English',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: Microsoft',
+        'Operating System :: POSIX',
+        'Programming Language :: Python :: 2 :: Only',
+        'Topic :: Scientific/Engineering :: GIS'
+    ],
+    package_data={
+        'natcap.opal': ['report_data/*', 'static_data/*'],
+    }
+)
