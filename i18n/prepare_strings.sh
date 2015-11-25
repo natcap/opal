@@ -3,7 +3,7 @@
 
 POT_FILE='Adept.pot'
 
-find adept -name "*.py" | xargs xgettext -d Adept -o i18n/$POT_FILE --language=Python --package-name=OPAL/MAFE --msgid-bugs-address=jdouglass@stanford.edu --from-code=UTF-8
+find src/natcap/opal -name "*.py" | xargs xgettext -d Adept -o i18n/$POT_FILE --language=Python --package-name=OPAL/MAFE --msgid-bugs-address=jdouglass@stanford.edu --from-code=UTF-8
 
 # Replace necessary fields with proper data.
 sed -i 's/charset=CHARSET/charset=UTF-8/' i18n/$POT_FILE
