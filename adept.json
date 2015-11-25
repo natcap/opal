@@ -171,8 +171,8 @@
             "hideable": true, 
             "type": "file", 
             "label": {
-                "en": "Use custom search areas", 
-                "es": "Usar áreas de búsqueda propias"
+                "en": "Use hydrozones/subzones", 
+                "es": "Usar zonas y zubzonas hidrológicas"
             }, 
             "validateAs": {
                 "type": "OGR",
