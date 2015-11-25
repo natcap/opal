@@ -8,7 +8,7 @@
         "en": "sediment_static_map", 
         "es": "sediment_static_map_es"
     }, 
-    "targetScript": "adept.static_maps", 
+    "targetScript": "natcap.opal.static_maps", 
     "elements": [
         {
             "args_id": "workspace_dir", 

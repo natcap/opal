@@ -8,7 +8,7 @@
         "en": "Permitting", 
         "es": "Licenciamiento"
     }, 
-    "targetScript": "adept", 
+    "targetScript": "natcap.opal", 
     "condenseElements": true, 
     "elements": [
         {

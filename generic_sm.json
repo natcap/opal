@@ -8,7 +8,7 @@
         "en": "generic_static_map", 
         "es": "generic_static_map_es"
     }, 
-    "targetScript": "adept.static_maps", 
+    "targetScript": "natcap.opal.static_maps", 
     "targetFunction": "raster_math",
     "elements": [
         {
