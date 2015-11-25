@@ -4,7 +4,7 @@ import os
 import palisades
 import palisades.i18n
 from palisades import execution
-import adept.i18n
+import natcap.opal.i18n
 
 class MultilingualRunner(execution.PythonRunner):
     def start(self):
@@ -12,8 +12,8 @@ class MultilingualRunner(execution.PythonRunner):
         Overridden here to take the language of the palisades UI and set the
         adept package language to the same language code."""
         palisades_lang = palisades.i18n.current_lang()
-        print 'setting adept lang to %s' % palisades_lang
-        adept.i18n.language.set(palisades_lang)
+        print 'setting MAFE-T lang to %s' % palisades_lang
+        natcap.opal.i18n.language.set(palisades_lang)
         execution.PythonRunner.start(self)
 
 print "Build data"
