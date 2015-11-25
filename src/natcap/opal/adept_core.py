@@ -36,6 +36,8 @@ LABEL_PROTECTION = 'Protection'
 LABEL_RESTORATION = 'Restoration'
 DIST_OPAL = 'opal'
 DIST_MAFE = 'mafe-t'
+IMPACT_ROAD = 0
+IMPACT_BARE = 1
 
 class InvalidImpactsVector(Exception): pass
 class InvalidInput(Exception): pass
@@ -46,7 +48,8 @@ def execute(args):
             'workspace_dir' - A uri to the output workspace.
             'project_footprint_uri' - a URI to a shapefile of the project
                 footprint
-            'impact_type' - "Road/Mine" or "Bare ground/Paved".
+            'impact_type' - 1 or 2.  Historically, "Road/Mine" or
+                "Bare ground/Paved" were the options.
             'area_of_influence_uri' - a uri to a shapefile that defines the
                 area of influcence of the impact site
             'ecosystems_map_uri' - a URI to an OGR vector with all the
@@ -220,8 +223,15 @@ def execute(args):
     # TODO: if user provided custom static map, add a 'custom' service.
     # TODO: Add a static protection map here.
     LOGGER.debug("User-defined impact type: %s", args['impact_type'])
-    assert args['impact_type'] in ['Road/Paved', 'Mine/Bare'], ('Invalid '
-        'impact type %s' % args['impact_type'])
+
+    try:
+        _impact_labels = {
+            IMPACT_ROAD: _('Road/Paved'),
+            IMPACT_BARE: _('Mine/Bare'),
+        }
+        args['impact_type'] = _impact_labels[args['impact_type']]
+    except KeyError:
+        raise Exception('Impact type %s not known.', args['impact_type'])
 
     if args['impact_type'] == 'Road/Paved':
         impact_key = 'paved'
@@ -542,7 +552,7 @@ def execute(args):
         for service_name, static_data in protection_services:
             LOGGER.debug('Aggregating stats for service %s', service_name)
             LOGGER.debug('Aggregating %s stats for offset sites', service_name)
-            _ = analysis.aggregate_stats(static_data['static_protection'],
+            analysis.aggregate_stats(static_data['static_protection'],
                 hzone_paths['offset_sites'], 'FID', service_name,
                 static_data['pts_protection'])
             LOGGER.debug('Aggregating %s stats for impact sites', service_name)
@@ -556,11 +566,11 @@ def execute(args):
                 continue
             LOGGER.debug('Found %s map in args.  Calculating stats.',
                 col_name.lower())
-            _ = analysis.aggregate_stats(args[args_key],
+            analysis.aggregate_stats(args[args_key],
                 hzone_paths['impact_sites'], 'FID', col_name)
-            _ = analysis.aggregate_stats(args[args_key],
+            analysis.aggregate_stats(args[args_key],
                 hzone_paths['offset_sites'], 'FID', col_name)
-            _ = analysis.aggregate_stats(args[args_key],
+            analysis.aggregate_stats(args[args_key],
                 hzone_paths['all_offsets'], 'FID', col_name)
 
     #    LOGGER.info('Selecting offset parcels')
@@ -620,7 +630,7 @@ def execute(args):
             comparison_vectors['City'] = hzone_paths['impacted_muni']
 
         #biodiversity_impact contains ONLY the biodiversity impacts.
-        _, recommended_parcels = offsets._select_offsets(
+        _foo, recommended_parcels = offsets._select_offsets(
             hzone_paths['offset_sites'],
             hzone_paths['impact_sites'], biodiversity_impact,
             hzone_paths['selected_offsets'], hzone_paths['parcel_info'],
