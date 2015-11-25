@@ -51,17 +51,17 @@
         {
             "args_id": "impact_type", 
             "id": "impact_type",
-            "returns": {"type": "strings"}, 
+            "returns": {"type": "ordinals"}, 
             "defaultValue": 0, 
             "label": {
                 "en": "Impact type", 
                 "es": "Tipo de impacto"
             }, 
             "type": "dropdown", 
-            "options": [
-                "Road/Paved",
-                "Mine/Bare"
-            ],
+            "options": {
+                "en": ["Road/Paved", "Mine/Bare"],
+                "es": ["Carretera/Pavimentado", "Mina/Desnudo"]
+            },
             "helpText": {
                 "en": "Select the impact type of the proposed development.",
                 "es": "Seleccione el tipo de impacto del desarrollo propuesto."
