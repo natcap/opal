@@ -192,7 +192,7 @@ var DataLocal
 ;    strcpy $FileField $0
 ;    EnableWindow $FileField 0
 
-    ${NSD_CreateBrowseButton} 400 120 10% 12u "$(FILE_BUTTON)"
+    ${NSD_CreateBrowseButton} 400 120 20% 12u "$(FILE_BUTTON)"
     pop $FileButton
 ;    strcpy $FileButton $0
     ${NSD_OnClick} $FileButton GetZipFile
