@@ -630,6 +630,8 @@ def get_common_data_json(data_dir=None):
         else:
             data_dir = os.getcwd()
 
+    data_dir = os.path.abspath(os.path.normpath(data_dir))
+
     def _render_dict(dictionary):
         output_dict = {}
         for key, item in dictionary.iteritems():

@@ -422,9 +422,10 @@ def execute(args):
                 preprocessing.locate_intersecting_polygons(
                     municipalities, args['project_footprint_uri'],
                     files['impacted_sb3'])
-        else:
-            raise RuntimeError(("Municipalities vector is required, "
-                "but was not provided or could not be found"))
+        else:  # We're in MAFE-T
+            if not os.path.exists(municipalities):
+                raise RuntimeError(("Municipalities vector is required, "
+                    "but was not provided or could not be found"))
 
     try:
         area_of_influence = args['area_of_influence_uri']
