@@ -395,14 +395,14 @@ def execute(args):
         LOGGER.debug('Using user-provided hydro subzones: %s', hydro_subzones)
 
         hydrozones = os.path.join(dirs['intermediate'], 'hydrozones.shp')
-        # build the hydrozones out of the hydrosubzones by zone attribute
-        contained_subzones = preprocessing.union_by_attribute(hydro_subzones,
-            'zone', hydrozones)
     except KeyError:
         hydro_subzones = common_data['hydrosubzones']
         hydrozones = common_data['hydrozones']
         LOGGER.debug('Using default hydro subzones: %s', hydro_subzones)
         LOGGER.debug('Using default hydrozones: %s', hydrozones)
+    # build the hydrozones out of the hydrosubzones by zone attribute
+    contained_subzones = preprocessing.union_by_attribute(
+        hydro_subzones, 'zone', hydrozones)
 
     try:
         municipalities = args['municipalities_uri']
