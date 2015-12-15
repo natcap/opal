@@ -573,9 +573,7 @@ except ImportError:
 class build(_build):
     """Custom python build step for distutils.  Builds the OPAL translations
     as part of the build step."""
-    sub_commands = _build.sub_commands + [('build_trans', None)]
-    def run(self):
-        _build.run(self)
+    sub_commands = [('build_trans', None)] + _build.sub_commands
 
 class build_translations(Command):
     """Custom distutions command to compile translation files for installation."""
@@ -691,5 +689,6 @@ setup(
     ],
     package_data={
         'natcap.opal': ['report_data/*', 'static_data/*'],
+        'natcap.opal.i18n': ['build/locale/*/LC_MESSAGES/*']
     }
 )
