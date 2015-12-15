@@ -231,7 +231,7 @@ def main(json_config=None):
             language_pref = default_language
 
     gui_app.show_splash(splash)
-    gui_app.set_splash_message(palisades.SPLASH_MSG_CORE_APP)
+    gui_app.set_splash_message(palisades.SPLASH_MSG_CORE_APP())
 
     # create the core Application instance so that I can access its elements
     # for callbacks.
@@ -282,7 +282,7 @@ def main(json_config=None):
             log_exit_thread.start()
 
     ui._window.set_runner(MultilingualRunner)
-    gui_app.set_splash_message(palisades.SPLASH_MSG_GUI)
+    gui_app.set_splash_message(palisades.SPLASH_MSG_GUI())
     gui_app.add_window(ui._window)
 
     # set the application icon
