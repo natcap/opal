@@ -22,10 +22,7 @@ import offsets
 import static_maps
 import reporting as opal_reporting
 import analysis
-import utils
 
-logging.basicConfig(format='%(asctime)s %(name)-18s %(levelname)-8s \
-     %(message)s', level=logging.DEBUG, datefmt='%m/%d/%Y %H:%M:%S ')
 
 LOGGER = logging.getLogger('natcap.opal')
 
@@ -395,14 +392,16 @@ def execute(args):
         LOGGER.debug('Using user-provided hydro subzones: %s', hydro_subzones)
 
         hydrozones = os.path.join(dirs['intermediate'], 'hydrozones.shp')
+        # build the hydrozones out of the hydrosubzones by zone attribute
+        contained_subzones = preprocessing.union_by_attribute(
+            hydro_subzones, 'zone', hydrozones)
     except KeyError:
         hydro_subzones = common_data['hydrosubzones']
         hydrozones = common_data['hydrozones']
         LOGGER.debug('Using default hydro subzones: %s', hydro_subzones)
         LOGGER.debug('Using default hydrozones: %s', hydrozones)
-    # build the hydrozones out of the hydrosubzones by zone attribute
-    contained_subzones = preprocessing.union_by_attribute(
-        hydro_subzones, 'zone', hydrozones)
+        contained_subzones = preprocessing.union_by_attribute(
+            hydro_subzones, 'zone', out_vector_uri=None)
 
     try:
         municipalities = args['municipalities_uri']

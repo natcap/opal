@@ -1129,9 +1129,12 @@ def union_by_attribute(in_vector_uri, attr_name, out_vector_uri):
         in_vector_uri - a URI to an OGR vector on disk.
         attr_name - the string name of an attribute to join using.
         out_vector_uri - the URI to where the output vector should be written.
+            If None a new vector will not be saved, but the output dictionary
+            will still be returned.
 
-    Returns a dict mapping the value of attr_name from the hydrozone to the
-    a list of feature IDs of the subzones that make up the hydrozone."""
+    Returns:
+        a dict mapping the value of attr_name from the hydrozone to the
+        list of feature IDs of the subzones that make up the hydrozone."""
 
     LOGGER.debug('Taking the union of %s by attribute %s', in_vector_uri,
         attr_name)
@@ -1148,6 +1151,10 @@ def union_by_attribute(in_vector_uri, attr_name, out_vector_uri):
             attributes[attribute_value].append(feature_id)
         except KeyError:
             attributes[attribute_value] = [feature_id]
+
+    if not out_vector_uri:
+        LOGGER.debug('Returning attributes without creating new vector')
+        return attributes
 
     LOGGER.debug('Found %s attribute(s) to aggregate by.', len(attributes))
     out_driver = ogr.GetDriverByName('ESRI Shapefile')
