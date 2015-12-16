@@ -824,18 +824,18 @@ def write_results_index(results_dir, out_file, distribution):
                 'input_type': 'text',
                 'position': 0,
                 'text': (
-                    '<h1>{distribution} {title}</h1>'
-                    '{help_text}'
-                    '<ul>{formatted_hzone_list}</ul>'
+                    u'<h1>{distribution} {title}</h1>'
+                    u'{help_text}'
+                    u'<ul>{formatted_hzone_list}</ul>'
                 ).format(
                     distribution=distribution.upper(),
                     title=_('Per-Zone Analyses'),
                     help_text=_(
                         'Select a zone to navigate to its impact summary.'
                     ),
-                    formatted_hzone_list='\n'.join([
-                        '<li><a href="{href}">{text}</li>'.format(
-                            href=os.path.join(d, d + '_report.html'),
+                    formatted_hzone_list=u'\n'.join([
+                        u'<li><a href="{href}">{text}</li>'.format(
+                            href=os.path.join(d, d + u'_report.html'),
                             text=d)
                         for d in zone_directory_basenames])
                 )
