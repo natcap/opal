@@ -112,7 +112,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\carbon.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/carbon.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.1.0/carbon.zip"
                 }
             },
             {
@@ -129,7 +129,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\sdr.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://ncp-dev.stanford.edu/~dataportal/nightly-build/adept/data/sdr.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.1.0/sdr.zip"
                 }
             },
             {
@@ -146,7 +146,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\nutrient.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/nutrient.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.1.0/nutrient.zip"
                 }
             },
             {
@@ -163,7 +163,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\nutrient_pts.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/nutrient_pts.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.1.0/nutrient_pts.zip"
                 }
             }
         ]
