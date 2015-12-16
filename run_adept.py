@@ -1,10 +1,14 @@
 import sys
 import os
+import logging
 
 import palisades
 import palisades.i18n
 from palisades import execution
 import natcap.opal.i18n
+
+_PALISADES_LOGGER = logging.getLogger('palisades')
+_PALISADES_LOGGER.setLevel(logging.WARNING)
 
 class MultilingualRunner(execution.PythonRunner):
     def start(self):
