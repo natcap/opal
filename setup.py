@@ -2,8 +2,6 @@ import distutils
 from setuptools import setup
 from setuptools import Command
 from distutils.command.build import build as _build
-from distutils.command.build_py import build_py as _build_py
-from distutils.command.install_data import install_data as _install_data
 import platform
 import imp
 import os
@@ -593,8 +591,8 @@ class build_translations(Command):
                 if filepath.endswith('.po'):
                     lang_code = filepath[:-3]
                     src = os.path.join(path, filepath)
-                    dest_path = os.path.join('build', 'locale', lang_code,
-                            'LC_MESSAGES')
+                    dest_path = os.path.join('src', 'natcap', 'opal', 'i18n', lang_code,
+                                             'LC_MESSAGES')
                     dest = os.path.join(dest_path, 'adept.mo')
                     if not os.path.exists(dest_path):
                         os.makedirs(dest_path)
@@ -603,20 +601,6 @@ class build_translations(Command):
                     print 'Compiling %s to %s' % (src, dest)
                     opal_i18n_msgfmt.make(src, dest)
 
-class build_py(_build_py):
-    def run(self):
-        self.run_command('build_trans')
-        _build_py.run(self)
-
-class install_data(_install_data):
-    def run(self):
-        for lang in os.listdir('build/locale'):
-            lang_dir = os.path.join('natcap', 'opal', 'i18n',
-                'locale', lang, 'LC_MESSAGES')
-            lang_file = os.path.join('build', 'locale', lang, 'LC_MESSAGES',
-                'adept.mo')
-            self.data_files.append((lang_dir, [lang_file]))
-        _install_data.run(self)
 
 CMD_CLASSES['dist_colombia'] = ColombiaDistribution
 CMD_CLASSES['dist_global'] = GlobalDistribution
@@ -625,9 +609,7 @@ CMD_CLASSES['sample_data'] = SampleDataCommand
 CMD_CLASSES['sample_data_global'] = SampleDataGlobalCommand
 CMD_CLASSES['tool_data_colombia'] = ToolDataColombia
 CMD_CLASSES['build'] = build
-CMD_CLASSES['build_py'] = build_py
 CMD_CLASSES['build_trans'] = build_translations
-CMD_CLASSES['install_data'] = install_data
 CMD_CLASSES['build'] = build
 
 README = open('README.rst').read()
@@ -689,6 +671,6 @@ setup(
     ],
     package_data={
         'natcap.opal': ['report_data/*', 'static_data/*'],
-        'natcap.opal.i18n': ['build/locale/*/LC_MESSAGES/*']
+        'natcap.opal.i18n': ['*/LC_MESSAGES/*']
     }
 )
