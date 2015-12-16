@@ -591,7 +591,8 @@ class build_translations(Command):
                 if filepath.endswith('.po'):
                     lang_code = filepath[:-3]
                     src = os.path.join(path, filepath)
-                    dest_path = os.path.join('src', 'natcap', 'opal', 'i18n', lang_code,
+                    dest_path = os.path.join('src', 'natcap', 'opal', 'i18n',
+                                             'locale', lang_code,
                                              'LC_MESSAGES')
                     dest = os.path.join(dest_path, 'adept.mo')
                     if not os.path.exists(dest_path):
@@ -671,6 +672,6 @@ setup(
     ],
     package_data={
         'natcap.opal': ['report_data/*', 'static_data/*'],
-        'natcap.opal.i18n': ['*/LC_MESSAGES/*']
+        'natcap.opal.i18n': ['locale/*/LC_MESSAGES/*']
     }
 )
