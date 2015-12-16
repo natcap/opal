@@ -14,8 +14,15 @@ APP_NAME = "adept"
 
 # This is ok for maemo. Not sure in a regular desktop:
 # assume we're executing from the adept source root.
-LOCALE_DIR = os.path.join(os.path.dirname(__file__), 'locale') # .mo files will then be located
-                                           #in APP_Dir/i18n/LANGUAGECODE/LC_MESSAGES/
+
+try:
+    sys.frozen
+    LOCALE_DIR = os.path.join(os.path.dirname(sys.executable), 'natcap',
+                              'opal', 'i18n', 'locale')
+except AttributeError:
+    LOCALE_DIR = os.path.join(os.path.dirname(__file__), 'locale') # .mo files will then be located
+                                            #in APP_Dir/i18n/LANGUAGECODE/LC_MESSAGES/
+LOGGER.debug('Using locale dir %s', LOCALE_DIR)
 
 # Now we need to choose the language. We will provide a list, and gettext
 # will use the first translation available in the list
@@ -45,15 +52,14 @@ gettext.textdomain(APP_NAME)
 gettext.bind_textdomain_codeset(APP_NAME, "UTF-8")
 
 LOGGER.debug('Available languages: %s', languages)
-#language = gettext.translation(APP_NAME, mo_location,
-#    languages=languages, fallback=True)
 
 # KEEP FALLBACK=TRUE!
 # This module is imported when running setup.py, but the language translation
 # files have not been loaded to the correct place.  If Fallback=False, an
 # exception will be raised at that time.
-get_trans = lambda code: gettext.translation(APP_NAME, mo_location,
-        languages=[code], fallback=True)
+def get_trans(code):
+    return gettext.translation(
+        APP_NAME, mo_location, languages=[code], fallback=True)
 
 class Language(object):
     def __init__(self):
