@@ -8,11 +8,11 @@
         "en": "nutrient_static_map", 
         "es": "nutrient_static_map_es"
     }, 
-    "targetScript": "adept.static_maps", 
+    "targetScript": "natcap.opal.static_maps", 
     "elements": [
         {
             "args_id": "workspace_dir", 
-            "defaultValue": "~/static_maps_nutrient", 
+            "defaultValue": "~/mafe-t_nutrient_static_maps",
             "helpText": {
                 "en": "This is the directory in which the output and intermediate files will be saved.", 
                 "es": "Este es el directorio donde se guardarán los archivos intermedios y finales"

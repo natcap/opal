@@ -37,10 +37,6 @@
                 "leave_funcname": "SedimentStaticDataFunctionLeave"
             },
             {
-                "enter_funcname": "SedimentStaticPercentToStreamDataFunction",
-                "leave_funcname": "SedimentStaticPercentToStreamDataFunctionLeave"
-            },
-            {
                 "enter_funcname": "NutrientStaticDataFunction",
                 "leave_funcname": "NutrientStaticDataFunctionLeave"
             },
@@ -116,7 +112,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\carbon.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/carbon.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.1.0/carbon.zip"
                 }
             },
             {
@@ -131,26 +127,9 @@
                 },
                 "action": {
                     "type": "unzipSelect",
-                    "zipfile": "..\\dist\\sediment.zip",
+                    "zipfile": "..\\dist\\sdr.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/sediment.zip"
-                }
-            },
-            {
-                "name": {
-                    "english": "Sediment Static Percent-To-Stream Data",
-                    "spanish": "Datos estáticos de porcentaje de sedimentos en el río"
-                },
-                "size": "4714348",
-                "label": {
-                    "english": "Select an option to download sediment static percent-to-stream data",
-                    "spanish": "Seleccione una opción para descargar los datos estáticos de porcentaje de sedimentos en el río."
-                },
-                "action": {
-                    "type": "unzipSelect",
-                    "zipfile": "..\\dist\\sediment_pts.zip",
-                    "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/sediment_pts.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.1.0/sdr.zip"
                 }
             },
             {
@@ -167,7 +146,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\nutrient.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/nutrient.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.1.0/nutrient.zip"
                 }
             },
             {
@@ -184,7 +163,7 @@
                     "type": "unzipSelect",
                     "zipfile": "..\\dist\\nutrient_pts.zip",
                     "target_dir": "$INSTDIR\\data\\colombia_static_data",
-                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.0.3/nutrient_pts.zip"
+                    "downloadURL": "http://data.naturalcapitalproject.org/mafe-releases/1.1.0/nutrient_pts.zip"
                 }
             }
         ]

@@ -3,31 +3,32 @@ import os
 import argparse
 import logging
 import json
+import uuid
+import threading
 
 from PyQt4 import QtGui
+
+# importing tkinter, FileDialog because matplotlib wants to use it.
+import Tkinter
+import FileDialog
 
 import palisades
 import palisades.i18n
 from palisades import execution
 from palisades import elements
-import adept.i18n
-from adept import versioning
+from palisades import utils as palisades_utils
+from palisades.gui import qt4 as palisades_qt4
+from palisades.i18n import translation as palisades_translation
+import natcap.opal.i18n
+from natcap.versioner import versioning
+from natcap.opal import utils
+from natcap.invest.iui import executor as invest_executor
 
 # capture palisades logging and only display INFO or higher
 PALISADES_LOGGER = logging.getLogger('palisades')
 PALISADES_LOGGER.setLevel(logging.INFO)
 
 LOGGER = logging.getLogger('_opal_launch')
-
-class MultilingualRunner(execution.PythonRunner):
-    def start(self):
-        """Start the execution.
-        Overridden here to take the language of the palisades UI and set the
-        adept package language to the same language code."""
-        palisades_lang = palisades.i18n.current_lang()
-        print 'setting adept lang to %s' % palisades_lang
-        adept.i18n.language.set(palisades_lang)
-        execution.PythonRunner.start(self)
 
 def setup_opal_callbacks(ui_obj):
     servicesheds_elem = ui_obj.find_element('servicesheds_map')
@@ -128,7 +129,7 @@ def setup_opal_callbacks(ui_obj):
     # Set up inter-element communication based on the dropdown menu.
     # Items are: (target element ID, model name, whether to include PTS rasters
     static_map_generators = [
-        ('sediment_static_maps', 'sediment', True),
+        ('sediment_static_maps', 'sediment', False),
         ('nutrient_static_maps', 'nutrient', True),
         ('carbon_static_maps', 'carbon', False),
         ('custom_static_maps', 'custom', False),
@@ -188,18 +189,100 @@ def main(json_config=None):
 
     # set up the palisades gui object and initialize the splash screen
     gui_app = palisades.gui.get_application()
+
+    try:
+        language_pref = palisades_utils.get_user_language()
+    except RuntimeError:
+        # When the user has not set a language or we can't read the config.
+        lang_dialog = palisades_qt4.LanguageSelectionDialog()
+
+        # Provide basic translation for the language dialog.
+        # Gettext felt like overkill, so I'm not using it.
+        dialog_trans = {
+            'en': ('Select OPAL Language', 'Select language'),
+            'es': ('Seleccionar la idioma de OPAL', 'Seleccione idioma'),
+        }
+        os_default_lang = palisades.i18n.os_default_lang()
+        try:
+            window_title, body_text = dialog_trans[os_default_lang]
+        except KeyError:
+            # If the user's default language is not provided, default to
+            # English.
+            window_title, body_text = dialog_trans['en']
+
+        lang_dialog.setWindowTitle(window_title)
+        lang_dialog.set_title(body_text)
+        lang_dialog.set_icon(opal_logo, scale=True)
+
+        # get the available translations from the JSON file given.
+        available_langs, _ = palisades_translation.translate_json(found_json, '')
+        lang_dialog.set_allowed_langs(available_langs)
+
+        # set the distribution default from dist_config.
+        default_language = palisades.locate_dist_config()['lang']
+        lang_dialog.set_default_lang(default_language)
+
+        lang_dialog.show()
+        lang_dialog.exec_()
+        if not lang_dialog.was_rejected():
+            language_pref = lang_dialog.language()
+            palisades_utils.save_user_language(language_pref)
+        else:
+            language_pref = default_language
+
     gui_app.show_splash(splash)
-    gui_app.set_splash_message(palisades.SPLASH_MSG_CORE_APP)
+    gui_app.set_splash_message(palisades.SPLASH_MSG_CORE_APP())
 
     # create the core Application instance so that I can access its elements
     # for callbacks.
-    ui = elements.Application(found_json,
-        palisades.locate_dist_config()['lang'])
-    if os.path.basename(found_json) == 'opal.json':
+    ui = elements.Application(found_json, language_pref)
+    json_basename = os.path.basename(found_json)
+    if json_basename == 'opal.json':
         setup_opal_callbacks(ui._window)
+        log_name = 'opal.core'
+    elif json_basename.endswith('_sm.json'):
+        # json basename is expected to be in the form "opal_<model>_sm.json"
+        log_name = 'opal.%s_sm' % json_basename.split('_')[1]
+
+    class MultilingualRunner(execution.PythonRunner):
+        def __init__(self, module_string, args, func_name='execute'):
+            execution.PythonRunner.__init__(self, module_string, args, func_name)
+            self.user_args = args
+            self.session_id = str(uuid.uuid4())
+
+            # redister the status-logging callback.
+            self.finished.register(self.finish)
+
+        def start(self):
+            """Start the execution.
+            Overridden here to take the language of the palisades UI and set the
+            natcap.opal package language to the same language code."""
+            log_thread = threading.Thread(
+                target=utils._log_model, args=(log_name, self.user_args,
+                                               self.session_id))
+            log_thread.start()
+            palisades_lang = palisades.i18n.current_lang()
+            print 'setting opal lang to %s' % palisades_lang
+            natcap.opal.i18n.language.set(palisades_lang)
+            execution.PythonRunner.start(self)
+
+        def finish(self, thread_name):
+            """
+            Log the status of the executor to the logging_server.
+            """
+            if self.executor.exception is not None:
+                message = self.executor.exception
+            else:
+                # Smileyface is the standard way to indicate model success.
+                message = ':)'
+
+            log_exit_thread = threading.Thread(
+                target=invest_executor._log_exit_status,
+                args=(self.session_id, message))
+            log_exit_thread.start()
 
     ui._window.set_runner(MultilingualRunner)
-    gui_app.set_splash_message(palisades.SPLASH_MSG_GUI)
+    gui_app.set_splash_message(palisades.SPLASH_MSG_GUI())
     gui_app.add_window(ui._window)
 
     # set the application icon

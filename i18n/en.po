@@ -1,0 +1,401 @@
+# English translations for OPAL/MAFE package.
+# Copyright (C) 2014 THE OPAL/MAFE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the OPAL/MAFE package.
+# James Douglass <jadoug06@ncp-helios.stanford.edu>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OPAL/MAFE\n"
+"Report-Msgid-Bugs-To: jdouglass@stanford.edu\n"
+"POT-Creation-Date: 2015-11-24 21:03-0800\n"
+"PO-Revision-Date: 2014-08-21 12:07-0700\n"
+"Last-Translator: James Douglass <jdouglass@stanford.edu>\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/natcap/opal/adept_core.py:229
+msgid "Road/Paved"
+msgstr "Road/Paved"
+
+#: src/natcap/opal/adept_core.py:230
+msgid "Mine/Bare"
+msgstr "Mine/Bare"
+
+#: src/natcap/opal/adept_core.py:808 src/natcap/opal/adept_core.py:938
+msgid "Report"
+msgstr "Report"
+
+#: src/natcap/opal/adept_core.py:832
+msgid "Per-Zone Analyses"
+msgstr "Per-Zone Analyses"
+
+#: src/natcap/opal/adept_core.py:834
+msgid "Select a zone to navigate to its impact summary."
+msgstr "Select a zone to navidate to its impact summary."
+
+#: src/natcap/opal/adept_core.py:861
+msgid "Impact footprint shapefile"
+msgstr "Impact footprint shapefile"
+
+#: src/natcap/opal/adept_core.py:894 src/natcap/opal/adept_core.py:1041
+#: src/natcap/opal/adept_core.py:1044 src/natcap/opal/adept_core.py:1126
+#: src/natcap/opal/adept_core.py:1129 src/natcap/opal/reporting.py:265
+#: src/natcap/opal/reporting.py:502 src/natcap/opal/reporting.py:556
+msgid "Ecosystem type"
+msgstr "Ecosystem type"
+
+#: src/natcap/opal/adept_core.py:895 src/natcap/opal/adept_core.py:1057
+#: src/natcap/opal/adept_core.py:1133
+msgid "Total impacted area (ha)"
+msgstr "Total impacted area (ha)"
+
+#: src/natcap/opal/adept_core.py:896 src/natcap/opal/adept_core.py:1062
+#: src/natcap/opal/adept_core.py:1137 src/natcap/opal/reporting.py:545
+#: src/natcap/opal/reporting.py:555
+msgid "Required offset area (ha)"
+msgstr "Required offset area (ha)"
+
+#: src/natcap/opal/adept_core.py:898 src/natcap/opal/adept_core.py:1052
+msgid "Mean mitigation ratio"
+msgstr "Mean mitigation ratio"
+
+#: src/natcap/opal/adept_core.py:899 src/natcap/opal/adept_core.py:1048
+msgid "No. patches impacted"
+msgstr "No. patches impacted"
+
+#: src/natcap/opal/adept_core.py:902 src/natcap/opal/adept_core.py:1142
+msgid "Area offset (ha)"
+msgstr "Area offset (ha)"
+
+#: src/natcap/opal/adept_core.py:903 src/natcap/opal/adept_core.py:1147
+msgid "Net benefits (ha)"
+msgstr "Net benefits (ha)"
+
+#: src/natcap/opal/adept_core.py:1003
+msgid ""
+"<b>NOTE:</b> Impact and offset values are <b>unitless</b> unless you have "
+"calibrated your static map model runs."
+msgstr ""
+"<b>NOTE:</b> Impact and offset values are <b>unitless</b> unless you have "
+"calibrated your static map model runs."
+
+#: src/natcap/opal/adept_core.py:1014
+msgid "Summary of impacts to ecosystems and ecosystem services"
+msgstr "Summary of impacts to ecosystems and ecosystem services"
+
+#: src/natcap/opal/adept_core.py:1017
+msgid "Impact type"
+msgstr "Impact type"
+
+#: src/natcap/opal/adept_core.py:1025
+msgid "Total impacts to ecosystem services"
+msgstr "Total impacts to ecosystem services"
+
+#: src/natcap/opal/adept_core.py:1032
+msgid "Total impacts to terrestrial ecosystems"
+msgstr "Total impacts to terrestrial ecosystems"
+
+#: src/natcap/opal/adept_core.py:1073
+msgid "Details of impacts to terrestrial ecosystems"
+msgstr "Details of impacts to terrestrial ecosystems"
+
+#: src/natcap/opal/adept_core.py:1080
+msgid "Offset patches and mitigation potential"
+msgstr "Offset patches and mitigation potential"
+
+#: src/natcap/opal/adept_core.py:1090
+msgid "Possible offset patches"
+msgstr "Possible offset patches"
+
+#: src/natcap/opal/adept_core.py:1093
+msgid "GIS vector with all selected offset patches"
+msgstr "GIS vector with all selected offset patches"
+
+#: src/natcap/opal/adept_core.py:1103
+msgid "Suggested offset parcels"
+msgstr "Suggested offset parcels"
+
+#: src/natcap/opal/adept_core.py:1105
+#, fuzzy, python-format
+msgid "Suggested parcels account for %sx impacts x mitigation ratio"
+msgstr "Suggested parcels account for %sx impacts*mitigation ratio"
+
+#: src/natcap/opal/adept_core.py:1112
+msgid "Net benefits to ecosystems and ecosystem services"
+msgstr "Net benefits to ecosystems and ecosystem services"
+
+#: src/natcap/opal/adept_core.py:1117
+msgid "Benefits to terrestrial ecosystems"
+msgstr "Benefits to terrestrial ecosystems"
+
+#: src/natcap/opal/adept_core.py:1157
+msgid "Ecosystem service benefits"
+msgstr "Ecosystem service benefits"
+
+#: src/natcap/opal/adept_core.py:1204
+msgid "WARNING: Impact sites intersect an avoidance area"
+msgstr "WARNING: Impact sites intersect an avoidance area"
+
+#: src/natcap/opal/adept_core.py:1310 src/natcap/opal/reporting.py:831
+#, fuzzy
+msgid "Sediment"
+msgstr "Sediment"
+
+#: src/natcap/opal/adept_core.py:1310
+#, fuzzy
+msgid "Nitrogen"
+msgstr "Nitrogen impact"
+
+#: src/natcap/opal/adept_core.py:1310 src/natcap/opal/reporting.py:402
+#: src/natcap/opal/reporting.py:738 src/natcap/opal/reporting.py:829
+msgid "Carbon"
+msgstr "Carbon"
+
+#: src/natcap/opal/adept_core.py:1311 src/natcap/opal/reporting.py:425
+#: src/natcap/opal/reporting.py:747
+#, fuzzy
+msgid "Custom"
+msgstr "Custom"
+
+#: src/natcap/opal/preprocessing.py:192
+#, python-format
+msgid "features provided must be polygons, but found %s instead"
+msgstr "features provided must be polygons, but found %s instead"
+
+#: src/natcap/opal/reporting.py:264
+msgid "Potential offset patch ID code"
+msgstr "Potential offset patch ID code"
+
+#: src/natcap/opal/reporting.py:266
+msgid "Sediment retention offset"
+msgstr "Sediment retention offset"
+
+#: src/natcap/opal/reporting.py:267
+msgid "Nitrogen retention offset"
+msgstr "Nitrogen retention offset"
+
+#: src/natcap/opal/reporting.py:268
+msgid "Carbon storage offset"
+msgstr "Carbon storage offset"
+
+#: src/natcap/opal/reporting.py:269
+msgid "Percent of total impact offset (sediment)"
+msgstr "Percent of total impact offset (sediment)"
+
+#: src/natcap/opal/reporting.py:270
+msgid "Percent of total impact offset (nitrogen)"
+msgstr "Percent of total impact offset (nitrogen)"
+
+#: src/natcap/opal/reporting.py:271
+msgid "Percent of total impact offset (carbon)"
+msgstr "Percent of total impact offset (carbon)"
+
+#: src/natcap/opal/reporting.py:272
+msgid "Distance from impact site (km)"
+msgstr "Distance from impact site (km)"
+
+#: src/natcap/opal/reporting.py:273
+msgid "Total patch area (ha)"
+msgstr "Total patch area (ha)"
+
+#: src/natcap/opal/reporting.py:274
+msgid "Custom ecosystem service offset"
+msgstr "Custom ecosystem service offset"
+
+#: src/natcap/opal/reporting.py:275
+msgid "Percent of total impact offset (custom ES)"
+msgstr "Percent of total impact offset (custom ES)"
+
+#: src/natcap/opal/reporting.py:276
+msgid "Landscape context index (LCI)"
+msgstr "Landscape context index (LCI)"
+
+#: src/natcap/opal/reporting.py:277
+#, fuzzy
+msgid "Suggested offset parcel"
+msgstr "Suggested offset parcels"
+
+#: src/natcap/opal/reporting.py:308
+msgid "Soft Boundary 3"
+msgstr ""
+
+#: src/natcap/opal/reporting.py:309
+msgid "Avoidance Areas"
+msgstr "Avoidance Areas"
+
+#: src/natcap/opal/reporting.py:310
+msgid "Conservation Portfolio"
+msgstr "Conservation Portfolio"
+
+#: src/natcap/opal/reporting.py:311 src/natcap/opal/reporting.py:378
+msgid "Richness"
+msgstr "Richness"
+
+#: src/natcap/opal/reporting.py:312 src/natcap/opal/reporting.py:378
+msgid "Threat"
+msgstr "Threat"
+
+#: src/natcap/opal/reporting.py:317
+msgid "Soft Boundary 2"
+msgstr "Soft Boundary 2"
+
+#: src/natcap/opal/reporting.py:320
+msgid "Soft Boundary 1"
+msgstr "Soft Boundary 1"
+
+#: src/natcap/opal/reporting.py:324
+msgid "Hydrographic sub-zone"
+msgstr "Hydrographic sub-zone"
+
+#: src/natcap/opal/reporting.py:325
+msgid "AOI (area of influence)"
+msgstr "AOI (area of influence)"
+
+#: src/natcap/opal/reporting.py:326
+msgid "Municipality"
+msgstr "Municipality"
+
+#: src/natcap/opal/reporting.py:501 src/natcap/opal/reporting.py:552
+msgid "Impacted patch code"
+msgstr "Impacted patch code"
+
+#: src/natcap/opal/reporting.py:503 src/natcap/opal/reporting.py:554
+#: src/natcap/opal/reporting.py:827
+msgid "Mitigation ratio"
+msgstr "Mitigation ratio"
+
+#: src/natcap/opal/reporting.py:507 src/natcap/opal/reporting.py:559
+msgid "Landscape Context Index (LCI)"
+msgstr "Landscape Context Index (LCI)"
+
+#: src/natcap/opal/reporting.py:544 src/natcap/opal/reporting.py:553
+msgid "Patch area impacted (ha)"
+msgstr "Patch area impacted (ha)"
+
+#: src/natcap/opal/reporting.py:598
+msgid "Population center"
+msgstr "Population center"
+
+#: src/natcap/opal/reporting.py:603
+msgid "Population size"
+msgstr "Population size"
+
+#: src/natcap/opal/reporting.py:608
+msgid "Sediment impact"
+msgstr "Sediment impact"
+
+#: src/natcap/opal/reporting.py:613
+msgid "Nitrogen impact"
+msgstr "Nitrogen impact"
+
+#: src/natcap/opal/reporting.py:618
+msgid "Custom impact"
+msgstr "Custom impact"
+
+#: src/natcap/opal/reporting.py:623
+msgid "Sediment offset"
+msgstr "Sediment offset"
+
+#: src/natcap/opal/reporting.py:628
+msgid "Nitrogen offset"
+msgstr "Nitrogen offset"
+
+#: src/natcap/opal/reporting.py:633
+msgid "Custom offset"
+msgstr "Custom offset"
+
+#: src/natcap/opal/reporting.py:638
+msgid "Net sediment retention benefits"
+msgstr "Net sediment retention benefits"
+
+#: src/natcap/opal/reporting.py:643
+msgid "Net nitrogen retention benefits"
+msgstr "Net nitrogen retention benefits"
+
+#: src/natcap/opal/reporting.py:648
+msgid "Net custom ES benefits"
+msgstr "Net custom ES benefits"
+
+#: src/natcap/opal/reporting.py:653
+#, fuzzy
+msgid "Net sediment x population"
+msgstr "Net sediment * population"
+
+#: src/natcap/opal/reporting.py:658
+#, fuzzy
+msgid "Net nitrogen x population"
+msgstr "Net nitrogen * population"
+
+#: src/natcap/opal/reporting.py:663
+#, fuzzy
+msgid "Net custom ES x population"
+msgstr "Net custom ES * population"
+
+#: src/natcap/opal/reporting.py:710
+msgid "Carbon impact"
+msgstr "Carbon impact"
+
+#: src/natcap/opal/reporting.py:713 src/natcap/opal/reporting.py:738
+#: src/natcap/opal/reporting.py:747
+msgid "Service type"
+msgstr "Service type"
+
+#: src/natcap/opal/reporting.py:718 src/natcap/opal/reporting.py:739
+#: src/natcap/opal/reporting.py:748
+msgid "Impacts to service"
+msgstr "Impacts to service"
+
+#: src/natcap/opal/reporting.py:723 src/natcap/opal/reporting.py:740
+#: src/natcap/opal/reporting.py:749
+msgid "Selected offset"
+msgstr "Selected offset"
+
+#: src/natcap/opal/reporting.py:728 src/natcap/opal/reporting.py:741
+#: src/natcap/opal/reporting.py:750
+msgid "Net service"
+msgstr "Net service"
+
+#: src/natcap/opal/reporting.py:825
+#, fuzzy
+msgid "Service name"
+msgstr "Service name"
+
+#: src/natcap/opal/reporting.py:826
+#, fuzzy
+msgid "Impact to service"
+msgstr "Impacts to service"
+
+#: src/natcap/opal/reporting.py:828
+#, fuzzy
+msgid "Required offset value"
+msgstr "Required offset area (ha)"
+
+#: src/natcap/opal/reporting.py:830
+msgid "Nutrient"
+msgstr "Nutrient"
+
+#: src/natcap/opal/reporting.py:832
+#, fuzzy
+msgid "Custom ecosystem service"
+msgstr "Custom ecosystem service"
+
+#~ msgid "Impact to %s"
+#~ msgstr "Impact to %s"
+
+#, fuzzy
+#~ msgid "Impact to sediment retention"
+#~ msgstr "Net sediment retention benefits"
+
+#, fuzzy
+#~ msgid "Impact to carbon storage"
+#~ msgstr "Impacts to service"
+
+#~ msgid "Custom Ecosystem Service Impact Amount"
+#~ msgstr "Custom Ecosystem Service Impact Amount"
+
+#~ msgid "%s impact"
+#~ msgstr "%s impact"

@@ -8,12 +8,12 @@
         "en": "generic_static_map", 
         "es": "generic_static_map_es"
     }, 
-    "targetScript": "adept.static_maps", 
+    "targetScript": "natcap.opal.static_maps", 
     "targetFunction": "raster_math",
     "elements": [
         {
             "args_id": "workspace_dir", 
-            "defaultValue": "~/static_maps_custom", 
+            "defaultValue": "~/mafe-t_custom_static_maps",
             "helpText": {
                 "en": "A directory that will contain the output files for this run.", 
                 "es": "Un directorio que contendrá los archivos finales para esta corrida"

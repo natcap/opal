@@ -1,44 +1,44 @@
 {
-    "id": "window", 
+    "id": "window",
     "label": {
-        "en": "Static Map Raster Calculator", 
-        "es": "Calculadora de mapas estáticos"
-    }, 
+        "en": "Static Map Raster Calculator",
+        "es": "Calculador Ráster de Mapas Estáticos"
+    },
     "modelName": {
-        "en": "opal_generic_static_map", 
+        "en": "opal_generic_static_map",
         "es": "opal_generic_static_map_es"
-    }, 
+    },
     "openDirOnComplete": {
         "type": "element",
         "id": "workspace"
     },
-    "targetScript": "adept.static_maps", 
+    "targetScript": "natcap.opal.static_maps", 
     "targetFunction": "raster_math",
     "elements": [
         {
-            "args_id": "workspace_dir", 
-            "defaultValue": "~/custom_static_maps", 
+            "args_id": "workspace_dir",
+            "defaultValue": "~/opal_custom_static_maps",
             "helpText": {
-                "en": "A directory that will contain the output files for this run.", 
-                "es": "Un directorio que contendrá los archivos finales para esta corrida"
-            }, 
-            "id": "workspace", 
+                "en": "A directory that will contain the output files for this run.",
+                "es": "Un directorio que contendrá los archivos de salida para esta corrida."
+            },
+            "id": "workspace",
             "label": {
-                "en": "Workspace", 
-                "es": "Carpeta de trabajo"
-            }, 
-            "required": true, 
+                "en": "Workspace",
+                "es": "Espacio de trabajo"
+            },
+            "required": true,
             "type": "folder",
             "validateAs": {
                 "type": "folder",
                 "mustExist": false
             }
-        }, 
+        },
         {
             "args_id": "name",
             "helpText": {
                 "en": "This text will be used to correctly name the output static maps.",
-                "es": "Este texto será usado para nombrar correctamente los mapas estáticos finales"
+                "es": "Este texto será usado para nombrar correctamente los mapas estáticos de salida."
             },
             "width": 60,
             "defaultValue": "custom",
@@ -53,91 +53,91 @@
             }
         },
         {
-            "args_id": "base_uri", 
+            "args_id": "base_uri",
             "helpText": {
-                "en": "Location of the raster for the base scenario's service values.", 
-                "es": "Ubicación del raster con los valores de servicios del scenario base"
-            }, 
-            "id": "base_uri", 
+                "en": "Location of the raster for the base scenario's service values.",
+                "es": "Localización del ráster para los valores del servicio del escenario base."
+            },
+            "id": "base_uri",
             "label": {
-                "en": "Base Raster", 
+                "en": "Base Raster",
                 "es": "Raster base"
-            }, 
-            "required": true, 
-            "type": "file", 
-            "validateAs": {
-                "type": "GDAL"
-            }
-        }, 
-        {
-            "args_id": "paved_uri", 
-            "helpText": {
-                "en": "Location of the raster for the paved scenario's service values.", 
-                "es": "Ubicación del raster con los valores de servicios del escenario de pavimento"
-            }, 
-            "id": "paved_uri", 
-            "label": {
-                "en": "Paved Raster", 
-                "es": "Raster de pavimento"
-            }, 
-            "required": true, 
-            "type": "file", 
-            "validateAs": {
-                "type": "GDAL"
-            }
-        }, 
-        {
-            "args_id": "bare_uri", 
-            "helpText": {
-                "en": "Location of the raster for the bare scenario's service values.", 
-                "es": "Ubicación del raster con los valores de servicios del escenario de suelo desnudo"
-            }, 
-            "id": "bare_uri", 
-            "label": {
-                "en": "Bare Raster", 
-                "es": "Raster de suelo desnudo"
-            }, 
-            "required": true, 
-            "type": "file", 
-            "validateAs": {
-                "type": "GDAL"
-            }
-        }, 
-        {
-            "args_id": "future_uri", 
-            "helpText": {
-                "en": "Location of the raster for the future scenario's service values.", 
-                "es": "Ubicación del raster con los valores de servicios del escenario de pavimento"
-            }, 
-            "id": "future_uri", 
-            "label": {
-                "en": "Offset Scenario Raster", 
-                "es": "Raster de protección"
-            }, 
-            "required": true, 
-            "type": "file", 
+            },
+            "required": true,
+            "type": "file",
             "validateAs": {
                 "type": "GDAL"
             }
         },
         {
-            "args_id": "future_type", 
-            "id": "future_type",
-            "returns": {"type": "strings"}, 
-            "defaultValue": 0, 
+            "args_id": "paved_uri",
+            "helpText": {
+                "en": "Location of the raster for the paved scenario's service values.",
+                "es": "Ubicación del raster con los valores de servicios del escenario de pavimento"
+            },
+            "id": "paved_uri",
             "label": {
-                "en": "Offset Scenario Type", 
-                "es": "FILL IN"
-            }, 
-            "type": "dropdown", 
+                "en": "Paved Raster",
+                "es": "Raster de pavimento"
+            },
+            "required": true,
+            "type": "file",
+            "validateAs": {
+                "type": "GDAL"
+            }
+        },
+        {
+            "args_id": "bare_uri",
+            "helpText": {
+                "en": "Location of the raster for the bare scenario's service values.",
+                "es": "Localización del ráster con los valores de servicios del escenario de desnudo."
+            },
+            "id": "bare_uri",
+            "label": {
+                "en": "Bare Raster",
+                "es": "Raster de suelo desnudo"
+            },
+            "required": true,
+            "type": "file",
+            "validateAs": {
+                "type": "GDAL"
+            }
+        },
+        {
+            "args_id": "future_uri",
+            "helpText": {
+                "en": "Location of the raster for the future scenario's service values.",
+                "es": "Ubicación del raster con los valores de servicios del escenario de futuro."
+            },
+            "id": "future_uri",
+            "label": {
+                "en": "Offset Scenario Raster",
+                "es": "Ráster de Escenario de Compensación"
+            },
+            "required": true,
+            "type": "file",
+            "validateAs": {
+                "type": "GDAL"
+            }
+        },
+        {
+            "args_id": "future_type",
+            "id": "future_type",
+            "returns": {"type": "strings"},
+            "defaultValue": 0,
+            "label": {
+                "en": "Offset Scenario Type",
+                "es": "Tipo de Escenario de Compensación"
+            },
+            "type": "dropdown",
             "options": [
                 "protection",
                 "restoration"
             ],
             "helpText": {
                 "en": "Select the type of future landcover scenario you are using.",
-                "es": "FILL IN"
+                "es": "Seleccione el tipo de escenario de cobertura de suelo que está usando."
             }
-        } 
-    ] 
+        }
+    ]
 }

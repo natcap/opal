@@ -6,6 +6,9 @@ LangString USE_LOCAL_FILE ${LANG_ENGLISH} "Use a local file"
 LangString USE_LOCAL_FILE ${LANG_SPANISH} "Utilice un archivo local"
 LangString SELECT_ZIPFILE ${LANG_ENGLISH} "Select zipfile"
 LangString SELECT_ZIPFILE ${LANG_SPANISH} "Seleccionar archivo de zip"
+LangString FILE_BUTTON ${LANG_ENGLISH} "Select"
+LangString FILE_BUTTON ${LANG_SPANISH} "Seleccionar"
+
 !macro locateDataZip Title Label
     Page custom CarbonSMDataPageNSD1
 
@@ -189,7 +192,7 @@ var DataLocal
 ;    strcpy $FileField $0
 ;    EnableWindow $FileField 0
 
-    ${NSD_CreateBrowseButton} 400 120 10% 12u "file"
+    ${NSD_CreateBrowseButton} 375 120 15% 12u "$(FILE_BUTTON)"
     pop $FileButton
 ;    strcpy $FileButton $0
     ${NSD_OnClick} $FileButton GetZipFile
@@ -216,7 +219,7 @@ Function GetZipFile
     pop $0
     ${GetFileExt} $0 $1
     ${If} "$1" != "zip"
-        MessageBox MB_OK "File must be a zipfile"
+        MessageBox MB_OK "$(MUST_BE_ZIPFILE)"
         Abort
     ${EndIf}
 

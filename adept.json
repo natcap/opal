@@ -8,14 +8,14 @@
         "en": "Permitting", 
         "es": "Licenciamiento"
     }, 
-    "targetScript": "adept", 
+    "targetScript": "natcap.opal", 
     "condenseElements": true, 
     "elements": [
         {
             "id": "workspace", 
             "args_id": "workspace_dir",
             "type": "folder", 
-            "defaultValue": "~/MAFE_workspace", 
+            "defaultValue": "~/mafe-t_workspace",
             "required": true, 
             "label": {
                 "en": "Workspace", 
@@ -51,17 +51,17 @@
         {
             "args_id": "impact_type", 
             "id": "impact_type",
-            "returns": {"type": "strings"}, 
+            "returns": {"type": "ordinals"}, 
             "defaultValue": 0, 
             "label": {
                 "en": "Impact type", 
                 "es": "Tipo de impacto"
             }, 
             "type": "dropdown", 
-            "options": [
-                "Road/Paved",
-                "Mine/Bare"
-            ],
+            "options": {
+                "en": ["Road/Paved", "Mine/Bare"],
+                "es": ["Carretera/Pavimentado", "Mina/Desnudo"]
+            },
             "helpText": {
                 "en": "Select the impact type of the proposed development.",
                 "es": "Seleccione el tipo de impacto del desarrollo propuesto."
@@ -171,8 +171,8 @@
             "hideable": true, 
             "type": "file", 
             "label": {
-                "en": "Use custom search areas", 
-                "es": "Usar áreas de búsqueda propias"
+                "en": "Use hydrozones/subzones", 
+                "es": "Usar zonas y zubzonas hidrológicas"
             }, 
             "validateAs": {
                 "type": "OGR",
@@ -450,10 +450,7 @@
                 "contains": [
                     "sediment_bare_static_map.tif",
                     "sediment_paved_static_map.tif",
-                    "sediment_protect_static_map.tif",
-                    "sediment_bare_pts.tif",
-                    "sediment_paved_pts.tif",
-                    "sediment_protect_pts.tif"
+                    "sediment_protect_static_map.tif"
                 ]
             } 
         }, 
