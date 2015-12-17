@@ -141,12 +141,10 @@ msgid "WARNING: Impact sites intersect an avoidance area"
 msgstr "ATENCIÓN: Los sitios de impacto se intersectan con un área a evitar"
 
 #: src/natcap/opal/adept_core.py:1310 src/natcap/opal/reporting.py:831
-#, fuzzy
 msgid "Sediment"
 msgstr "Sedimentos"
 
 #: src/natcap/opal/adept_core.py:1310
-#, fuzzy
 msgid "Nitrogen"
 msgstr "Impacto de nitrógeno"
 
@@ -157,7 +155,6 @@ msgstr "Carbono"
 
 #: src/natcap/opal/adept_core.py:1311 src/natcap/opal/reporting.py:425
 #: src/natcap/opal/reporting.py:747
-#, fuzzy
 msgid "Custom"
 msgstr "Otro servico"
 
@@ -215,7 +212,6 @@ msgid "Landscape context index (LCI)"
 msgstr "Índice de contexto paisajístico (LCI)"
 
 #: src/natcap/opal/reporting.py:277
-#, fuzzy
 msgid "Suggested offset parcel"
 msgstr "Parcelas de compensación sugeridas"
 
@@ -321,17 +317,14 @@ msgid "Net custom ES benefits"
 msgstr "Beneficios netos del SE propio"
 
 #: src/natcap/opal/reporting.py:653
-#, fuzzy
 msgid "Net sediment x population"
 msgstr "Sedimentos netos * población"
 
 #: src/natcap/opal/reporting.py:658
-#, fuzzy
 msgid "Net nitrogen x population"
 msgstr "Nitrógeno neto * población"
 
 #: src/natcap/opal/reporting.py:663
-#, fuzzy
 msgid "Net custom ES x population"
 msgstr "SE propio neto * población"
 
@@ -376,7 +369,6 @@ msgid "Nutrient"
 msgstr "Nutrientes"
 
 #: src/natcap/opal/reporting.py:832
-#, fuzzy
 msgid "Custom ecosystem service"
 msgstr "Otros servicos ecosistemicos"
 
@@ -386,11 +378,9 @@ msgstr "Otros servicos ecosistemicos"
 #~ msgid "Impact to nutrient retention"
 #~ msgstr "Impacto de retención de nitrógeno"
 
-#, fuzzy
 #~ msgid "Impact to sediment retention"
 #~ msgstr "Impacto de retención de sedimentos"
 
-#, fuzzy
 #~ msgid "Impact to carbon storage"
 #~ msgstr "Impactos al servicio carbono"
 
