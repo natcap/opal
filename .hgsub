@@ -1,8 +1,8 @@
 src/invest = https://bitbucket.org/natcap/invest
-data = [svn]http://ncp-yamato.stanford.edu/svn/permitting-data
+data = [svn]svn://scm.naturalcapitalproject.org/svn/permitting-data
 src/pyinstaller = [git]https://github.com/pyinstaller/pyinstaller.git
 src/palisades = [git]https://github.com/phargogh/palisades.git
 src/faulthandler = [git]https://github.com/haypo/faulthandler.git
-src/pygeoprocessing = https://bitbucket.org/richpsharp/pygeoprocessing
+src/pygeoprocessing = https://bitbucket.org/richsharp/pygeoprocessing
 doc/users-guide = https://bitbucket.org/natcap/opal.docs
 
