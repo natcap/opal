@@ -757,7 +757,6 @@ def make_random_impact_vector(new_vector, base_vector, side_length):
 
     # feature_extent = [xmin, xmax, ymin, ymax]
     feature_extent = base_geometry.GetEnvelope()
-    print feature_extent
 
     driver = ogr.GetDriverByName('ESRI Shapefile')
     datasource = driver.CreateDataSource(new_vector)
@@ -783,9 +782,6 @@ def make_random_impact_vector(new_vector, base_vector, side_length):
         ymin = feature_extent[2] + bbox_height * rand_height_percent
         ymax = ymin + side_length
 
-        print feature_extent
-        print xmin, xmax, ymin, ymax
-
         poly_ring.AddPoint(xmin, ymin)
         poly_ring.AddPoint(xmin, ymax)
         poly_ring.AddPoint(xmax, ymax)
@@ -796,7 +792,6 @@ def make_random_impact_vector(new_vector, base_vector, side_length):
 
         # See if the watershed contains the permitting polygon
         contained = base_geometry.Contains(polygon)
-        print contained
         if contained:
             break
 
@@ -1049,7 +1044,6 @@ def compute_impact_stats(impact_dir, model_name, watershed_vector,
     impact_vector = 'impact_%s.shp' % os.path.basename(
         impact_dir).split('_')[-1]
     impact_site = os.path.join(impact_dir, impact_vector)
-    print impact_site
     impact_site_area = get_polygon_area(impact_site)
 
     export_raster = os.path.join(impact_dir,
@@ -1198,7 +1192,6 @@ def split_datasource(ds_uri, workspace, include_fields=[],
     for layer in ds:
         layer_defn = layer.GetLayerDefn()
         for feature in layer:
-            print 'starting new feature'
             uri_index = feature.GetFID()
             new_vector_uri = os.path.join(workspace, template_str %
                                           uri_index)
