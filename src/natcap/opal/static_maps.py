@@ -204,7 +204,6 @@ def execute(args):
 
     processes = []
     for impact_type in ['paved', 'bare']:
-        continue  # Only want to do the future scenario right now.
         LOGGER.debug('Starting calculations for impact %s', impact_type)
         impact_code = args['%s_landcover_code' % impact_type]
 
