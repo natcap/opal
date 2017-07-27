@@ -14,7 +14,7 @@ import platform
 import json
 import shutil
 
-from natcap.versioner import versioning
+import natcap.versioner
 
 # Add the release virtual environment to the extended PATH.
 # This helps IMMENSELY with trying to get the binaries to work from within
@@ -145,8 +145,10 @@ for console_analysis, json_file in consoles:
     OPAL_EXES.append(console_analysis.datas)
 
 # dump the correct version information to the dist_version file.
-dist_data = versioning.build_data()
-dist_data['dist_name'] = 'OPAL'
+dist_data = {
+    'build_id': natcap.versioner.get_version('natcap.opal'),
+    'dist_name': 'OPAL',
+}
 dist_version_uri = 'build/dist_version.json'
 json.dump(dist_data, open(dist_version_uri, 'w+'))
 
