@@ -673,7 +673,6 @@ setup(
         'GDAL',
         'pyyaml',
     ],
-    version=natcap.versioner.parse_version(),
     natcap_version='src/natcap/opal/version.py',
     cmdclass=CMD_CLASSES,
     license=LICENSE,
