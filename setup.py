@@ -309,8 +309,10 @@ class NSISCommand(Command):
         pass
 
     def write_dist_data(self, dist_name):
-        dist_data = versioning.build_data()
-        dist_data['dist_name'] = dist_name
+        dist_data = {
+            'build_id': natcap.versioner.get_version('natcap.opal'),
+            'dist_name': 'OPAL',
+        }
 
         data_file = os.path.join(self.nsis_dir, 'dist_version.json')
         json.dump(dist_data, open(data_file, 'w+'))
@@ -397,13 +399,14 @@ class NSISCommand(Command):
         # determine the version string, based on the tag of the permitting repo
         # if we're at the tag, then that's the version.  Otherwise, get the
         # build ID, which includes relevant revision information.
-        if versioning.get_tag_distance() > 0:
-            version_string = versioning.get_build_id()
+        version_info = versioning.HgRepo('.')
+        if version_info.tag_distance > 0:
+            version_string = version_info.build_id
         else:
             # if we're on a master branch, we only want the version num.
             # If we're not on a master branch, just use the latest tag.
-            version_string = versioning.get_latest_tag()
-            branchname = versioning.get_branch()
+            version_string = version_info.latest_tag
+            branchname = version_info.branch
             if branchname.startswith('master/'):
                 dist = branchname.replace('master/', '')
                 version_string = version_string.replace(dist + '-', '')
@@ -546,7 +549,7 @@ class GlobalDistribution(NSISCommand):
         pass
 
     def run(self):
-        version = versioning.build_data()['version_str']
+        version = natcap.versioner.get_version('natcap.opal')
         self.run_command('sample_data_global')
         self.write_dist_data('OPAL')
 
