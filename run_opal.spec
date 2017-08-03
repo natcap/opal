@@ -43,6 +43,7 @@ common_kwargs = {
         'natcap.invest.version',
         'pygeoprocessing.version',
         'natcap.versioner',
+        'natcap.versioner.version',
         'yaml',
         'os',
         'traceback',
