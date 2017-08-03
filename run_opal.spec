@@ -131,16 +131,7 @@ for console_analysis, json_file in consoles:
         pyz,
         console_analysis.scripts,
         console_analysis.zipfiles,
-
-        # Taken from:
-        # https://shanetully.com/2013/08/cross-platform-deployment-of-python-applications-with-pyinstaller/
-        # Supposed to gather the mscvr/p DLLs from the local system before
-        # packaging.  Skirts the issue of us needing to keep them under version
-        # control.
-        console_analysis.binaries + [
-            ('msvcp90.dll', 'C:\\Windows\\System32\\msvcp90.dll', 'BINARY'),
-            ('msvcr90.dll', 'C:\\Windows\\System32\\msvcr90.dll', 'BINARY')
-        ] if platform.system() == 'Windows' else console_analysis.binaries,
+        console_analysis.binaries,
         name=app_name,
         debug=False,
         onefile=False,
