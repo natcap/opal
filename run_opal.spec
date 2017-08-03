@@ -29,6 +29,7 @@ path_base = os.path.abspath(path_base)
 path_extension.insert(0, path_base)
 path_extension.insert(0, os.path.join(path_base, 'site-packages'))
 print 'PATH EXT: %s' % path_extension
+print 'CWD', os.getcwd()
 
 common_kwargs = {
     'hookspath': ['./hooks'],
