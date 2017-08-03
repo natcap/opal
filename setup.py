@@ -639,19 +639,6 @@ README = open('README.rst').read()
 CHANGES = open('CHANGES.txt').read()
 LICENSE = open('LICENSE.txt').read()
 
-def load_version():
-    """
-    Load the version string.
-
-    If we're in a source tree, load the version from the opal __init__ file.
-    If we're in an installed version of opal, use the __version__attribute.
-    """
-    try:
-        import natcap.opal as opal
-    except ImportError:
-        import imp
-        opal = imp.load_source('natcap.opal', 'src/natcap/opal/__init__.py')
-    return opal.__version__
 
 setup(
     name='natcap.opal',
