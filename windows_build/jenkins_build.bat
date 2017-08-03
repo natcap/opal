@@ -1,3 +1,4 @@
+
 @echo on
 SET ENVDIR=adept_environment
 DEL /S /Q build

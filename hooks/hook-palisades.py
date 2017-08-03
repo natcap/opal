@@ -1,4 +1,3 @@
-from PyInstaller.utils.hooks import collect_data_files, collect_submodules
+from PyInstaller.hooks.hookutils import collect_data_files
 
 datas = collect_data_files('palisades')
-hiddenimports = collect_submodules('palisades')
