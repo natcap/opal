@@ -33,6 +33,7 @@ print 'PATH EXT: %s' % path_extension
 common_kwargs = {
     'hookspath': ['./hooks'],
     'runtime_hooks': ['./hooks/rthook.py'],
+    'excludes': None,
     'pathex': path_extension,
     'hiddenimports': [
         'natcap',
@@ -47,6 +48,9 @@ common_kwargs = {
         'yaml',
         'os',
         'traceback',
+        'distutils',
+        'distutils.dist',
+        'rtree',
         'scipy.linalg.cython_blas',
         'scipy.linalg.cython_lapack',
         'scipy.special._ufuncs_cxx',
