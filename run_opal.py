@@ -20,7 +20,6 @@ from palisades import utils as palisades_utils
 from palisades.gui import qt4 as palisades_qt4
 from palisades.i18n import translation as palisades_translation
 import natcap.opal.i18n
-from natcap.versioner import versioning
 from natcap.opal import __version__
 from natcap.opal import utils
 from natcap.invest.iui import executor as invest_executor
@@ -30,6 +29,10 @@ PALISADES_LOGGER = logging.getLogger('palisades')
 PALISADES_LOGGER.setLevel(logging.INFO)
 
 LOGGER = logging.getLogger('_opal_launch')
+
+if not os.path.exists(palisades_utils.settings_folder()):
+    os.makedirs(palisades_utils.settings_folder())
+
 
 def setup_opal_callbacks(ui_obj):
     servicesheds_elem = ui_obj.find_element('servicesheds_map')
