@@ -25,13 +25,6 @@ IF NOT "%4" == "" SET BUILD_OPAL="%4"
 
 %PYTHON% bootstrap_adept_environment.py > setup_environment.py
 %PYTHON% setup_environment.py --clear --system-site-packages %ENVDIR%
-IF EXIST C:\Python27\Lib (
-    :: standard userland distutils configuration
-    copy C:\Python27\Lib\distutils\distutils.cfg .\%ENVDIR%\Lib\distutils\distutils.cfg
-) ELSE (
-    :: standard chocolatey python distutils location
-    copy C:\tools\python2-x86_32\Lib\distutils\distutils.cfg .\%ENVDIR%\Lib\distutils\distutils.cfg
-)
 call %ENVDIR%\Scripts\activate.bat
 
 %ENVDIR%\Scripts\pip install windows_build\dbfpy-2.2.5.tar.gz
