@@ -71,6 +71,9 @@ IF NOT %BUILD_STATIC_DATA% == "true" goto :skip_big_data
 %ENVDIR%\Scripts\python setup.py static_data_colombia || goto :error
 :skip_big_data
 
+:: Remove pyinstaller six file (needed if we're at rev 2.1)
+del src\pyinstaller\PyInstaller\lib\six.*
+
 IF NOT %BUILD_MAFE% == "true" goto :skip_mafe
 :: Now that everything is installed, we can run the permitting project's
 :: setup.py commands to build everything we want/need.
