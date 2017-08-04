@@ -21,6 +21,7 @@ from palisades.gui import qt4 as palisades_qt4
 from palisades.i18n import translation as palisades_translation
 import natcap.opal.i18n
 from natcap.versioner import versioning
+from natcap.opal import __version__
 from natcap.opal import utils
 from natcap.invest.iui import executor as invest_executor
 
@@ -165,7 +166,6 @@ def main(json_config=None):
             json_config = sys.argv[1]  # the first program argument
         app_icon = os.path.join(exe_dir, 'opal-logo-small.png')
         opal_logo = os.path.join(exe_dir, 'opal-logo-small.png')
-        dist_data = json.load(open(os.path.join(exe_dir, 'dist_version.json')))
     else:
         splash = os.path.join(os.getcwd(), 'windows_build', 'OPAL.png')
         args_parser = argparse.ArgumentParser(
@@ -179,8 +179,6 @@ def main(json_config=None):
             'opal-logo-small.png')
         opal_logo = os.path.join(os.getcwd(), 'installer', 'opal_images',
             'opal-logo-small.png')
-        dist_data = versioning.build_data()
-        dist_data['dist_name'] = 'OPAL'  # we are for sure for OPAL only
     LOGGER.debug('splash image: %s', splash)
 
     # use palisades function to locate the config in a couple of places.
@@ -293,7 +291,7 @@ def main(json_config=None):
     # set the stuff of the infoDialog.
     form_window.app_info_dialog.set_title('About OPAL')
     form_window.app_info_dialog.setWindowTitle('About OPAL')
-    opal_info_text = "OPAL %s<br/><br/>" % dist_data['version_str']
+    opal_info_text = "OPAL %s<br/><br/>" % __version__
     opal_info_text += '<a href="naturalcapitalproject.org">naturalcapitalproject.org</a>'
     form_window.app_info_dialog.body.setText(opal_info_text)
     form_window.app_info_dialog.set_icon(opal_logo, scale=True)
