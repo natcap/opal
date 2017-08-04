@@ -47,7 +47,6 @@ common_kwargs = {
         'yaml',
         'os',
         'traceback',
-        'run_opal',
         'scipy.linalg.cython_blas',
         'scipy.linalg.cython_lapack',
         'scipy.special._ufuncs_cxx',
