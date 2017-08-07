@@ -205,7 +205,7 @@ def execute(args):
     processes = []
     for impact_type in ['paved', 'bare']:
         LOGGER.debug('Starting calculations for impact %s', impact_type)
-        impact_code = args['%s_landcover_code' % impact_type]
+        impact_code = int(args['%s_landcover_code' % impact_type])
 
         impact_workspace = os.path.join(args['workspace_dir'], impact_type)
         static_map_uri = os.path.join(
@@ -1309,9 +1309,16 @@ def convert_impact(impact_uri, base_lulc, impacted_value, converted_lulc_uri,
         aoi_uri=impact_uri,
         vectorize_op=False)
 
+    # attept to cast to an int, since the UI provides the impacted value as a
+    # string.
+    try:
+        impacted_value = int(impacted_value)
+    except ValueError:
+        pass
 
     if isinstance(impacted_value, basestring):
         LOGGER.debug('Converting values to those of %s', impacted_value)
+
         def _convert_impact(mask_values, lulc_values, impacted_lulc_values):
             """Convert values under the mask to the future lulc values."""
             return numpy.where(mask_values == 1, impacted_lulc_values,
@@ -1319,6 +1326,7 @@ def convert_impact(impact_uri, base_lulc, impacted_value, converted_lulc_uri,
         rasters_list = [impact_mask, base_lulc, impacted_value]
     else:
         LOGGER.debug('Converting values to scalar: %s', impacted_value)
+
         def _convert_impact(mask_values, lulc_values):
             """Convert values under the mask to the scalar impacted value."""
             return numpy.where(mask_values == 1, impacted_value,
