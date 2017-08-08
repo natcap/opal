@@ -180,8 +180,14 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
                 LOGGER.debug('Fixed %s polygons in feature %s',
                     multiparts_fixed, index)
         elif feature_type == ogr.wkbPolygon:
+            # Attempt to fix ring self-intersections.
             if not geometry.IsValid():
-                LOGGER.warn('Invalid polygon found. Skipping')
+                geometry = geometry.Buffer(0)
+                num_fixed += 1
+
+            if not geometry.IsValid():
+                LOGGER.warn('Invalid polygon found at FID %s. Skipping.',
+                            index)
                 num_invalid += 1
             else:
                 polygons.append(geometry.ExportToWkb())
@@ -208,7 +214,7 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
                 new_feature.SetField('FID', polygon_count)
                 out_layer.CreateFeature(new_feature)
                 polygon_count += 1
-    LOGGER.debug('Fixed %s invalid polygons while processing', num_fixed)
+    LOGGER.debug('Fixed %s geometry errors while processing', num_fixed)
     LOGGER.debug('Found %s invalid polygons.', num_invalid)
 
     out_layer = None
