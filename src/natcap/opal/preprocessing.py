@@ -217,15 +217,8 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
     LOGGER.debug('Fixed %s geometry errors while processing', num_fixed)
     LOGGER.debug('Found %s invalid polygons.', num_invalid)
 
-    out_layer = None
-    ogr.DataSource.__swig_destroy__(out_vector)
-    out_vector = None
-    out_driver = None
-    in_layer_defn = None
-    in_layer_srs = None
-    in_layer = None
-    ogr.DataSource.__swig_destroy__(in_vector)
-    in_vector = None
+    out_vector.SyncToDisk()
+
 
 def prepare_aoi(impact_sites_uri, hydro_subzones_uri, out_uri):
     """Create an AOI based on the hydro subzones and impact sites provided.
