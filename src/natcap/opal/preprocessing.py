@@ -198,6 +198,7 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
                 'Features provided must be polygons, but found '
                 '%s instead') % feature_type_label)
 
+        LOGGER.info('Writing features to the output layer')
         for polygon_wkb in polygons_in_feature:
             # new_geometry = ogr.CreateGeometryFromWkb()
             new_geometry = ogr.CreateGeometryFromWkb(polygon_wkb)
