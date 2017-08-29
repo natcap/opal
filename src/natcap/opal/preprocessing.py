@@ -199,23 +199,21 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
                 'Features provided must be polygons, but found '
                 '%s instead') % feature_type_label)
 
-        LOGGER.info('Writing features to the output layer')
         for polygon_wkb in polygons_in_feature:
             # new_geometry = ogr.CreateGeometryFromWkb()
             new_geometry = ogr.CreateGeometryFromWkb(polygon_wkb)
-            if new_geometry.IsValid():
-                # create feature with geometry
-                new_feature = ogr.Feature(feature_defn)
-                new_feature.SetGeometry(new_geometry)
-                for old_index, new_index in field_indices.iteritems():
-                    old_value = feature.GetField(old_index)
-                    new_feature.SetField(new_index, old_value)
+            # create feature with geometry
+            new_feature = ogr.Feature(feature_defn)
+            new_feature.SetGeometry(new_geometry)
+            for old_index, new_index in field_indices.iteritems():
+                old_value = feature.GetField(old_index)
+                new_feature.SetField(new_index, old_value)
 
-                # <add field data to feature, as necessary>
-                # create the feature in the layer.
-                new_feature.SetField('FID', polygon_count)
-                out_layer.CreateFeature(new_feature)
-                polygon_count += 1
+            # <add field data to feature, as necessary>
+            # create the feature in the layer.
+            new_feature.SetField('FID', polygon_count)
+            out_layer.CreateFeature(new_feature)
+            polygon_count += 1
     LOGGER.debug('Fixed %s geometry errors while processing', num_fixed)
     LOGGER.debug('Found %s invalid polygons.', num_invalid)
 
@@ -618,7 +616,7 @@ def locate_intersecting_polygons(source_vector_uri, comparison_vector_uri,
             if (current_time - last_time) > 5.:
                 last_time = current_time
                 percent_complete = round((float(num_features) /
-                                        in_layer.GetFeatureCount()) * 100, 2)
+                                          len(found_features)) * 100, 2)
                 LOGGER.info('Creating geometries %s%% complete', percent_complete)
             print "%s %s" % (current_time, last_time)
 
