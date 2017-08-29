@@ -149,6 +149,7 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
     polygons = []
     for feature in in_layer:
         index = feature.GetFID()
+        LOGGER.debug('Processing feature FID=%s', index)
         feature_defn = feature.GetDefnRef()
 
         # add the FID column
@@ -218,6 +219,7 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
     LOGGER.debug('Fixed %s geometry errors while processing', num_fixed)
     LOGGER.debug('Found %s invalid polygons.', num_invalid)
 
+    out_layer.SyncToDisk()
     out_vector.SyncToDisk()
 
 
