@@ -198,15 +198,9 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
             # new_geometry = ogr.CreateGeometryFromWkb()
             new_geometry = ogr.CreateGeometryFromWkb(polygon_wkb)
             # create feature with geometry
-            feature_defn = feature.GetDefnRef()
-            new_feature_defn = ogr.FeatureDefn()
-            new_feature_defn.AddFieldDefn(fid_field_defn)
-
-            new_feature = ogr.Feature(new_feature_defn)
+            new_feature = ogr.Feature(out_layer_defn)
             new_feature.SetGeometryDirectly(new_geometry)
             for old_index, new_index in field_indices.iteritems():
-                field_defn = feature_defn.GetFieldDefn(old_index)
-                new_feature_defn.AddFieldDefn(field_defn)
                 old_value = feature.GetField(old_index)
                 new_feature.SetField(new_index, old_value)
 
@@ -457,10 +451,8 @@ def buffer_vector(in_vector_uri, buffer_dist, out_vector_uri):
     LOGGER.debug('Buffering %s features by %s', num_features, buffer_dist)
     #for feature_index in xrange(num_features):
     for old_feature in in_layer:
-        #print old_feature
         #old_feature = in_layer.GetFeature(feature_index)
         old_geom = old_feature.GetGeometryRef()
-        #print old_geom
         geometry = old_geom.Buffer(buffer_dist)
         #feature = offsets.build_shapely_polygon(old_feature)
         #buffered_feature = feature.buffer(buffer_dist)
@@ -619,7 +611,6 @@ def locate_intersecting_polygons(source_vector_uri, comparison_vector_uri,
                 percent_complete = round((float(num_features) /
                                           len(found_features)) * 100, 2)
                 LOGGER.info('Creating geometries %s%% complete', percent_complete)
-            print "%s %s" % (current_time, last_time)
 
     LOGGER.debug('Creating geometries 100%% complete')
     out_vector.SyncToDisk()
@@ -691,9 +682,7 @@ def union_of_vectors(input_vector_uris, out_vector_uri):
 
 #    LOGGER.debug('Taking the union of %s features', len(all_features))
 #    union_polygon = shapely.ops.cascaded_union(all_features)
-#    print union_polygon.wkt
 #    union_polygon = shapely.geometry.MultiPolygon(union_polygon)
-#    print union_polygon.wkt
     LOGGER.debug('Creating new feature from empty definition')
     new_feature = ogr.Feature(ogr.FeatureDefn())
     new_geometry = ogr.CreateGeometryFromWkb(union_polygon.wkb)
