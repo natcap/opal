@@ -20,9 +20,12 @@ import shapely.validation
 import shapely.geometry
 import rtree
 import pygeoprocessing
+import faulthandler
 
 import offsets
 import utils
+
+faulthandler.enable()
 
 
 LOGGER = logging.getLogger('natcap.opal.preprocessing')
