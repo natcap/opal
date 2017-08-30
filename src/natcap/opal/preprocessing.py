@@ -47,6 +47,7 @@ def build_spatial_index(vector):
 
     utils.assert_files_exist([vector])
     LOGGER.debug('Building spatial index for vector %s', vector)
+
     parcels_vector = ogr.Open(vector)
     parcels_layer = parcels_vector.GetLayer()
 
@@ -146,14 +147,8 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
     polygon_count = 0
     num_invalid = 0
     num_fixed = 0
-    polygons = []
     for feature in in_layer:
         index = feature.GetFID()
-        LOGGER.debug('Processing feature FID=%s', index)
-        feature_defn = feature.GetDefnRef()
-
-        # add the FID column
-        feature_defn.AddFieldDefn(fid_field_defn)
 
         geometry = feature.GetGeometryRef()
         feature_type = geometry.GetGeometryType()
@@ -168,14 +163,12 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
                     ogr_geom = ogr_geom.Buffer(0)
                     if ogr_geom.IsValid():
                         wkb = ogr_geom.ExportToWkb()
-                        polygons.append(wkb)
                         polygons_in_feature.append(wkb)
                         num_fixed += 1
                         multiparts_fixed += 1
                     else:
                         num_invalid += 1
                 else:
-                    polygons.append(shapely_geometry.wkb)
                     polygons_in_feature.append(shapely_geometry.wkb)
             if multiparts_fixed > 0:
                 LOGGER.debug('Fixed %s polygons in feature %s',
@@ -191,7 +184,6 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
                             index)
                 num_invalid += 1
             else:
-                polygons.append(geometry.ExportToWkb())
                 polygons_in_feature.append(geometry.ExportToWkb())
         else:
             feature_type_label = geometry.ExportToWkt().split()[0]
@@ -203,9 +195,15 @@ def split_multipolygons(in_vector_uri, out_vector_uri, include_fields=None):
             # new_geometry = ogr.CreateGeometryFromWkb()
             new_geometry = ogr.CreateGeometryFromWkb(polygon_wkb)
             # create feature with geometry
-            new_feature = ogr.Feature(feature_defn)
-            new_feature.SetGeometry(new_geometry)
+            feature_defn = feature.GetDefnRef()
+            new_feature_defn = ogr.FeatureDefn()
+            new_feature_defn.AddFieldDefn(fid_field_defn)
+
+            new_feature = ogr.Feature(new_feature_defn)
+            new_feature.SetGeometryDirectly(new_geometry)
             for old_index, new_index in field_indices.iteritems():
+                field_defn = feature_defn.GetFieldDefn(old_index)
+                new_feature_defn.AddFieldDefn(field_defn)
                 old_value = feature.GetField(old_index)
                 new_feature.SetField(new_index, old_value)
 
