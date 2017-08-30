@@ -135,7 +135,6 @@ def locate_parcels(possible_parcels, selection_area, impact_sites):
             }
             parcels.append(offset_parcel_data)
 
-    #print parcels
 
 def _select_offsets(offset_parcels_uri, impact_sites_uri, biodiversity_impacts, output_vector,
         output_json, comparison_vectors={}, services=['carbon', 'nutrient', 'sediment'],
@@ -470,8 +469,6 @@ def locate_biodiversity_offsets(offset_parcels_uri, biodiversity_impacts,
             parcel_lci = offset_feature.GetField('LCI')
         except ValueError:
             parcel_lci = None
-
-        print "%s, %s" % (parcel_area, parcel_lci)
 
         if ecosystem_impacted in biodiversity_impacts:
             eco_impact_data = biodiversity_impacts[ecosystem_impacted]

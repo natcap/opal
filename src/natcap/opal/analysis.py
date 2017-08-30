@@ -42,9 +42,6 @@ def aggregate_stats(raster_uri, aggregate_vector, id_field, target_field,
             percent_to_stream, aggregate_vector, id_field).pixel_max
         LOGGER.debug('pts_per_impacts: %s', pts_per_impacts)
 
-        #print pts_per_impacts
-        #print raster_stats
-
         LOGGER.debug('adjusting by percent-to-stream')
         adjusted_stats = {}
         for fid, pixel_sum in raster_stats.iteritems():
@@ -53,7 +50,6 @@ def aggregate_stats(raster_uri, aggregate_vector, id_field, target_field,
                 if percent_contribution is None:
                     percent_contribution = 0.0
             except KeyError:
-                print 'KeyError!!!'
                 percent_contribution = 0.0
 
             adjusted_stats[fid] = pixel_sum * percent_contribution
